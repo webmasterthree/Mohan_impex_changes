@@ -1,0 +1,43 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2025-01-16 15:54:59.956613",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [
+  {
+   "default": "Today",
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Date",
+   "mandatory": 1,
+   "wildcard_filter": 0
+  }
+ ],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2025-02-26 13:55:48.810893",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Daily Attendance Report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT \n    e.name AS `EMPLOYEE ID`,\n    e.employee_name AS `EMPLOYEE NAME`,\n    e.department AS `DEPARTMENT`,\n    e.cell_number AS `MOBILE`,\n    IFNULL(DATE(ec.time), %(start_date)s) AS `DATE`,\n    MAX(ec.device_id) AS `LOCATION`,\n    MAX(ec.shift) AS `SHIFT`,\n    MAX(TIME(ec.shift_start)) AS `SHIFT START`,\n    MAX(TIME(ec.shift_end)) AS `SHIFT END`,\n\n    -- IN TIME\n    MIN(CASE WHEN ec.log_type = 'IN' THEN TIME(ec.time) END) AS `IN TIME`,\n\n    -- OUT TIME\n    MAX(CASE WHEN ec.log_type = 'OUT' THEN TIME(ec.time) END) AS `OUT TIME`,\n\n    -- LATE BY\n    CASE\n        WHEN TIMESTAMPDIFF(MINUTE, MAX(TIME(ec.shift_start)), MIN(CASE WHEN ec.log_type = 'IN' THEN TIME(ec.time) END)) > 15 THEN\n            SEC_TO_TIME(TIMESTAMPDIFF(SECOND, MAX(TIME(ec.shift_start)), MIN(CASE WHEN ec.log_type = 'IN' THEN TIME(ec.time) END)) - 900)\n        ELSE '00:00:00'\n    END AS `LATE BY`,\n\n    -- EARLY BY\n    CASE\n        WHEN MAX(CASE WHEN ec.log_type = 'OUT' THEN TIME(ec.time) END) < MAX(TIME(ec.shift_end)) THEN\n            SEC_TO_TIME(TIMESTAMPDIFF(SECOND, MAX(CASE WHEN ec.log_type = 'OUT' THEN TIME(ec.time) END), MAX(TIME(ec.shift_end))))\n        ELSE '00:00:00'\n    END AS `EARLY BY`,\n\n    -- TOTAL WORK DURATION\n    CASE\n        WHEN MAX(TIME(ec.shift_end)) > MAX(TIME(ec.shift_start)) THEN\n            SEC_TO_TIME(TIMESTAMPDIFF(SECOND, MAX(TIME(ec.shift_start)), MAX(TIME(ec.shift_end))))\n        ELSE '00:00:00'\n    END AS `TOTAL WORK DURATION`,\n\n    -- WORK DURATION\n    CASE\n        WHEN MIN(CASE WHEN ec.log_type = 'IN' THEN TIME(ec.time) END) IS NOT NULL\n          AND MAX(CASE WHEN ec.log_type = 'OUT' THEN TIME(ec.time) END) IS NOT NULL THEN\n            SEC_TO_TIME(\n                TIMESTAMPDIFF(\n                    SECOND,\n                    MIN(CASE WHEN ec.log_type = 'IN' THEN TIME(ec.time) END),\n                    MAX(CASE WHEN ec.log_type = 'OUT' THEN TIME(ec.time) END)\n                )\n            )\n        ELSE '00:00:00'\n    END AS `WORK DURATION`,\n\n    -- STATUS\n    CASE\n        WHEN MAX(ec.time) IS NULL THEN 'Absent'\n        ELSE 'Present'\n    END AS `STATUS`\nFROM \n    tabEmployee e\nLEFT JOIN \n    `tabEmployee Checkin` ec\n    ON e.name = ec.employee \n    AND ec.log_type IN ('IN', 'OUT')\n    AND DATE(ec.time) = %(start_date)s\nWHERE \n    e.status = 'Active' -- Include only active employees\n    AND e.custom_from_daily_report = 0 -- Exclude employees with custom_from_daily_report = 1\nGROUP BY \n    e.name, `DATE`\nORDER BY \n    `DATE` ASC, `EMPLOYEE ID` ASC;\n",
+ "ref_doctype": "Employee",
+ "report_name": "Daily Attendance Report",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Employee"
+  },
+  {
+   "role": "HR User"
+  },
+  {
+   "role": "HR Manager"
+  }
+ ],
+ "timeout": 0
+}

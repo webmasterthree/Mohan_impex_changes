@@ -1,0 +1,46 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:state",
+ "creation": "2025-02-01 18:07:52.232572",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "state"
+ ],
+ "fields": [
+  {
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State",
+   "unique": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-02-01 18:12:32.551153",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "State",
+ "naming_rule": "By fieldname",
+ "nsm_parent_field": "parent_state",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
