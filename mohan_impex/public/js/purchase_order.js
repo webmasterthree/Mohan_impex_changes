@@ -110,33 +110,32 @@ function search_matching_items(frm, selected_item, selected_attributes) {
 
 function show_matching_items_dialog(frm, matching_items) {
     let d = new frappe.ui.Dialog({
-        title: __("Select a Matching Item"),
+        title: __("Select Matching Items"),
         fields: [
             {
                 label: __("Matching Items"),
-                fieldname: "selected_item",
-                fieldtype: "Link",
-                options: "Item",
-                reqd: 1,
-                get_query: function () {
-                    return {
-                        filters: { "item_code": ["in", matching_items.map(item => item.item_code)] }
-                    };
-                }
+                fieldname: "selected_items",
+                fieldtype: "MultiCheck",
+                options: matching_items.map(item => ({
+                    label: `${item.item_code} - ${item.item_name}`,
+                    value: item.item_code
+                }))
             }
         ],
-        primary_action_label: __("Apply Item"),
+        primary_action_label: __("Add Selected Items"),
         primary_action(values) {
-            if (!values.selected_item) {
-                frappe.msgprint(__("Please select a matching item."));
+            if (!values.selected_items || values.selected_items.length === 0) {
+                frappe.msgprint(__("Please select at least one item."));
                 return;
             }
 
-            console.log("✅ Adding item to Sales Order table:", values.selected_item);
+            console.log("✅ Adding selected items to Sales Order:", values.selected_items);
 
-            // Add the selected item to the "items" table
-            let child = frm.add_child("items");
-            child.item_code = values.selected_item;
+            // Add selected items to the "items" table in Sales Order
+            values.selected_items.forEach(item_code => {
+                let child = frm.add_child("items");
+                child.item_code = item_code;
+            });
 
             frm.refresh_field("items"); // Refresh the items table to reflect changes
             d.hide();
@@ -145,7 +144,3 @@ function show_matching_items_dialog(frm, matching_items) {
 
     d.show();
 }
-
-
-
-

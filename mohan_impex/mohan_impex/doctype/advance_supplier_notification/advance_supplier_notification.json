@@ -1,0 +1,144 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-03-08 16:19:43.459531",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "purchase_order",
+  "column_break_jpto",
+  "supplier",
+  "section_break_pbix",
+  "purchase_invoice",
+  "column_break_zcqc",
+  "invoice_date",
+  "section_break_dosz",
+  "transportation_details_column",
+  "transporter_name",
+  "vehiclecontainer_number",
+  "expected_arrival_date",
+  "column_break_pfvt",
+  "invoice_copy",
+  "e_way_bill",
+  "other_supporting_documents",
+  "section_break_ntcc",
+  "asn_status"
+ ],
+ "fields": [
+  {
+   "fetch_from": "purchase_order.supplier",
+   "fieldname": "supplier",
+   "fieldtype": "Data",
+   "label": "Supplier"
+  },
+  {
+   "fieldname": "column_break_jpto",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "purchase_order",
+   "fieldtype": "Link",
+   "label": "Purchase Order",
+   "options": "Purchase Order"
+  },
+  {
+   "fieldname": "section_break_pbix",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "purchase_invoice",
+   "fieldtype": "Link",
+   "label": "Purchase Invoice",
+   "options": "Purchase Invoice"
+  },
+  {
+   "fetch_from": "purchase_invoice.due_date",
+   "fieldname": "invoice_date",
+   "fieldtype": "Date",
+   "label": "Invoice Date"
+  },
+  {
+   "fieldname": "column_break_zcqc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "transporter_name",
+   "fieldtype": "Data",
+   "label": "Transporter Name"
+  },
+  {
+   "fieldname": "vehiclecontainer_number",
+   "fieldtype": "Data",
+   "label": "Vehicle/Container Number"
+  },
+  {
+   "fieldname": "expected_arrival_date",
+   "fieldtype": "Date",
+   "label": "Expected Arrival Date "
+  },
+  {
+   "fieldname": "invoice_copy",
+   "fieldtype": "Attach",
+   "label": "Invoice Copy"
+  },
+  {
+   "bold": 1,
+   "fieldname": "section_break_dosz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "transportation_details_column",
+   "fieldtype": "Column Break",
+   "label": "Transportation Details"
+  },
+  {
+   "fieldname": "column_break_pfvt",
+   "fieldtype": "Column Break",
+   "label": "Documents Upload"
+  },
+  {
+   "fieldname": "e_way_bill",
+   "fieldtype": "Attach",
+   "label": "E Way Bill"
+  },
+  {
+   "fieldname": "other_supporting_documents",
+   "fieldtype": "Attach",
+   "label": "Other Supporting Documents"
+  },
+  {
+   "fieldname": "section_break_ntcc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "asn_status",
+   "fieldtype": "Select",
+   "label": "ASN Status",
+   "options": "Pending\nIn Transit\nReceived"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-03-08 19:31:49.271570",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Advance Supplier Notification",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
