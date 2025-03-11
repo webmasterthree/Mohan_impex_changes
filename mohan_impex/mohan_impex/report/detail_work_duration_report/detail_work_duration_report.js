@@ -14,13 +14,13 @@ frappe.query_reports["Detail Work Duration Report"] = {
             "default": frappe.datetime.now_date(), 
             "reqd": 0 
         },
-        // {
-        //     "fieldname": "employee",
-        //     "label": __("Employee"),
-        //     "fieldtype": "Link",
-        //     "options": "Employee", 
-        //     "reqd": 0 
-        // },
+        {
+            "fieldname": "employee",
+            "label": __("Employee"),
+            "fieldtype": "Link",
+            "options": "Employee", 
+            "reqd": 0 
+        },
         {
             "fieldname": "department",
             "label": __("Department"),

@@ -6,17 +6,17 @@ app_email = "arunlrajamanickam@gmail.com"
 app_license = "mit"
 
 
-fixtures = [
-    "Client Script"
-]
+# fixtures = [
+#     "Client Script"
+# ]
 
 doctype_js ={
     "Sales Order": "public/js/sales_order.js",
     "Purchase Order" : "public/js/purchase_order.js",
     "Employee":"public/js/employee.js",
-    "Material Request": "public/js/material_request.js",
     "Request for Quotation": "public/js/request_for_quotation.js",
     "Additional Salary": "public/js/additional_salary.js",
+    "Request for Quotation" : "public/js/rfq.js"
 }
 doc_events = {
     "Request for Quotation": {

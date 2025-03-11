@@ -14,6 +14,11 @@
   "status",
   "column_break_tnry",
   "labour_group",
+  "section_break_uqgu",
+  "total_quantity",
+  "column_break_blly",
+  "labour_rate_per_ton",
+  "total_labour_cost",
   "remarks_section",
   "remarks"
  ],
@@ -74,11 +79,34 @@
    "fieldname": "remarks",
    "fieldtype": "Small Text",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "section_break_uqgu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_quantity",
+   "fieldtype": "Float",
+   "label": "Total Quantity"
+  },
+  {
+   "fieldname": "labour_rate_per_ton",
+   "fieldtype": "Currency",
+   "label": "Labour Rate per Ton"
+  },
+  {
+   "fieldname": "total_labour_cost",
+   "fieldtype": "Currency",
+   "label": "Total Labour Cost"
+  },
+  {
+   "fieldname": "column_break_blly",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-10 17:44:15.359303",
+ "modified": "2025-03-11 12:50:38.707892",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Pre-Unloading Check",

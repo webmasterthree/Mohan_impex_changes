@@ -6,7 +6,14 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "labour_group"
+  "labour_group",
+  "labour_type",
+  "warehouse",
+  "column_break_pxit",
+  "contractor_name",
+  "total_labour_strength",
+  "rate_per_ton",
+  "status"
  ],
  "fields": [
   {
@@ -14,11 +21,49 @@
    "fieldtype": "Data",
    "label": "Labour Group",
    "unique": 1
+  },
+  {
+   "fieldname": "labour_type",
+   "fieldtype": "Select",
+   "label": "Labour Type",
+   "options": "Unloading\nPacking\nDispatch\nMisc."
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "contractor_name",
+   "fieldtype": "Link",
+   "label": "Contractor Name",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "total_labour_strength",
+   "fieldtype": "Int",
+   "label": "Total Labour Strength"
+  },
+  {
+   "fieldname": "rate_per_ton",
+   "fieldtype": "Currency",
+   "label": "Rate per ton"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Active\nInactive"
+  },
+  {
+   "fieldname": "column_break_pxit",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-10 17:42:41.733648",
+ "modified": "2025-03-11 12:15:26.095567",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Labour Group",
