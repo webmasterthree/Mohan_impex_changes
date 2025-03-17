@@ -16,7 +16,11 @@ doctype_js ={
     "Employee":"public/js/employee.js",
     "Request for Quotation": "public/js/request_for_quotation.js",
     "Additional Salary": "public/js/additional_salary.js",
-    "Request for Quotation" : "public/js/rfq.js"
+    "Request for Quotation" : "public/js/rfq.js",
+    "Request for Quotation" : "public/js/rfq_supplier.js",
+    "Pre-Unloading Check": "public/js/pre_unloading_check.js",
+    "User": "public/js/user.js",
+
 }
 doc_events = {
     "Request for Quotation": {
