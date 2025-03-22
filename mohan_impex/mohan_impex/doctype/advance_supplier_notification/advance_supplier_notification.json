@@ -21,6 +21,12 @@
   "invoice_copy",
   "e_way_bill",
   "other_supporting_documents",
+  "section_break_jqaj",
+  "driver_name",
+  "column_break_hjub",
+  "driver_mobile_number",
+  "section_break_blyv",
+  "items",
   "section_break_ntcc",
   "asn_status"
  ],
@@ -38,6 +44,7 @@
   {
    "fieldname": "purchase_order",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Purchase Order",
    "options": "Purchase Order"
   },
@@ -115,11 +122,39 @@
    "fieldtype": "Select",
    "label": "ASN Status",
    "options": "Pending\nIn Transit\nReceived"
+  },
+  {
+   "fieldname": "section_break_jqaj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "driver_name",
+   "fieldtype": "Data",
+   "label": "Driver Name"
+  },
+  {
+   "fieldname": "column_break_hjub",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "driver_mobile_number",
+   "fieldtype": "Data",
+   "label": "Driver Mobile Number"
+  },
+  {
+   "fieldname": "section_break_blyv",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "ASN Item"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-08 19:31:49.271570",
+ "modified": "2025-03-19 10:49:35.433708",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Advance Supplier Notification",

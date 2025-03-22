@@ -3,6 +3,7 @@
  "allow_rename": 1,
  "creation": "2025-03-15 13:11:12.460578",
  "doctype": "DocType",
+ "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "item_code",
@@ -14,11 +15,11 @@
   "batch",
   "manufacturing_date",
   "expiry_date",
-  "short_qty",
-  "damage_qty"
+  "condition"
  ],
  "fields": [
   {
+   "columns": 2,
    "fieldname": "item_code",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -32,24 +33,30 @@
    "label": "Item Name"
   },
   {
+   "allow_on_submit": 1,
+   "columns": 2,
    "fieldname": "expected_qty",
    "fieldtype": "Float",
    "in_list_view": 1,
    "label": "Expected Qty"
   },
   {
+   "allow_on_submit": 1,
+   "columns": 2,
    "fieldname": "received_qty",
    "fieldtype": "Float",
    "in_list_view": 1,
    "label": "Received Qty"
   },
   {
+   "columns": 1,
    "fieldname": "unit_price",
    "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Unit Price"
   },
   {
+   "columns": 1,
    "fieldname": "batch",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -66,24 +73,22 @@
    "label": "Expiry Date"
   },
   {
-   "fieldname": "short_qty",
-   "fieldtype": "Float",
-   "label": "Short Qty"
-  },
-  {
-   "fieldname": "damage_qty",
-   "fieldtype": "Float",
-   "label": "Damage Qty"
-  },
-  {
    "fieldname": "column_break_vkjd",
    "fieldtype": "Column Break"
+  },
+  {
+   "columns": 2,
+   "fieldname": "condition",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Condition",
+   "options": "\nAll okay\nDamaged\nShort"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-15 13:20:40.325788",
+ "modified": "2025-03-22 13:42:07.690956",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "GRN First Item",

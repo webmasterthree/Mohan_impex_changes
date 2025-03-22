@@ -17,10 +17,12 @@ doctype_js ={
     "Request for Quotation": "public/js/request_for_quotation.js",
     "Additional Salary": "public/js/additional_salary.js",
     "Request for Quotation" : "public/js/rfq.js",
-    "Request for Quotation" : "public/js/rfq_supplier.js",
+    # "Request for Quotation" : "public/js/rfq_supplier.js",
     "Pre-Unloading Check": "public/js/pre_unloading_check.js",
     "User": "public/js/user.js",
-
+    "Sales Order":"public/js/outstanding_amount.js",
+    "Purchase Receipt":"public/js/PR_Connection.js",
+    "Purchase Receipt":"public/js/GRN1_Item.js",
 }
 doc_events = {
     "Request for Quotation": {
@@ -193,6 +195,21 @@ api_methods = [
 # 		"on_trash": "method"
 # 	}
 # }
+# scheduler_events = {
+#     "hourly": [
+#         "mohan_impex.auto_close_rfq.close_expired_rfqs"
+#     ]
+# }
+scheduler_events = {
+    "cron": {
+        "15 12 * * *": [
+            "mohan_impex.auto_close_rfq.close_expired_rfqs"
+        ]
+    },
+    "monthly":[
+        "mohan_impex.leave_balance.allocate_monthly_leave"
+    ],
+}
 
 # Scheduled Tasks
 # ---------------

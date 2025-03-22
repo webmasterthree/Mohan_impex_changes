@@ -7,9 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "document_name",
-  "upload",
-  "status",
-  "verification"
+  "upload"
  ],
  "fields": [
   {
@@ -22,27 +20,14 @@
    "fieldname": "upload",
    "fieldtype": "Attach",
    "in_list_view": 1,
-   "label": "Upload "
-  },
-  {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Status",
-   "options": "\nCompleted\nIn Process"
-  },
-  {
-   "fieldname": "verification",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Verification",
-   "options": "\nVerified\nNot Verified"
+   "label": "Upload ",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-15 16:59:02.370499",
+ "modified": "2025-03-19 12:57:36.688975",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "GRN 2 Item",

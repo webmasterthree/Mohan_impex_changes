@@ -14,14 +14,14 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Brand Item",
-   "options": "Brand Name",
+   "options": "Brand",
    "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-01-01 15:05:40.680287",
+ "modified": "2025-03-21 13:36:21.314232",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Brand Item",

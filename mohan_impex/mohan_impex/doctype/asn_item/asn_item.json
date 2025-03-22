@@ -1,41 +1,42 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-03-15 12:15:05.289877",
+ "creation": "2025-03-19 10:33:58.739706",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "qty",
-  "column_break_qrlj",
-  "labour_group"
+  "item",
+  "column_break_ujsz",
+  "qty"
  ],
  "fields": [
   {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item",
+   "options": "Item"
+  },
+  {
+   "allow_on_submit": 1,
    "fieldname": "qty",
-   "fieldtype": "Float",
+   "fieldtype": "Int",
    "in_list_view": 1,
    "label": "Qty"
   },
   {
-   "fieldname": "column_break_qrlj",
+   "fieldname": "column_break_ujsz",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "labour_group",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Labour Group",
-   "options": "Labour Group"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-15 12:17:25.785609",
+ "modified": "2025-03-19 11:52:53.982572",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
- "name": "Labour Group Item",
+ "name": "ASN Item",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

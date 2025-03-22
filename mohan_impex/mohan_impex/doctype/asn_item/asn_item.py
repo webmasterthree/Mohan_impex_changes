@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class LabourGroupItem(Document):
+class ASNItem(Document):
 	pass

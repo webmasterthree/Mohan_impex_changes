@@ -8,7 +8,9 @@
  "field_order": [
   "item_code",
   "manufacturing_date",
-  "remaining_shelf_life"
+  "remaining_shelf_life",
+  "shelf_life_in_days",
+  "purchase_team_approval"
  ],
  "fields": [
   {
@@ -29,12 +31,26 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Remaining Shelf Life"
+  },
+  {
+   "fieldname": "purchase_team_approval",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Purchase Team Approval",
+   "options": "\nApproved\nRejected\nPending"
+  },
+  {
+   "fetch_from": "item_code.shelf_life_in_days",
+   "fieldname": "shelf_life_in_days",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Shelf Life In Days"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-12 23:45:07.925980",
+ "modified": "2025-03-20 18:14:16.127438",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Pre-Unloading Check Item",

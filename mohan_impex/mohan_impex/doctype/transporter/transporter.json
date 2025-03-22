@@ -5,18 +5,18 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "transporter_code"
+  "transporter_name"
  ],
  "fields": [
   {
-   "fieldname": "transporter_code",
+   "fieldname": "transporter_name",
    "fieldtype": "Data",
-   "label": "Transporter Code"
+   "label": "Transporter Name"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-15 12:09:52.215003",
+ "modified": "2025-03-19 12:49:18.616002",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transporter",
@@ -35,7 +35,10 @@
    "write": 1
   }
  ],
+ "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "transporter_name",
+ "translated_doctype": 1
 }

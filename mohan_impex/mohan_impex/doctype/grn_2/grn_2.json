@@ -10,6 +10,8 @@
   "purchase_receipt",
   "column_break_wwde",
   "supplier",
+  "section_break_xbfu",
+  "type",
   "section_break_fcgz",
   "invoice_no",
   "invoice_date",
@@ -93,11 +95,21 @@
   {
    "fieldname": "section_break_fcgz",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_xbfu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Data",
+   "label": "Type",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-15 16:56:40.512016",
+ "modified": "2025-03-20 15:19:13.441178",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "GRN 2",
