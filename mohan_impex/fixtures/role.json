@@ -1,0 +1,54 @@
+[
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2025-01-18 16:44:37.867023",
+  "name": "SE",
+  "restrict_to_domain": null,
+  "role_name": "SE",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2025-01-18 16:44:45.883556",
+  "name": "NSM",
+  "restrict_to_domain": null,
+  "role_name": "NSM",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2025-01-18 16:44:52.123377",
+  "name": "TSM",
+  "restrict_to_domain": null,
+  "role_name": "TSM",
+  "two_factor_auth": 0
+ },
+ {
+  "desk_access": 1,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Role",
+  "home_page": null,
+  "is_custom": 0,
+  "modified": "2025-01-18 16:47:53.984100",
+  "name": "ASM",
+  "restrict_to_domain": null,
+  "role_name": "ASM",
+  "two_factor_auth": 0
+ }
+]

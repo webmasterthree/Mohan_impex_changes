@@ -1,0 +1,76 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-03-20 22:09:04.748852",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "item_name",
+  "complaint_itm_qty",
+  "value_of_goods",
+  "column_break_pftn",
+  "mfd",
+  "batch_no",
+  "expiry"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Code",
+   "options": "Item"
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name"
+  },
+  {
+   "fieldname": "mfd",
+   "fieldtype": "Date",
+   "label": "MFD"
+  },
+  {
+   "fieldname": "complaint_itm_qty",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Complaint Item Qty"
+  },
+  {
+   "fieldname": "value_of_goods",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Value of Goods"
+  },
+  {
+   "fieldname": "batch_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Batch No."
+  },
+  {
+   "fieldname": "expiry",
+   "fieldtype": "Date",
+   "label": "Expiry Date"
+  },
+  {
+   "fieldname": "column_break_pftn",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-03-21 08:04:43.700228",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Issue Table",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
