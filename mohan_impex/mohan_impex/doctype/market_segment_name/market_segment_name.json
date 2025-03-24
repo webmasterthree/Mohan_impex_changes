@@ -1,28 +1,25 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:market_segment_item_name",
- "creation": "2024-12-26 17:30:38.173038",
+ "creation": "2025-03-23 22:49:05.056984",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "market_segment_item_name"
+  "market_segment_name"
  ],
  "fields": [
   {
-   "fieldname": "market_segment_item_name",
+   "fieldname": "market_segment_name",
    "fieldtype": "Data",
-   "label": "Market Segment Item Name",
-   "unique": 1
+   "label": "Market Segment Name"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-12-26 17:31:54.648364",
+ "modified": "2025-03-23 22:49:25.336964",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Market Segment Name",
- "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -38,9 +35,7 @@
    "write": 1
   }
  ],
- "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "title_field": "market_segment_item_name"
+ "states": []
 }

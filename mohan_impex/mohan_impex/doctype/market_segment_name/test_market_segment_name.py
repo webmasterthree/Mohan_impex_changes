@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Edubild and Contributors
+# Copyright (c) 2025, Edubild and Contributors
 # See license.txt
 
 # import frappe

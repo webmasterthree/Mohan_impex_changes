@@ -1,29 +1,18 @@
-# import frappe
-# import json
+import frappe
+from frappe import _
 
-# def get_supplier_portal_users():
-#     suppliers = frappe.db.get_all("Supplier", fields=["name"])  # Fetch all supplier names
-    
-#     supplier_data = []
+@frappe.whitelist()
+def get_suppliers_by_item(item_name):
+    suppliers = frappe.get_all(
+        "Item Supplier",
+        filters={"parent": item_name},
+        pluck="supplier"
+    )
 
-#     for supplier in suppliers:
-#         portal_users = frappe.db.get_all(
-#             "Portal User",
-#             filters={"parent": supplier["name"], "parenttype": "Supplier"},
-#             fields=["user"]  # Only fetch the 'user' field
-#         )
+    if not suppliers:
+        return {"status": "error", "message": _("No suppliers found for this item.")}
 
-#         if portal_users:
-#             supplier_data.append({
-#                 "supplier": supplier["name"],
-#                 "portal_users": [user["user"] for user in portal_users]  # Extracting only user emails
-#             })
-
-#     return json.dumps(supplier_data, indent=4)  # Convert list to JSON format with indentation
-
-# # Call function and print output
-# supplier_portal_users_json = get_supplier_portal_users()
-# print(supplier_portal_users_json)
+    return {"item": item_name, "suppliers": suppliers}
 
 
 import frappe

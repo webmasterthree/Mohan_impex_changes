@@ -17,13 +17,14 @@ doctype_js ={
     "Request for Quotation": "public/js/request_for_quotation.js",
     "Additional Salary": "public/js/additional_salary.js",
     "Request for Quotation" : "public/js/rfq.js",
-    # "Request for Quotation" : "public/js/rfq_supplier.js",
     "Pre-Unloading Check": "public/js/pre_unloading_check.js",
     "User": "public/js/user.js",
     "Sales Order":"public/js/outstanding_amount.js",
     "Purchase Receipt":"public/js/PR_Connection.js",
     "Purchase Receipt":"public/js/GRN1_Item.js",
 }
+# "Request for Quotation" : "public/js/rfq_supplier.js",
+
 doc_events = {
     "Request for Quotation": {
         "on_submit": "mohan_impex.rfq.send_rfq_email"
