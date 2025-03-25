@@ -1,0 +1,172 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:naming_series",
+ "creation": "2025-01-22 14:44:41.792187",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_ygoq",
+  "naming_series",
+  "visit_from_date",
+  "nature_of_travel",
+  "mode_of_travel",
+  "approved_date",
+  "column_break_bash",
+  "visit_to_date",
+  "night_out_location",
+  "travel_to_state",
+  "travel_to_district",
+  "status",
+  "section_break_ikim",
+  "remarks",
+  "amended_from",
+  "created_by_emp",
+  "area",
+  "workflow_state"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_ygoq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Journey Plan",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "visit_from_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Visit From Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "visit_to_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Visit To Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "nature_of_travel",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Nature of Travel",
+   "options": "HQ\nEX-HQ\nNight Out",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.nature_of_travel === \"Night Out\"",
+   "fieldname": "night_out_location",
+   "fieldtype": "Data",
+   "label": "Night Out Location",
+   "mandatory_depends_on": "eval:doc.nature_of_travel === \"Night Out\""
+  },
+  {
+   "fieldname": "travel_to_state",
+   "fieldtype": "Link",
+   "label": "Travel To State",
+   "options": "State"
+  },
+  {
+   "fieldname": "travel_to_district",
+   "fieldtype": "Link",
+   "label": "Travel To District",
+   "options": "District"
+  },
+  {
+   "fieldname": "mode_of_travel",
+   "fieldtype": "Select",
+   "label": "Mode of Travel",
+   "options": "Air\nBus\nTrain",
+   "reqd": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "default": "Pending",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Pending\nApproved\nRejected"
+  },
+  {
+   "fieldname": "column_break_bash",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_ikim",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "created_by_emp",
+   "fieldtype": "Link",
+   "label": "Created By",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "created_by_emp.area",
+   "fieldname": "area",
+   "fieldtype": "Link",
+   "label": "Area",
+   "options": "Territory"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "approved_date",
+   "fieldtype": "Date",
+   "label": "Approved Date"
+  },
+  {
+   "default": "JP-.YYYY-.MM-.#####",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "JP-.YYYY-.MM-.#####"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-03-21 11:07:58.844155",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Journey Plan",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

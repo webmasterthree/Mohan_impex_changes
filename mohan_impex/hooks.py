@@ -6,9 +6,19 @@ app_email = "arunlrajamanickam@gmail.com"
 app_license = "mit"
 
 
-# fixtures = [
-#     "Client Script"
-# ]
+fixtures = [
+    "Client Script",
+    {"dt": "Custom DocPerm", "filters": [["role", "in", ("SE", "ASM", "TSM", "NSM")]]},
+    {"dt": "Property Setter", "filters": [["doc_type", "in", ("Customer")], ["property", "in", "options"]]},
+    {"dt": "Role", "filters": [["name", "in", ("SE", "ASM", "TSM", "NSM")]]},
+    {"dt": "Role Profile", "filters": [["name", "in", ("SE", "ASM", "TSM", "NSM")]]},
+    {"dt": "Designation", "filters": [["name", "in", ("SE", "ASM", "TSM", "NSM")]]},
+    {"dt": "Module Profile", "filters": [["name", "in", ("Mohan Impex")]]},
+    {"dt": "Workspace", "filters": [["name", "in", ("Mohan Impex")]]},
+    "Workflow",
+    "Workflow State",
+    "Workflow Action Master"
+]
 
 doctype_js ={
     "Sales Order": "public/js/sales_order.js",
@@ -23,16 +33,23 @@ doctype_js ={
     "Purchase Receipt":"public/js/PR_Connection.js",
     "Purchase Receipt":"public/js/GRN1_Item.js",
 }
-# "Request for Quotation" : "public/js/rfq_supplier.js",
 
 doc_events = {
+	"Comment": {
+		"after_insert": "mohan_impex.mohan_impex.comment.status_update"
+	},
+    "Sales Order": {
+        "before_save": "mohan_impex.mohan_impex.sales_order.update_customer_edit_needed"
+    },
+    "Employee": {
+        "before_save": "mohan_impex.mohan_impex.employee.set_user_permissions"
+    },
+    "Customer": {
+        "after_insert": "mohan_impex.mohan_impex.customer.updated_workflow_state"
+    },
     "Request for Quotation": {
         "on_submit": "mohan_impex.rfq.send_rfq_email"
-    }
-}
-
-doc_events = {
-    # Trigger before saving Employee Checkin to check late entries and create leave if necessary
+    },
     "Employee Checkin": {
         "before_save": "mohan_impex.leave_deduction.before_save_employee_checkin"
     }

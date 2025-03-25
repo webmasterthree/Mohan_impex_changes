@@ -1,0 +1,73 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-01-22 12:50:48.276944",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "allowed_distance",
+  "column_break_izkn",
+  "ticket_number",
+  "section_break_grqv",
+  "dashboard_banners",
+  "roles_and_reports_to"
+ ],
+ "fields": [
+  {
+   "fieldname": "ticket_number",
+   "fieldtype": "Data",
+   "label": "Ticket Number"
+  },
+  {
+   "fieldname": "roles_and_reports_to",
+   "fieldtype": "Table",
+   "label": "Roles and Reports To",
+   "options": "Roles and Reports To"
+  },
+  {
+   "fieldname": "dashboard_banners",
+   "fieldtype": "Table",
+   "label": "Dashboard Banners",
+   "options": "Banners"
+  },
+  {
+   "fieldname": "column_break_izkn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Allowed distance to submit the visit form in the Shop",
+   "fieldname": "allowed_distance",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Allowed Distance (In mts)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_grqv",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-02-28 08:06:30.631966",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Mohan Impex Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

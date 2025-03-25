@@ -1,0 +1,134 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:naming_series",
+ "creation": "2025-01-21 14:50:19.059730",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_h3ce",
+  "naming_series",
+  "reqd_date",
+  "approved_date",
+  "column_break_lmwj",
+  "status",
+  "amended_from",
+  "section_break_cgqy",
+  "samp_req_item",
+  "remarks",
+  "created_by_emp",
+  "area",
+  "workflow_state"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_h3ce",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Sample Requisition",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "samp_req_item",
+   "fieldtype": "Table",
+   "label": "Sample Requisition Item",
+   "options": "Sample Requisition Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reqd_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Required Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "default": "Pending",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Pending\nApproved\nReceived"
+  },
+  {
+   "fieldname": "column_break_lmwj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_cgqy",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "created_by_emp",
+   "fieldtype": "Link",
+   "label": "Created By",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "created_by_emp.area",
+   "fetch_if_empty": 1,
+   "fieldname": "area",
+   "fieldtype": "Link",
+   "label": "Area",
+   "options": "Territory"
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "approved_date",
+   "fieldtype": "Date",
+   "label": "Approved Date"
+  },
+  {
+   "default": "SR-.YYYY-.MM-.#####",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "SR-.YYYY-.MM-.#####"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-03-21 11:06:14.129900",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Sample Requisition",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
