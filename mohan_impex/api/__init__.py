@@ -66,11 +66,11 @@ def dashboard():
 def get_score_dash_info(doctype, label):
     emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
     if doctype == "Customer Visit Management":
-        dash_info = frappe.get_list(doctype, {"created_by_emp": emp.get("name"), "workflow_state": ["in", ["Draft", "Pending", "Approved"]]}, [f"'{label}' as name, count(name) as count"])[0]
+        dash_info = frappe.get_list(doctype, {"created_by_emp": emp.get("name"), "docstatus": 1}, [f"'{label}' as name, count(name) as count"])[0]
     elif doctype == "Sales Order":
-        dash_info = frappe.get_list(doctype, {"created_by_emp": emp.get("name"), "workflow_state": ["in", ["Draft", "Pending", "Approved"]]}, [f"'{label}' as name, count(name) as count"])[0]
+        dash_info = frappe.get_list(doctype, {"created_by_emp": emp.get("name"), "docstatus": 1}, [f"'{label}' as name, count(name) as count"])[0]
     elif doctype == "Trial Plan":
-        dash_info = frappe.get_list(doctype, {"created_by_emp": emp.get("name"), "workflow_state": ["in", ["Pending", "Approved"]]}, [f"'{label}' as name, count(name) as count"])[0]
+        dash_info = frappe.get_list(doctype, {"created_by_emp": emp.get("name"), "docstatus": 1}, [f"'{label}' as name, count(name) as count"])[0]
     return dash_info
 
 def get_dash_info(url, type):

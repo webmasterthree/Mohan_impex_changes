@@ -120,9 +120,9 @@ def cvm_form():
                 frappe.local.response['message'] = "Please give valid visit ID"
                 return
             cvm_doc = frappe.get_doc("Customer Visit Management", cvm_name)
-            image_url = frappe.get_all("File", {"attached_to_name": cvm_name}, ["file_url"])
+            image_url = frappe.get_all("File", {"attached_to_name": cvm_name}, ["name", "file_name", "file_url"])
             for image in image_url:
-                image["file_url"] = get_signed_token(image["file_url"])
+                image["url"] = get_signed_token(image["file_url"])
             cvm_doc = cvm_doc.as_dict()
             fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield", "created_by_emp", "area"]
             child_doc = ["product_pitching", "product_trial", "item_trial", "contact"]

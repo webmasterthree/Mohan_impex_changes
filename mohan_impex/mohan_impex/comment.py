@@ -19,14 +19,11 @@ def get_comments(doctype, docname):
     comments = frappe.get_all("Comment", {"reference_doctype": doctype, "reference_name": docname, "comment_type": ["in", ["Comment", "Workflow"]]}, ["content", "comment_type", "owner", "creation", "workflow_state"], order_by="creation")
     for comment in comments:
         comment["comments"] = BeautifulSoup(comment["content"], "html.parser").get_text(separator=" ").strip()
-        comment["status"] = None
-        if comment["comment_type"] == "Comment":
-            comment["status"] = comment["workflow_state"]
+        comment["status"] = comment["workflow_state"]
         comment["name"], comment["role"] = frappe.get_value("User", {"name": comment["owner"]}, ["full_name as name", "role_profile_name as role"])
         comment["date"] = comment["creation"].date()
         comment["time"] = comment["creation"].strftime("%H:%M:%S")
         comment.pop("content")
-        comment.pop("comment_type")
         comment.pop("owner")
         comment.pop("creation")
         comment.pop("workflow_state")
