@@ -135,32 +135,6 @@ def so_form():
 
         # Convert dictionary values to a list and update so_dict
         so_dict.update({"items": list(items_by_template.values())})
-        activities = [
-                {
-                    "role": "ASM",
-                    "name": "Ravi",
-                    "status": "Approved",
-                    "comments": None,
-                    "date": "2025-02-13",
-                    "time": "13:58:32"
-                },
-                {
-                    "role": "ASM",
-                    "name": "Ravi",
-                    "status": None,
-                    "comments": "Aproving the status",
-                    "date": "2025-02-14",
-                    "time": "13:58:32"
-                },
-                {
-                    "role": "ASM",
-                    "name": "Ravi",
-                    "status": "Approved",
-                    "comments": "Aproving the status",
-                    "date": "2025-02-14",
-                    "time": "13:58:32"
-                }
-            ]
         activities = get_comments("Sales Order", so_dict["name"])
         so_dict["activities"] = activities
         frappe.local.response['status'] = True
@@ -177,7 +151,6 @@ def create_so():
         response = {}
         so_data = frappe.form_dict
         so_dict = {
-            "doctype": "Sales Order",
             "customer_level": so_data.get("customer_level"),
             "custom_channel_partner": so_data.get("channel_partner") or "",
             "customer": so_data.get("customer"),
@@ -208,8 +181,14 @@ def create_so():
             if not frappe.db.exists("Contact", so_data.get("contact")):
                 create_contact(so_data.get("contact"), "Customer", so_data.get("customer"))
         so_dict.update({"items": items})
-        doc = frappe.get_doc(so_dict)
-        doc.save()
+        if so_data.get("isupdate"):
+            doc = frappe.get_doc("Sales Order", so_data.get("so_id"))
+            doc.update(so_dict)
+            doc.save()
+        else:
+            so_dict.update({"doctype": "Sales Order"})
+            doc = frappe.get_doc(so_dict)
+            doc.insert()
         message = "Sales Order form has been successfully created as Draft"
         if so_data.action == "Submit":
             apply_workflow(doc, "Submit")

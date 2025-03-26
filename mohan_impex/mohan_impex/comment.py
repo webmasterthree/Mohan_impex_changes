@@ -21,6 +21,8 @@ def get_comments(doctype, docname):
         comment["comments"] = BeautifulSoup(comment["content"], "html.parser").get_text(separator=" ").strip()
         comment["status"] = comment["workflow_state"]
         comment["name"], comment["role"] = frappe.get_value("User", {"name": comment["owner"]}, ["full_name as name", "role_profile_name as role"])
+        if comment["name"] == "Administrator":
+            comment["role"] = "Administrator"
         comment["date"] = comment["creation"].date()
         comment["time"] = comment["creation"].strftime("%H:%M:%S")
         comment.pop("content")
