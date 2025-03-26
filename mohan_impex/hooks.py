@@ -30,9 +30,9 @@ doctype_js ={
     "Pre-Unloading Check": "public/js/pre_unloading_check.js",
     "User": "public/js/user.js",
     "Sales Order":"public/js/outstanding_amount.js",
-    "Purchase Receipt":"public/js/PR_Connection.js",
-    "Purchase Receipt":"public/js/GRN1_Item.js",
 }
+# "Purchase Receipt":"public/js/PR_Connection.js",
+# "Purchase Receipt":"public/js/GRN1_Item.js",
 
 doc_events = {
 	"Comment": {
@@ -52,6 +52,12 @@ doc_events = {
     },
     "Employee Checkin": {
         "before_save": "mohan_impex.leave_deduction.before_save_employee_checkin"
+    },
+    "Transport RFQ": {
+        "on_submit": "mohan_impex.Sales.Assign_Transporter.on_submit"
+    },
+    "Salary Slip": {
+        "on_submit": "mohan_impex.salary_slip.handle_pf_on_submit"
     }
 }
 
@@ -317,7 +323,7 @@ scheduler_events = {
 
 # auth_hooks = [
 # 	"mohan_impex.auth.validate"
-# ]
+#
 
 # Automatically update python controller files with type annotations for this app.
 # export_python_type_annotations = True

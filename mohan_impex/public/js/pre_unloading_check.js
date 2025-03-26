@@ -68,7 +68,12 @@ function update_pre_unloading_status(frm) {
     let has_pending_approval = frm.doc.items.some(item => item.purchase_team_approval === "Pending");
 
     frm.set_value('status', has_pending_approval ? 'Pending' : 'Approved');
-    frm.refresh_field('status');
+
+    // Sum of all qtys
+    let total_qty = frm.doc.items.reduce((sum, item) => sum + (item.qty || 0), 0);
+    frm.set_value('total_quantity', total_qty);
+
+    frm.refresh_fields(['status', 'total_quantity']);
 }
 
 // frappe.ui.form.on('Pre-Unloading Check', {
@@ -87,6 +92,9 @@ function update_pre_unloading_status(frm) {
 //                             let row = frm.add_child("items");
 //                             row.item_code = item.item_code;
 //                             row.shelf_life_in_days = item.shelf_life_in_days || 0;
+//                             row.qty = item.qty || 0;
+//                             row.uom = item.uom || "";
+//                             row.rate = item.rate || 0;
 //                         });
 
 //                         frm.refresh_field("items");
@@ -112,16 +120,11 @@ function update_pre_unloading_status(frm) {
 //             let manufacturing_date = frappe.datetime.str_to_obj(row.manufacturing_date);
 //             let today_date = frappe.datetime.str_to_obj(frappe.datetime.now_date());
 
-//             // Calculate days since manufacturing
 //             let days_since_mfg = frappe.datetime.get_day_diff(today_date, manufacturing_date);
-
-//             // Remaining Shelf Life = shelf_life_in_days - (today - mfg date)
 //             let remaining_shelf_life = row.shelf_life_in_days - days_since_mfg;
 
-//             // ✅ Set even if it's negative
 //             frappe.model.set_value(cdt, cdn, 'remaining_shelf_life', remaining_shelf_life);
 
-//             // Approval Logic
 //             if (remaining_shelf_life > 0) {
 //                 frappe.model.set_value(cdt, cdn, 'purchase_team_approval', 'Approved');
 //             } else {

@@ -1,0 +1,125 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-03-25 16:47:30.995137",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "transport_date",
+  "from_location",
+  "column_break_zhmj",
+  "to_location",
+  "vehicle_type",
+  "section_break_zvtu",
+  "transporters",
+  "section_break_titp",
+  "locations",
+  "section_break_eabp",
+  "status",
+  "pick_list",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "transport_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Transport Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "from_location",
+   "fieldtype": "Data",
+   "label": "From Location",
+   "reqd": 1
+  },
+  {
+   "fieldname": "to_location",
+   "fieldtype": "Data",
+   "label": "To Location",
+   "reqd": 1
+  },
+  {
+   "fieldname": "vehicle_type",
+   "fieldtype": "Select",
+   "label": "Vehicle Type",
+   "options": "Truck\nTrailer\nContainer"
+  },
+  {
+   "fieldname": "column_break_zhmj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_zvtu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "transporters",
+   "fieldtype": "Table",
+   "label": "Transporters",
+   "options": "Transporters"
+  },
+  {
+   "fieldname": "section_break_eabp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Open\nQuotation Received\nClosed"
+  },
+  {
+   "fieldname": "section_break_titp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "locations",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Transport RFQ Item"
+  },
+  {
+   "fieldname": "pick_list",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Pick List",
+   "options": "Pick List"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Transport RFQ",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-03-26 12:48:41.155714",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Transport RFQ",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

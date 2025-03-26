@@ -2,6 +2,33 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-03-06 21:08:11.646152",
+  "name": "Draft (Created by Sales Team)",
+  "style": "",
+  "workflow_state_name": "Draft (Created by Sales Team)"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-03-06 21:24:55.227111",
+  "name": "Pending Accounts Review",
+  "style": "",
+  "workflow_state_name": "Pending Accounts Review"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-03-06 21:25:04.027492",
+  "name": "Approved for Dispatch",
+  "style": "",
+  "workflow_state_name": "Approved for Dispatch"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
   "icon": "question-sign",
   "modified": "2024-12-25 19:18:52.877281",
   "name": "Pending",
