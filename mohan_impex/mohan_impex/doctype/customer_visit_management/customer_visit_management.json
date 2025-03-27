@@ -201,7 +201,7 @@
    "fieldname": "channel_partner",
    "fieldtype": "Link",
    "label": "Channel Partner",
-   "link_filters": "[[\"Company\",\"custom_company_type\",\"=\",\"Channel Partner\"]]",
+   "link_filters": "[[\"Company\",\"company_type\",\"=\",\"Channel Partner\"]]",
    "mandatory_depends_on": "eval:doc.customer_level === \"Secondary\"",
    "options": "Company"
   },

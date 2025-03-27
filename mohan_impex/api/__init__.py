@@ -173,7 +173,7 @@ def get_channel_partner(search_text=""):
     query = """
         SELECT name
         FROM `tabCompany` AS co
-        WHERE custom_company_type = 'Channel Partner'
+        WHERE company_type = 'Channel Partner'
     """
     params = []
     if search_text:
@@ -314,7 +314,7 @@ def get_customer_list(search_text=""):
 @frappe.whitelist()
 def get_customer_info(role_filter=None, customer_level="", channel_partner="", search_text=""):
     if not role_filter:
-        show_area_records = 1
+        show_area_records = 0
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
         role_filter = get_role_filter(emp, show_area_records)
     query = """
@@ -355,7 +355,7 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", s
     try:
         if not role_filter:
             customer_level = "Primary"
-            show_area_records = 1
+            show_area_records = 0
             emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
             role_filter = get_role_filter(emp, show_area_records)
         query = """
