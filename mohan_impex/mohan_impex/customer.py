@@ -17,6 +17,15 @@ def update_kyc_status(customer, unv_customer=None):
         frappe.db.set_value("Customer Visit Management", cvm, "kyc_status", "Completed")
 
 def updated_workflow_state(self, status):
+    if self.customer_level == "Primary":
+        comment_doc = frappe.get_doc({
+            "doctype": "Comment",
+            "reference_doctype": "Customer",
+            "reference_name": self.name,
+            "comment_type": "Workflow",
+            "content": self.workflow_state
+        })
+        comment_doc.insert(ignore_permissions=True)
     if self.customer_level == "Secondary" and self.workflow_state == "KYC Pending":
         apply_workflow(self, "Complete KYC")
 

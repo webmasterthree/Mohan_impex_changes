@@ -35,7 +35,7 @@ def kyc_list():
         role_filter = get_role_filter(emp, show_area_records)
         order_and_group_by = " group by cu.name order by cu.creation desc "
         query = """
-            select cu.name, cu.request_date as date, cu.workflow_state, cu.created_by_emp, COUNT(*) OVER() AS total_count
+            select cu.name, cu.customer_name, cu.request_date as date, cu.workflow_state, cu.created_by_emp, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
             JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
             where customer_level= "Primary" and dl.parenttype = "Contact Number" and {tab_filter} and {role_filter}
@@ -60,7 +60,6 @@ def kyc_list():
         kyc_info = frappe.db.sql(query, as_dict=True)
         for kyc in kyc_info:
             kyc["workflow_state"] = "Approved" if kyc["workflow_state"] == "KYC Completed" else "Pending"
-            kyc["username"] = frappe.get_value("Employee", {"name": kyc["created_by_emp"]}, "employee_name")
             kyc["form_url"] = f"{frappe.utils.get_url()}/api/method/mohan_impex.api.kyc.kyc_form?name={kyc['name']}"
             kyc.pop("created_by_emp", None)
         total_count = 0
@@ -135,16 +134,17 @@ def kyc_form():
             """
             address = frappe.db.sql(address_query, as_dict=True)
             kyc_doc[address_type["field_name"]] = address
-        contact_query = f"""
-            select con.name
-            from `tabContact` con
-            join `tabDynamic Link` dl on con.name = dl.parent
-            where dl.link_name = "{kyc_name}" limit 1
-        """
-        contact = frappe.db.sql_list(contact_query)
+        # contact_query = f"""
+        #     select con.name
+        #     from `tabContact Number` con
+        #     join `tabDynamic Link` dl on con.name = dl.parent
+        #     where dl.link_name = "{kyc_name}" limit 1
+        # """
+        # contact = frappe.db.sql_list(contact_query)
+        contact = frappe.get_value("Contact", {"name": kyc_doc["customer_primary_contact"]}, "phone")
         activities = get_comments("Customer", kyc_doc["name"])
         kyc_doc["activities"] = activities
-        kyc_doc["contact"] = contact
+        kyc_doc["contact"] = [contact] if contact else []
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "KYC form has been successfully fetched"
         frappe.local.response['data'] = [kyc_doc]
@@ -263,3 +263,13 @@ def create_address(kyc_doc, address_data, address_type):
     addr_doc.insert(ignore_permissions=True)
     address_name = addr_doc.name
     return address_name
+
+@frappe.whitelist()
+def kyc_exists_validation(unv_customer):
+    kyc_exists = frappe.db.exists("Customer", {"unv_customer": unv_customer, "kyc_status": ["in", ["Pending", "Completed"]]})
+    if kyc_exists:
+        frappe.local.response['kyc_exists'] = True
+        frappe.local.response['message'] = f"KYC exists for the customer {unv_customer}"
+    else:
+        frappe.local.response['kyc_exists'] = False
+        frappe.local.response['message'] = f"No KYC Created for the customer {unv_customer}"
