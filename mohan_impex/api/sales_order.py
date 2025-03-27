@@ -113,7 +113,8 @@ def so_form():
             "location": so_doc.customer_address.rsplit('-', 1)[0] if so_doc.customer_address else "",
             "contact": so_doc.contact_person or "",
             "remarks": so_doc.remarks,
-            "workflow_state": so_doc.workflow_state
+            "workflow_state": so_doc.workflow_state,
+            "cust_edit_needed": so_doc.cust_edit_needed
         }
         items_by_template = {}
 

@@ -143,32 +143,6 @@ def cvm_form():
                 else:
                     grouped[product] = [item]
             cvm_doc["product_pitching"] = [{"product": product, "items": items} for product, items in grouped.items()]
-            activities = [
-                {
-                    "role": "ASM",
-                    "name": "Ravi",
-                    "status": "Approved",
-                    "comments": None,
-                    "date": "2025-02-13",
-                    "time": "13:58:32"
-                },
-                {
-                    "role": "ASM",
-                    "name": "Ravi",
-                    "status": None,
-                    "comments": "Aproving the status",
-                    "date": "2025-02-14",
-                    "time": "13:58:32"
-                },
-                {
-                    "role": "ASM",
-                    "name": "Ravi",
-                    "status": "Approved",
-                    "comments": "Aproving the status",
-                    "date": "2025-02-14",
-                    "time": "13:58:32"
-                }
-            ]
             activities = get_comments("Customer Visit Management", cvm_doc["name"])
             cvm_doc["activities"] = activities
             cvm_doc["image_url"] = image_url
