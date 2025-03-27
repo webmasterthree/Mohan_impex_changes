@@ -4,6 +4,8 @@ import math
 from mohan_impex.api import get_signed_token, get_role_filter
 from datetime import datetime
 from mohan_impex.mohan_impex.comment import get_comments
+from mohan_impex.api import create_contact_number
+from mohan_impex.mohan_impex.contact import get_contact_numbers
 
 @frappe.whitelist()
 def kyc_list():
@@ -36,7 +38,7 @@ def kyc_list():
             select cu.name, cu.request_date as date, cu.workflow_state, cu.created_by_emp, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
             JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
-            where customer_level= "Primary" and {tab_filter} and {role_filter}
+            where customer_level= "Primary" and dl.parenttype = "Contact Number" and {tab_filter} and {role_filter}
         """.format(tab_filter=tab_filter, role_filter=role_filter)
         filter_checks = {
             "customer_type": "customer_type",
@@ -140,32 +142,6 @@ def kyc_form():
             where dl.link_name = "{kyc_name}" limit 1
         """
         contact = frappe.db.sql_list(contact_query)
-        activities = [
-                {
-                    "role": "ASM",
-                    "name": "Ravi",
-                    "status": "Approved",
-                    "comments": None,
-                    "date": "2025-02-13",
-                    "time": "13:58:32"
-                },
-                {
-                    "role": "ASM",
-                    "name": "Ravi",
-                    "status": None,
-                    "comments": "Aproving the status",
-                    "date": "2025-02-14",
-                    "time": "13:58:32"
-                },
-                {
-                    "role": "ASM",
-                    "name": "Ravi",
-                    "status": "Approved",
-                    "comments": "Aproving the status",
-                    "date": "2025-02-14",
-                    "time": "13:58:32"
-                }
-            ]
         activities = get_comments("Customer", kyc_doc["name"])
         kyc_doc["activities"] = activities
         kyc_doc["contact"] = contact
@@ -208,7 +184,8 @@ def create_kyc():
             update_file_doc(cust_decl.get("name"), kyc_doc.name)
         for cust_license in kyc_data.cust_license:
             update_file_doc(cust_license.get("name"), kyc_doc.name)
-        contact = create_contact(kyc_doc, kyc_data)
+        contact_num_doc = create_contact_number(kyc_data["contact"], "Customer", kyc_doc.name)
+        contact = create_contact(kyc_doc, kyc_data, contact_num_doc.name)
         billing_address = create_address(kyc_doc, kyc_data["billing_address"], "Billing")
         shipping_address = create_address(kyc_doc, kyc_data["shipping_address"], "Shipping")
         frappe.db.set_value('Customer', kyc_doc.name, 'customer_primary_address', billing_address)
@@ -234,35 +211,33 @@ def update_file_doc(name, kyc_id):
     doc.attached_to_name = kyc_id
     doc.save()
 
-def create_contact(kyc_doc, kyc_data):
-    contact_name = frappe.db.exists("Contact", kyc_data["contact"])
-    if not contact_name:
-        contact_doc = frappe.get_doc({
-            "doctype": "Contact",
-            "first_name": kyc_data["contact"],
-            "is_primary_contact": 1
-        })
-        frappe.errprint(kyc_data["contact"])
-        contact_doc.save(ignore_permissions=True)
-        email_doc = frappe.get_doc({
-            "doctype": "Contact Email",
-            "email_id": kyc_data.email_id,
-            "is_primary": 1,
-            "parent": contact_doc.name,
-            "parenttype": "Contact",
-            "parentfield": "email_ids"
-        })
-        email_doc.insert(ignore_permissions=True)
-        contact_name = contact_doc.name
-    link_doc = frappe.get_doc({
-        "doctype": "Dynamic Link",
+def create_contact(kyc_doc, kyc_data, primary_contact_number):
+    contact_doc = frappe.new_doc("Contact")
+    contact_doc.update({
+        "first_name": kyc_data["customer_name"],
+        "phone": primary_contact_number,
+        "is_primary_contact": 1
+    })
+    contact_doc.append("email_ids", {
+        "email_id": kyc_data.email_id,
+        "is_primary": 1,
+    })
+    contact_doc.append("links", {
         "link_doctype": "Customer",
         "link_name": kyc_doc.name,
-        "parent": contact_name,
-        "parenttype": "Contact",
-        "parentfield": "links"
     })
-    link_doc.insert(ignore_permissions=True)
+    contact_doc.append("phone_nos", {
+        "contact_number": primary_contact_number,
+        "is_primary_phone": 1
+    })
+    if kyc_doc.unv_customer:
+        contact_numbers = get_contact_numbers("Unverified Customer", kyc_doc.unv_customer)
+        for contact_no in contact_numbers:
+            contact_doc.append("phone_nos", {
+            "contact_number": contact_no,
+        })
+    contact_doc.insert(ignore_permissions=True)
+    contact_name = contact_doc.name
     return contact_name
 
 def create_address(kyc_doc, address_data, address_type):

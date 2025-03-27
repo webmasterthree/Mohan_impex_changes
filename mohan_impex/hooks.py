@@ -45,6 +45,7 @@ doc_events = {
         "before_save": "mohan_impex.mohan_impex.employee.set_user_permissions"
     },
     "Customer": {
+        "before_save": "mohan_impex.mohan_impex.customer.validate_dup_unv_id",
         "after_insert": "mohan_impex.mohan_impex.customer.updated_workflow_state"
     },
     "Request for Quotation": {

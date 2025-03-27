@@ -1,7 +1,6 @@
 import frappe
 from mohan_impex.mohan_impex.utils import get_session_employee
 from frappe.utils.file_manager import save_file
-from mohan_impex.api import create_contact
 from mohan_impex.api import get_role_filter
 import math
 
@@ -99,7 +98,7 @@ def complaints_form():
                 "customer_level": complaints_doc.customer_level,
                 "customer": complaints_doc.customer,
                 "customer_name": complaints_doc.customer_name,
-                "contact": complaints_doc.contact,
+                "contact": complaints_doc.contact_number,
                 "date": complaints_doc.opening_date,
                 "shop": complaints_doc.shop,
                 "shop_name": complaints_doc.shop_name,
@@ -144,8 +143,6 @@ def create_complaint():
         "created_by_emp": get_session_employee()
     })
     try:
-        if not frappe.db.exists("Contact", complaint_data.contact):
-            create_contact(complaint_data.contact, "Customer", complaint_data.customer)
         complaint_doc = frappe.new_doc("Issue")
         complaint_doc.update(complaint_data)
         complaint_doc.insert()

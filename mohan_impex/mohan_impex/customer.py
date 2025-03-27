@@ -19,3 +19,9 @@ def update_kyc_status(customer, unv_customer=None):
 def updated_workflow_state(self, status):
     if self.customer_level == "Secondary" and self.workflow_state == "KYC Pending":
         apply_workflow(self, "Complete KYC")
+
+def validate_dup_unv_id(self, status):
+    if self.unv_customer:
+        cus_id = frappe.db.exists("Customer", {"unv_customer": self.unv_customer})
+        if cus_id:
+            frappe.throw(f"Customer {cus_id} has already been created for the Unverified Customer {self.unv_customer}")

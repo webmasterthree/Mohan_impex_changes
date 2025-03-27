@@ -2,7 +2,7 @@ import frappe
 import frappe.utils
 from mohan_impex.mohan_impex.doctype.customer_visit_management.customer_visit_management import CustomerVisitManagement
 from mohan_impex.mohan_impex.utils import get_session_employee
-from mohan_impex.api import create_contact
+from mohan_impex.api import create_contact_number
 from frappe.model.workflow import apply_workflow
 import math
 from mohan_impex.api import get_signed_token, get_role_filter
@@ -167,15 +167,15 @@ def create_cvm():
             return
         if cvm_data.customer_type == "Existing":
             for contact in cvm_data.contact:
-                if not frappe.db.exists("Contact", contact["contact"]):
-                    create_contact(contact["contact"], "Customer", cvm_data.customer)
+                if not frappe.db.exists("Contact Number", contact["contact"]):
+                    create_contact_number(contact["contact"], "Customer", cvm_data.customer)
         if cvm_data.customer_type == "New":
             shop = create_shop(cvm_data.shop, cvm_data.shop_name)
             if shop: cvm_data.shop = shop
             created_contact = []
             for contact in cvm_data.contact:
-                if not frappe.db.exists("Contact", contact["contact"]):
-                    create_contact(contact["contact"])
+                if not frappe.db.exists("Contact Number", contact["contact"]):
+                    create_contact_number(contact["contact"])
                     created_contact.append(contact["contact"])
             unv_cus = frappe.get_doc({
                 "doctype": "Unverified Customer",
@@ -216,7 +216,7 @@ def create_cvm():
             unv_cus.address = cvm_data.location
             unv_cus.save()
             for contact in created_contact:
-                create_contact(contact, "Unverified Customer", unv_cus.name)
+                create_contact_number(contact, "Unverified Customer", unv_cus.name)
             cvm_data.unv_customer = unv_cus.name
         doctype = "Customer Visit Management"
         if cvm_data.get("isupdate"):

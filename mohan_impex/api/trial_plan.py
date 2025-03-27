@@ -1,5 +1,5 @@
 import frappe
-from mohan_impex.api.cvm import create_contact 
+from mohan_impex.api.cvm import create_contact_number 
 from mohan_impex.mohan_impex.utils import get_session_employee
 import math
 from mohan_impex.mohan_impex.comment import get_comments
@@ -169,8 +169,8 @@ def create_product_trial():
             cont_doctype = "Unverified Customer"
             cont_link_name = trial_data.unv_customer
         for contact in trial_data.contact:
-            if not frappe.db.exists("Contact", contact["contact"]):
-                create_contact(contact["contact"], cont_doctype, cont_link_name)
+            if not frappe.db.exists("Contact Number", contact["contact"]):
+                create_contact_number(contact["contact"], cont_doctype, cont_link_name)
         trial_doc = frappe.get_doc(trial_data)
         trial_doc.save()
         response = {

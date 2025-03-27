@@ -5,7 +5,7 @@ from mohan_impex.item_price import get_item_category_price
 from frappe.model.workflow import apply_workflow
 import math
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import create_contact
+from mohan_impex.api import create_contact_number
 
 @frappe.whitelist()
 def so_list():
@@ -37,12 +37,12 @@ def so_list():
         role_filter = get_role_filter(emp, show_area_records)
         order_by = " order by so.creation desc "
         query = """
-            select name, shop_name, contact_person as contact, customer_address as location, created_by_emp as created_by, workflow_state, COUNT(*) OVER() AS total_count
+            select name, shop_name, contact_number as contact, customer_address as location, created_by_emp as created_by, workflow_state, COUNT(*) OVER() AS total_count
             from `tabSales Order` as so
             where {tab_filter} and {role_filter} 
         """.format(tab_filter=tab_filter, role_filter=role_filter)
         if frappe.form_dict.get("search_text"):
-            or_filters = """AND (so.customer_name LIKE "%{search_text}%" or so.shop_name LIKE "%{search_text}%" or so.contact_person LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
+            or_filters = """AND (so.customer_name LIKE "%{search_text}%" or so.shop_name LIKE "%{search_text}%" or so.contact_number LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
             query += or_filters
         and_filters = []
         if frappe.form_dict.get("from_date") and frappe.form_dict.get("to_date"):
@@ -52,7 +52,6 @@ def so_list():
         query += order_by
         query += pagination
         so_info = frappe.db.sql(query, as_dict=True)
-        # so_info = frappe.get_list("Sales Order", role_filter, ["name", "custom_shop_name", "contact_person as contact", "shipping_address_name as location", "created_by_emp as created_by", "workflow_state"])
         for so in so_info:
             so["location"] = so["location"].rsplit('-', 1)[0] if so["location"] else ""
             so["form_url"] = f"{frappe.utils.get_url()}/api/method/mohan_impex.api.sales_order.so_form?name={so['name']}"
@@ -111,7 +110,7 @@ def so_form():
             "channel_partner": so_doc.custom_channel_partner,
             "deal_type": so_doc.custom_deal_type,
             "location": so_doc.customer_address.rsplit('-', 1)[0] if so_doc.customer_address else "",
-            "contact": so_doc.contact_person or "",
+            "contact": so_doc.contact_number or "",
             "remarks": so_doc.remarks,
             "workflow_state": so_doc.workflow_state,
             "cust_edit_needed": so_doc.cust_edit_needed
@@ -160,7 +159,7 @@ def create_so():
             "custom_deal_type": so_data.get("deal_type"),
             "shop": so_data.get("shop"),
             "shop_name": so_data.get("shop_name"),
-            "contact_person": so_data.get("contact"),
+            "contact_number": so_data.get("contact"),
             "delivery_date": so_data.get("delivery_date"),
             "remarks": so_data.get("remarks"),
             "cust_edit_needed": so_data.get("cust_edit_needed"),
@@ -180,8 +179,8 @@ def create_so():
             }
             items.append(item_dict)
         if so_data.get("contact"):
-            if not frappe.db.exists("Contact", so_data.get("contact")):
-                create_contact(so_data.get("contact"), "Customer", so_data.get("customer"))
+            if not frappe.db.exists("Contact Number", so_data.get("contact")):
+                create_contact_number(so_data.get("contact"), "Customer", so_data.get("customer"))
         so_dict.update({"items": items})
         if so_data.get("isupdate"):
             doc = frappe.get_doc("Sales Order", so_data.get("so_id"))

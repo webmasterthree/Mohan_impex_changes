@@ -140,6 +140,25 @@ def create_contact(contactno, doctype=None, link_name=None):
         })
         contact_link.save(ignore_permissions=True)
 
+def create_contact_number(contactno, doctype=None, link_name=None):
+    if frappe.db.exists("Contact Number", contactno):
+        contact_doc = frappe.get_doc("Contact Number", contactno)
+    else:
+        contact_doc = frappe.new_doc("Contact Number")
+        contact_dict = {
+            "contact_number": contactno
+        }
+        contact_doc.update(contact_dict)
+    if doctype and link_name:
+        link_exists = frappe.db.exists("Dynamic Link", {"link_doctype": doctype, "link_name": link_name, "parenttype": "Contact Number"})
+        if not link_exists:
+            contact_doc.append("links", {
+                "link_doctype": doctype,
+                "link_name": link_name
+            })
+    contact_doc.save(ignore_permissions=True)
+    return contact_doc
+
 @frappe.whitelist()
 def upload_attachments():
     if not frappe.request.files:
@@ -325,7 +344,7 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", s
         SELECT cu.name as name, cu.customer_name, cu.custom_shop as shop, cu.custom_shop_name as shop_name, ct.name as contact, cu.customer_level, cu.custom_channel_partner as channel_partner
         FROM `tabCustomer` AS cu
         JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
-        JOIN `tabContact` AS ct on ct.name = dl.parent
+        JOIN `tabContact Number` AS ct on ct.name = dl.parent
         WHERE {role_filter}
     """.format(role_filter=role_filter)
     if search_text:

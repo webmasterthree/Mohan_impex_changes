@@ -1,7 +1,7 @@
 import frappe
 
 def get_contact_list(party_type, party_name):
-    contact_list = frappe.get_all("Dynamic Link", {"link_doctype": party_type, "link_name": party_name, "parenttype":"Contact"}, ["parent"], pluck="parent")
+    contact_list = frappe.get_all("Dynamic Link", {"link_doctype": party_type, "link_name": party_name, "parenttype":"Contact Number"}, ["parent"], pluck="parent")
     return contact_list
 
 def get_address_list(party_type, party_name):
