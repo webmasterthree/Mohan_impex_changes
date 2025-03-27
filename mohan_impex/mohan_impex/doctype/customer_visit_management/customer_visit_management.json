@@ -201,7 +201,7 @@
    "fieldname": "channel_partner",
    "fieldtype": "Link",
    "label": "Channel Partner",
-   "link_filters": "[[\"Company\",\"company_type\",\"=\",\"Channel Partner\"]]",
+   "link_filters": "[[\"Company\",\"custom_company_type\",\"=\",\"Channel Partner\"]]",
    "mandatory_depends_on": "eval:doc.customer_level === \"Secondary\"",
    "options": "Company"
   },
@@ -385,11 +385,11 @@
    "reqd": 1
   },
   {
-   "default": "CVM-.YYYY.-.MM.-#####",
+   "default": "CVM-.YYYY.-.MM.-.#####",
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
-   "options": "CVM-.YYYY.-.MM.-#####"
+   "options": "CVM-.YYYY.-.MM.-.#####"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -400,7 +400,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2025-03-22 16:35:25.625033",
+ "modified": "2025-03-27 11:25:00.495838",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",
