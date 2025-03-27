@@ -170,11 +170,15 @@ def upload_attachments():
 
 @frappe.whitelist()
 def get_channel_partner(search_text=""):
+    emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
+    role_filter = ""
+    if emp:
+        role_filter = f"""and employee = "{emp.get('name')}" """
     query = """
         SELECT name
         FROM `tabCompany` AS co
-        WHERE company_type = 'Channel Partner'
-    """
+        WHERE company_type = 'Channel Partner' {role_filter}
+    """.format(role_filter=role_filter)
     params = []
     if search_text:
         search_cond = """ AND (name LIKE %s or phone_no LIKE %s)"""
@@ -288,7 +292,7 @@ def material_list():
 
 @frappe.whitelist()
 def get_customer_list(search_text=""):
-    show_area_records = 1
+    show_area_records = 0
     emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
     role_filter = get_role_filter(emp, show_area_records)
     customer_list = []
