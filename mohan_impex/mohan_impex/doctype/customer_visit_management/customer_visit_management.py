@@ -68,28 +68,29 @@ class CustomerVisitManagement(Document):
         return response
 
     @frappe.whitelist()
-    def create_trial_plan(self):
-        table_dict = {}
-        if self.verific_type == "Verified":
-            table_dict.update({"customer": self.customer})
-            table_dict.update({"customer_name": self.customer_name})
-        else:
-            table_dict.update({"unv_customer": self.unv_customer})
-            table_dict.update({"unv_customer_name": self.unv_customer_name})
-        if self.trial_type == "Product":
-            products = [{"product": product.product} for product in self.product_trial]
-            table_dict.update({"product_trial_table": products})
-        else:
-            items = [{"item_code": item.item_code} for item in self.item_trial]
-            table_dict.update({"item_trial_table": items})
+    def trial_plan(self):
+        trial_plan = frappe.db.exists(
+            "Trial Plan", {"cvm": self.name})
         if self.has_trial_plan:
-            trial_plan = frappe.db.exists(
-                "Trial Plan", {"cvm": self.name})
+            table_dict = {}
+            if self.verific_type == "Verified":
+                table_dict.update({"customer": self.customer})
+                table_dict.update({"customer_name": self.customer_name})
+            else:
+                table_dict.update({"unv_customer": self.unv_customer})
+                table_dict.update({"unv_customer_name": self.unv_customer_name})
+            if self.trial_type == "Product":
+                products = [{"product": product.product} for product in self.product_trial]
+                table_dict.update({"product_trial_table": products})
+            else:
+                items = [{"item_code": item.item_code} for item in self.item_trial]
+                table_dict.update({"item_trial_table": items})
             pt_dict = {
                 "customer_level":  self.customer_level,
                 "channel_partner": self.channel_partner,
                 "verific_type": self.verific_type,
                 "trial_type": self.trial_type,
+                "trial_loc": self.trial_loc,
                 "conduct_by": self.conduct_by,
                 "shop": self.shop,
                 "shop_name": self.shop_name,
@@ -106,6 +107,8 @@ class CustomerVisitManagement(Document):
                 "visit_start": self.visit_start,
                 "visit_end": self.visit_end,
                 "visit_duration": self.visit_duration,
+                "date": self.date,
+                "time": self.time,
                 "remarksnotes": self.remarksnotes
             }
             pt_dict.update(table_dict)
@@ -120,6 +123,8 @@ class CustomerVisitManagement(Document):
                 })
                 doc = frappe.get_doc(pt_dict)
                 doc.save()
+        elif not self.has_trial_plan and trial_plan:
+            frappe.delete_doc("Trial Plan", trial_plan)
 
     @frappe.whitelist()
     def create_order(self, return_so_id=False):

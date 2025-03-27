@@ -39,6 +39,11 @@
   "appointment_date",
   "conduct_by",
   "trial_type",
+  "column_break_iwjg",
+  "trial_loc",
+  "date",
+  "time",
+  "trial_plan_table_section",
   "product_trial",
   "item_trial",
   "section_break_gbyh",
@@ -390,6 +395,35 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "CVM-.YYYY.-.MM.-.#####"
+  },
+  {
+   "fieldname": "trial_loc",
+   "fieldtype": "Select",
+   "label": "Trial Location",
+   "mandatory_depends_on": "eval:doc.has_trial_plan === 1",
+   "options": "On Site\nR&D Lab"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date",
+   "mandatory_depends_on": "eval:doc.has_trial_plan === 1"
+  },
+  {
+   "fieldname": "time",
+   "fieldtype": "Time",
+   "label": "Time",
+   "mandatory_depends_on": "eval:doc.has_trial_plan === 1"
+  },
+  {
+   "fieldname": "column_break_iwjg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.has_trial_plan === 1",
+   "fieldname": "trial_plan_table_section",
+   "fieldtype": "Section Break",
+   "label": "Trial Plan Table"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -400,7 +434,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2025-03-27 11:25:00.495838",
+ "modified": "2025-03-27 12:25:20.393363",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",

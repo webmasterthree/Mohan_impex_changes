@@ -159,7 +159,6 @@ def create_cvm():
     cvm_data = frappe.form_dict
     cvm_data.pop("cmd")
     cvm_data.update({
-        "doctype" : "Customer Visit Management",
         "created_by_emp": get_session_employee()
     })
     try:
@@ -219,15 +218,21 @@ def create_cvm():
             for contact in created_contact:
                 create_contact(contact, "Unverified Customer", unv_cus.name)
             cvm_data.unv_customer = unv_cus.name
-        cvm_doc = frappe.get_doc(cvm_data)
-        cvm_doc.insert()
+        doctype = "Customer Visit Management"
+        if cvm_data.get("isupdate"):
+            cvm_doc = frappe.get_doc(doctype, cvm_data.get("cvm_id"))
+            cvm_doc.update(cvm_data)
+            cvm_doc.save()
+        else:
+            cvm_data.update({"doctype": doctype})
+            cvm_doc = frappe.get_doc(cvm_data)
+            cvm_doc.insert()
         for image in cvm_data.captured_images:
             doc = frappe.get_doc("File", image.get("name"))
-            doc.attached_to_doctype = "Customer Visit Management"
+            doc.attached_to_doctype = doctype
             doc.attached_to_name = cvm_doc.name
             doc.save()
-        if cvm_data.get("has_trial_plan"):
-            cvm_doc.create_trial_plan()
+        cvm_doc.trial_plan()
         message = "Customer Visit request form has been successfully created as Draft"
         if cvm_data.action == "Submit":
             apply_workflow(cvm_doc, "Submit")

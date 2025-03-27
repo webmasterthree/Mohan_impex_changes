@@ -82,7 +82,7 @@ frappe.ui.form.on("Customer Visit Management", {
     set_session_employee(frm)
   },
   after_save(frm){
-    frm.call("create_trial_plan")
+    frm.call("trial_plan")
   }
 });
 
