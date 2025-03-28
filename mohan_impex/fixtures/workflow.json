@@ -565,7 +565,7 @@
   "doctype": "Workflow",
   "document_type": "Sample Requisition",
   "is_active": 1,
-  "modified": "2025-01-30 22:11:21.278026",
+  "modified": "2025-03-28 12:35:33.844691",
   "name": "Sample Requisition",
   "override_status": 0,
   "send_email_alert": 0,
@@ -588,7 +588,7 @@
    {
     "allow_edit": "ASM",
     "avoid_status_override": 0,
-    "doc_status": "1",
+    "doc_status": "0",
     "is_optional_state": 0,
     "message": null,
     "next_action_email_template": null,
@@ -633,7 +633,7 @@
    {
     "allow_edit": "NSM",
     "avoid_status_override": 0,
-    "doc_status": "1",
+    "doc_status": "0",
     "is_optional_state": 0,
     "message": null,
     "next_action_email_template": null,
@@ -674,6 +674,51 @@
     "update_field": "status",
     "update_value": "Pending",
     "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "ASM",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Sample Requisition",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Received",
+    "update_field": "status",
+    "update_value": "Received",
+    "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "SE",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Sample Requisition",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Received",
+    "update_field": "status",
+    "update_value": "Received",
+    "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "NSM",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Sample Requisition",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Received",
+    "update_field": "status",
+    "update_value": "Received",
+    "workflow_builder_id": null
    }
   ],
   "transitions": [
@@ -702,6 +747,30 @@
     "workflow_builder_id": null
    },
    {
+    "action": "Receive",
+    "allow_self_approval": 1,
+    "allowed": "ASM",
+    "condition": null,
+    "next_state": "Received",
+    "parent": "Sample Requisition",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Approved",
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Receive",
+    "allow_self_approval": 1,
+    "allowed": "SE",
+    "condition": null,
+    "next_state": "Received",
+    "parent": "Sample Requisition",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Approved",
+    "workflow_builder_id": null
+   },
+   {
     "action": "Approve",
     "allow_self_approval": 1,
     "allowed": "NSM",
@@ -723,6 +792,18 @@
     "parentfield": "transitions",
     "parenttype": "Workflow",
     "state": "Pending",
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Receive",
+    "allow_self_approval": 1,
+    "allowed": "NSM",
+    "condition": null,
+    "next_state": "Received",
+    "parent": "Sample Requisition",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Approved",
     "workflow_builder_id": null
    }
   ],

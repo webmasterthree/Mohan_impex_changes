@@ -96,11 +96,13 @@
    "label": "Remarks"
   },
   {
+   "allow_on_submit": 1,
    "default": "Pending",
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Pending\nApproved\nRejected"
+   "options": "Pending\nApproved\nRejected",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_bash",
@@ -162,7 +164,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-28 11:32:27.949346",
+ "modified": "2025-03-28 12:30:02.117211",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Journey Plan",

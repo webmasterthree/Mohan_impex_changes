@@ -10,6 +10,7 @@
   "naming_series",
   "reqd_date",
   "approved_date",
+  "rejected_date",
   "column_break_lmwj",
   "status",
   "amended_from",
@@ -55,11 +56,13 @@
    "label": "Remarks"
   },
   {
+   "allow_on_submit": 1,
    "default": "Pending",
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Pending\nApproved\nReceived"
+   "options": "Pending\nApproved\nReceived\nRejected",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_lmwj",
@@ -92,6 +95,7 @@
   },
   {
    "allow_on_submit": 1,
+   "depends_on": "eval:doc.status === \"Approved\"",
    "fieldname": "approved_date",
    "fieldtype": "Date",
    "label": "Approved Date"
@@ -103,12 +107,17 @@
    "hidden": 1,
    "label": "Naming Series",
    "options": "SR-.YYYY.-.MM.-.#####"
+  },
+  {
+   "depends_on": "eval:doc.status === \"Rejected\"",
+   "fieldname": "rejected_date",
+   "fieldtype": "Date",
+   "label": "Rejected Date"
   }
  ],
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
  "links": [],
- "modified": "2025-03-27 13:52:12.449912",
+ "modified": "2025-03-28 12:35:39.329562",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Sample Requisition",

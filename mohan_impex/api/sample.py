@@ -25,7 +25,10 @@ def sample_list():
         limit = int(limit)
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
-        tab_filter = 'workflow_state = "%s"'%(tab)
+        if tab == "Pending":
+            tab_filter = 'workflow_state in ("%s", "%s")'%("Pending", "Rejected")
+        else:
+            tab_filter = 'workflow_state in ("%s", "%s")'%("Approved", "Received")
         if frappe.form_dict.get("show_area_records"):
             show_area_records = int(frappe.form_dict.get("show_area_records"))
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)

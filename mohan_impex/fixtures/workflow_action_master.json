@@ -61,5 +61,12 @@
   "modified": "2025-02-19 21:29:35.319667",
   "name": "Submit",
   "workflow_action_name": "Submit"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-03-28 12:14:30.871674",
+  "name": "Receive",
+  "workflow_action_name": "Receive"
  }
 ]
