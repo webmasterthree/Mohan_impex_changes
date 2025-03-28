@@ -6,10 +6,14 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_break_1ipz",
   "naming_series",
-  "mktg_coll_item",
+  "created_date",
+  "column_break_mzgq",
+  "status",
   "approved_date",
+  "rejected_date",
+  "section_break_1ipz",
+  "mktg_coll_item",
   "section_break_xjxw",
   "remarks",
   "section_break_dlup",
@@ -17,7 +21,6 @@
   "created_by_emp",
   "area",
   "column_break_yjyv",
-  "status",
   "workflow_state"
  ],
  "fields": [
@@ -53,7 +56,8 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Pending\nApproved\nRejected"
+   "options": "Pending\nApproved\nRejected",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_yjyv",
@@ -86,6 +90,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "depends_on": "eval:doc.status === \"Approved\"",
    "fieldname": "approved_date",
    "fieldtype": "Date",
    "label": "Approved Date"
@@ -96,12 +101,29 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "MC-.YYYY.-.#####"
+  },
+  {
+   "default": "Today",
+   "fieldname": "created_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Created Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_mzgq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.status === \"Rejected\"",
+   "fieldname": "rejected_date",
+   "fieldtype": "Date",
+   "label": "Rejected date"
   }
  ],
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
  "links": [],
- "modified": "2025-03-27 13:53:19.715580",
+ "modified": "2025-03-28 14:08:53.940448",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Marketing Collateral Request",
@@ -118,7 +140,6 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
-   "submit": 1,
    "write": 1
   }
  ],

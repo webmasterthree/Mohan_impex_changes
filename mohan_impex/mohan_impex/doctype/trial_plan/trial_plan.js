@@ -11,6 +11,9 @@ frappe.ui.form.on("Trial Plan", {
     if (frm.doc.status === "Approved"){
       frappe.db.set_value("Trial Plan", frm.doc.name, 'approved_date', frappe.datetime.nowdate())
     }
+    else if (frm.doc.status === "Rejected"){
+      frappe.db.set_value("Trial Plan", frm.doc.name, 'rejected_date', frappe.datetime.nowdate())
+    }
   },
   customer_level(frm){
     frm.set_value("customer", "")

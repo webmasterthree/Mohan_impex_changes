@@ -31,6 +31,16 @@ class TrialPlan(Document):
         if kyc_status == "Completed": return True
         else: return False
 
+    def after_insert(self):
+        comment_doc = frappe.get_doc({
+            "doctype": "Comment",
+            "reference_doctype": "Trial Plan",
+            "reference_name": self.name,
+            "comment_type": "Workflow",
+            "content": self.workflow_state
+        })
+        comment_doc.insert(ignore_permissions=True)
+
     # def before_save(self):
         # trial_item_list = []
         # for item in self.product_trial:

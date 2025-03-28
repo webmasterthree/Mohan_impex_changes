@@ -295,6 +295,7 @@ def material_list():
         query = """
             select item_code, item_name
             from `tabItem`
+            where item_group="Marketing Collateral Material"
         """
         if frappe.form_dict.get("search_text"):
             or_filters = """where (item_code LIKE "%{search_text}%" or item_name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))

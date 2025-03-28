@@ -25,20 +25,32 @@ def collateral_request_list():
         limit = int(limit)
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
-        tab_filter = 'workflow_state = "%s"'%(tab)
+        if tab == "Pending":
+            tab_filter = 'workflow_state in ("%s", "%s")'%("Pending", "Rejected")
+        else:
+            tab_filter = 'workflow_state = "%s"'%(tab)
         if frappe.form_dict.get("show_area_records"):
             show_area_records = int(frappe.form_dict.get("show_area_records"))
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
         role_filter = get_role_filter(emp, show_area_records)
         order_by = " order by creation desc "
         query = """
-            select name, approved_date, workflow_state as status, COUNT(*) OVER() AS total_count
+            select name, approved_date, rejected_date, workflow_state as status, COUNT(*) OVER() AS total_count
             from `tabMarketing Collateral Request`
             where {tab_filter} and {role_filter} 
         """.format(tab_filter=tab_filter, role_filter=role_filter)
+        filter_checks = {
+            "created_date": "created_date"
+        }
         if frappe.form_dict.get("search_text"):
             or_filters = """AND (name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
             query += or_filters
+        and_filters = []
+        for key, value in filter_checks.items():
+            if frappe.form_dict.get(key):
+                and_filters.append("""{0} = "{1}" """.format(value, frappe.form_dict[key]))
+        and_filters = " AND ".join(and_filters)
+        query += """ AND ({0})""".format(and_filters) if and_filters else ""
         query += order_by
         query += pagination
         cr_info = frappe.db.sql(query, as_dict=True)

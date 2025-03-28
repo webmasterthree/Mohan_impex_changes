@@ -35,7 +35,7 @@ def sample_list():
         role_filter = get_role_filter(emp, show_area_records)
         order_by = " order by creation desc "
         query = """
-            select name, approved_date, workflow_state as status, COUNT(*) OVER() AS total_count
+            select name, approved_date, rejected_date, workflow_state as status, COUNT(*) OVER() AS total_count
             from `tabSample Requisition`
             where {tab_filter} and {role_filter}
         """.format(tab_filter=tab_filter, role_filter=role_filter)

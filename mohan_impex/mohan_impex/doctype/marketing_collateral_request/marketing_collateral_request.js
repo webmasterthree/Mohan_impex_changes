@@ -11,6 +11,9 @@ frappe.ui.form.on("Marketing Collateral Request", {
       if (frm.doc.status === "Approved"){
         frappe.db.set_value("Marketing Collateral Request", frm.doc.name, 'approved_date', frappe.datetime.nowdate())
       }
+      else if (frm.doc.status === "Rejected"){
+        frappe.db.set_value("Marketing Collateral Request", frm.doc.name, 'rejected_date', frappe.datetime.nowdate())
+      }
     },
     before_save(frm) {
         set_session_employee(frm)

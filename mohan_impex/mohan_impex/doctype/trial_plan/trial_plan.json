@@ -26,6 +26,7 @@
   "column_break_xbea",
   "appointment_date",
   "approved_date",
+  "rejected_date",
   "contact",
   "location",
   "address_title",
@@ -356,6 +357,7 @@
    "label": "Address Line 2"
   },
   {
+   "depends_on": "eval:doc.status === \"Approved\"",
    "fieldname": "approved_date",
    "fieldtype": "Date",
    "label": "Approved Date"
@@ -379,17 +381,22 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "PT-.YYYY.-.MM.-.#####"
+  },
+  {
+   "depends_on": "eval:doc.status === \"Rejected\"",
+   "fieldname": "rejected_date",
+   "fieldtype": "Date",
+   "label": "Rejected Date"
   }
  ],
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
  "links": [
   {
    "link_doctype": "Quotation",
    "link_fieldname": "custom_product_trial"
   }
  ],
- "modified": "2025-03-27 13:51:50.246845",
+ "modified": "2025-03-28 14:18:55.601389",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",
@@ -406,7 +413,6 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
-   "submit": 1,
    "write": 1
   }
  ],
