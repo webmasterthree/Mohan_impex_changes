@@ -41,6 +41,7 @@ def journey_plan_list():
         """.format(tab_filter=tab_filter, role_filter=role_filter)
         filter_checks = {
             "date": "date",
+            "status": "status",
             "nature_of_travel": "nature_of_travel",
             "mode_of_travel": "mode_of_travel"
         }

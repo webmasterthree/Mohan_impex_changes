@@ -40,7 +40,8 @@ def collateral_request_list():
             where {tab_filter} and {role_filter} 
         """.format(tab_filter=tab_filter, role_filter=role_filter)
         filter_checks = {
-            "created_date": "created_date"
+            "created_date": "created_date",
+            "status": "status"
         }
         if frappe.form_dict.get("search_text"):
             or_filters = """AND (name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))

@@ -20,6 +20,14 @@ frappe.ui.form.on("Marketing Collateral Request", {
     },
 });
 
+cur_frm.set_query("item", "mktg_coll_item", function(frm, cdt, cdn) {
+  return {
+      "filters": [
+          ["item_group", "=", "Marketing Collateral Material"]
+      ]
+  };
+});
+
 function set_session_employee(frm){
     if(!frm.doc.created_by_emp){
       frappe.call({

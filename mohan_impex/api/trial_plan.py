@@ -45,7 +45,8 @@ def trial_list():
             "conduct_by": "conduct_by",
             "trial_loc": "trial_loc",
             "customer_level": "customer_level",
-            "trial_type": "trial_type" 
+            "trial_type": "trial_type",
+            "status": "status"
         }
         if frappe.form_dict.get("search_text"):
             or_filters = """AND (pt.name LIKE "%{search_text}%" or pt.customer_name LIKE "%{search_text}%" or cl.contact LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
