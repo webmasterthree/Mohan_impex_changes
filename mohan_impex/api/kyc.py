@@ -141,7 +141,7 @@ def kyc_form():
         #     where dl.link_name = "{kyc_name}" limit 1
         # """
         # contact = frappe.db.sql_list(contact_query)
-        contact = frappe.get_value("Contact", {"name": kyc_doc["customer_primary_contact"]}, "phone")
+        contact = frappe.get_value("Contact", {"name": kyc_doc["customer_primary_contact"]}, "mobile_no")
         activities = get_comments("Customer", kyc_doc["name"])
         kyc_doc["activities"] = activities
         kyc_doc["contact"] = [contact] if contact else []
@@ -177,6 +177,7 @@ def create_kyc():
             "pan": kyc_data.pan,
             "cust_decl": cust_decls,
             "customer_license": cust_licenses,
+            "email_id": kyc_data.email_id
         }
         kyc_doc = frappe.get_doc(data)
         kyc_doc.insert()
@@ -190,10 +191,7 @@ def create_kyc():
         shipping_address = create_address(kyc_doc, kyc_data["shipping_address"], "Shipping")
         frappe.db.set_value('Customer', kyc_doc.name, 'customer_primary_address', billing_address)
         frappe.db.set_value('Customer', kyc_doc.name, 'customer_primary_contact', contact)
-        # Contact Email
-        # kyc_doc.customer_primmary_address = contact
-        # kyc_doc.customer_primmary_contact = shipping_address
-        # kyc_doc.save()
+        frappe.db.set_value("Customer", kyc_doc.name, "mobile_no", kyc_data.contact)
         response = {
             "kyc": kyc_doc.name
         }
@@ -215,7 +213,7 @@ def create_contact(kyc_doc, kyc_data, primary_contact_number):
     contact_doc = frappe.new_doc("Contact")
     contact_doc.update({
         "first_name": kyc_data["customer_name"],
-        "phone": primary_contact_number,
+        "mobile_no": primary_contact_number,
         "is_primary_contact": 1
     })
     contact_doc.append("email_ids", {
@@ -228,7 +226,7 @@ def create_contact(kyc_doc, kyc_data, primary_contact_number):
     })
     contact_doc.append("phone_nos", {
         "contact_number": primary_contact_number,
-        "is_primary_phone": 1
+        "is_primary_mobile_no": 1
     })
     if kyc_doc.unv_customer:
         contact_numbers = get_contact_numbers("Unverified Customer", kyc_doc.unv_customer)
