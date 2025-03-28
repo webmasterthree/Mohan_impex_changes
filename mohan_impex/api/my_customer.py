@@ -42,9 +42,9 @@ def my_customer_list():
         query = """
             select cu.name, cu.customer_name, custom_shop, customer_primary_contact as contact, customer_primary_address as location, created_by_emp as created_by, workflow_state, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
-            join `tabDynamic Link` as dl on dl.link_name=cu.name 
+            join `tabDynamic Link` as dl on dl.link_name=cu.name
             {si_join}
-            where {billing_query} {role_filter} and disabled=0 and customer_level="Primary"
+            where {billing_query} {role_filter} and disabled=0 and customer_level="Primary" and kyc_status="Completed"
         """.format(si_join=si_join, billing_query=billing_query, role_filter=role_filter)
         group_by = " group by cu.name order by cu.creation desc "
         filter_checks = {
