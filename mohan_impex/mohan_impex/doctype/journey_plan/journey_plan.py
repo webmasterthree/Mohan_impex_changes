@@ -8,9 +8,13 @@ import frappe
 
 class JourneyPlan(Document):
 	def before_save(self):
-		# frappe.errprint(self.workflow_state)
-		if (self.workflow_state == "Approved"):
-			self.approved_date = datetime.today()
+		range_exists = frappe.db.exists("Journey Plan", {"visit_from_date": ["<=", self.visit_to_date], "visit_to_date": [">=", self.visit_from_date]})
+		if range_exists:
+			frappe.throw(
+				f"Journey Plan cannot overlap with existing record: {range_exists}. Please select a different date range.",
+				title="Journey Plan Overlap Error",
+				exc=frappe.ValidationError
+			)
 
 	def after_insert(self):
 		comment_doc = frappe.get_doc({

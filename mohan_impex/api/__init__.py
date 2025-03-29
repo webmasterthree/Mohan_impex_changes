@@ -325,6 +325,8 @@ def get_customer_list(search_text=""):
         filters.update({"channel_partner": frappe.form_dict.get("channel_partner")})
     if frappe.form_dict.get("customer_level"):
         filters.update({"customer_level": frappe.form_dict.get("customer_level")})
+    if frappe.form_dict.get("show_area_records"):
+        filters.update({"show_area_records": frappe.form_dict.get("show_area_records")})
     if frappe.form_dict.get("verification_type"):
         if frappe.form_dict.get("verification_type") == "Verified":
             customer_list.extend(get_customer_info(**filters))
@@ -336,9 +338,8 @@ def get_customer_list(search_text=""):
     return customer_list
 
 @frappe.whitelist()
-def get_customer_info(role_filter=None, customer_level="", channel_partner="", search_text=""):
+def get_customer_info(role_filter=None, customer_level="", channel_partner="", show_area_records:int = 0, search_text=""):
     if not role_filter:
-        show_area_records = 0
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
         role_filter = get_role_filter(emp, show_area_records)
     query = """
@@ -375,13 +376,12 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", s
     return customer_info
 
 @frappe.whitelist()
-def unv_customer_list(role_filter=None, customer_level="", channel_partner="", search_text=""):
+def unv_customer_list(role_filter=None, customer_level="", channel_partner="", show_area_records:int = 0, search_text=""):
     try:
         if not role_filter:
             customer_level = "Primary"
-            show_area_records = 0
-            emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-            role_filter = get_role_filter(emp, show_area_records)
+        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
+        role_filter = get_role_filter(emp, show_area_records)
         query = """
             select unv.name, customer_name, customer_level, shop, shop_name, contact, channel_partner
             from `tabUnverified Customer` as unv
@@ -389,13 +389,14 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", s
             WHERE kyc_status = "Pending" and {role_filter}
         """.format(role_filter=role_filter)
         if frappe.form_dict.get("search_text"):
-            or_filters = """ AND (unv.customer_name LIKE "%{search_text}%" or unv.shop_name LIKE "%{search_text}%" or cl.contact LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
+            or_filters = """ AND (unv.customer_name LIKE "%{search_text}%" or unv.shop_name LIKE "%{search_text}%" or cl.contact LIKE "%{search_text}%") """.format(search_text=search_text)
             query += or_filters
         if customer_level:
             query += """ AND unv.customer_level = "{0}" """.format(customer_level)
         if channel_partner:
             query += """ AND unv.channel_partner = "{0}" """.format(channel_partner)
         unv_customer_list = frappe.db.sql(query, as_dict=True)
+        frappe.errprint(query)
         result={}
         for entry in unv_customer_list:
             key = entry["name"]
