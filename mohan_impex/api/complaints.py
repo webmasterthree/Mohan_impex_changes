@@ -3,6 +3,7 @@ from mohan_impex.mohan_impex.utils import get_session_employee
 from frappe.utils.file_manager import save_file
 from mohan_impex.api import get_role_filter
 import math
+from mohan_impex.mohan_impex.comment import get_comments
 
 @frappe.whitelist()
 def complaints_list():
@@ -126,6 +127,8 @@ def complaints_form():
             for url in image_url:
                 url["file_url"] = f"{site_url}{url['file_url']}"
             complaints_dict["image_url"] = image_url
+            activities = get_comments("Issue", complaints_name)
+            complaints_dict["activities"] = activities
             frappe.local.response['status'] = True
             frappe.local.response['message'] = "Complaints & Claims request form has been successfully fetched"
             frappe.local.response['data'] = [complaints_dict]
