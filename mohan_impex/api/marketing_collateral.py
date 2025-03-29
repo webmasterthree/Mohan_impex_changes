@@ -23,7 +23,7 @@ def digital_mc_list():
             WHERE status = "Published"
         """
         if frappe.form_dict.get("search_text"):
-            or_filters = """ and (name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
+            or_filters = """ and (marketing_collateral_name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
             query += or_filters
         query += order_by
         query += pagination
