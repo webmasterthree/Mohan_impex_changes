@@ -31,7 +31,7 @@ def complaints_list():
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
         role_filter = get_role_filter(emp, show_area_records)
         query = """
-            select name, opening_date as date, claim_type, workflow_state, created_by_emp, COUNT(*) OVER() AS total_count
+            select name, opening_date as date, customer_name, claim_type, workflow_state, created_by_emp, COUNT(*) OVER() AS total_count
             from `tabIssue`
             where {tab_filter} and {role_filter}
         """.format(tab_filter=tab_filter, role_filter=role_filter)
@@ -57,7 +57,7 @@ def complaints_list():
         complaints_info = frappe.db.sql(query, as_dict=True)
         for complaints in complaints_info:
             # complaints["workflow_state"] = "Pending" if complaints["workflow_state"] == "Open" else complaints["workflow_state"]
-            complaints["username"] = frappe.get_value("Employee", {"name": complaints["created_by_emp"]}, "employee_name")
+            # complaints["username"] = frappe.get_value("Employee", {"name": complaints["created_by_emp"]}, "employee_name")
             complaints["form_url"] = f"{frappe.utils.get_url()}/api/method/mohan_impex.api.complaints.complaints_form?name={complaints['name']}"
             complaints.pop("created_by_emp", None)
             # complaints_list.append(complaints)
