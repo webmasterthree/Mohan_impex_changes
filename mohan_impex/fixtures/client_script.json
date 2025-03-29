@@ -983,10 +983,10 @@
   "doctype": "Client Script",
   "dt": "Issue",
   "enabled": 1,
-  "modified": "2025-01-29 11:07:26.856042",
+  "modified": "2025-03-29 21:43:38.812298",
   "module": "Mohan Impex",
   "name": "Issue",
-  "script": "frappe.ui.form.on('Issue', {\n    onload(frm) {\n        if (frm.is_new()) {\n            set_session_employee(frm)\n        }\n    },\n    before_save(frm) {\n        set_session_employee(frm)\n    },\n})\n\nfunction set_session_employee(frm){\n  if(!frm.doc.created_by_emp){\n    frappe.call({\n      method: \"mohan_impex.mohan_impex.utils.get_session_employee\",\n      async:false,\n      callback: function (r) {\n        if (r.message) {\n          frm.set_value(\"created_by_emp\", r.message);\n          frm.refresh_field(\"created_by_emp\")\n        }\n      }\n    });\n  }\n}",
+  "script": "frappe.ui.form.on('Issue', {\n    onload(frm) {\n        if (frm.is_new()) {\n            set_session_employee(frm)\n        }\n    },\n    before_save(frm) {\n        set_session_employee(frm)\n    },\n    after_workflow_action(frm){\n        if (frm.doc.status === \"Resolved\"){\n          frappe.db.set_value(\"Issue\", frm.doc.name, 'resolved_date', frappe.datetime.nowdate())\n        }\n    },\n})\n\nfunction set_session_employee(frm){\n  if(!frm.doc.created_by_emp){\n    frappe.call({\n      method: \"mohan_impex.mohan_impex.utils.get_session_employee\",\n      async:false,\n      callback: function (r) {\n        if (r.message) {\n          frm.set_value(\"created_by_emp\", r.message);\n          frm.refresh_field(\"created_by_emp\")\n        }\n      }\n    });\n  }\n}",
   "view": "Form"
  },
  {
@@ -994,10 +994,10 @@
   "doctype": "Client Script",
   "dt": "Customer",
   "enabled": 1,
-  "modified": "2025-03-22 13:13:56.574024",
+  "modified": "2025-03-29 21:44:39.700736",
   "module": "Mohan Impex",
   "name": "Customer",
-  "script": "frappe.ui.form.on('Customer', {\n\trefresh(frm) {\n\t\t// your code here\n\t},\n\tonload(frm) {\n        if (frm.is_new()) {\n            set_session_employee(frm)\n        }\n    },\n    before_save(frm) {\n        set_session_employee(frm)\n    },\n\tafter_workflow_action(frm){\n    if (frm.doc.workflow_state === \"KYC Completed\"){\n        frappe.call({\n            method: 'mohan_impex.mohan_impex.customer.update_kyc_status',\n            args: {\n                customer: frm.doc.name,\n                unv_customer: frm.doc.unv_customer\n            }\n        });\n    }\n  },\n})\n\nfunction set_session_employee(frm){\n  if(!frm.doc.created_by_emp){\n    frappe.call({\n      method: \"mohan_impex.mohan_impex.utils.get_session_employee\",\n      async:false,\n      callback: function (r) {\n        if (r.message) {\n          frm.set_value(\"created_by_emp\", r.message);\n          frm.refresh_field(\"created_by_emp\")\n        }\n      }\n    });\n  }\n}",
+  "script": "frappe.ui.form.on('Customer', {\n\trefresh(frm) {\n\t\t// your code here\n\t},\n\tonload(frm) {\n        if (frm.is_new()) {\n            set_session_employee(frm)\n        }\n    },\n    before_save(frm) {\n        set_session_employee(frm)\n    },\n\tafter_workflow_action(frm){\n    if (frm.doc.workflow_state === \"KYC Completed\"){\n        frappe.call({\n            method: 'mohan_impex.mohan_impex.customer.update_kyc_status',\n            args: {\n                customer: frm.doc.name,\n                unv_customer: frm.doc.unv_customer\n            }\n        });\n        frappe.db.set_value(\"Customer\", frm.doc.name, 'kyc_complete_date', frappe.datetime.nowdate())\n    }\n  },\n})\n\nfunction set_session_employee(frm){\n  if(!frm.doc.created_by_emp){\n    frappe.call({\n      method: \"mohan_impex.mohan_impex.utils.get_session_employee\",\n      async:false,\n      callback: function (r) {\n        if (r.message) {\n          frm.set_value(\"created_by_emp\", r.message);\n          frm.refresh_field(\"created_by_emp\")\n        }\n      }\n    });\n  }\n}",
   "view": "Form"
  },
  {

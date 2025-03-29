@@ -31,7 +31,7 @@ def complaints_list():
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
         role_filter = get_role_filter(emp, show_area_records)
         query = """
-            select name, opening_date as date, customer_name, claim_type, workflow_state, created_by_emp, COUNT(*) OVER() AS total_count
+            select name, IF(workflow_state='Active', opening_date, IF(workflow_state='Resolved', resolved_date, opening_date)) AS status_date, customer_name, claim_type, workflow_state, created_by_emp, COUNT(*) OVER() AS total_count
             from `tabIssue`
             where {tab_filter} and {role_filter}
         """.format(tab_filter=tab_filter, role_filter=role_filter)

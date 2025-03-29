@@ -35,7 +35,7 @@ def kyc_list():
         role_filter = get_role_filter(emp, show_area_records)
         order_and_group_by = " group by cu.name order by cu.creation desc "
         query = """
-            select cu.name, cu.customer_name, cu.request_date as date, cu.workflow_state, cu.created_by_emp, COUNT(*) OVER() AS total_count
+            select cu.name, cu.customer_name, IF(workflow_state='KYC Pending', cu.request_date, IF(workflow_state='KYC Completed', cu.kyc_complete_date, cu.request_date)) AS status_date, cu.workflow_state, cu.created_by_emp, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
             JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
             where customer_level= "Primary" and dl.parenttype = "Contact Number" and {tab_filter} and {role_filter}
