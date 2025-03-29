@@ -147,6 +147,7 @@ def trial_form():
             ]
         activities = get_comments("Trial Plan", trial_doc["name"])
         trial_doc["activities"] = activities
+        trial_doc["tsm_info"] = frappe.get_value("Employee", {"name": trial_doc["assigned_to_tsm"]}, ["employee_name as name", "cell_number as mobile", "company_email as email"], as_dict=True) or {}
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Trial Plan form has been successfully fetched"
         frappe.local.response['data'] = [trial_doc]

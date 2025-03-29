@@ -18,18 +18,19 @@ def digital_mc_list():
         pagination = "limit %s offset %s"%(limit, offset)
         order_by = " order by creation desc "
         query = """
-            select name, marketing_collateral_name, product_name, product_attachment, thumbnail_image, COUNT(*) OVER() AS total_count
+            select name, marketing_collateral_name, collateral_attachment, thumbnail_image, COUNT(*) OVER() AS total_count
             from `tabDigital Marketing Collateral`
+            WHERE status = "Published"
         """
         if frappe.form_dict.get("search_text"):
-            or_filters = """WHERE (name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
+            or_filters = """ and (name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
             query += or_filters
         query += order_by
         query += pagination
         dmc_info = frappe.db.sql(query, as_dict=True)
         for dmc in dmc_info:
-            dmc["file_type"] = frappe.get_value("File", {"file_url": dmc['product_attachment']}, "file_type")
-            dmc["product_attachment"] = get_signed_token(dmc['product_attachment'])
+            dmc["file_type"] = frappe.get_value("File", {"file_url": dmc['collateral_attachment']}, "file_type")
+            dmc["collateral_attachment"] = get_signed_token(dmc['collateral_attachment'])
             dmc["thumbnail_image"] = get_signed_token(dmc['thumbnail_image'])
         total_count = 0
         if dmc_info:

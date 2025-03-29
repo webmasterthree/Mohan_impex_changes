@@ -48,6 +48,9 @@ doc_events = {
         "before_save": "mohan_impex.mohan_impex.customer.validate_dup_unv_id",
         "after_insert": "mohan_impex.mohan_impex.customer.updated_workflow_state"
     },
+    "Issue": {
+        "after_insert": "mohan_impex.mohan_impex.complaint.updated_workflow_state"
+    },
     "Request for Quotation": {
         "on_submit": "mohan_impex.rfq.send_rfq_email"
     },

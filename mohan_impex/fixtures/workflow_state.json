@@ -106,5 +106,14 @@
   "name": "Received",
   "style": "",
   "workflow_state_name": "Received"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-03-29 16:54:54.715762",
+  "name": "Published",
+  "style": "",
+  "workflow_state_name": "Published"
  }
 ]

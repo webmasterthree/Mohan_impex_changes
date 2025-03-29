@@ -36,6 +36,7 @@
   "state",
   "pincode",
   "cust_edit_needed",
+  "assigned_to_tsm",
   "section_break_hsnf",
   "product_trial_table",
   "item_trial_table",
@@ -366,11 +367,18 @@
    "fieldname": "approved_date",
    "fieldtype": "Date",
    "label": "Approved Date"
+  },
+  {
+   "depends_on": "eval:doc.conduct_by === \"TSM Required\"",
+   "fieldname": "assigned_to_tsm",
+   "fieldtype": "Link",
+   "label": "Assigned To TSM",
+   "options": "Employee"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-29 14:28:13.982569",
+ "modified": "2025-03-29 17:27:31.561111",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",

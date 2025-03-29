@@ -7,30 +7,15 @@
  "field_order": [
   "naming_series",
   "marketing_collateral_name",
-  "product_name",
-  "product_attachment",
+  "collateral_attachment",
   "column_break_vfbt",
+  "status",
   "thumbnail_image",
   "thumbnail_preview",
   "section_break_etlo",
   "description"
  ],
  "fields": [
-  {
-   "fieldname": "product_name",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Product Name",
-   "options": "Item",
-   "reqd": 1
-  },
-  {
-   "fieldname": "product_attachment",
-   "fieldtype": "Attach",
-   "in_list_view": 1,
-   "label": "Product Attachment",
-   "reqd": 1
-  },
   {
    "fieldname": "description",
    "fieldtype": "Small Text",
@@ -69,11 +54,26 @@
    "fieldtype": "Data",
    "label": "Marketing Collateral Name",
    "reqd": 1
+  },
+  {
+   "fieldname": "collateral_attachment",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Collateral Attachment",
+   "reqd": 1
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nPublished",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-29 14:36:26.047604",
+ "modified": "2025-03-29 16:58:38.196693",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Digital Marketing Collateral",
