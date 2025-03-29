@@ -24,6 +24,7 @@
   "date",
   "time",
   "column_break_xbea",
+  "created_date",
   "appointment_date",
   "approved_date",
   "rejected_date",
@@ -177,6 +178,7 @@
   {
    "fieldname": "created_by_emp",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Created By",
    "options": "Employee"
   },
@@ -372,13 +374,21 @@
    "depends_on": "eval:doc.conduct_by === \"TSM Required\"",
    "fieldname": "assigned_to_tsm",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Assigned To TSM",
    "options": "Employee"
+  },
+  {
+   "default": "Today",
+   "fieldname": "created_date",
+   "fieldtype": "Date",
+   "label": "Created Date",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-29 17:27:31.561111",
+ "modified": "2025-03-29 20:37:05.816563",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",
