@@ -165,6 +165,7 @@ def create_kyc():
             "unv_customer": kyc_data.unv_customer,
             "created_by_emp": get_session_employee(),
             "customer_name": kyc_data.customer_name,
+            "customer_type": kyc_data.customer_type,
             "customer_level": kyc_data.customer_level,
             "business_type": kyc_data.business_type,
             "custom_shop": kyc_data.shop,
@@ -177,7 +178,8 @@ def create_kyc():
             "pan": kyc_data.pan,
             "cust_decl": cust_decls,
             "customer_license": cust_licenses,
-            "email_id": kyc_data.email_id
+            "email_id": kyc_data.email_id,
+            "customer_details": kyc_data.remarks
         }
         kyc_doc = frappe.get_doc(data)
         kyc_doc.insert()
@@ -266,8 +268,9 @@ def create_address(kyc_doc, address_data, address_type):
 def kyc_exists_validation(unv_customer):
     kyc_exists = frappe.db.exists("Customer", {"unv_customer": unv_customer, "kyc_status": ["in", ["Pending", "Completed"]]})
     if kyc_exists:
-        frappe.local.response['kyc_exists'] = True
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['kyc_exists'] = False
         frappe.local.response['message'] = f"KYC exists for the customer {unv_customer}"
     else:
-        frappe.local.response['kyc_exists'] = False
+        frappe.local.response['kyc_exists'] = True
         frappe.local.response['message'] = f"No KYC Created for the customer {unv_customer}"

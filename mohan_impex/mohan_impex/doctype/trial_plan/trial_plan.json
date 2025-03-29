@@ -51,23 +51,12 @@
   "created_by_emp",
   "assigned_to",
   "area",
-  "status",
-  "amended_from"
+  "status"
  ],
  "fields": [
   {
    "fieldname": "section_break_ooxc",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Trial Plan",
-   "print_hide": 1,
-   "read_only": 1,
-   "search_index": 1
   },
   {
    "fieldname": "column_break_jkue",
@@ -110,16 +99,6 @@
    "fieldname": "remarksnotes",
    "fieldtype": "Small Text",
    "label": "Remarks/Notes"
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Trial Plan",
-   "print_hide": 1,
-   "read_only": 1,
-   "search_index": 1
   },
   {
    "fieldname": "appointment_date",
@@ -357,12 +336,6 @@
    "label": "Address Line 2"
   },
   {
-   "depends_on": "eval:doc.status === \"Approved\"",
-   "fieldname": "approved_date",
-   "fieldtype": "Date",
-   "label": "Approved Date"
-  },
-  {
    "default": "0",
    "fieldname": "cust_edit_needed",
    "fieldtype": "Check",
@@ -387,16 +360,17 @@
    "fieldname": "rejected_date",
    "fieldtype": "Date",
    "label": "Rejected Date"
+  },
+  {
+   "depends_on": "eval:doc.status === \"Approved\"",
+   "fieldname": "approved_date",
+   "fieldtype": "Date",
+   "label": "Approved Date"
   }
  ],
  "index_web_pages_for_search": 1,
- "links": [
-  {
-   "link_doctype": "Quotation",
-   "link_fieldname": "custom_product_trial"
-  }
- ],
- "modified": "2025-03-28 14:18:55.601389",
+ "links": [],
+ "modified": "2025-03-29 14:28:13.982569",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",

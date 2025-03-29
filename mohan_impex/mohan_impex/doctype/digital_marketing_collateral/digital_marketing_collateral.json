@@ -6,6 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
+  "marketing_collateral_name",
   "product_name",
   "product_attachment",
   "column_break_vfbt",
@@ -62,11 +63,17 @@
    "fieldtype": "Image",
    "label": "Thumbnail Preview",
    "options": "thumbnail_image"
+  },
+  {
+   "fieldname": "marketing_collateral_name",
+   "fieldtype": "Data",
+   "label": "Marketing Collateral Name",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-26 08:54:05.616556",
+ "modified": "2025-03-29 14:36:26.047604",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Digital Marketing Collateral",

@@ -332,7 +332,7 @@
   "doctype": "Workflow",
   "document_type": "Trial Plan",
   "is_active": 1,
-  "modified": "2025-03-28 14:16:10.034010",
+  "modified": "2025-03-29 14:29:55.581298",
   "name": "Product Trial",
   "override_status": 0,
   "send_email_alert": 0,
@@ -355,7 +355,7 @@
    {
     "allow_edit": "ASM",
     "avoid_status_override": 0,
-    "doc_status": "1",
+    "doc_status": "0",
     "is_optional_state": 0,
     "message": null,
     "next_action_email_template": null,
@@ -400,7 +400,7 @@
    {
     "allow_edit": "NSM",
     "avoid_status_override": 0,
-    "doc_status": "1",
+    "doc_status": "0",
     "is_optional_state": 0,
     "message": null,
     "next_action_email_template": null,

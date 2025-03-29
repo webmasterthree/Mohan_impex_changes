@@ -9,10 +9,11 @@
   "section_break_h3ce",
   "naming_series",
   "reqd_date",
+  "column_break_lmwj",
+  "created_date",
+  "status",
   "approved_date",
   "rejected_date",
-  "column_break_lmwj",
-  "status",
   "amended_from",
   "section_break_cgqy",
   "samp_req_item",
@@ -113,11 +114,18 @@
    "fieldname": "rejected_date",
    "fieldtype": "Date",
    "label": "Rejected Date"
+  },
+  {
+   "default": "Today",
+   "fieldname": "created_date",
+   "fieldtype": "Date",
+   "label": "Created Date",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-28 12:35:39.329562",
+ "modified": "2025-03-29 14:13:41.023209",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Sample Requisition",

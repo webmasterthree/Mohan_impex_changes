@@ -18,7 +18,7 @@ def digital_mc_list():
         pagination = "limit %s offset %s"%(limit, offset)
         order_by = " order by creation desc "
         query = """
-            select name, product_name, product_attachment, thumbnail_image, COUNT(*) OVER() AS total_count
+            select name, marketing_collateral_name, product_name, product_attachment, thumbnail_image, COUNT(*) OVER() AS total_count
             from `tabDigital Marketing Collateral`
         """
         if frappe.form_dict.get("search_text"):
