@@ -86,7 +86,6 @@ def logout(access_token):
         frappe.local.response['message'] = "Invalid Token"
         frappe.local.response['data'] = []
         return None
-    frappe.errprint(frappe.db.exists("OAuth Bearer Token", access_token))
     frappe.db.set_value("OAuth Bearer Token", access_token, "status", "Revoked")
     frappe.local.response['status'] = True
     frappe.local.response['message'] = "Successfully Logged Out"

@@ -109,6 +109,7 @@ def complaints_form():
                 "state": complaints_doc.state,
                 "pincode": complaints_doc.pincode,
                 "description": complaints_doc.description,
+                "workflow_state": complaints_doc.workflow_state
             }
             complaint_item = []
             for item in complaints_doc.complaint_item:
