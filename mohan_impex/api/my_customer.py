@@ -40,7 +40,7 @@ def my_customer_list():
                 AND si.posting_date {date_range}
             """.format(date_range=date_range)
         query = """
-            select cu.name, cu.customer_name, custom_shop, customer_primary_contact as contact, customer_primary_address as location, created_by_emp as created_by, workflow_state, COUNT(*) OVER() AS total_count
+            select cu.name, cu.customer_name, custom_shop_name, customer_primary_contact as contact, customer_primary_address as location, created_by_emp as created_by, workflow_state, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
             join `tabDynamic Link` as dl on dl.link_name=cu.name
             {si_join}
@@ -102,7 +102,7 @@ def my_customer_form():
             frappe.local.response['message'] = "Please give valid Customer ID"
             return
         cus_doc = frappe.get_doc("Customer", customer_name)
-        cus_doc = frappe.get_value("Customer", {"name": customer_name}, ["name", "customer_name", "custom_shop as shop_name", "customer_primary_address", "customer_primary_contact"], as_dict=True)
+        cus_doc = frappe.get_value("Customer", {"name": customer_name}, ["name", "customer_name", "custom_shop_name as shop_name", "customer_primary_address", "customer_primary_contact"], as_dict=True)
         location = frappe.get_value("Address", {"name": cus_doc["customer_primary_address"]}, "address_title")
         contact = frappe.get_value("Contact", {"name": cus_doc["customer_primary_contact"]}, "first_name")
         cus_doc.pop("customer_primary_address")
