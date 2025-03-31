@@ -4,6 +4,7 @@ from frappe.utils.file_manager import save_file
 from mohan_impex.api import get_role_filter
 import math
 from mohan_impex.mohan_impex.comment import get_comments
+from bs4 import BeautifulSoup
 
 @frappe.whitelist()
 def complaints_list():
@@ -108,7 +109,7 @@ def complaints_form():
                 "district": complaints_doc.district,
                 "state": complaints_doc.state,
                 "pincode": complaints_doc.pincode,
-                "description": complaints_doc.description,
+                "description": BeautifulSoup(complaints_doc.description, "html.parser").get_text(separator=" ").strip() if complaints_doc.description else "",
                 "workflow_state": complaints_doc.workflow_state
             }
             complaint_item = []

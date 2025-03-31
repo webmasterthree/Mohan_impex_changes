@@ -180,22 +180,17 @@ def create_kyc():
             "email_id": kyc_data.email_id,
             "customer_details": kyc_data.remarks
         }
-        if kyc_data.get("isupdate"):
-            kyc_doc = frappe.get_doc("Customer", kyc_data.get("kyc_id"))
-            kyc_doc.update(data)
-            kyc_doc.save()
-        else:
-            data.update({"doctype": "Customer"})
-            kyc_doc = frappe.get_doc(data)
-            kyc_doc.insert()
+        data.update({"doctype": "Customer"})
+        kyc_doc = frappe.get_doc(data)
+        kyc_doc.insert()
         for cust_decl in kyc_data.cust_decl:
             update_file_doc(cust_decl.get("name"), kyc_doc.name)
         for cust_license in kyc_data.cust_license:
             update_file_doc(cust_license.get("name"), kyc_doc.name)
         contact_num_doc = create_contact_number(kyc_data["contact"], "Customer", kyc_doc.name)
-        contact = create_contact(kyc_doc, kyc_data, contact_num_doc.name, kyc_data.get("isupdate"))
-        billing_address = create_address(kyc_doc, kyc_data["billing_address"], "Billing", kyc_data.get("isupdate"))
-        shipping_address = create_address(kyc_doc, kyc_data["shipping_address"], "Shipping", kyc_data.get("isupdate"))
+        contact = create_contact(kyc_doc, kyc_data, contact_num_doc.name)
+        billing_address = create_address(kyc_doc, kyc_data["billing_address"], "Billing")
+        shipping_address = create_address(kyc_doc, kyc_data["shipping_address"], "Shipping")
         frappe.db.set_value('Customer', kyc_doc.name, 'customer_primary_address', billing_address)
         frappe.db.set_value('Customer', kyc_doc.name, 'customer_primary_contact', contact)
         frappe.db.set_value("Customer", kyc_doc.name, "mobile_no", kyc_data.contact)
@@ -216,7 +211,7 @@ def update_file_doc(name, kyc_id):
     doc.attached_to_name = kyc_id
     doc.save()
 
-def create_contact(kyc_doc, kyc_data, primary_contact_number, isupdate=0):
+def create_contact(kyc_doc, kyc_data, primary_contact_number):
     if kyc_doc.customer_primary_contact:
         contact_doc = frappe.get_doc("Contact", kyc_doc.customer_primary_contact)
     else:
@@ -265,7 +260,7 @@ def create_contact(kyc_doc, kyc_data, primary_contact_number, isupdate=0):
     contact_name = contact_doc.name
     return contact_name
 
-def create_address(kyc_doc, address_data, address_type, isupdate=0):
+def create_address(kyc_doc, address_data, address_type):
     address_type_check = "is_primary_address" if address_type == "Billing" else "is_shipping_address"
     address_dict = {
         "address_title": address_data["title"],
@@ -278,7 +273,7 @@ def create_address(kyc_doc, address_data, address_type, isupdate=0):
         "state" : address_data["state"],
         "pincode": address_data["pincode"],
     }
-    if address_data.get("address") and isupdate:
+    if address_data.get("address"):
         addr_doc = frappe.get_doc("Address", address_data.get("address"))
         addr_doc.update(address_dict)
         addr_doc.save(ignore_permissions=True)
