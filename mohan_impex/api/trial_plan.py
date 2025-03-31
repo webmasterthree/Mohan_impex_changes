@@ -36,7 +36,7 @@ def trial_list():
         role_filter = get_role_filter(emp, show_area_records)
         order_and_group_by = " group by pt.name order by pt.creation desc "
         query = """
-            select pt.name, trial_type, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, shop_name, cl.contact, location, created_by_emp, workflow_state, COUNT(*) OVER() AS total_count
+            select pt.name, trial_type, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, shop_name, cl.contact, location, created_by_emp, workflow_state, COUNT(*) OVER() AS total_count
             from `tabTrial Plan` as pt
             Join `tabContact List` as cl on cl.parent = pt.name
             where {tab_filter} and {role_filter} 
