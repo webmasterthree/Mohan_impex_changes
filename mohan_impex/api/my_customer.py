@@ -40,7 +40,7 @@ def my_customer_list():
                 AND si.posting_date {date_range}
             """.format(date_range=date_range)
         query = """
-            select cu.name, cu.customer_name, custom_shop_name, customer_primary_contact as contact, customer_primary_address as location, created_by_emp as created_by, workflow_state, COUNT(*) OVER() AS total_count
+            select cu.name, cu.customer_name, custom_shop_name as custom_shop, customer_primary_contact as contact, customer_primary_address as location, created_by_emp as created_by, workflow_state, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
             join `tabDynamic Link` as dl on dl.link_name=cu.name
             {si_join}

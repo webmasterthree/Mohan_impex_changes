@@ -127,7 +127,7 @@ def kyc_form():
         ]
         for address_type in address_types:
             address_query = f"""
-                select address_title, address_line1, address_line2, city, state, country, pincode
+                select name as address, address_title, address_line1, address_line2, city, state, country, pincode
                 from `tabAddress` ad
                 join `tabDynamic Link` dl on ad.name = dl.parent
                 where dl.link_name = "{kyc_name}" and ad.address_type = "{address_type['type']}" and {address_type['prefer']} = 1 limit 1
@@ -161,7 +161,6 @@ def create_kyc():
         cust_decls = [{"cust_decl": cust_decl["file_url"]} for cust_decl in kyc_data.cust_decl]
         cust_licenses = [{"cust_lic": cust_license["file_url"]} for cust_license in kyc_data.cust_license]
         data = {
-            "doctype" : "Customer",
             "unv_customer": kyc_data.unv_customer,
             "created_by_emp": get_session_employee(),
             "customer_name": kyc_data.customer_name,
@@ -181,16 +180,22 @@ def create_kyc():
             "email_id": kyc_data.email_id,
             "customer_details": kyc_data.remarks
         }
-        kyc_doc = frappe.get_doc(data)
-        kyc_doc.insert()
+        if kyc_data.get("isupdate"):
+            kyc_doc = frappe.get_doc("Customer", kyc_data.get("kyc_id"))
+            kyc_doc.update(data)
+            kyc_doc.save()
+        else:
+            data.update({"doctype": "Customer"})
+            kyc_doc = frappe.get_doc(data)
+            kyc_doc.insert()
         for cust_decl in kyc_data.cust_decl:
             update_file_doc(cust_decl.get("name"), kyc_doc.name)
         for cust_license in kyc_data.cust_license:
             update_file_doc(cust_license.get("name"), kyc_doc.name)
         contact_num_doc = create_contact_number(kyc_data["contact"], "Customer", kyc_doc.name)
-        contact = create_contact(kyc_doc, kyc_data, contact_num_doc.name)
-        billing_address = create_address(kyc_doc, kyc_data["billing_address"], "Billing")
-        shipping_address = create_address(kyc_doc, kyc_data["shipping_address"], "Shipping")
+        contact = create_contact(kyc_doc, kyc_data, contact_num_doc.name, kyc_data.get("isupdate"))
+        billing_address = create_address(kyc_doc, kyc_data["billing_address"], "Billing", kyc_data.get("isupdate"))
+        shipping_address = create_address(kyc_doc, kyc_data["shipping_address"], "Shipping", kyc_data.get("isupdate"))
         frappe.db.set_value('Customer', kyc_doc.name, 'customer_primary_address', billing_address)
         frappe.db.set_value('Customer', kyc_doc.name, 'customer_primary_contact', contact)
         frappe.db.set_value("Customer", kyc_doc.name, "mobile_no", kyc_data.contact)
@@ -211,39 +216,58 @@ def update_file_doc(name, kyc_id):
     doc.attached_to_name = kyc_id
     doc.save()
 
-def create_contact(kyc_doc, kyc_data, primary_contact_number):
-    contact_doc = frappe.new_doc("Contact")
+def create_contact(kyc_doc, kyc_data, primary_contact_number, isupdate=0):
+    if kyc_doc.customer_primary_contact:
+        contact_doc = frappe.get_doc("Contact", kyc_doc.customer_primary_contact)
+    else:
+        contact_doc = frappe.new_doc("Contact")
     contact_doc.update({
         "first_name": kyc_data["customer_name"],
         "mobile_no": primary_contact_number,
         "is_primary_contact": 1
     })
-    contact_doc.append("email_ids", {
-        "email_id": kyc_data.email_id,
-        "is_primary": 1,
-    })
+    has_primary_email = next(filter(lambda i: i.is_primary, contact_doc.email_ids), None)
+    is_email_exists = next(filter(lambda i: i.email_id, contact_doc.email_ids), None)
+    if is_email_exists:
+        is_email_exists.is_primary = 1
+    else:
+        if has_primary_email:
+            has_primary_email.is_primary = 0
+        contact_doc.append("email_ids", {
+            "email_id": kyc_data.email_id,
+            "is_primary": 1,
+        })
     contact_doc.append("links", {
         "link_doctype": "Customer",
         "link_name": kyc_doc.name,
     })
-    contact_doc.append("phone_nos", {
-        "contact_number": primary_contact_number,
-        "is_primary_mobile_no": 1
-    })
+    has_primary_number = next(filter(lambda i: i.is_primary_mobile_no, contact_doc.phone_nos), None)
+    is_number_exists = next(filter(lambda i: i.contact_number, contact_doc.phone_nos), None)
+    if is_number_exists:
+        is_number_exists.is_primary_mobile_no = 1
+    else:
+        if has_primary_number:
+            has_primary_number.is_primary_mobile_no = 0
+        contact_doc.append("phone_nos", {
+            "contact_number": primary_contact_number,
+            "is_primary_mobile_no": 1
+        })
     if kyc_doc.unv_customer:
         contact_numbers = get_contact_numbers("Unverified Customer", kyc_doc.unv_customer)
         for contact_no in contact_numbers:
             contact_doc.append("phone_nos", {
             "contact_number": contact_no,
         })
-    contact_doc.insert(ignore_permissions=True)
+    if kyc_doc.customer_primary_contact:
+        contact_doc.save(ignore_permissions=True)
+    else:
+        contact_doc.insert(ignore_permissions=True)
     contact_name = contact_doc.name
     return contact_name
 
-def create_address(kyc_doc, address_data, address_type):
+def create_address(kyc_doc, address_data, address_type, isupdate=0):
     address_type_check = "is_primary_address" if address_type == "Billing" else "is_shipping_address"
     address_dict = {
-        "doctype": "Address",
         "address_title": address_data["title"],
         "address_type": address_type,
         address_type_check : 1,
@@ -254,13 +278,18 @@ def create_address(kyc_doc, address_data, address_type):
         "state" : address_data["state"],
         "pincode": address_data["pincode"],
     }
-    addr_doc = frappe.new_doc("Address")
-    addr_doc.update(address_dict)
-    addr_doc.append("links",{
-        "link_doctype": "Customer",
-        "link_name": kyc_doc.name
-    })
-    addr_doc.insert(ignore_permissions=True)
+    if address_data.get("address") and isupdate:
+        addr_doc = frappe.get_doc("Address", address_data.get("address"))
+        addr_doc.update(address_dict)
+        addr_doc.save(ignore_permissions=True)
+    else:
+        addr_doc = frappe.new_doc("Address")
+        addr_doc.update(address_dict)
+        addr_doc.append("links",{
+            "link_doctype": "Customer",
+            "link_name": kyc_doc.name
+        })
+        addr_doc.insert(ignore_permissions=True)
     address_name = addr_doc.name
     return address_name
 
