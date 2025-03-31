@@ -42,7 +42,7 @@ doc_events = {
         "before_save": "mohan_impex.mohan_impex.sales_order.update_customer_edit_needed"
     },
     "Employee": {
-        "before_save": "mohan_impex.mohan_impex.employee.set_user_permissions"
+        "after_save": "mohan_impex.mohan_impex.employee.set_user_permissions"
     },
     "Customer": {
         "before_save": "mohan_impex.mohan_impex.customer.validate_dup_unv_id",
