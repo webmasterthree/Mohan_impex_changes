@@ -280,11 +280,11 @@ def create_address(kyc_doc, address_data, address_type):
     else:
         addr_doc = frappe.new_doc("Address")
         addr_doc.update(address_dict)
-        addr_doc.append("links",{
-            "link_doctype": "Customer",
-            "link_name": kyc_doc.name
-        })
-        addr_doc.insert(ignore_permissions=True)
+    addr_doc.append("links",{
+        "link_doctype": "Customer",
+        "link_name": kyc_doc.name
+    })
+    addr_doc.insert(ignore_permissions=True)
     address_name = addr_doc.name
     return address_name
 
