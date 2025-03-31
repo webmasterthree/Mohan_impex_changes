@@ -8,7 +8,8 @@ import frappe
 
 class JourneyPlan(Document):
 	def before_save(self):
-		range_exists = frappe.db.exists("Journey Plan", {"visit_from_date": ["<=", self.visit_to_date], "visit_to_date": [">=", self.visit_from_date], "name": ["!=", self.name]})
+		emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
+		range_exists = frappe.db.exists("Journey Plan", {"visit_from_date": ["<=", self.visit_to_date], "visit_to_date": [">=", self.visit_from_date], "name": ["!=", self.name], "created_by_emp": emp.name})
 		if range_exists:
 			frappe.throw(
 				f"Journey Plan cannot overlap with existing record: {range_exists}. Please select a different date range.",

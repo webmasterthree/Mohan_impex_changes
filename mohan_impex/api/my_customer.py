@@ -40,11 +40,11 @@ def my_customer_list():
                 AND si.posting_date {date_range}
             """.format(date_range=date_range)
         query = """
-            select cu.name, cu.customer_name, custom_shop_name as custom_shop, customer_primary_contact as contact, customer_primary_address as location, created_by_emp as created_by, workflow_state, COUNT(*) OVER() AS total_count
+            select cu.name, cu.customer_name, custom_shop_name as custom_shop, mobile_no as contact, customer_primary_address as location, created_by_emp as created_by, workflow_state, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
             join `tabDynamic Link` as dl on dl.link_name=cu.name
             {si_join}
-            where {billing_query} {role_filter} and disabled=0 and customer_level="Primary" and kyc_status="Completed"
+            where {billing_query} {role_filter} and disabled=0 and customer_level="Primary" and kyc_status="Completed" and dl.parenttype="Contact Number"
         """.format(si_join=si_join, billing_query=billing_query, role_filter=role_filter)
         group_by = " group by cu.name order by cu.creation desc "
         filter_checks = {
@@ -65,7 +65,7 @@ def my_customer_list():
         query += pagination
         customer_info = frappe.db.sql(query, as_dict=True)
         for customer in customer_info:
-            customer["location"] = customer["location"].rsplit('-', 1)[0] if customer["location"] else ""
+            customer["location"] = frappe.get_value("Address", {"name": customer["location"]}, ["name","address_title", "address_line1", "address_line2", "city", "state", "pincode"], as_dict=True) if customer["location"] else ""
             customer["form_url"] = f"{frappe.utils.get_url()}/api/method/mohan_impex.api.my_customer.my_customer_form?name={customer['name']}"
         total_count = 0
         if customer_info:
@@ -101,14 +101,11 @@ def my_customer_form():
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "Please give valid Customer ID"
             return
-        cus_doc = frappe.get_doc("Customer", customer_name)
-        cus_doc = frappe.get_value("Customer", {"name": customer_name}, ["name", "customer_name", "custom_shop_name as shop_name", "customer_primary_address", "customer_primary_contact"], as_dict=True)
-        location = frappe.get_value("Address", {"name": cus_doc["customer_primary_address"]}, "address_title")
-        contact = frappe.get_value("Contact", {"name": cus_doc["customer_primary_contact"]}, "first_name")
+        cus_doc = frappe.get_value("Customer", {"name": customer_name}, ["name", "customer_name", "custom_shop_name as shop_name", "customer_primary_address", "mobile_no"], as_dict=True)
+        location = frappe.get_value("Address", {"name": cus_doc["customer_primary_address"]}, ["name","address_title", "address_line1", "address_line2", "city", "state", "pincode"], as_dict=True)
         cus_doc.pop("customer_primary_address")
-        cus_doc.pop("customer_primary_contact")
         cus_doc["location"] = location
-        cus_doc["contact"] = contact
+        cus_doc["contact"] = cus_doc.mobile_no or ""
         outstanding_amt = 0
         dash_info = get_dashboard_info("Customer", customer_name)
         if dash_info:

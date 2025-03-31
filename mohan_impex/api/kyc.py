@@ -120,14 +120,14 @@ def kyc_form():
                 "field_name": "billing_address"
             },
             {
-                "type": "shipping",
+                "type": "Shipping",
                 "prefer": "is_shipping_address",
                 "field_name": "shipping_address"
             }
         ]
         for address_type in address_types:
             address_query = f"""
-                select name as address, address_title, address_line1, address_line2, city, state, country, pincode
+                select ad.name as address, address_title, address_line1, address_line2, city, state, country, pincode
                 from `tabAddress` ad
                 join `tabDynamic Link` dl on ad.name = dl.parent
                 where dl.link_name = "{kyc_name}" and ad.address_type = "{address_type['type']}" and {address_type['prefer']} = 1 limit 1
