@@ -176,8 +176,8 @@ def create_cvm():
             for contact in cvm_data.contact:
                 if not frappe.db.exists("Contact Number", contact["contact"]):
                     create_contact_number(contact["contact"])
-                    created_contact.append(contact["contact"])
-            unv_cus = frappe.get_doc({
+                created_contact.append(contact["contact"])
+            unv_cus_dict = {
                 "doctype": "Unverified Customer",
                 "customer_name": cvm_data.unv_customer_name,
                 "customer_level": cvm_data.customer_level,
@@ -191,11 +191,16 @@ def create_cvm():
                 "state": cvm_data.state,
                 "pincode": cvm_data.pincode,
                 "created_by_emp": get_session_employee(),
-            })
-            unv_cus.insert(ignore_permissions=True, ignore_mandatory=True)
-            
-            addr_doc = frappe.new_doc("Address")
-            addr_doc.update({
+            }
+            if cvm_data.get("isupdate"):
+                unv_cus = frappe.get_doc("Unverified Customer", cvm_data.get("unv_customer"))
+                unv_cus.update(unv_cus_dict)
+                unv_cus.save()
+            else:
+                unv_cus = frappe.new_doc('Unverified Customer')
+                unv_cus.update(unv_cus_dict)
+                unv_cus.insert(ignore_permissions=True, ignore_mandatory=True)
+            address_dict = {
                 "doctype":"Address",
                 "address_type": "Billing",
                 "address_title": cvm_data.address_title,
@@ -205,13 +210,19 @@ def create_cvm():
                 "city": cvm_data.district,
                 "state": cvm_data.state,
                 "pincode": cvm_data.pincode
-            })
-            addr_doc.append("links",{
-                "link_doctype": "Unverified Customer",
-                "link_name": unv_cus.name
-            })
-            addr_doc.save(ignore_permissions=True)
-            
+            }
+            if cvm_data.location:
+                addr_doc = frappe.get_doc("Address", cvm_data.location)
+                addr_doc.update(address_dict)
+                addr_doc.save(ignore_permissions=True)
+            else:
+                addr_doc = frappe.new_doc("Address")
+                addr_doc.update(address_dict)
+                addr_doc.append("links",{
+                    "link_doctype": "Unverified Customer",
+                    "link_name": unv_cus.name
+                })
+                addr_doc.insert(ignore_permissions=True)
             cvm_data.location = addr_doc.name
             unv_cus.address = cvm_data.location
             unv_cus.save()

@@ -94,7 +94,6 @@ class CustomerVisitManagement(Document):
                 "conduct_by": self.conduct_by,
                 "shop": self.shop,
                 "shop_name": self.shop_name,
-                "contact":  self.contact,
                 "location": self.location,
                 "address_title": self.address_title,
                 "address_line1": self.address_line1,
@@ -112,17 +111,17 @@ class CustomerVisitManagement(Document):
                 "remarksnotes": self.remarksnotes
             }
             pt_dict.update(table_dict)
-            if trial_plan:
-                doc = frappe.get_doc("Trial Plan", trial_plan)
-                doc.update(pt_dict)
-                doc.save()
-            else:
-                pt_dict.update({
-                    "doctype": "Trial Plan",
-                    "cvm": self.name
-                })
-                doc = frappe.get_doc(pt_dict)
-                doc.save()
+            doc = frappe.get_doc("Trial Plan", trial_plan) if trial_plan else frappe.get_doc({
+                "doctype": "Trial Plan",
+                "cvm": self.name,
+                **pt_dict
+            })
+            doc.update(pt_dict)
+            doc.update({"contact": []})  # Clear existing contacts if updating
+            for contact in self.contact:
+                doc.append("contact", {"contact": contact.contact})
+
+            doc.save() if trial_plan else doc.insert()
         elif not self.has_trial_plan and trial_plan:
             frappe.delete_doc("Trial Plan", trial_plan)
 
