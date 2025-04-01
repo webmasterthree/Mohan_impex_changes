@@ -29,7 +29,7 @@ def digital_mc_list():
         query += pagination
         dmc_info = frappe.db.sql(query, as_dict=True)
         for dmc in dmc_info:
-            dmc["file_type"] = frappe.get_value("File", {"file_url": dmc['collateral_attachment']}, "file_type")
+            dmc["filename"], dmc["file_type"] = frappe.get_value("File", {"file_url": dmc['collateral_attachment']}, ["file_name", "file_type"])
             dmc["collateral_attachment"] = get_signed_token(dmc['collateral_attachment'])
             dmc["thumbnail_image"] = get_signed_token(dmc['thumbnail_image'])
         total_count = 0
