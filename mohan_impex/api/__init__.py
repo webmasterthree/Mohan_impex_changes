@@ -329,6 +329,8 @@ def get_customer_list(search_text=""):
         filters.update({"show_area_records": frappe.form_dict.get("show_area_records")})
     if frappe.form_dict.get("verification_type"):
         if frappe.form_dict.get("verification_type") == "Verified":
+            if frappe.form_dict.get("kyc_status"):
+                filters.update({"kyc_status": frappe.form_dict.get("kyc_status")})
             customer_list.extend(get_customer_info(**filters))
         elif frappe.form_dict.get("verification_type") == "Unverified":
             customer_list.extend(unv_customer_list(**filters))
@@ -338,12 +340,12 @@ def get_customer_list(search_text=""):
     return customer_list
 
 @frappe.whitelist()
-def get_customer_info(role_filter=None, customer_level="", channel_partner="", show_area_records:int = 0, search_text=""):
+def get_customer_info(role_filter=None, customer_level="", channel_partner="", kyc_status="", show_area_records:int = 0, search_text=""):
     if not role_filter:
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
         role_filter = get_role_filter(emp, show_area_records)
     query = """
-        SELECT cu.name as name, cu.customer_name, cu.custom_shop as shop, cu.custom_shop_name as shop_name, ct.name as contact, cu.customer_level, cu.custom_channel_partner as channel_partner
+        SELECT cu.name as name, cu.customer_name, cu.custom_shop as shop, cu.custom_shop_name as shop_name, ct.name as contact, cu.customer_level, cu.custom_channel_partner as channel_partner, cu.kyc_status
         FROM `tabCustomer` AS cu
         JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
         JOIN `tabContact Number` AS ct on ct.name = dl.parent
@@ -356,6 +358,8 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", s
         query += """ AND cu.customer_level = "{0}" """.format(customer_level)
     if channel_partner:
         query += """ AND cu.custom_channel_partner = "{0}" """.format(channel_partner)
+    if kyc_status:
+        query += """ AND cu.kyc_status = "{0}" """.format(kyc_status)
     customers = frappe.db.sql(query, as_dict=True)
     result={}
     for entry in customers:
@@ -369,6 +373,7 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", s
                 "shop": entry["shop"],
                 "shop_name": entry["shop_name"],
                 "channel_partner": entry["channel_partner"],
+                "kyc_status": entry["kyc_status"],
                 "contact": []
             }
         result[key]["contact"].append(entry["contact"])
@@ -383,7 +388,7 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", s
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
         role_filter = get_role_filter(emp, show_area_records)
         query = """
-            select unv.name, customer_name, customer_level, shop, shop_name, contact, channel_partner
+            select unv.name, customer_name, customer_level, shop, shop_name, contact, channel_partner, kyc_status
             from `tabUnverified Customer` as unv
             JOIN `tabContact List` as cl on cl.parent = unv.name
             WHERE kyc_status = "Pending" and {role_filter}
@@ -409,6 +414,7 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", s
                     "shop": entry["shop"],
                     "shop_name": entry["shop_name"],
                     "channel_partner": entry["channel_partner"],
+                    "kyc_status": entry["kyc_status"],
                     "contact": []
                 }
             result[key]["contact"].append(entry["contact"])
