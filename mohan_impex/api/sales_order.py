@@ -5,7 +5,7 @@ from mohan_impex.item_price import get_item_category_price
 from frappe.model.workflow import apply_workflow
 import math
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import create_contact_number
+from mohan_impex.api import create_contact_number, get_address_text
 
 @frappe.whitelist()
 def so_list():
@@ -53,7 +53,7 @@ def so_list():
         query += pagination
         so_info = frappe.db.sql(query, as_dict=True)
         for so in so_info:
-            so["location"] = so["location"].rsplit('-', 1)[0] if so["location"] else ""
+            so["location"] = get_address_text(so["location"]) if so["location"] else ""
             so["form_url"] = f"{frappe.utils.get_url()}/api/method/mohan_impex.api.sales_order.so_form?name={so['name']}"
         total_count = 0
         if so_info:

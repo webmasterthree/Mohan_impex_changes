@@ -30,7 +30,6 @@
   "rejected_date",
   "contact",
   "location",
-  "address_title",
   "address_line1",
   "address_line2",
   "district",
@@ -90,8 +89,7 @@
    "fieldname": "location",
    "fieldtype": "Link",
    "label": "Location",
-   "options": "Address",
-   "reqd": 1
+   "options": "Address"
   },
   {
    "fieldname": "section_break_lyzf",
@@ -291,14 +289,6 @@
    "reqd": 1
   },
   {
-   "fetch_from": "location.address_title",
-   "fetch_if_empty": 1,
-   "fieldname": "address_title",
-   "fieldtype": "Data",
-   "label": "Address Title",
-   "reqd": 1
-  },
-  {
    "fetch_from": "location.district",
    "fetch_if_empty": 1,
    "fieldname": "district",
@@ -388,7 +378,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-29 20:37:05.816563",
+ "modified": "2025-04-02 12:36:30.485274",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",

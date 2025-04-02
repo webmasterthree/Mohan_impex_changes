@@ -25,8 +25,8 @@
   "shop",
   "shop_name",
   "contact",
+  "google_address",
   "location",
-  "address_title",
   "address_line1",
   "address_line2",
   "district",
@@ -318,14 +318,6 @@
    "reqd": 1
   },
   {
-   "fetch_from": "location.address_title",
-   "fetch_if_empty": 1,
-   "fieldname": "address_title",
-   "fieldtype": "Data",
-   "label": "Address Title",
-   "reqd": 1
-  },
-  {
    "default": "Verified",
    "fieldname": "verific_type",
    "fieldtype": "Select",
@@ -424,6 +416,11 @@
    "fieldname": "trial_plan_table_section",
    "fieldtype": "Section Break",
    "label": "Trial Plan Table"
+  },
+  {
+   "fieldname": "google_address",
+   "fieldtype": "Small Text",
+   "label": "Google Address"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -434,7 +431,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2025-03-27 12:25:20.393363",
+ "modified": "2025-04-02 12:36:17.090457",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",

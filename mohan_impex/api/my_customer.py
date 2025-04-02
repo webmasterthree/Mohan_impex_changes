@@ -31,9 +31,10 @@ def my_customer_list():
             if frappe.form_dict.get("from_date") and frappe.form_dict.get("to_date"):
                 date_range = "BETWEEN '{0}' AND '{1}' ".format(frappe.form_dict["from_date"], frappe.form_dict["to_date"])
             billing_query = "si.docstatus = 1 AND"
-            if isinstance(frappe.form_dict.get("zero_billing"), str):
-                if int(frappe.form_dict["zero_billing"]):
-                    billing_query = "(si.docstatus = 0 OR si.docstatus IS NULL) AND"
+            if frappe.form_dict.get("zero_billing"):
+                if isinstance(frappe.form_dict.get("zero_billing"), str):
+                    if int(frappe.form_dict.get("zero_billing")):
+                        billing_query = "(si.docstatus = 0 OR si.docstatus IS NULL) AND"
             si_join = """
                 LEFT JOIN `tabSales Invoice` si 
                 ON cu.name = si.customer 

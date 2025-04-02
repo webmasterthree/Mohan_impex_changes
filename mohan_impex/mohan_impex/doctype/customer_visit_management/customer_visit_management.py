@@ -95,7 +95,6 @@ class CustomerVisitManagement(Document):
                 "shop": self.shop,
                 "shop_name": self.shop_name,
                 "location": self.location,
-                "address_title": self.address_title,
                 "address_line1": self.address_line1,
                 "address_line2": self.address_line2,
                 "district": self.district,

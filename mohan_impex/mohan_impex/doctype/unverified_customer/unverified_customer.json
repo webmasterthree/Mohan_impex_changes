@@ -20,7 +20,6 @@
   "column_break_toac",
   "kyc_status",
   "address",
-  "address_title",
   "address_line1",
   "address_line2",
   "district",
@@ -136,15 +135,6 @@
    "options": "Territory"
   },
   {
-   "depends_on": "eval:doc.address",
-   "fetch_from": "address.address_title",
-   "fetch_if_empty": 1,
-   "fieldname": "address_title",
-   "fieldtype": "Data",
-   "label": "Address Title",
-   "reqd": 1
-  },
-  {
    "fieldname": "customer",
    "fieldtype": "Link",
    "label": "Customer",
@@ -183,7 +173,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-22 18:08:02.372563",
+ "modified": "2025-04-02 12:35:18.982263",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Unverified Customer",

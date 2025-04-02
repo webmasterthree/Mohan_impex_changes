@@ -544,3 +544,13 @@ def get_sales_invoice_items(sales_invoice):
     frappe.local.response['status'] = True
     frappe.local.response['message'] = "Sales Invoice Items has been fetched successfully"
     frappe.local.response['data'] = si_items
+
+def get_address_text(address_name):
+    addr_doc = frappe.get_doc("Address", address_name)
+    address_text = ""
+    address_text += f"{addr_doc.address_line1}, " if addr_doc.address_line1 else ""
+    address_text += f"{addr_doc.address_line2}, " if addr_doc.address_line2 else ""
+    address_text += f"{addr_doc.district}, " if addr_doc.district else ""
+    address_text += f"{addr_doc.state}, " if addr_doc.state else ""
+    address_text += f"{addr_doc.pincode}" if addr_doc.pincode else ""
+    return address_text

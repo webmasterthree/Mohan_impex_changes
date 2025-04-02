@@ -5,7 +5,7 @@ from mohan_impex.mohan_impex.utils import get_session_employee
 from mohan_impex.api import create_contact_number
 from frappe.model.workflow import apply_workflow
 import math
-from mohan_impex.api import get_signed_token, get_role_filter
+from mohan_impex.api import get_signed_token, get_role_filter, get_address_text
 from mohan_impex.mohan_impex.comment import get_comments
 
 @frappe.whitelist()
@@ -64,28 +64,11 @@ def cvm_list():
         query += order_and_group_by
         query += pagination
         cvm_info = frappe.db.sql(query, as_dict=True)
-        # result={}
-        # for entry in cvm_info:
-        #     key = entry["name"]
-        #     if key not in result:
-        #         result[key] = {
-        #             "name" : entry["name"],
-        #             "shop_name" : entry["shop_name"],
-        #             "location" : entry["location"],
-        #             "created_by_emp" : entry["created_by_emp"],
-        #             "customer_level" : entry["customer_level"],
-        #             "kyc_status" : entry["kyc_status"],
-        #             "workflow_state" : entry["workflow_state"],
-        #             "contact": []
-        #         }
-        #     result[key]["contact"].append(entry["contact"])
-        # cvm_info = list(result.values())
-        # cvm_list = []
         for cvm in cvm_info:
             image_url = frappe.get_value("File", {"attached_to_name": cvm['name']}, "file_url")
             if image_url:
                 image_url = get_signed_token(image_url)
-            cvm["location"] = cvm["location"].rsplit('-', 1)[0]  if cvm["location"] else ""
+            cvm["location"] = get_address_text(cvm["location"]) if cvm["location"] else ""
             cvm["form_url"] = f"{frappe.utils.get_url()}/api/method/mohan_impex.api.cvm.cvm_form?name={cvm['name']}"
             cvm["image_url"] = image_url
             # cvm_list.append(cvm)
@@ -184,7 +167,6 @@ def create_cvm():
                 "shop": cvm_data.shop,
                 "shop_name": cvm_data.shop_name,
                 "contact": cvm_data.contact,
-                "address_title": cvm_data.address_title,
                 "address_line1": cvm_data.address_line1,
                 "address_line2": cvm_data.address_line2,
                 "district": cvm_data.district,
@@ -203,7 +185,7 @@ def create_cvm():
             address_dict = {
                 "doctype":"Address",
                 "address_type": "Billing",
-                "address_title": cvm_data.address_title,
+                "address_title": cvm_data.unv_cus,
                 "address_line1": cvm_data.address_line1,
                 "address_line2": cvm_data.address_line2,
                 "district": cvm_data.district,
@@ -211,7 +193,7 @@ def create_cvm():
                 "state": cvm_data.state,
                 "pincode": cvm_data.pincode
             }
-            if cvm_data.location:
+            if cvm_data.location and cvm_data.isupdate:
                 addr_doc = frappe.get_doc("Address", cvm_data.location)
                 addr_doc.update(address_dict)
                 addr_doc.save(ignore_permissions=True)
