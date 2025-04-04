@@ -29,7 +29,7 @@ doctype_js ={
     "Request for Quotation" : "public/js/rfq.js",
     "Pre-Unloading Check": "public/js/pre_unloading_check.js",
     "User": "public/js/user.js",
-    "Sales Order":"public/js/outstanding_amount.js",
+    "Increment Letter":"public/js/increment_letter.js"
 }
 # "Purchase Receipt":"public/js/PR_Connection.js",
 # "Purchase Receipt":"public/js/GRN1_Item.js",
@@ -66,7 +66,6 @@ doc_events = {
 api_methods = [
     "mohan_impex.leave_deduction.create_casual_leave"
 ]
-
 
 
 # doctype_js = {
@@ -233,7 +232,11 @@ scheduler_events = {
     "monthly":[
         "mohan_impex.leave_balance.allocate_monthly_leave"
     ],
+    "daily": [
+        "mohan_impex.late_checkin_count.get_employee_late_checkins"
+    ]
 }
+
 
 # Scheduled Tasks
 # ---------------

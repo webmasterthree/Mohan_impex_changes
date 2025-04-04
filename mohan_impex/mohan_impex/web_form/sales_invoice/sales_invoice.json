@@ -1,0 +1,68 @@
+{
+ "allow_comments": 0,
+ "allow_delete": 0,
+ "allow_edit": 0,
+ "allow_incomplete": 0,
+ "allow_multiple": 0,
+ "allow_print": 0,
+ "anonymous": 0,
+ "apply_document_permissions": 0,
+ "button_label": "Save",
+ "condition_json": "[]",
+ "creation": "2025-04-01 18:04:56.761537",
+ "doc_type": "Sales Invoice",
+ "docstatus": 0,
+ "doctype": "Web Form",
+ "idx": 0,
+ "is_standard": 1,
+ "list_columns": [
+  {
+   "fieldname": "custom_proof_of_delivery_status",
+   "fieldtype": "Select",
+   "label": "Proof of Delivery Status"
+  }
+ ],
+ "list_title": "Proof of Delivery",
+ "login_required": 1,
+ "max_attachment_size": 0,
+ "modified": "2025-04-01 18:23:30.870765",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "sales-invoice",
+ "owner": "Administrator",
+ "published": 1,
+ "route": "proof-of-delivery",
+ "show_attachments": 0,
+ "show_list": 1,
+ "show_sidebar": 0,
+ "title": "Proof of Delivery",
+ "web_form_fields": [
+  {
+   "allow_read_on_all_link_options": 0,
+   "default": "Today",
+   "fieldname": "custom_pod_upload_date",
+   "fieldtype": "Date",
+   "hidden": 0,
+   "label": "POD Upload Date",
+   "max_length": 0,
+   "max_value": 0,
+   "precision": "",
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "custom_pod_attachment",
+   "fieldtype": "Attach",
+   "hidden": 0,
+   "label": "POD Attachment",
+   "max_length": 0,
+   "max_value": 0,
+   "precision": "",
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  }
+ ]
+}
