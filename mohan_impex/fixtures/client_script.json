@@ -648,28 +648,7 @@
   "script": "frappe.ui.form.on('Item Template Test', {\n    refresh: function(frm) {\n        // Filter item_template to show only items that have variants\n        frm.set_query(\"item_template\", function() {\n            return {\n                filters: {\n                    \"has_variants\": 1\n                }\n            };\n        });\n    },\n\n    item_template: function(frm) {\n        // Reset child table when template changes\n        frm.clear_table(\"items\");\n        frm.refresh_field(\"items\");\n    }\n});\n\n// Apply filtering inside child table dynamically\nfrappe.ui.form.on('Item Template Test Item', {\n    item_template: function(frm, cdt, cdn) {\n        var row = locals[cdt][cdn];\n\n        // Reset item_code when template changes\n        frappe.model.set_value(cdt, cdn, \"item_code\", \"\");\n\n        // Apply filter for item_code to show only variants of selected item_template\n        frm.fields_dict[\"items\"].grid.get_field(\"item_code\").get_query = function(doc, cdt, cdn) {\n            return {\n                filters: {\n                    \"variant_of\": row.item_template\n                }\n            };\n        };\n    }\n});\n",
   "view": "Form"
  },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
-  "dt": "Request for Quotation",
-  "enabled": 0,
-  "modified": "2025-03-15 10:42:15.123311",
-  "module": null,
-  "name": "Allow user Permission",
-  "script": "frappe.ui.form.on('Request for Quotation', {\n    refresh: function(frm) {\n        if (!frm.doc.suppliers || frm.doc.suppliers.length === 0) {\n            frm.disable_save();\n            frappe.throw(__('No suppliers found in this RFQ.'));\n            return;\n        }\n\n        // Variable to track if logged-in user is a supplier\n        let is_supplier = false;\n\n        // Iterate through each supplier in the RFQ\n        frm.doc.suppliers.forEach(supplier => {\n            if (supplier.email_id === frappe.session.user) {\n                is_supplier = true;\n            }\n        });\n\n        if (is_supplier) {\n            // Grant full permissions if user is a supplier\n            frm.perm = [{read: 1, write: 1, create: 1, submit: 1, cancel: 1}];\n            frm.refresh();\n        } else {\n            // Restrict access if user is NOT a supplier\n            frm.disable_save();\n            frappe.throw(__('You do not have permission to access this document.'));\n        }\n    }\n});\n\n\n\n// frappe.ui.form.on('Request for Quotation', {\n//     refresh: function(frm) {\n//         var allowed_users = ['daiyanalamnit@gmail.com'];\n        \n//         if (allowed_users.includes(frappe.session.user)) {\n//             // Override permission check\n//             frm.perm = [{read: 1, write: 1, create: 1, submit: 1, cancel: 1}];\n//             frm.refresh();\n//         } else {\n//             frm.disable_save();\n//             frappe.throw(__('You do not have permission to access this document.'));\n//         }\n//     }\n// });\n",
-  "view": "Form"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
-  "dt": "Request for Quotation",
-  "enabled": 0,
-  "modified": "2025-03-24 23:43:01.419604",
-  "module": null,
-  "name": "Request for Quotation : filter according to supplier",
-  "script": "frappe.listview_settings['Request for Quotation'] = {\n    onload: function(listview) {\n        let filters = [];\n        frappe.db.get_list('Request for Quotation', {\n            fields: ['name', 'suppliers'],\n            limit: 1\n        }).then(rfqs => {\n            if (rfqs.length > 0 && Array.isArray(rfqs[0].suppliers) && rfqs[0].suppliers.length > 0) {\n                let supplier_name = rfqs[0].suppliers[0].supplier;\n                filters.push([\"suppliers.supplier\", \"=\", supplier_name]);\n\n                listview.filter_area.add(filters);\n            } else {\n                frappe.msgprint({\n                    title: __('Warning'),\n                    message: __('No supplier found in any Request for Quotation'),\n                    indicator: 'orange'\n                });\n            }\n        });\n    }\n};\n",
-  "view": "List"
- },
+ 
  {
   "docstatus": 0,
   "doctype": "Client Script",

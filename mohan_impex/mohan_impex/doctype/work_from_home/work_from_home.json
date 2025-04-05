@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "format:{employee_name} : {####}",
  "creation": "2024-11-27 17:32:18.828532",
@@ -40,6 +41,7 @@
    "fieldname": "employee",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Employee",
    "link_filters": "[[\"Employee\",\"custom_eligible_for_work_from_home\",\"=\",\"Yes\"]]",
    "options": "Employee",
@@ -168,7 +170,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-06 17:32:26.562075",
+ "modified": "2025-04-05 12:23:09.500719",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Work From Home",

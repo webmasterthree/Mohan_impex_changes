@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "transporter_name",
+  "transporter",
   "quoted_amount",
   "expected_delivery",
   "remarks",
@@ -14,15 +15,18 @@
  ],
  "fields": [
   {
+   "columns": 2,
    "fieldname": "transporter_name",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Transporter Name",
    "link_filters": "[[\"Supplier\",\"is_transporter\",\"=\",1]]",
-   "options": "Supplier"
+   "options": "Supplier",
+   "permlevel": 2
   },
   {
    "allow_on_submit": 1,
+   "columns": 2,
    "fieldname": "quoted_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -37,6 +41,7 @@
   },
   {
    "allow_on_submit": 1,
+   "columns": 1,
    "fieldname": "remarks",
    "fieldtype": "Small Text",
    "in_list_view": 1,
@@ -44,18 +49,28 @@
   },
   {
    "allow_on_submit": 1,
+   "columns": 1,
    "default": "0",
    "fieldname": "select",
    "fieldtype": "Check",
    "in_list_view": 1,
    "label": "Select",
    "permlevel": 2
+  },
+  {
+   "columns": 2,
+   "fetch_from": "transporter_name.supplier_name",
+   "fieldname": "transporter",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Transporter",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-03 18:39:03.597428",
+ "modified": "2025-04-04 12:50:30.208757",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transporters",

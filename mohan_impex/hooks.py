@@ -28,11 +28,11 @@ doctype_js ={
     "Additional Salary": "public/js/additional_salary.js",
     "Request for Quotation" : "public/js/rfq.js",
     "Pre-Unloading Check": "public/js/pre_unloading_check.js",
-    "User": "public/js/user.js",
     "Increment Letter":"public/js/increment_letter.js"
 }
 # "Purchase Receipt":"public/js/PR_Connection.js",
 # "Purchase Receipt":"public/js/GRN1_Item.js",
+# "User": "public/js/user.js",
 
 doc_events = {
 	"Comment": {
