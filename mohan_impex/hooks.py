@@ -6,13 +6,15 @@ app_email = "arunlrajamanickam@gmail.com"
 app_license = "mit"
 
 
+role_list = ("SE", "ASM", "TSM", "NSM", "CP")
+
 fixtures = [
     "Client Script",
-    {"dt": "Custom DocPerm", "filters": [["role", "in", ("SE", "ASM", "TSM", "NSM")]]},
+    {"dt": "Custom DocPerm", "filters": [["role", "in", role_list]]},
     {"dt": "Property Setter", "filters": [["doc_type", "in", ("Customer")], ["property", "in", "options"]]},
-    {"dt": "Role", "filters": [["name", "in", ("SE", "ASM", "TSM", "NSM")]]},
-    {"dt": "Role Profile", "filters": [["name", "in", ("SE", "ASM", "TSM", "NSM")]]},
-    {"dt": "Designation", "filters": [["name", "in", ("SE", "ASM", "TSM", "NSM")]]},
+    {"dt": "Role", "filters": [["name", "in", role_list]]},
+    {"dt": "Role Profile", "filters": [["name", "in", role_list]]},
+    {"dt": "Designation", "filters": [["name", "in", role_list]]},
     {"dt": "Module Profile", "filters": [["name", "in", ("Mohan Impex")]]},
     {"dt": "Workspace", "filters": [["name", "in", ("Mohan Impex")]]},
     "Workflow",

@@ -176,7 +176,6 @@
   {
    "fieldname": "created_by_emp",
    "fieldtype": "Link",
-   "ignore_user_permissions": 1,
    "label": "Created By",
    "options": "Employee"
   },
@@ -378,7 +377,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-02 12:36:30.485274",
+ "modified": "2025-04-04 12:08:39.175995",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",

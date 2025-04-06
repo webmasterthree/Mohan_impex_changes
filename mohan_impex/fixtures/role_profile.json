@@ -212,5 +212,39 @@
     "role": "Support Team"
    }
   ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "is_multiple_area_management": 0,
+  "modified": "2025-04-06 07:53:51.719217",
+  "name": "CP",
+  "role_profile": "CP",
+  "roles": [
+   {
+    "parent": "CP",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "CP"
+   },
+   {
+    "parent": "CP",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "CP",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "CP",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts User"
+   }
+  ]
  }
 ]
