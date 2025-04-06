@@ -3,6 +3,42 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-04-02 18:08:28.252357",
+  "name": "Accounts Team Approval Pending",
+  "style": "",
+  "workflow_state_name": "Accounts Team Approval Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-04 11:38:04.282959",
+  "name": "Transport Quotation Pending",
+  "style": "Danger",
+  "workflow_state_name": "Transport Quotation Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-04 11:54:05.112683",
+  "name": "Quotation Received from Transporter",
+  "style": "Info",
+  "workflow_state_name": "Quotation Received from Transporter"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-04 11:50:41.073881",
+  "name": "Transporter Assigned",
+  "style": "Success",
+  "workflow_state_name": "Transporter Assigned"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-03-06 21:08:11.646152",
   "name": "Draft (Created by Sales Team)",
   "style": "",
@@ -30,9 +66,9 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "question-sign",
-  "modified": "2024-12-25 19:18:52.877281",
+  "modified": "2025-04-04 11:54:25.253979",
   "name": "Pending",
-  "style": "",
+  "style": "Warning",
   "workflow_state_name": "Pending"
  },
  {

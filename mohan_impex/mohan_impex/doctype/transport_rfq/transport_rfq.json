@@ -67,7 +67,8 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Open\nQuotation Received\nClosed"
+   "options": "Open\nQuotation Received\nClosed",
+   "permlevel": 2
   },
   {
    "fieldname": "section_break_titp",
@@ -84,7 +85,8 @@
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Pick List",
-   "options": "Pick List"
+   "options": "Pick List",
+   "permlevel": 2
   },
   {
    "fieldname": "amended_from",
@@ -92,6 +94,7 @@
    "label": "Amended From",
    "no_copy": 1,
    "options": "Transport RFQ",
+   "permlevel": 2,
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
@@ -100,7 +103,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-26 12:48:41.155714",
+ "modified": "2025-04-03 13:52:36.822074",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transport RFQ",
