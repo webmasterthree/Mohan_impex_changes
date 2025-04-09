@@ -2,6 +2,61 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Transport RFQ",
+  "enabled": 1,
+  "modified": "2025-04-04 14:02:48.964688",
+  "module": "Mohan Impex",
+  "name": "Transport RFQ List",
+  "script": "frappe.call({\n    method: \"mohan_impex.user_roles.transporter_user\",\n    callback: function(response) {\n        if (response.message) {\n            frappe.set_route('List', 'Transport RFQ', 'List', {\n                'transporter': response.message\n            });\n        } \n    }\n});\n\nfrappe.listview_settings['Transport RFQ'] = {\n    onload: function(listview) {\n        frappe.call({\n            method: \"mohan_impex.user_roles.has_transporter_role\",\n            callback: function(response) {\n                if (response.message === true) {\n                    // Hide filters and buttons only for transporter role\n                    frappe.after_ajax(() => {\n                        $('.filter-selector').hide();\n                        $('.dropdown-menu').hide();\n                        $(\".menu-btn-group\").hide();\n                    });\n                    if (listview.page.fields_dict.pick_list)\n                    listview.page.fields_dict.pick_list.$wrapper.hide();\n                } \n            }\n        });\n    }\n};\n",
+  "view": "List"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Request for Quotation",
+  "enabled": 0,
+  "modified": "2025-04-05 15:49:25.361728",
+  "module": null,
+  "name": "Auto suppleir",
+  "script": "// Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors\n// License: GNU General Public License v3. See license.txt\n\ncur_frm.add_fetch(\"contact\", \"email_id\", \"email_id\");\n\nerpnext.buying.setup_buying_controller();\n\nfrappe.ui.form.on(\"Request for Quotation\", {\n\tsetup: function (frm) {\n\t\tfrm.custom_make_buttons = {\n\t\t\t\"Supplier Quotation\": \"Create\",\n\t\t};\n\n\t\tfrm.fields_dict[\"suppliers\"].grid.get_field(\"contact\").get_query = function (doc, cdt, cdn) {\n\t\t\tlet d = locals[cdt][cdn];\n\t\t\treturn {\n\t\t\t\tquery: \"frappe.contacts.doctype.contact.contact.contact_query\",\n\t\t\t\tfilters: {\n\t\t\t\t\tlink_doctype: \"Supplier\",\n\t\t\t\t\tlink_name: d.supplier || \"\",\n\t\t\t\t},\n\t\t\t};\n\t\t};\n\n\t\tfrm.set_query(\"warehouse\", \"items\", () => ({\n\t\t\tfilters: {\n\t\t\t\tcompany: frm.doc.company,\n\t\t\t\tis_group: 0,\n\t\t\t},\n\t\t}));\n\t},\n\n\tonload: function (frm) {\n\t\tif (!frm.doc.message_for_supplier) {\n\t\t\tfrm.set_value(\"message_for_supplier\", __(\"Please supply the specified items at the best possible rates\"));\n\t\t}\n\t},\n\n\trefresh: function (frm) {\n\t\tif (frm.doc.docstatus === 1) {\n\t\t\tfrm.add_custom_button(__(\"Supplier Quotation\"), function () {\n\t\t\t\tfrm.trigger(\"make_supplier_quotation\");\n\t\t\t}, __(\"Create\"));\n\t\t}\n\t},\n\n\tmake_supplier_quotation: function (frm) {\n\t\tfrappe.call({\n\t\t\tmethod: \"mohan_impex.user_roles.get_supplier_for_user\",\n\t\t\tcallback: function (r) {\n\t\t\t\tif (r.message) {\n\t\t\t\t\tlet supplier = r.message;\n\t\t\t\t\tif (!frm.doc.suppliers.map(row => row.supplier).includes(supplier)) {\n\t\t\t\t\t\tfrappe.msgprint(__(\"Your supplier is not part of this RFQ.\"));\n\t\t\t\t\t\treturn;\n\t\t\t\t\t}\n\t\t\t\t\tfrappe.call({\n\t\t\t\t\t\ttype: \"GET\",\n\t\t\t\t\t\tmethod: \"erpnext.buying.doctype.request_for_quotation.request_for_quotation.make_supplier_quotation_from_rfq\",\n\t\t\t\t\t\targs: {\n\t\t\t\t\t\t\tsource_name: frm.doc.name,\n\t\t\t\t\t\t\tfor_supplier: supplier,\n\t\t\t\t\t\t},\n\t\t\t\t\t\tfreeze: true,\n\t\t\t\t\t\tcallback: function (res) {\n\t\t\t\t\t\t\tif (!res.exc) {\n\t\t\t\t\t\t\t\tvar doc = frappe.model.sync(res.message);\n\t\t\t\t\t\t\t\tfrappe.set_route(\"Form\", res.message.doctype, res.message.name);\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t});\n\t\t\t\t} else {\n\t\t\t\t\tvar doc = frm.doc;\n\t\t\t\t\tvar dialog = new frappe.ui.Dialog({\n\t\t\t\t\t\ttitle: __(\"Create Supplier Quotation\"),\n\t\t\t\t\t\tfields: [\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\tfieldtype: \"Link\",\n\t\t\t\t\t\t\t\tlabel: __(\"Supplier\"),\n\t\t\t\t\t\t\t\tfieldname: \"supplier\",\n\t\t\t\t\t\t\t\toptions: \"Supplier\",\n\t\t\t\t\t\t\t\treqd: 1,\n\t\t\t\t\t\t\t\tget_query: () => {\n\t\t\t\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\t\t\t\tfilters: [[\"Supplier\", \"name\", \"in\", frm.doc.suppliers.map((row) => row.supplier)]],\n\t\t\t\t\t\t\t\t\t};\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t},\n\t\t\t\t\t\t],\n\t\t\t\t\t\tprimary_action_label: __(\"Create\"),\n\t\t\t\t\t\tprimary_action: (args) => {\n\t\t\t\t\t\t\tif (!args) return;\n\t\t\t\t\t\t\tdialog.hide();\n\t\t\t\t\t\t\treturn frappe.call({\n\t\t\t\t\t\t\t\ttype: \"GET\",\n\t\t\t\t\t\t\t\tmethod: \"erpnext.buying.doctype.request_for_quotation.request_for_quotation.make_supplier_quotation_from_rfq\",\n\t\t\t\t\t\t\t\targs: {\n\t\t\t\t\t\t\t\t\tsource_name: doc.name,\n\t\t\t\t\t\t\t\t\tfor_supplier: args.supplier,\n\t\t\t\t\t\t\t\t},\n\t\t\t\t\t\t\t\tfreeze: true,\n\t\t\t\t\t\t\t\tcallback: function (r) {\n\t\t\t\t\t\t\t\t\tif (!r.exc) {\n\t\t\t\t\t\t\t\t\t\tvar doc = frappe.model.sync(r.message);\n\t\t\t\t\t\t\t\t\t\tfrappe.set_route(\"Form\", r.message.doctype, r.message.name);\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t},\n\t\t\t\t\t});\n\t\t\t\t\tdialog.show();\n\t\t\t\t}\n\t\t\t}\n\t\t});\n\t}\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Request for Quotation",
+  "enabled": 0,
+  "modified": "2025-03-15 10:42:15.123311",
+  "module": null,
+  "name": "Allow user Permission",
+  "script": "frappe.ui.form.on('Request for Quotation', {\n    refresh: function(frm) {\n        if (!frm.doc.suppliers || frm.doc.suppliers.length === 0) {\n            frm.disable_save();\n            frappe.throw(__('No suppliers found in this RFQ.'));\n            return;\n        }\n\n        // Variable to track if logged-in user is a supplier\n        let is_supplier = false;\n\n        // Iterate through each supplier in the RFQ\n        frm.doc.suppliers.forEach(supplier => {\n            if (supplier.email_id === frappe.session.user) {\n                is_supplier = true;\n            }\n        });\n\n        if (is_supplier) {\n            // Grant full permissions if user is a supplier\n            frm.perm = [{read: 1, write: 1, create: 1, submit: 1, cancel: 1}];\n            frm.refresh();\n        } else {\n            // Restrict access if user is NOT a supplier\n            frm.disable_save();\n            frappe.throw(__('You do not have permission to access this document.'));\n        }\n    }\n});\n\n\n\n// frappe.ui.form.on('Request for Quotation', {\n//     refresh: function(frm) {\n//         var allowed_users = ['daiyanalamnit@gmail.com'];\n        \n//         if (allowed_users.includes(frappe.session.user)) {\n//             // Override permission check\n//             frm.perm = [{read: 1, write: 1, create: 1, submit: 1, cancel: 1}];\n//             frm.refresh();\n//         } else {\n//             frm.disable_save();\n//             frappe.throw(__('You do not have permission to access this document.'));\n//         }\n//     }\n// });\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Request for Quotation",
+  "enabled": 0,
+  "modified": "2025-04-05 16:53:44.961026",
+  "module": null,
+  "name": "Request for Quotation : filter according to supplier",
+  "script": "frappe.listview_settings['Request for Quotation'] = {\n    onload: function(listview) {\n        let filters = [];\n        frappe.db.get_list('Request for Quotation', {\n            fields: ['name', 'suppliers'],\n            limit: 1\n        }).then(rfqs => {\n            if (rfqs.length > 0 && Array.isArray(rfqs[0].suppliers) && rfqs[0].suppliers.length > 0) {\n                let supplier_name = rfqs[0].suppliers[0].supplier;\n                filters.push([\"suppliers.supplier\", \"=\", supplier_name]);\n\n                listview.filter_area.add(filters);\n            } else {\n                frappe.msgprint({\n                    title: __('Warning'),\n                    message: __('No supplier found in any Request for Quotation'),\n                    indicator: 'orange'\n                });\n            }\n        });\n    }\n};\n",
+  "view": "List"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Request for Quotation",
+  "enabled": 1,
+  "modified": "2025-04-05 17:00:33.427489",
+  "module": null,
+  "name": "Request for Quotation List",
+  "script": "frappe.call({\n    method: \"mohan_impex.user_roles.get_supplier_for_user\",\n    callback: function(response) {\n        if (response.message) {\n            frappe.set_route('List', 'Request for Quotation', 'List', {\n                'supplier': response.message\n            });\n        } \n    }\n});\n\nfrappe.listview_settings['Request for Quotation'] = {\n    onload: function(listview) {\n        frappe.call({\n            method: \"mohan_impex.user_roles.has_supplier_role\",\n            callback: function(response) {\n                if (response.message === true) {\n                    // Hide filters and buttons only for transporter role\n                    frappe.after_ajax(() => {\n                        $('.filter-selector').hide();\n                        $('.dropdown-menu').hide();\n                        $(\".menu-btn-group\").hide();\n                    });\n                    if (listview.page.fields_dict.pick_list)\n                    listview.page.fields_dict.pick_list.$wrapper.hide();\n                } \n            }\n        });\n    }\n};\n",
+  "view": "List"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Purchase Receipt",
   "enabled": 1,
   "modified": "2025-03-27 00:42:22.273854",
@@ -648,7 +703,6 @@
   "script": "frappe.ui.form.on('Item Template Test', {\n    refresh: function(frm) {\n        // Filter item_template to show only items that have variants\n        frm.set_query(\"item_template\", function() {\n            return {\n                filters: {\n                    \"has_variants\": 1\n                }\n            };\n        });\n    },\n\n    item_template: function(frm) {\n        // Reset child table when template changes\n        frm.clear_table(\"items\");\n        frm.refresh_field(\"items\");\n    }\n});\n\n// Apply filtering inside child table dynamically\nfrappe.ui.form.on('Item Template Test Item', {\n    item_template: function(frm, cdt, cdn) {\n        var row = locals[cdt][cdn];\n\n        // Reset item_code when template changes\n        frappe.model.set_value(cdt, cdn, \"item_code\", \"\");\n\n        // Apply filter for item_code to show only variants of selected item_template\n        frm.fields_dict[\"items\"].grid.get_field(\"item_code\").get_query = function(doc, cdt, cdn) {\n            return {\n                filters: {\n                    \"variant_of\": row.item_template\n                }\n            };\n        };\n    }\n});\n",
   "view": "Form"
  },
- 
  {
   "docstatus": 0,
   "doctype": "Client Script",

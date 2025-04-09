@@ -236,9 +236,9 @@ scheduler_events = {
         ]
     },
     "monthly":[
-        "mohan_impex.leave_balance.allocate_monthly_leave"
+        "mohan_impex.leave_balance.monthly_leave"
     ],
-    "daily": [
+    "monthly": [
         "mohan_impex.late_checkin_count.get_employee_late_checkins"
     ]
 }
