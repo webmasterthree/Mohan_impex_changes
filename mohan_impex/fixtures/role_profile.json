@@ -217,7 +217,7 @@
   "docstatus": 0,
   "doctype": "Role Profile",
   "is_multiple_area_management": 0,
-  "modified": "2025-04-06 07:53:51.719217",
+  "modified": "2025-04-09 20:32:17.066994",
   "name": "CP",
   "role_profile": "CP",
   "roles": [
@@ -244,6 +244,18 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Accounts User"
+   },
+   {
+    "parent": "CP",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "CP",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales User"
    }
   ]
  }
