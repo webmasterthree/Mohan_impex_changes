@@ -230,14 +230,13 @@ scheduler_events = {
         ]
     },
     "monthly":[
-        "mohan_impex.leave_balance.monthly_leave"
-    ],
-    "monthly": [
-        "mohan_impex.late_checkin_count.get_employee_late_checkins"
+        "mohan_impex.leave_balance.monthly_leaves"
     ]
 }
 
-
+    # "monthly": [
+    #     "mohan_impex.late_checkin_count.get_employee_late_checkins"
+    # ]
 # Scheduled Tasks
 # ---------------
 

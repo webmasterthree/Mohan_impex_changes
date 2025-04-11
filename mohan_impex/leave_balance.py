@@ -2,7 +2,7 @@ import frappe
 from frappe.utils import today, get_datetime
 from datetime import datetime, timedelta
 
-def monthly_leave():
+def monthly_leaves():
     # Define monthly leave allocations per leave type
     monthly_leave_config = {
         "Casual Leave": 0.5,
