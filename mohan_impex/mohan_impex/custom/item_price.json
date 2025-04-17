@@ -154,7 +154,7 @@
    "property": "field_order",
    "property_type": "Data",
    "row_name": null,
-   "value": "[\"item_code\", \"item_category\", \"uom\", \"packing_unit\", \"column_break_17\", \"item_name\", \"brand\", \"item_description\", \"price_list_details\", \"price_list\", \"customer\", \"supplier\", \"batch_no\", \"column_break_3\", \"buying\", \"selling\", \"item_details\", \"currency\", \"col_br_1\", \"price_list_rate\", \"section_break_15\", \"valid_from\", \"lead_time_days\", \"column_break_18\", \"valid_upto\", \"custom_section_break_pygvu\", \"custom_prod_cat_price\", \"section_break_24\", \"note\", \"reference\"]"
+   "value": "[\"item_code\", \"item_category\", \"uom\", \"packing_unit\", \"column_break_17\", \"item_name\", \"brand\", \"item_description\", \"price_list_details\", \"price_list\", \"customer\", \"supplier\", \"batch_no\", \"column_break_3\", \"buying\", \"selling\", \"item_details\", \"currency\", \"col_br_1\", \"price_list_rate\", \"section_break_15\", \"valid_from\", \"lead_time_days\", \"column_break_18\", \"valid_upto\", \"custom_section_break_pygvu\", \"section_break_24\", \"note\", \"reference\"]"
   }
  ],
  "sync_on_migrate": 1
