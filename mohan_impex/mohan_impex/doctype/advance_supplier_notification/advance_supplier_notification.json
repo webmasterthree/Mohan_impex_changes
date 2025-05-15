@@ -28,7 +28,8 @@
   "section_break_blyv",
   "items",
   "section_break_ntcc",
-  "asn_status"
+  "asn_status",
+  "amended_from"
  ],
  "fields": [
   {
@@ -54,7 +55,7 @@
   },
   {
    "fieldname": "purchase_invoice",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Purchase Invoice",
    "options": "Purchase Invoice"
   },
@@ -150,11 +151,21 @@
    "fieldtype": "Table",
    "label": "Items",
    "options": "ASN Item"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Advance Supplier Notification",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-19 10:49:35.433708",
+ "modified": "2025-05-13 18:18:10.466681",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Advance Supplier Notification",

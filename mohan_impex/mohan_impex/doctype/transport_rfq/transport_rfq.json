@@ -15,7 +15,7 @@
   "section_break_titp",
   "locations",
   "add_transporter_details_section",
-  "add_transporter_details",
+  "transporter_details",
   "section_break_eabp",
   "status",
   "pick_list",
@@ -107,16 +107,16 @@
   },
   {
    "allow_on_submit": 1,
-   "fieldname": "add_transporter_details",
+   "fieldname": "transporter_details",
    "fieldtype": "Table",
-   "label": "Add Transporter Details",
-   "options": "Transporters"
+   "label": "Transporter Details",
+   "options": "Transporter Details"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-11 10:37:50.152472",
+ "modified": "2025-04-11 12:12:32.603677",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transport RFQ",

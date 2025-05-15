@@ -64,6 +64,10 @@ doc_events = {
     },
     "Salary Slip": {
         "on_submit": "mohan_impex.salary_slip.handle_pf_on_submit"
+    },
+    "Leave Application": {
+        "validate": "mohan_impex.leave_restriction.validate_leave_application",
+        "before_save": "mohan_impex.leave_restriction.on_leave_application_before_save"
     }
 }
 
@@ -72,6 +76,10 @@ doc_events = {
 api_methods = [
     "mohan_impex.leave_deduction.create_casual_leave"
 ]
+
+override_doctype_class = {
+    "Transport RFQ": "mohan_impex.Sales.transport_rfq.TransportRFQ"
+}
 
 
 # doctype_js = {

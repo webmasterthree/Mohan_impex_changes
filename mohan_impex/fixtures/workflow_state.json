@@ -138,18 +138,50 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+<<<<<<< HEAD
   "modified": "2025-03-28 12:10:35.797659",
   "name": "Received",
   "style": "",
   "workflow_state_name": "Received"
+=======
+  "modified": "2025-04-24 13:54:33.220687",
+  "name": "Approval in Progress – HR Manager",
+  "style": "Danger",
+  "workflow_state_name": "Approval in Progress – HR Manager"
+>>>>>>> fe805a8 (15th May)
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+<<<<<<< HEAD
   "modified": "2025-03-29 16:54:54.715762",
   "name": "Published",
   "style": "",
   "workflow_state_name": "Published"
+=======
+  "modified": "2025-04-24 12:37:29.659097",
+  "name": "Edit Required",
+  "style": "",
+  "workflow_state_name": "Edit Required"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-24 13:51:57.780438",
+  "name": "Waiting for Edits",
+  "style": "Info",
+  "workflow_state_name": "Waiting for Edits"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-24 13:51:38.127873",
+  "name": "Re-Approval in Progress",
+  "style": "Warning",
+  "workflow_state_name": "Re-Approval in Progress"
+>>>>>>> fe805a8 (15th May)
  }
 ]
