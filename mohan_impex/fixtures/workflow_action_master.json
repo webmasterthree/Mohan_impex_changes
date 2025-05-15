@@ -96,5 +96,19 @@
   "modified": "2025-02-19 21:29:35.319667",
   "name": "Submit",
   "workflow_action_name": "Submit"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-04-24 12:34:37.345056",
+  "name": "Sent Back for Review",
+  "workflow_action_name": "Sent Back for Review"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-04-24 12:51:12.877579",
+  "name": "Send for Review Again",
+  "workflow_action_name": "Send for Review Again"
  }
 ]

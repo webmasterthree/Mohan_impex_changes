@@ -9,7 +9,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letterhead": null,
- "modified": "2025-02-25 17:48:00.540060",
+ "modified": "2025-04-29 13:34:04.116494",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Monthly Attendance Report",
@@ -27,6 +27,9 @@
   },
   {
    "role": "HR User"
+  },
+  {
+   "role": "HR Executive"
   }
  ],
  "timeout": 0

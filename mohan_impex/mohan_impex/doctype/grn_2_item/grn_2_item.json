@@ -20,14 +20,13 @@
    "fieldname": "upload",
    "fieldtype": "Attach",
    "in_list_view": 1,
-   "label": "Upload ",
-   "reqd": 1
+   "label": "Upload "
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-19 12:57:36.688975",
+ "modified": "2025-05-14 17:51:31.218376",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "GRN 2 Item",
