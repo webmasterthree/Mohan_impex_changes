@@ -1,0 +1,54 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:support_type",
+ "creation": "2025-05-08 21:11:24.624986",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "support_type",
+  "support_content"
+ ],
+ "fields": [
+  {
+   "fieldname": "support_type",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Support Type",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "support_content",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Support Content",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-05-08 21:14:17.344373",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Contact Support",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

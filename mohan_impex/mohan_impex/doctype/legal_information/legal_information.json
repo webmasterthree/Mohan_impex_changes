@@ -1,0 +1,64 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:legal_document_name",
+ "creation": "2025-05-08 21:17:12.348434",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "legal_document_name",
+  "legal_content",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "legal_document_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Legal Document Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "legal_content",
+   "fieldtype": "Long Text",
+   "in_list_view": 1,
+   "label": "Legal Content",
+   "reqd": 1
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Status",
+   "options": "Draft\nPublished",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-05-09 08:35:06.574170",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Legal Information",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
