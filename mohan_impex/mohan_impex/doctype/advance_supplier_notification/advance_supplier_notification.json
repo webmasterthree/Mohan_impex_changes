@@ -29,6 +29,7 @@
   "items",
   "section_break_ntcc",
   "asn_status",
+  "purchase_receipt",
   "amended_from"
  ],
  "fields": [
@@ -161,11 +162,29 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "purchase_receipt",
+   "fieldtype": "Data",
+   "in_standard_filter": 1,
+   "label": "Purchase Receipt",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2025-05-13 18:18:10.466681",
+ "is_submittable": 1,
+ "links": [
+  {
+   "link_doctype": "Purchase Order",
+   "link_fieldname": "custom_asn_no"
+  },
+  {
+   "link_doctype": "Purchase Receipt",
+   "link_fieldname": "custom_asn_no"
+  }
+ ],
+ "modified": "2025-05-17 13:14:50.099042",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Advance Supplier Notification",

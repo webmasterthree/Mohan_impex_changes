@@ -1206,5 +1206,16 @@
   "script": "frappe.ui.form.on('Purchase Receipt', {\n    custom_type: function(frm) {\n        // Run only for NEW documents and only if table is empty daiyan\n        if (frm.is_new() && (!frm.doc.custom_documents || frm.doc.custom_documents.length === 0)) {\n            let default_documents = [];\n\n            if (frm.doc.custom_type === \"Domestic\") {\n                default_documents = [\"Invoice Copy\", \"COA Copy\", \"E-way Bill\", \"External Test Report\", \"Additional Documents\"];\n            } else if (frm.doc.custom_type === \"Import\") {\n                default_documents = [\"Invoice Copy\", \"COA Copy\", \"E-way Bill\", \"Halal Certificate (For Export)\", \"Kosher Certificate (For Export)\", \"External Test Report\", \"Additional Documents\"];\n            }\n\n            // Clear the table first\n            frm.clear_table('custom_documents');\n\n            // Add new rows\n            default_documents.forEach(doc => {\n                let row = frm.add_child('custom_documents');\n                row.document_name = doc;\n            });\n\n            frm.refresh_field('custom_documents');\n            console.log(\"✅ Loaded custom_documents:\", cur_frm.doc.custom_documents);\n        }\n    }\n});\n",
 >>>>>>> fe805a8 (15th May)
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Purchase Receipt",
+  "enabled": 1,
+  "modified": "2025-05-14 18:18:16.743351",
+  "module": "Mohan Impex",
+  "name": "Purchase Receipt Type Color",
+  "script": "frappe.listview_settings['Purchase Receipt'] = {\n    add_fields: [\"custom_type\"],  // Ensure field is available in list view\n    get_indicator: function(doc) {\n        if (doc.custom_type === \"Domestic\") {\n            return [__(\"Domestic\"), \"green\", \"custom_type,=,Domestic\"];\n        } else if (doc.custom_type === \"Import\") {\n            return [__(\"Import\"), \"yellow\", \"custom_type,=,Import\"];\n        }\n    }\n};\n",
+  "view": "List"
  }
 ]
