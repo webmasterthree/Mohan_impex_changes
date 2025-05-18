@@ -115,11 +115,12 @@ def get_leader_board():
         query = """
             select sp.employee, st.sales_person, sii.item_code, sii.item_group, sum(sii.stock_qty) as qty, sum(sii.amount) as amount, td.target_type, round(td.target_qty*(mdp.percentage_allocation/100)) as target_volume, td.target_amount
             from `tabSales Invoice` as si
-            join `tabSales Team` as st on st.parent = si.name
-            join `tabSales Person` as sp on sp.name = st.sales_person
-            join `tabSales Invoice Item` as sii on sii.parent = si.name
-            join `tabTarget Detail` as td on td.item_group = sii.item_group
-            join `tabMonthly Distribution Percentage` as mdp on mdp.parent = td.distribution_id and mdp.month = "%s"
+            left join `tabSales Team` as st on st.parent = si.name
+            left join `tabSales Person` as sp on sp.name = st.sales_person
+            left join `tabEmployee` as e on e.name = sp.employee
+            left join `tabSales Invoice Item` as sii on sii.parent = si.name
+            left join `tabTarget Detail` as td on td.item_group = sii.item_group
+            left join `tabMonthly Distribution Percentage` as mdp on mdp.parent = td.distribution_id and mdp.month = "%s"
             where 
                 sp.enabled = 1
                 and td.fiscal_year = "%s"
@@ -136,6 +137,7 @@ def get_leader_board():
         # Now, `sales_person_targets` will contain sales targets segregated by sales person
         # return sales_person_targets
         overall_persons = []
+        self_board = []
         default_user_image = frappe.get_single("Mohan Impex Settings").default_profile_image
         default_user_image = get_signed_token(default_user_image)
         for sales_person, sales_person_target in sales_person_targets.items():
@@ -184,17 +186,25 @@ def get_leader_board():
             user_id, employee_name = frappe.get_value("Employee", sales_targets[0]["employee"], ["user_id", "employee_name"])
             user_image = frappe.get_value("User", {"name": user_id}, "user_image")
             overall["session_user"] = False
-            if user_id == frappe.session.user: overall["session_user"] = True
             if user_image: overall["image"] = get_signed_token(user_image)
             overall.update({"name": employee_name})
+            if user_id == frappe.session.user: 
+                overall["session_user"] = True
             overall_persons.append(overall)
         overall_persons = sorted(
             overall_persons,
-            key=lambda x: (x["total_percent"], x["name"])
+            key=lambda x: (x["total_percent"], x["name"]),
+            reverse=True
         )
+        overall_persons = [{"rank": rank, **person} for rank, person in enumerate(overall_persons, start=1)]
+        self_board = next(filter(lambda x: x["session_user"], overall_persons), {})
+        leader_board = [{
+            "leader_board": overall_persons,
+            "self_board": self_board
+        }]
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Leadboard fetched successfully"
-        frappe.local.response['data'] = overall_persons
+        frappe.local.response['data'] = leader_board
     except Exception as err:
         frappe.local.response['http_status_code'] = 404
         frappe.local.response['status'] = False

@@ -49,7 +49,6 @@
   "visit_duration",
   "workflow_state",
   "column_break_ksif",
-  "created_by_emp",
   "assigned_to",
   "area",
   "status"
@@ -174,13 +173,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "created_by_emp",
-   "fieldtype": "Link",
-   "label": "Created By",
-   "options": "Employee"
-  },
-  {
-   "fetch_from": "created_by_emp.area",
    "fieldname": "area",
    "fieldtype": "Link",
    "label": "Area",
@@ -377,7 +369,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-04 12:08:39.175995",
+ "modified": "2025-05-18 16:39:03.331852",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",

@@ -7,7 +7,6 @@ from mohan_impex.api import get_role_filter
 @frappe.whitelist()
 def my_customer_list():
     try:
-        show_area_records = False
         limit = frappe.form_dict.get("limit")
         current_page = frappe.form_dict.get("current_page")
         if not limit or not current_page:
@@ -19,10 +18,8 @@ def my_customer_list():
         limit = int(limit)
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
-        if frappe.form_dict.get("show_area_records"):
-            show_area_records = int(frappe.form_dict.get("show_area_records"))
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp, show_area_records)
+        role_filter = get_role_filter(emp)
         si_join = ""
         billing_query = ""
         if (frappe.form_dict.get("from_date") and frappe.form_dict.get("to_date")) or frappe.form_dict.get("zero_billing"):
@@ -41,7 +38,7 @@ def my_customer_list():
                 AND si.posting_date {date_range}
             """.format(date_range=date_range)
         query = """
-            select cu.name, cu.customer_name, custom_shop_name as custom_shop, mobile_no as contact, customer_primary_address as location, created_by_emp as created_by, workflow_state, COUNT(*) OVER() AS total_count
+            select cu.name, cu.customer_name, custom_shop_name as custom_shop, mobile_no as contact, customer_primary_address as location, workflow_state, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
             join `tabDynamic Link` as dl on dl.link_name=cu.name
             {si_join}

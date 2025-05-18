@@ -14,7 +14,6 @@
   "shop",
   "shop_name",
   "contact",
-  "created_by_emp",
   "area",
   "cust_edit_needed",
   "column_break_toac",
@@ -122,13 +121,6 @@
    "label": "Shop Name"
   },
   {
-   "fieldname": "created_by_emp",
-   "fieldtype": "Link",
-   "label": "Created By",
-   "options": "Employee"
-  },
-  {
-   "fetch_from": "created_by_emp.area",
    "fieldname": "area",
    "fieldtype": "Link",
    "label": "Area",
@@ -173,7 +165,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-02 12:35:18.982263",
+ "modified": "2025-05-18 19:18:14.827537",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Unverified Customer",

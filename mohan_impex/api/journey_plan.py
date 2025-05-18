@@ -1,5 +1,5 @@
 import frappe
-from mohan_impex.mohan_impex.utils import get_session_employee
+from mohan_impex.mohan_impex.utils import get_session_employee_area
 import math
 from mohan_impex.mohan_impex.comment import get_comments
 from mohan_impex.api import get_role_filter
@@ -29,10 +29,8 @@ def journey_plan_list():
             tab_filter = 'workflow_state in ("%s", "%s")'%("Pending", "Rejected")
         else:
             tab_filter = 'workflow_state = "%s"'%(tab)
-        if frappe.form_dict.get("show_area_records"):
-            show_area_records = int(frappe.form_dict.get("show_area_records"))
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp, show_area_records)
+        role_filter = get_role_filter(emp)
         order_by = " order by creation desc "
         query = """
             select name, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, workflow_state as status, COUNT(*) OVER() AS total_count
@@ -95,29 +93,6 @@ def journey_plan_form():
                 return
             journey_doc = frappe.get_doc("Journey Plan", journey_name)
             journey_doc = journey_doc.as_dict()
-            activities = [{
-                "role": "ASM",
-                "name": "Ravi",
-                "status": "Approved",
-                "comments": None,
-                "date": "2025-02-13",
-                "time": "13:58:32"
-            },
-            {
-                "role": "ASM",
-                "name": "Ravi",
-                "status": None,
-                "comments": "Aproving the status",
-                "date": "2025-02-14",
-                "time": "13:58:32"
-            },{
-                "role": "ASM",
-                "name": "Ravi",
-                "status": "Approved",
-                "comments": "Aproving the status",
-                "date": "2025-02-14",
-                "time": "13:58:32"
-            }]
             activities = get_comments("Journey Plan", journey_doc["name"])
             journey_doc["activities"] = activities
             frappe.local.response['status'] = True
@@ -134,7 +109,7 @@ def create_journey_plan():
     journey_plan_data.pop("cmd")
     journey_plan_data.update({
         "doctype" : "Journey Plan",
-        "created_by_emp": get_session_employee()
+        "area": get_session_employee_area()
     })
     try:
         journey_plan_doc = frappe.get_doc(journey_plan_data)

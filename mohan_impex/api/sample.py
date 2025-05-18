@@ -1,5 +1,5 @@
 import frappe
-from mohan_impex.mohan_impex.utils import get_session_employee
+from mohan_impex.mohan_impex.utils import get_session_employee_area
 import math
 from mohan_impex.mohan_impex.comment import get_comments
 from mohan_impex.api import get_role_filter
@@ -7,7 +7,6 @@ from mohan_impex.api import get_role_filter
 @frappe.whitelist()
 def sample_list():
     try:
-        show_area_records = False
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
         current_page = frappe.form_dict.get("current_page")
@@ -29,10 +28,8 @@ def sample_list():
             tab_filter = 'workflow_state in ("%s", "%s")'%("Pending", "Rejected")
         else:
             tab_filter = 'workflow_state in ("%s", "%s")'%("Approved", "Received")
-        if frappe.form_dict.get("show_area_records"):
-            show_area_records = int(frappe.form_dict.get("show_area_records"))
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp, show_area_records)
+        role_filter = get_role_filter(emp)
         order_by = " order by creation desc "
         query = """
             select name, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, workflow_state as status, COUNT(*) OVER() AS total_count
@@ -134,7 +131,7 @@ def create_sample():
     sample_data.pop("cmd")
     sample_data.update({
         "doctype" : "Sample Requisition",
-        "created_by_emp": get_session_employee()
+        "area": get_session_employee_area()
     })
     try:
         sample_doc = frappe.get_doc(sample_data)

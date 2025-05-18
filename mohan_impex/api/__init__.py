@@ -312,9 +312,8 @@ def material_list():
 
 @frappe.whitelist()
 def get_customer_list(search_text=""):
-    show_area_records = 0
     emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-    role_filter = get_role_filter(emp, show_area_records)
+    role_filter = get_role_filter(emp)
     customer_list = []
     filters = {
         "role_filter": role_filter
@@ -340,10 +339,10 @@ def get_customer_list(search_text=""):
     return customer_list
 
 @frappe.whitelist()
-def get_customer_info(role_filter=None, customer_level="", channel_partner="", kyc_status="", show_area_records:int = 0, search_text=""):
+def get_customer_info(role_filter=None, customer_level="", channel_partner="", kyc_status="", search_text=""):
     if not role_filter:
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp, show_area_records)
+        role_filter = get_role_filter(emp)
     query = """
         SELECT cu.name as name, cu.customer_name, cu.custom_shop as shop, cu.custom_shop_name as shop_name, ct.name as contact, cu.customer_level, cu.custom_channel_partner as channel_partner, cu.kyc_status
         FROM `tabCustomer` AS cu
@@ -381,12 +380,12 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
     return customer_info
 
 @frappe.whitelist()
-def unv_customer_list(role_filter=None, customer_level="", channel_partner="", show_area_records:int = 0, search_text=""):
+def unv_customer_list(role_filter=None, customer_level="", channel_partner="", search_text=""):
     try:
         if not role_filter:
             customer_level = "Primary"
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp, show_area_records)
+        role_filter = get_role_filter(emp)
         query = """
             select unv.name, customer_name, customer_level, shop, shop_name, contact, channel_partner, kyc_status
             from `tabUnverified Customer` as unv
@@ -519,17 +518,15 @@ def is_within_range(origin, destination):
         frappe.local.response['status'] = False
         frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
 
-def get_role_filter(emp, show_area_records):
-    if show_area_records:
-        sub_areas = get_descendants_of("Territory", emp.get('area'))
+def get_role_filter(emp):
+    sub_areas = get_descendants_of("Territory", emp.get('area'))
 
-        if sub_areas:
-            sub_areas.append(emp.get('area'))
-            areas = "', '".join(sub_areas)
-        else:
-            areas = f"""{emp.get("area")}"""
-        return f"""area in ('{areas}') """
-    return f"""created_by_emp = "{emp.get('name')}" """
+    if sub_areas:
+        sub_areas.append(emp.get('area'))
+        areas = "', '".join(sub_areas)
+    else:
+        areas = f"""{emp.get("area")}"""
+    return f"""area in ('{areas}') """
 
 @frappe.whitelist()
 def get_sales_invoices(customer):

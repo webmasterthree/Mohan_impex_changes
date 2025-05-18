@@ -1,5 +1,5 @@
 import frappe
-from mohan_impex.mohan_impex.utils import get_session_employee
+from mohan_impex.mohan_impex.utils import get_session_employee_area
 from frappe.utils.file_manager import save_file
 from mohan_impex.api import get_role_filter
 import math
@@ -9,7 +9,6 @@ from bs4 import BeautifulSoup
 @frappe.whitelist()
 def complaints_list():
     try:
-        show_area_records = False
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
         current_page = frappe.form_dict.get("current_page")
@@ -28,12 +27,10 @@ def complaints_list():
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
         tab_filter = 'workflow_state = "%s"'%(tab)
-        if frappe.form_dict.get("show_area_records"):
-            show_area_records = int(frappe.form_dict.get("show_area_records"))
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp, show_area_records)
+        role_filter = get_role_filter(emp)
         query = """
-            select name, opening_date as created_date, IF(workflow_state='Active', opening_date, IF(workflow_state='Resolved', resolved_date, opening_date)) AS status_date, customer_name, claim_type, workflow_state, created_by_emp, COUNT(*) OVER() AS total_count
+            select name, opening_date as created_date, IF(workflow_state='Active', opening_date, IF(workflow_state='Resolved', resolved_date, opening_date)) AS status_date, customer_name, claim_type, workflow_state, COUNT(*) OVER() AS total_count
             from `tabIssue`
             where {tab_filter} and {role_filter}
         """.format(tab_filter=tab_filter, role_filter=role_filter)
@@ -61,7 +58,6 @@ def complaints_list():
             # complaints["workflow_state"] = "Pending" if complaints["workflow_state"] == "Open" else complaints["workflow_state"]
             # complaints["username"] = frappe.get_value("Employee", {"name": complaints["created_by_emp"]}, "employee_name")
             complaints["form_url"] = f"{frappe.utils.get_url()}/api/method/mohan_impex.api.complaints.complaints_form?name={complaints['name']}"
-            complaints.pop("created_by_emp", None)
             # complaints_list.append(complaints)
         total_count = 0
         if complaints_info:
@@ -145,7 +141,7 @@ def create_complaint():
     complaint_data.pop("cmd")
     complaint_data.update({
         "doctype" : "Issue",
-        "created_by_emp": get_session_employee()
+        "area": get_session_employee_area()
     })
     try:
         complaint_doc = frappe.new_doc("Issue")

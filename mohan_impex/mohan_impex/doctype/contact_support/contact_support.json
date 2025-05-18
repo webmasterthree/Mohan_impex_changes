@@ -7,7 +7,9 @@
  "engine": "InnoDB",
  "field_order": [
   "support_type",
-  "support_content"
+  "support_content",
+  "column_break_jlph",
+  "support_image"
  ],
  "fields": [
   {
@@ -24,11 +26,21 @@
    "in_list_view": 1,
    "label": "Support Content",
    "reqd": 1
+  },
+  {
+   "fieldname": "support_image",
+   "fieldtype": "Attach Image",
+   "label": "Support Image",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_jlph",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-08 21:14:17.344373",
+ "modified": "2025-05-18 18:59:56.568503",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Contact Support",

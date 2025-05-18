@@ -1,6 +1,6 @@
 import frappe
 from datetime import datetime
-from mohan_impex.mohan_impex.utils import get_session_employee
+from mohan_impex.mohan_impex.utils import get_session_employee_area
 from mohan_impex.item_price import get_item_category_price
 from frappe.model.workflow import apply_workflow
 import math
@@ -31,13 +31,11 @@ def so_list():
         tab_filter = 'workflow_state = "%s"'%(tab)
         if tab != "Draft":
             tab_filter = "workflow_state != 'Draft'"
-        if frappe.form_dict.get("show_area_records"):
-            show_area_records = int(frappe.form_dict.get("show_area_records"))
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp, show_area_records)
+        role_filter = get_role_filter(emp)
         order_by = " order by so.creation desc "
         query = """
-            select name, shop_name, contact_number as contact, customer_address as location, created_by_emp as created_by, workflow_state, COUNT(*) OVER() AS total_count
+            select name, shop_name, contact_number as contact, customer_address as location, workflow_state, COUNT(*) OVER() AS total_count
             from `tabSales Order` as so
             where {tab_filter} and {role_filter} 
         """.format(tab_filter=tab_filter, role_filter=role_filter)
@@ -163,7 +161,7 @@ def create_so():
             "delivery_date": so_data.get("delivery_date"),
             "remarks": so_data.get("remarks"),
             "cust_edit_needed": so_data.get("cust_edit_needed"),
-            "created_by_emp": get_session_employee()
+            "territory": get_session_employee_area()
         }
         if so_data.get("channel_partner"):
             so_dict.update({"company": so_data.get("channel_partner")})
@@ -205,14 +203,12 @@ def create_so():
         frappe.local.response['status'] = False
         frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
 
-def get_role_filter(emp, show_area_records):
+def get_role_filter(emp):
     from frappe.utils.nestedset import get_descendants_of
-    if show_area_records:
-        sub_areas = get_descendants_of("Territory", emp.get('area'))
-        if sub_areas:
-            sub_areas.append(emp.get('area'))
-            areas = "', '".join(sub_areas)
-        else:
-            areas = f"""{emp.get("area")}"""
-        return f"""territory in ('{areas}') """
-    return f"""created_by_emp = "{emp.get('name')}" """
+    sub_areas = get_descendants_of("Territory", emp.get('area'))
+    if sub_areas:
+        sub_areas.append(emp.get('area'))
+        areas = "', '".join(sub_areas)
+    else:
+        areas = f"""{emp.get("area")}"""
+    return f"""territory in ('{areas}') """
