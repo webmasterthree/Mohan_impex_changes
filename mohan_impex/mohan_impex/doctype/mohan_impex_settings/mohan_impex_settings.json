@@ -7,17 +7,12 @@
  "field_order": [
   "allowed_distance",
   "column_break_izkn",
-  "ticket_number",
+  "default_profile_image",
   "section_break_grqv",
   "dashboard_banners",
   "roles_and_reports_to"
  ],
  "fields": [
-  {
-   "fieldname": "ticket_number",
-   "fieldtype": "Data",
-   "label": "Ticket Number"
-  },
   {
    "fieldname": "roles_and_reports_to",
    "fieldtype": "Table",
@@ -45,12 +40,18 @@
   {
    "fieldname": "section_break_grqv",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "default_profile_image",
+   "fieldtype": "Attach Image",
+   "label": "Default Profile Image",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-02-28 08:06:30.631966",
+ "modified": "2025-05-18 11:11:42.514403",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Mohan Impex Settings",

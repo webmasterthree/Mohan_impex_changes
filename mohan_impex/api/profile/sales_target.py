@@ -1,6 +1,7 @@
 import frappe
 from erpnext.accounts.utils import get_fiscal_year
 from frappe.utils import nowdate
+from mohan_impex.api import get_signed_token
 
 @frappe.whitelist()
 def get_sales_target():
@@ -112,7 +113,7 @@ def get_leader_board():
         fiscal_year = get_fiscal_year(nowdate(), as_dict=True).get("name") or ""
         month = datetime.now().strftime("%B")
         query = """
-            select st.sales_person, sii.item_code, sii.item_group, sum(sii.stock_qty) as qty, sum(sii.amount) as amount, td.target_type, round(td.target_qty*(mdp.percentage_allocation/100)) as target_volume, td.target_amount
+            select sp.employee, st.sales_person, sii.item_code, sii.item_group, sum(sii.stock_qty) as qty, sum(sii.amount) as amount, td.target_type, round(td.target_qty*(mdp.percentage_allocation/100)) as target_volume, td.target_amount
             from `tabSales Invoice` as si
             join `tabSales Team` as st on st.parent = si.name
             join `tabSales Person` as sp on sp.name = st.sales_person
@@ -134,12 +135,14 @@ def get_leader_board():
 
         # Now, `sales_person_targets` will contain sales targets segregated by sales person
         # return sales_person_targets
-        overall_persons = {}
+        overall_persons = []
+        default_user_image = frappe.get_single("Mohan Impex Settings").default_profile_image
+        default_user_image = get_signed_token(default_user_image)
         for sales_person, sales_person_target in sales_person_targets.items():
             item_group_targets = {}
             for target in sales_person_target:
                 if target.item_code not in item_group_targets.get(target.item_group, []):
-                    item_group_targets.setdefault(target.item_group, []).append({"item_code": target.item_code, "target_type": target.target_type, "qty": 0, "amount": 0, "target_volume": 0, "target_amount": 0, "achieved_percent": 0})
+                    item_group_targets.setdefault(target.item_group, []).append({"item_code": target.item_code, "target_type": target.target_type, "qty": 0, "amount": 0, "target_volume": 0, "target_amount": 0, "achieved_percent": 0, "employee": target.employee, "image": default_user_image})
                 for item in item_group_targets[target.item_group]:
                     if item["item_code"] == target.item_code:
                         item["sales_person"] = target.sales_person
@@ -160,21 +163,35 @@ def get_leader_board():
                     "target_type": v[0]["target_type"],
                     "total_target_volume": v[0]["target_volume"],
                     "total_target_amount": v[0]["target_amount"],
+                    "employee": v[0]["employee"],
+                    "image": v[0]["image"]
                 }
                 if v[0]["target_type"] != "Volume":
                     item_group_targets[k].update({"achieved_percent": round((sum(item["amount"] for item in v) / v[0]["target_amount"])*100, 2) if v[0]["target_amount"] else 0})
                 else:
                     item_group_targets[k].update({"achieved_percent": round((sum(item["qty"] for item in v) / v[0]["target_volume"])*100, 2) if v[0]["target_volume"] else 0})
             sales_targets = list(item_group_targets.values())
-            overall = {"volume": {"percent": 0, "count": 0}, "amount": {"percent": 0, "count": 0}}
+            percent_calc = {"volume": {"percent": 0, "count": 0}, "amount": {"percent": 0, "count": 0}}
+            overall = {}
             for target in sales_targets:
-                overall[target["target_type"].lower()]["percent"] += target["achieved_percent"]
-                overall[target["target_type"].lower()]["count"] += 1
-            for key in overall:
-                overall[key] = round(overall[key]["percent"] / overall[key]["count"], 2) if overall[key]["count"] else 0
+                percent_calc[target["target_type"].lower()]["percent"] += target["achieved_percent"]
+                percent_calc[target["target_type"].lower()]["count"] += 1
+            for key in percent_calc:
+                percent_calc[key] = round(percent_calc[key]["percent"] / percent_calc[key]["count"], 2) if percent_calc[key]["count"] else 0
                 # overall[key].pop("count")
-            overall["total"] = round((overall["volume"] + overall["amount"])/2, 2)
-            overall_persons.update({sales_person : overall})
+            overall["user_image"] = sales_targets[0]["image"]
+            overall["total_percent"] = round((percent_calc["volume"] + percent_calc["amount"])/2, 2)
+            user_id, employee_name = frappe.get_value("Employee", sales_targets[0]["employee"], ["user_id", "employee_name"])
+            user_image = frappe.get_value("User", {"name": user_id}, "user_image")
+            overall["session_user"] = False
+            if user_id == frappe.session.user: overall["session_user"] = True
+            if user_image: overall["image"] = get_signed_token(user_image)
+            overall.update({"name": employee_name})
+            overall_persons.append(overall)
+        overall_persons = sorted(
+            overall_persons,
+            key=lambda x: (x["total_percent"], x["name"])
+        )
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Leadboard fetched successfully"
         frappe.local.response['data'] = overall_persons
