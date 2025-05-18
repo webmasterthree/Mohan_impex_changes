@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:product_name",
  "creation": "2025-02-19 20:18:46.341337",
@@ -27,7 +28,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-21 08:23:01.282065",
+ "modified": "2025-04-17 23:21:34.374616",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Product",
