@@ -45,6 +45,11 @@ def get_sales_target():
         frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
 
 def get_sales_target_by_sales_invoice(sales_person, fiscal_year, month, year):
+    uom = frappe.get_single("Stock Settings").stock_uom or "Kgs"
+    
+    currency = frappe.get_value("Company", frappe.defaults.get_user_default("Company"), "default_currency")
+    currency_symbol = frappe.get_value("Currency", currency, "symbol")
+
     query = """
         select sii.item_code, sii.item_group, sum(sii.stock_qty) as qty, sum(sii.amount) as amount, td.target_type, round(td.target_qty*(mdp.percentage_allocation/100)) as target_volume, td.target_amount
         from `tabSales Invoice` as si
@@ -77,16 +82,21 @@ def get_sales_target_by_sales_invoice(sales_person, fiscal_year, month, year):
         item_group_targets[k] = {
             "item_group": k,
             "items": v,
-            "total_qty": sum(item["qty"] for item in v),
-            "total_amount": sum(item["amount"] for item in v),
+            "total_qty": convert_to_uom(sum(item["qty"] for item in v), uom),
+            "total_amount": shorten_amount(sum(item["amount"] for item in v)+9000000, currency_symbol),
             "target_type": v[0]["target_type"],
-            "total_target_volume": v[0]["target_volume"],
-            "total_target_amount": v[0]["target_amount"],
+            "total_target_volume": convert_to_uom(v[0]["target_volume"], uom),
+            "total_target_amount": shorten_amount(v[0]["target_amount"]+99899, currency_symbol),
         }
         if v[0]["target_type"] != "Volume":
-            item_group_targets[k].update({"achieved_percent": round((sum(item["amount"] for item in v) / v[0]["target_amount"])*100, 2) if v[0]["target_amount"] else 0})
+            item_group_targets[k].update({"achieved_percent": round((sum(item["amount"] for item in v) / v[0]["target_amount"])*100, 2) if v[0]["target_amount"] else 0, "uom": "KGS"})
         else:
-            item_group_targets[k].update({"achieved_percent": round((sum(item["qty"] for item in v) / v[0]["target_volume"])*100, 2) if v[0]["target_volume"] else 0})
+            item_group_targets[k].update({"achieved_percent": round((sum(item["qty"] for item in v) / v[0]["target_volume"])*100, 2) if v[0]["target_volume"] else 0, })
+        for item in v:
+            item["amount"] = shorten_amount(item["amount"], currency_symbol)
+            item["target_amount"] = shorten_amount(item["target_amount"], currency_symbol)
+            item["qty"] = convert_to_uom(item["qty"], uom)
+            item["target_volume"] = convert_to_uom(item["target_volume"], uom)
     sales_targets = list(item_group_targets.values())
     overall = {"volume": {"percent": 0, "count": 0}, "amount": {"percent": 0, "count": 0}}
     for target in sales_targets:
@@ -209,3 +219,17 @@ def get_leader_board():
         frappe.local.response['http_status_code'] = 404
         frappe.local.response['status'] = False
         frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+
+def convert_to_uom(value, uom):
+    return f"{value} {uom}"
+
+def shorten_amount(amount, currency_symbol):
+    if amount < 1000:
+        return f"{currency_symbol}" + str(amount)
+    if amount < 100000:
+        return f"{currency_symbol}" + str(round(amount/1000, 1)) + "K"
+    if amount < 10000000:
+        return f"{currency_symbol}" + str(round(amount/100000, 1)) + "L"
+    if amount < 1000000000:
+        return f"{currency_symbol}" + str(round(amount/10000000, 1)) + "Cr"
+    return f"{currency_symbol}" + str(round(amount/1000000000, 1)) + "B"

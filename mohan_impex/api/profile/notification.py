@@ -54,3 +54,20 @@ def notification_list():
         frappe.local.response['http_status_code'] = 404
         frappe.local.response['status'] = False
         frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+
+@frappe.whitelist()
+def mark_as_read(notification_id):
+    try:
+        if notification_id:
+            if not frappe.db.exists("Notification Log", notification_id):
+                frappe.local.response['http_status_code'] = 404
+                frappe.local.response['status'] = False
+                frappe.local.response['message'] = "Please give valid notification ID"
+                return
+            frappe.db.set_value("Notification Log", notification_id, "read", 1)
+            frappe.local.response['status'] = True
+            frappe.local.response['message'] = f"Notification has been marked as read"
+    except Exception as err:
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
