@@ -53,14 +53,15 @@ def get_sales_target_by_sales_invoice(sales_person, fiscal_year, month, year):
     query = """
         select sii.item_code, sii.item_group, sum(sii.stock_qty) as qty, sum(sii.amount) as amount, td.target_type, round(td.target_qty*(mdp.percentage_allocation/100)) as target_volume, td.target_amount
         from `tabSales Invoice` as si
-        join `tabSales Team` as st on st.parent = si.name
-        join `tabSales Invoice Item` as sii on sii.parent = si.name
-        join `tabTarget Detail` as td on td.item_group = sii.item_group
-        join `tabMonthly Distribution Percentage` as mdp on mdp.parent = td.distribution_id and mdp.month = "%s"
+        left join `tabSales Team` as st on st.parent = si.name
+        left join `tabSales Invoice Item` as sii on sii.parent = si.name
+        left join `tabTarget Detail` as td on td.item_group = sii.item_group
+        left join `tabMonthly Distribution Percentage` as mdp on mdp.parent = td.distribution_id and mdp.month = "%s"
         where 
             st.sales_person = "%s" 
             and td.fiscal_year = "%s"
             and MONTHNAME(si.posting_date) = "%s"
+            and si.docstatus != 2
         group by sii.item_code, sii.item_group
     """%(month, sales_person, fiscal_year, month)
     sales_targets = frappe.db.sql(query, as_dict=True)
