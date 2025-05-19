@@ -83,10 +83,10 @@ def get_sales_target_by_sales_invoice(sales_person, fiscal_year, month, year):
             "item_group": k,
             "items": v,
             "total_qty": convert_to_uom(sum(item["qty"] for item in v), uom),
-            "total_amount": shorten_amount(sum(item["amount"] for item in v)+9000000, currency_symbol),
+            "total_amount": shorten_amount(sum(item["amount"] for item in v), currency_symbol),
             "target_type": v[0]["target_type"],
             "total_target_volume": convert_to_uom(v[0]["target_volume"], uom),
-            "total_target_amount": shorten_amount(v[0]["target_amount"]+99899, currency_symbol),
+            "total_target_amount": shorten_amount(v[0]["target_amount"], currency_symbol),
         }
         if v[0]["target_type"] != "Volume":
             item_group_targets[k].update({"achieved_percent": round((sum(item["amount"] for item in v) / v[0]["target_amount"])*100, 2) if v[0]["target_amount"] else 0, "uom": "KGS"})
