@@ -100,34 +100,15 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-<<<<<<< HEAD
-  "modified": "2025-03-28 12:14:30.871674",
-  "name": "Receive",
-  "workflow_action_name": "Receive"
-=======
   "modified": "2025-04-24 12:34:37.345056",
   "name": "Sent Back for Review",
   "workflow_action_name": "Sent Back for Review"
->>>>>>> fe805a8 (15th May)
  },
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-<<<<<<< HEAD
-  "modified": "2025-03-29 16:56:22.975314",
-  "name": "Publish",
-  "workflow_action_name": "Publish"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
-  "modified": "2025-03-29 16:56:51.996102",
-  "name": "Draft",
-  "workflow_action_name": "Draft"
-=======
   "modified": "2025-04-24 12:51:12.877579",
   "name": "Send for Review Again",
   "workflow_action_name": "Send for Review Again"
->>>>>>> fe805a8 (15th May)
  }
 ]

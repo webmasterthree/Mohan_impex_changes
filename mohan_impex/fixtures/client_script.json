@@ -1157,14 +1157,6 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
-<<<<<<< HEAD
-  "dt": "POS Invoice",
-  "enabled": 1,
-  "modified": "2025-04-06 11:19:38.322858",
-  "module": "Mohan Impex",
-  "name": "POS Invoice",
-  "script": "frappe.ui.form.on('POS Invoice', {\n\trefresh(frm) {\n\t\t// your code here\n\t},\n\tonload(frm) {\n        if (!frm.is_new() || frm.doc.company) return;\n        frappe.db.get_list('Employee', {\n            filters: { user_id: frappe.session.user },\n            fields: ['company'],\n            limit: 1\n        }).then(r => {\n            if (r.length) frm.set_value('company', r[0].company);\n        });\n    }\n})",
-=======
   "dt": "Quotation",
   "enabled": 1,
   "modified": "2025-04-18 13:55:43.613780",
@@ -1200,11 +1192,10 @@
   "doctype": "Client Script",
   "dt": "Purchase Receipt",
   "enabled": 1,
-  "modified": "2025-05-14 18:08:56.607896",
+  "modified": "2025-05-17 13:10:12.986938",
   "module": null,
   "name": "PR WITH GRN2",
-  "script": "frappe.ui.form.on('Purchase Receipt', {\n    custom_type: function(frm) {\n        // Run only for NEW documents and only if table is empty daiyan\n        if (frm.is_new() && (!frm.doc.custom_documents || frm.doc.custom_documents.length === 0)) {\n            let default_documents = [];\n\n            if (frm.doc.custom_type === \"Domestic\") {\n                default_documents = [\"Invoice Copy\", \"COA Copy\", \"E-way Bill\", \"External Test Report\", \"Additional Documents\"];\n            } else if (frm.doc.custom_type === \"Import\") {\n                default_documents = [\"Invoice Copy\", \"COA Copy\", \"E-way Bill\", \"Halal Certificate (For Export)\", \"Kosher Certificate (For Export)\", \"External Test Report\", \"Additional Documents\"];\n            }\n\n            // Clear the table first\n            frm.clear_table('custom_documents');\n\n            // Add new rows\n            default_documents.forEach(doc => {\n                let row = frm.add_child('custom_documents');\n                row.document_name = doc;\n            });\n\n            frm.refresh_field('custom_documents');\n            console.log(\"✅ Loaded custom_documents:\", cur_frm.doc.custom_documents);\n        }\n    }\n});\n",
->>>>>>> fe805a8 (15th May)
+  "script": "frappe.ui.form.on('Purchase Receipt', {\n    purchase_order: function(frm) {\n        if (frm.doc.purchase_order) {\n            frappe.db.get_value('Purchase Order', frm.doc.purchase_order, 'custom_asn_no')\n                .then(r => {\n                    if (r.message && r.message.custom_asn_no !== undefined) {\n                        frm.set_value('custom_asn_no', r.message.custom_asn_no);\n                    }\n                });\n        }\n    },\n    custom_type: function(frm) {\n        // Run only for NEW documents and only if table is empty daiyan\n        if (frm.is_new() && (!frm.doc.custom_documents || frm.doc.custom_documents.length === 0)) {\n            let default_documents = [];\n\n            if (frm.doc.custom_type === \"Domestic\") {\n                default_documents = [\"Invoice Copy\", \"COA Copy\", \"E-way Bill\", \"External Test Report\", \"Additional Documents\"];\n            } else if (frm.doc.custom_type === \"Import\") {\n                default_documents = [\"Invoice Copy\", \"COA Copy\", \"E-way Bill\", \"Halal Certificate (For Export)\", \"Kosher Certificate (For Export)\", \"External Test Report\", \"Additional Documents\"];\n            }\n\n            // Clear the table first\n            frm.clear_table('custom_documents');\n\n            // Add new rows\n            default_documents.forEach(doc => {\n                let row = frm.add_child('custom_documents');\n                row.document_name = doc;\n            });\n\n            frm.refresh_field('custom_documents');\n            console.log(\"✅ Loaded custom_documents:\", cur_frm.doc.custom_documents);\n        }\n    },\n    after_save: function(frm) {\n    if (frm.doc.custom_asn_no) {\n        frappe.call({\n            method: \"frappe.client.set_value\",\n            args: {\n                doctype: \"Advance Supplier Notification\",\n                name: frm.doc.custom_asn_no,  // this is the ASN docname\n                fieldname: {\n                    purchase_receipt: frm.doc.name\n                }\n            },\n        });\n    }\n}\n\n});\n",
   "view": "Form"
  },
  {
@@ -1217,5 +1208,16 @@
   "name": "Purchase Receipt Type Color",
   "script": "frappe.listview_settings['Purchase Receipt'] = {\n    add_fields: [\"custom_type\"],  // Ensure field is available in list view\n    get_indicator: function(doc) {\n        if (doc.custom_type === \"Domestic\") {\n            return [__(\"Domestic\"), \"green\", \"custom_type,=,Domestic\"];\n        } else if (doc.custom_type === \"Import\") {\n            return [__(\"Import\"), \"yellow\", \"custom_type,=,Import\"];\n        }\n    }\n};\n",
   "view": "List"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Advance Supplier Notification",
+  "enabled": 1,
+  "modified": "2025-05-17 11:32:19.594502",
+  "module": "Mohan Impex",
+  "name": "Advance Supplier Notification",
+  "script": "frappe.ui.form.on('Advance Supplier Notification', {\n    after_save(frm) {\n        if (frm.doc.purchase_order) {\n            frappe.call({\n                method: \"frappe.client.set_value\",\n                args: {\n                    doctype: \"Purchase Order\",\n                    name: frm.doc.purchase_order,\n                    fieldname: {\n                        \"custom_asn_no\": frm.doc.name\n                    }\n                },\n                callback: function(r) {\n                    if (!r.exc) {\n                        frappe.msgprint(`Updated: ${frm.doc.purchase_order}`);\n                    }\n                }\n            });\n        }\n    }\n});\n",
+  "view": "Form"
  }
 ]
