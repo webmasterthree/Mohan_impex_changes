@@ -208,9 +208,12 @@ def get_leader_board():
             reverse=True
         )
         overall_persons = [{"rank": rank, **person} for rank, person in enumerate(overall_persons, start=1)]
+        top_three = overall_persons[:3]
+        remaining = overall_persons[3:]
         self_board = next(filter(lambda x: x["session_user"], overall_persons), {})
         leader_board = [{
-            "leader_board": overall_persons,
+            "top_three": top_three,
+            "leader_board": remaining,
             "self_board": self_board
         }]
         frappe.local.response['status'] = True
