@@ -2,6 +2,7 @@ import frappe
 from mohan_impex.api import get_signed_token
 import math
 from bs4 import BeautifulSoup
+import html
 
 @frappe.whitelist()
 def notification_list():
@@ -32,8 +33,7 @@ def notification_list():
         default_user_image = frappe.get_single("Mohan Impex Settings").default_profile_image
         default_user_image = get_signed_token(default_user_image)
         for notific in notific_info:
-            notific["subject"] = (BeautifulSoup(notific["subject"], 'html.parser').find('div', class_='ql-editor') or BeautifulSoup(notific["subject"], 'html.parser')).decode_contents() if notific["subject"] else ""
-            notific["content"] = (BeautifulSoup(notific["content"], 'html.parser').find('div', class_='ql-editor') or BeautifulSoup(notific["content"], 'html.parser')).decode_contents() if notific["content"] else ""
+            notific["content"] = BeautifulSoup(notific["content"], "html.parser").get_text(separator=" ").strip() if notific["content"] else ""
             user_image = frappe.get_value("User", {"name": notific["from_user"]}, "user_image")
             notific["user_image"] = default_user_image
             if user_image: 
