@@ -1,6 +1,7 @@
 import frappe
 from mohan_impex.api import get_signed_token
 import math
+from bs4 import BeautifulSoup
 
 @frappe.whitelist()
 def notification_list():
@@ -17,7 +18,7 @@ def notification_list():
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
         query = """
-            select name, subject, email_content, from_user, COUNT(*) OVER() AS total_count
+            select name, subject, email_content as content, from_user, COUNT(*) OVER() AS total_count
             from `tabNotification Log` as nl
             where for_user = "{user_id}"
         """.format(user_id=frappe.session.user)
@@ -31,6 +32,8 @@ def notification_list():
         default_user_image = frappe.get_single("Mohan Impex Settings").default_profile_image
         default_user_image = get_signed_token(default_user_image)
         for notific in notific_info:
+            notific["subject"] = (BeautifulSoup(notific["subject"], 'html.parser').find('div', class_='ql-editor') or BeautifulSoup(notific["subject"], 'html.parser')).decode_contents() if notific["subject"] else ""
+            notific["content"] = (BeautifulSoup(notific["content"], 'html.parser').find('div', class_='ql-editor') or BeautifulSoup(notific["content"], 'html.parser')).decode_contents() if notific["content"] else ""
             user_image = frappe.get_value("User", {"name": notific["from_user"]}, "user_image")
             notific["user_image"] = default_user_image
             if user_image: 
