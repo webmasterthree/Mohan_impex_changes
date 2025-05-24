@@ -79,17 +79,16 @@ class CustomerVisitManagement(Document):
             else:
                 table_dict.update({"unv_customer": self.unv_customer})
                 table_dict.update({"unv_customer_name": self.unv_customer_name})
-            if self.trial_type == "Product":
-                products = [{"product": product.product} for product in self.product_trial]
-                table_dict.update({"product_trial_table": products})
-            else:
-                items = [{"item_code": item.item_code} for item in self.item_trial]
-                table_dict.update({"item_trial_table": items})
+            # if self.trial_type == "Product":
+            #     products = [{"product": product.product} for product in self.product_trial]
+            #     table_dict.update({"product_trial_table": products})
+            # else:
+            #     items = [{"item_code": item.item_code} for item in self.item_trial]
+            #     table_dict.update({"item_trial_table": items})
             pt_dict = {
                 "customer_level":  self.customer_level,
                 "channel_partner": self.channel_partner,
                 "verific_type": self.verific_type,
-                "trial_type": self.trial_type,
                 "trial_loc": self.trial_loc,
                 "conduct_by": self.conduct_by,
                 "shop": self.shop,
@@ -115,11 +114,26 @@ class CustomerVisitManagement(Document):
                 "cvm": self.name,
                 **pt_dict
             })
+            trial_row_list = [{"cvm_trial_id": trial_row.name, "product": trial_row.product, "item_code": trial_row.item_code} for trial_row in self.trial_table]
+            existing_trial_row = doc.trial_plan_table
+            trial_row_to_add_list = []
+            trial_row_to_remove_list = []
+            for trial_row in trial_row_list:
+                if not any(existing_product.product == trial_row["product"] and existing_product.item_code == trial_row["item_code"] for existing_product in existing_trial_row):
+                    trial_row_to_add_list.append(trial_row)
+            for existing_product in existing_trial_row:
+                if not any(trial_row["product"] == existing_product.product and trial_row["item_code"] == existing_product.item_code for trial_row in trial_row_list):
+                    trial_row_to_remove_list.append(existing_product.name)
+            for trial_row_to_row in trial_row_to_add_list:
+                doc.append("trial_plan_table", trial_row_to_row)
+            for trial_row_to_remove in trial_row_to_remove_list:
+                doc.trial_plan_table = [item for item in doc.trial_plan_table if item.name != trial_row_to_remove]
+            for idx, trial_plan in enumerate(doc.trial_plan_table, start=1):
+                trial_plan.update({"idx": idx})
             doc.update(pt_dict)
             doc.update({"contact": []})  # Clear existing contacts if updating
             for contact in self.contact:
                 doc.append("contact", {"contact": contact.contact})
-
             doc.save() if trial_plan else doc.insert()
         elif not self.has_trial_plan and trial_plan:
             frappe.delete_doc("Trial Plan", trial_plan)

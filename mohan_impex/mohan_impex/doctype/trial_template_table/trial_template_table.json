@@ -6,21 +6,40 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "trial_name"
+  "trial_parameter",
+  "type",
+  "is_need_remarks"
  ],
  "fields": [
   {
-   "fieldname": "trial_name",
-   "fieldtype": "Data",
+   "fieldname": "trial_parameter",
+   "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Trial Name",
+   "label": "Trial Parameter",
+   "options": "Trial Parameter",
    "reqd": 1
+  },
+  {
+   "fetch_from": "trial_parameter.type",
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "Satisfaction Status\nMinutes\nTemperature",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fetch_from": "trial_parameter.is_need_remarks",
+   "fieldname": "is_need_remarks",
+   "fieldtype": "Check",
+   "label": "Is Need Remarks"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-01-31 20:25:52.738089",
+ "modified": "2025-05-24 16:31:58.396701",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Template Table",

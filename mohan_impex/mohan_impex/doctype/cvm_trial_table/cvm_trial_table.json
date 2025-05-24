@@ -1,29 +1,16 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-01-11 21:00:33.751516",
+ "creation": "2025-05-24 12:08:18.492308",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "product",
-  "trial_template",
-  "report",
-  "remarks"
+  "item_code",
+  "report"
  ],
  "fields": [
-  {
-   "fieldname": "trial_template",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Trial Template",
-   "options": "Trial Template"
-  },
-  {
-   "fieldname": "remarks",
-   "fieldtype": "Small Text",
-   "label": "Remarks"
-  },
   {
    "fieldname": "product",
    "fieldtype": "Link",
@@ -33,9 +20,16 @@
    "reqd": 1
   },
   {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
    "fieldname": "report",
    "fieldtype": "Select",
-   "in_list_view": 1,
    "label": "Report",
    "options": "Pending"
   }
@@ -43,10 +37,10 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-22 16:55:35.628517",
+ "modified": "2025-05-24 12:11:16.025093",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
- "name": "Product Trial Table",
+ "name": "CVM Trial Table",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

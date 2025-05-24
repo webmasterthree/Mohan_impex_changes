@@ -1,0 +1,277 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{trial_plan}-{trial_plan_row}",
+ "creation": "2025-02-23 13:51:20.705798",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "trial_plan",
+  "product",
+  "column_break_dcbl",
+  "item_code",
+  "trial_plan_row",
+  "section_break_zhxw",
+  "batch_no",
+  "mfg_date",
+  "batch_size",
+  "has_competitor",
+  "competitor_brand",
+  "comp_brand_remarks",
+  "competitor",
+  "competitor_remarks",
+  "column_break_qwtm",
+  "no_of_batches",
+  "batch_uom",
+  "mon_cons",
+  "mon_cons_uom",
+  "current_dosage",
+  "dosage_uom",
+  "reason_for_competition",
+  "competition_remarks",
+  "section_break_ltwx",
+  "trial_target_table",
+  "section_break_glfb",
+  "demo_result",
+  "reason",
+  "reason_remarks",
+  "column_break_zzyb",
+  "is_order_recieved",
+  "ord_nrc_reason",
+  "next_expec_order_date",
+  "ord_nrc_remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Item Code",
+   "link_filters": "[[\"Item\",\"has_variants\",\"=\",0]]",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "product",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Product",
+   "options": "Product",
+   "reqd": 1
+  },
+  {
+   "fieldname": "trial_plan",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Trial Plan",
+   "options": "Trial Plan",
+   "reqd": 1
+  },
+  {
+   "fieldname": "trial_plan_row",
+   "fieldtype": "Autocomplete",
+   "label": "Trial Plan Row",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_ltwx",
+   "fieldtype": "Section Break",
+   "label": "Product Evalution"
+  },
+  {
+   "fieldname": "trial_target_table",
+   "fieldtype": "Table",
+   "options": "Trial Target Table"
+  },
+  {
+   "fieldname": "batch_no",
+   "fieldtype": "Link",
+   "label": "Batch No.",
+   "options": "Batch"
+  },
+  {
+   "fetch_from": "batch_no.manufacturing_date",
+   "fetch_if_empty": 1,
+   "fieldname": "mfg_date",
+   "fieldtype": "Date",
+   "label": "Manufacturing Date"
+  },
+  {
+   "fieldname": "batch_size",
+   "fieldtype": "Float",
+   "label": "Batch Size of Trial"
+  },
+  {
+   "fieldname": "no_of_batches",
+   "fieldtype": "Select",
+   "label": "No of Batches",
+   "options": "\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
+  },
+  {
+   "default": "0",
+   "fieldname": "has_competitor",
+   "fieldtype": "Check",
+   "label": "Has Competitor"
+  },
+  {
+   "fieldname": "competitor",
+   "fieldtype": "Link",
+   "label": "Competitor",
+   "options": "Competitor"
+  },
+  {
+   "fieldname": "current_dosage",
+   "fieldtype": "Float",
+   "label": "Current Dosage"
+  },
+  {
+   "fieldname": "dosage_uom",
+   "fieldtype": "Link",
+   "label": "Dosage UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "column_break_qwtm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "batch_no.stock_uom",
+   "fieldname": "batch_uom",
+   "fieldtype": "Link",
+   "label": "Batch UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "reason_for_competition",
+   "fieldtype": "Select",
+   "label": "Reason for Competition Brand",
+   "options": "Price\nEase of use\nRecommendations from others\nReputation\nDosage\nTechnical support\nAvailability\nBrand loyalty\nOthers"
+  },
+  {
+   "depends_on": "competitor",
+   "fieldname": "competitor_remarks",
+   "fieldtype": "Small Text",
+   "label": "Competitor Remarks"
+  },
+  {
+   "depends_on": "eval:doc.reason === \"Others\"",
+   "fieldname": "reason_remarks",
+   "fieldtype": "Small Text",
+   "label": "Reason Remarks"
+  },
+  {
+   "fieldname": "mon_cons",
+   "fieldtype": "Float",
+   "label": "Monthly Consumption"
+  },
+  {
+   "fieldname": "mon_cons_uom",
+   "fieldtype": "Link",
+   "label": "Monthly Consumption UOM",
+   "options": "UOM"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_order_recieved",
+   "fieldtype": "Check",
+   "label": "Is Order Recieved"
+  },
+  {
+   "depends_on": "eval: !doc.is_order_recieved",
+   "fieldname": "ord_nrc_reason",
+   "fieldtype": "Select",
+   "label": "Reason For Order Not Recieved",
+   "options": "Price\nStock available at customer point\nOthers"
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Select",
+   "label": "Reason",
+   "options": "\nTaste\nTexture\nProduct Appearance\nFlavour\nVolume\nColour\nOthers"
+  },
+  {
+   "depends_on": "eval:doc.reason_for_competition === \"Others\"",
+   "fieldname": "competition_remarks",
+   "fieldtype": "Small Text",
+   "label": "Competition Remarks"
+  },
+  {
+   "fieldname": "competitor_brand",
+   "fieldtype": "Link",
+   "label": "Competitor Brand",
+   "options": "Brand"
+  },
+  {
+   "depends_on": "competitor_brand",
+   "fieldname": "comp_brand_remarks",
+   "fieldtype": "Small Text",
+   "label": "Brand Remarks"
+  },
+  {
+   "fieldname": "column_break_dcbl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "collapsible_depends_on": "eval:doc.docstatus !== 1",
+   "fieldname": "section_break_zhxw",
+   "fieldtype": "Section Break",
+   "label": "Item Information"
+  },
+  {
+   "fieldname": "section_break_glfb",
+   "fieldtype": "Section Break",
+   "label": "Result & Order Status"
+  },
+  {
+   "fieldname": "demo_result",
+   "fieldtype": "Select",
+   "label": "Demo Result",
+   "options": "Successful\nUnsuccessful"
+  },
+  {
+   "fieldname": "column_break_zzyb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.ord_nrc_reason === \"Others\"",
+   "fieldname": "ord_nrc_remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks for Order Note Recieved"
+  },
+  {
+   "depends_on": "eval:doc.ord_nrc_reason === \"Stock available at customer point\"",
+   "fieldname": "next_expec_order_date",
+   "fieldtype": "Date",
+   "label": "Next Expected Order Date",
+   "mandatory_depends_on": "eval:doc.ord_nrc_reason === \"Stock available at customer point\""
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-05-24 19:08:31.056258",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Trial Target",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

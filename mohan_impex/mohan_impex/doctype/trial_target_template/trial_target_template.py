@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class ItemTrialTable(Document):
+class TrialTargetTemplate(Document):
 	pass

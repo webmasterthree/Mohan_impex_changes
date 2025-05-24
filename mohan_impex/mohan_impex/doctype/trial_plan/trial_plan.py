@@ -7,6 +7,7 @@ from frappe.model.document import Document
 
 class TrialPlan(Document):
     def before_save(self):
+        create_trial_target(self)
         if self.cust_edit_needed:
             if self.verific_type == "Verified":
                 frappe.db.set_value("Customer", self.customer, "cust_edit_needed", self.cust_edit_needed)
@@ -40,25 +41,40 @@ class TrialPlan(Document):
             "content": self.workflow_state
         })
         comment_doc.insert(ignore_permissions=True)
+        create_trial_target(self)
 
-    # def before_save(self):
-        # trial_item_list = []
-        # for item in self.product_trial:
-        #     if item.trial_template:
-        #         trial_name_list = frappe.get_all("Trial Template Table", {"parent": item.trial_template}, ["trial_name"], pluck="trial_name", order_by="idx")
-        #         for trial_name in trial_name_list:
-        #             trial_item = next(filter(lambda x: x.item_code == item.item_code and x.trial_name == trial_name, self.trial_item_table), None)
-        #             if not trial_item:
-        #                 dt_item = frappe.new_doc("Trial Item Table")
-        #                 dt_item.update({
-        #                     "parentfield": "trial_item_table", 
-        #                     "parenttype": "Trial Plan",
-        #                     "parent": self.name,
-        #                     "trial_row_id": item.idx,
-        #                     "item_code": item.item_code,
-        #                     "trial_name": trial_name
-        #                 })
-        #                 trial_item_list.append(dt_item)
-        #             else:
-        #                 trial_item_list.append(trial_item)
-        # self.trial_item_table = trial_item_list
+def create_trial_target(trial_plan_doc):
+    for item in trial_plan_doc.trial_plan_table:
+        if item.item_code and item.product and item.name and not item.trial_target:
+            existing_trial_target = frappe.db.get_value("Trial Target", {"product": item.product, "item_code": item.item_code, "trial_plan": trial_plan_doc.name, "trial_plan_row": item.name})
+            if existing_trial_target:
+                frappe.delete_doc("Trial Target", existing_trial_target, ignore_permissions=True, force=True)
+            trial_target = frappe.new_doc("Trial Target")
+            trial_target.update({
+                "product": item.product,
+                "item_code": item.item_code,
+                "trial_plan": trial_plan_doc.name,
+                "trial_plan_row": item.name
+            })
+            trial_target.flags.ignore_links = True
+            trial_target.save()
+
+            item.db_set("trial_target", trial_target.name)
+
+            trial_target_template = frappe.get_all("Trial Template Table", {"parent": item.item_code}, ["trial_parameter", "type", "idx"])
+            if trial_target_template:
+                for idx, trial_target_template in enumerate(trial_target_template):
+                    trial_target_table = frappe.new_doc("Trial Target Table")
+                    trial_target_table.update({
+                        "parentfield": "trial_target_table",
+                        "parenttype": "Trial Target",
+                        "parent": trial_target.name,
+                        "trial_parameter": trial_target_template.trial_parameter,
+                        "type": trial_target_template.type
+                    })
+                    trial_target_table.save()
+    trial_target_rows = frappe.get_all("Trial Target", filters={"trial_plan": trial_plan_doc.name}, pluck="trial_plan_row")
+    trial_target_names = [item.name for item in trial_plan_doc.trial_plan_table if item.name]
+    
+    delete_trial_targets = [name for name in trial_target_rows if name not in trial_target_names]
+    frappe.db.delete("Trial Target", {"trial_plan": trial_plan_doc.name, "trial_plan_row": ("IN", delete_trial_targets)})

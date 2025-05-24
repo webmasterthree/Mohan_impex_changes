@@ -25,11 +25,12 @@ def notification_list():
         """.format(user_id=frappe.session.user)
         order_and_group_by = " order by creation desc "
         and_filters = ""
-        if frappe.form_dict.get("unread") == True:
-            and_filters += """ and read = 0 """
+        if frappe.form_dict.get("unread") == "1":
+            and_filters += """ and read = "0" """
         query += order_and_group_by
         query += pagination
         notific_info = frappe.db.sql(query, as_dict=True)
+        frappe.errprint(notific_info)
         default_user_image = frappe.get_single("Mohan Impex Settings").default_profile_image
         default_user_image = get_signed_token(default_user_image)
         for notific in notific_info:

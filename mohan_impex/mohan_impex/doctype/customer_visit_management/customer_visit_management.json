@@ -38,14 +38,12 @@
   "section_break_qsmq",
   "appointment_date",
   "conduct_by",
-  "trial_type",
   "column_break_iwjg",
   "trial_loc",
   "date",
   "time",
-  "trial_plan_table_section",
-  "product_trial",
-  "item_trial",
+  "section_break_jhgm",
+  "trial_table",
   "section_break_gbyh",
   "map_location",
   "section_break_lyzf",
@@ -179,14 +177,6 @@
    "fieldname": "section_break_qsmq",
    "fieldtype": "Section Break",
    "label": "Trial Plan"
-  },
-  {
-   "depends_on": "eval:doc.trial_type === \"Product\"",
-   "fieldname": "product_trial",
-   "fieldtype": "Table",
-   "label": "Product Trial",
-   "mandatory_depends_on": "eval:doc.trial_type === \"Product\"",
-   "options": "Product Trial Table"
   },
   {
    "fieldname": "appointment_date",
@@ -340,25 +330,10 @@
    "options": "Self\nTSM Required"
   },
   {
-   "fieldname": "trial_type",
-   "fieldtype": "Select",
-   "label": "Trial Type",
-   "mandatory_depends_on": "eval:doc.has_trial_plan === 1",
-   "options": "\nItem\nProduct"
-  },
-  {
    "default": "0",
    "fieldname": "has_trial_plan",
    "fieldtype": "Check",
    "label": "Has Trial Plan"
-  },
-  {
-   "depends_on": "eval:doc.trial_type === \"Item\"",
-   "fieldname": "item_trial",
-   "fieldtype": "Table",
-   "label": "Item Trial",
-   "mandatory_depends_on": "eval:doc.trial_type === \"Item\"",
-   "options": "Item Trial Table"
   },
   {
    "default": "0",
@@ -404,15 +379,21 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.has_trial_plan === 1",
-   "fieldname": "trial_plan_table_section",
-   "fieldtype": "Section Break",
-   "label": "Trial Plan Table"
-  },
-  {
    "fieldname": "google_address",
    "fieldtype": "Small Text",
    "label": "Google Address"
+  },
+  {
+   "fieldname": "section_break_jhgm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "has_trial_plan",
+   "fieldname": "trial_table",
+   "fieldtype": "Table",
+   "label": "Trial Table",
+   "mandatory_depends_on": "has_trial_plan",
+   "options": "CVM Trial Table"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -423,7 +404,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2025-05-18 13:39:59.507471",
+ "modified": "2025-05-24 12:16:19.997788",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",

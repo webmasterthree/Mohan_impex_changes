@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class TrialTemplate(Document):
+class CVMTrialTable(Document):
 	pass

@@ -1,37 +1,45 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:trial_template_name",
- "creation": "2025-01-31 20:24:58.497839",
+ "autoname": "field:parameter_name",
+ "creation": "2025-05-23 10:53:41.279050",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "trial_template_name",
-  "trial_template_table"
+  "parameter_name",
+  "type",
+  "is_need_remarks"
  ],
  "fields": [
   {
-   "fieldname": "trial_template_name",
+   "fieldname": "parameter_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Trial Template Name",
+   "label": "Parameter Name",
    "reqd": 1,
    "unique": 1
   },
   {
-   "fieldname": "trial_template_table",
-   "fieldtype": "Table",
-   "label": "Trial Template Table",
-   "options": "Trial Template Table",
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "\nSatisfaction Status\nMinutes\nTemperature",
    "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_need_remarks",
+   "fieldtype": "Check",
+   "label": "Is Need Remarks"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-31 20:30:57.322336",
+ "modified": "2025-05-24 15:57:10.554612",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
- "name": "Trial Template",
+ "name": "Trial Parameter",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
