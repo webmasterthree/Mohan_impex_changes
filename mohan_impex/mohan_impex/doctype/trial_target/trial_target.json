@@ -138,10 +138,11 @@
    "options": "UOM"
   },
   {
+   "depends_on": "has_competitor",
    "fieldname": "reason_for_competition",
    "fieldtype": "Select",
    "label": "Reason for Competition Brand",
-   "options": "Price\nEase of use\nRecommendations from others\nReputation\nDosage\nTechnical support\nAvailability\nBrand loyalty\nOthers"
+   "options": "\nPrice\nEase of use\nRecommendations from others\nReputation\nDosage\nTechnical support\nAvailability\nBrand loyalty\nOthers"
   },
   {
    "depends_on": "eval:doc.reason === \"Others\"",
@@ -175,6 +176,7 @@
    "label": "Competition Remarks"
   },
   {
+   "depends_on": "has_competitor",
    "fieldname": "competitor_brand",
    "fieldtype": "Link",
    "label": "Competitor Brand",
@@ -226,13 +228,14 @@
    "mandatory_depends_on": "eval:doc.ord_nrc_reason === \"Stock available at customer point\""
   },
   {
+   "depends_on": "has_competitor",
    "fieldname": "comp_item",
    "fieldtype": "Link",
    "label": "Competitor Item",
    "options": "Item"
   },
   {
-   "depends_on": "competitor",
+   "depends_on": "comp_item",
    "fieldname": "comp_item_remarks",
    "fieldtype": "Small Text",
    "label": "Competitor Remarks"
@@ -253,7 +256,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-25 11:12:34.298922",
+ "modified": "2025-05-25 12:33:07.594939",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Target",

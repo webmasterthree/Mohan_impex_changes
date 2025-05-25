@@ -10,7 +10,6 @@
   "naming_series",
   "conduct_by",
   "assigned_to",
-  "trial_type",
   "trial_loc",
   "customer_level",
   "verific_type",
@@ -249,13 +248,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "trial_type",
-   "fieldtype": "Select",
-   "label": "Trial Type",
-   "options": "Item\nProduct",
-   "reqd": 1
-  },
-  {
    "fetch_from": "location.district",
    "fetch_if_empty": 1,
    "fieldname": "district",
@@ -348,7 +340,7 @@
    "link_fieldname": "trial_plan"
   }
  ],
- "modified": "2025-05-24 20:15:12.012013",
+ "modified": "2025-05-25 12:28:54.959652",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",
