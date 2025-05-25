@@ -6,7 +6,7 @@ from frappe.model.workflow import apply_workflow, validate_workflow
 from frappe.model.document import Document
 import frappe
 from mohan_impex.item_price import get_item_category_price
-from mohan_impex.mohan_impex.utils import get_session_employee
+from mohan_impex.mohan_impex.utils import get_session_employee_area
 from datetime import datetime
 
 class CustomerVisitManagement(Document):
@@ -107,7 +107,8 @@ class CustomerVisitManagement(Document):
                 "visit_duration": self.visit_duration,
                 "date": self.date,
                 "time": self.time,
-                "remarksnotes": self.remarksnotes
+                "remarksnotes": self.remarksnotes,
+                "area": get_session_employee_area()
             }
             pt_dict.update(table_dict)
             doc = frappe.get_doc("Trial Plan", trial_plan) if trial_plan else frappe.get_doc({
