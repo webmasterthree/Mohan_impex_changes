@@ -365,8 +365,7 @@
   {
    "fieldname": "date",
    "fieldtype": "Date",
-   "label": "Date",
-   "mandatory_depends_on": "eval:doc.has_trial_plan === 1"
+   "label": "Date"
   },
   {
    "fieldname": "time",
@@ -404,7 +403,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2025-05-24 12:16:19.997788",
+ "modified": "2025-05-25 14:16:19.475827",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",

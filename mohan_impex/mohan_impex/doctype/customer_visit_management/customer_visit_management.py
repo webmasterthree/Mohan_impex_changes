@@ -37,7 +37,8 @@ class CustomerVisitManagement(Document):
     def get_contact_and_address(self):
         if self.verific_type == "Verified":
             customer_info = frappe.get_value("Customer", {"name": self.customer}, ["customer_primary_address as address", "customer_primary_contact as contact", "custom_shop as shop", "custom_channel_partner as channel_partner"], as_dict=1)
-            customer_info["contact"] = [{"contact": customer_info["contact"]}] if customer_info["contact"] else []
+            customer_info["contact"] = frappe.get_all("Contact Phone", {"parent": customer_info.get("contact")}, ["contact_number as contact"]) if customer_info.get("contact") else []
+            # customer_info["contact"] = [{"contact": customer_info["contact"]}] if customer_info["contact"] else []
             return customer_info
         elif self.verific_type == "Unverified":
             customer_info = frappe.get_value("Unverified Customer", {"name": self.unv_customer}, ["address", "shop", "channel_partner"], as_dict=1)
