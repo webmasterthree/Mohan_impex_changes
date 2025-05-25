@@ -56,14 +56,14 @@ frappe.ui.form.on("Trial Plan", {
       frm.set_value("location", "");
     }
   },
-	onload(frm) {
-    if (frm.is_new()) {
-        set_session_employee(frm)
-    }
-  },
-  before_save(frm) {
-      set_session_employee(frm)
-  },
+	// onload(frm) {
+  //   if (frm.is_new()) {
+  //       set_session_employee(frm)
+  //   }
+  // },
+  // before_save(frm) {
+  //     set_session_employee(frm)
+  // },
 });
 
 cur_frm.set_query("customer", function (frm) {
@@ -132,7 +132,7 @@ function set_customer_info(frm){
   frm.call("get_contact_and_address").then((r) => {
     if (r.message) {
       let response = r.message;
-      console.log(response)
+      console.log([response, "response"])
       if(response){
         frm.set_value("shop", response.shop);
         frm.set_value("channel_partner", response.channel_partner);
@@ -150,6 +150,7 @@ function set_session_employee(frm){
       async:false,
       callback: function (r) {
         if (r.message) {
+          console.log(r.message)
           frm.set_value("created_by_emp", r.message);
           frm.refresh_field("created_by_emp")
         }

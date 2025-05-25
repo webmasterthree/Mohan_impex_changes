@@ -239,10 +239,11 @@ def get_item_templates():
 @frappe.whitelist()
 def get_item_variants():
     query = """
-        select i.item_code, i.item_name, i.item_category, cd.competitor, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
-        from `tabItem` as i
-        left join `tabCompetitor Detail` as cd on cd.parent = i.name
-        where has_variants = 0
+        SELECT i.item_code, i.item_name, i.item_category, c.name AS competitor, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
+        FROM `tabItem` AS i
+        LEFT JOIN `tabCompetitor Item` AS ci ON i.name = ci.item_code
+        LEFT JOIN `tabCompetitor` AS c ON c.name = ci.parent
+        WHERE i.has_variants = 0
     """
     if frappe.form_dict.get("item_template"):
         query += """ AND variant_of="{0}" """.format(frappe.form_dict.get("item_template"))
@@ -272,6 +273,23 @@ def competitor_consolidate(item_list):
             result[key]["competitors"].append(item["competitor"])
     consol_items = list(result.values())
     return consol_items
+
+@frappe.whitelist()
+def get_competitor_items():
+    query = """
+        select distinct ci.item_code, item_name
+        from `tabCompetitor Item` as ci
+        join `tabItem` as i on i.name = ci.item_code
+        where parent is not null
+    """
+    if frappe.form_dict.get("competitor"):
+        query += """ AND ci.parent="{0}" """.format(frappe.form_dict.get("competitor"))
+    if frappe.form_dict.get("search_text"):
+        query += """ AND (ci.parent LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
+    competitors = frappe.db.sql(query, as_dict=True)
+    frappe.local.response['status'] = True
+    frappe.local.response['message'] = "Competitor Items fetched successfully"
+    frappe.local.response['data'] = competitors
 
 @frappe.whitelist()
 def get_items():
@@ -400,7 +418,6 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", s
         if channel_partner:
             query += """ AND unv.channel_partner = "{0}" """.format(channel_partner)
         unv_customer_list = frappe.db.sql(query, as_dict=True)
-        frappe.errprint(query)
         result={}
         for entry in unv_customer_list:
             key = entry["name"]

@@ -2,6 +2,27 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
+  "modified": "2025-03-28 12:14:30.871674",
+  "name": "Receive",
+  "workflow_action_name": "Receive"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-03-29 16:56:22.975314",
+  "name": "Publish",
+  "workflow_action_name": "Publish"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-03-29 16:56:51.996102",
+  "name": "Draft",
+  "workflow_action_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
   "modified": "2025-04-04 10:33:48.281010",
   "name": "Transporter Quotation Pending",
   "workflow_action_name": "Transporter Quotation Pending"

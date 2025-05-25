@@ -19,13 +19,11 @@
   "has_competitor",
   "competitor_brand",
   "comp_brand_remarks",
-  "competitor",
-  "competitor_remarks",
+  "comp_item",
+  "comp_item_remarks",
   "column_break_qwtm",
   "no_of_batches",
   "batch_uom",
-  "mon_cons",
-  "mon_cons_uom",
   "current_dosage",
   "dosage_uom",
   "reason_for_competition",
@@ -38,6 +36,8 @@
   "reason_remarks",
   "column_break_zzyb",
   "is_order_recieved",
+  "month_cons",
+  "month_cons_uom",
   "ord_nrc_reason",
   "next_expec_order_date",
   "ord_nrc_remarks"
@@ -116,12 +116,6 @@
    "label": "Has Competitor"
   },
   {
-   "fieldname": "competitor",
-   "fieldtype": "Link",
-   "label": "Competitor",
-   "options": "Competitor"
-  },
-  {
    "fieldname": "current_dosage",
    "fieldtype": "Float",
    "label": "Current Dosage"
@@ -150,27 +144,10 @@
    "options": "Price\nEase of use\nRecommendations from others\nReputation\nDosage\nTechnical support\nAvailability\nBrand loyalty\nOthers"
   },
   {
-   "depends_on": "competitor",
-   "fieldname": "competitor_remarks",
-   "fieldtype": "Small Text",
-   "label": "Competitor Remarks"
-  },
-  {
    "depends_on": "eval:doc.reason === \"Others\"",
    "fieldname": "reason_remarks",
    "fieldtype": "Small Text",
    "label": "Reason Remarks"
-  },
-  {
-   "fieldname": "mon_cons",
-   "fieldtype": "Float",
-   "label": "Monthly Consumption"
-  },
-  {
-   "fieldname": "mon_cons_uom",
-   "fieldtype": "Link",
-   "label": "Monthly Consumption UOM",
-   "options": "UOM"
   },
   {
    "default": "0",
@@ -201,13 +178,13 @@
    "fieldname": "competitor_brand",
    "fieldtype": "Link",
    "label": "Competitor Brand",
-   "options": "Brand"
+   "options": "Competitor"
   },
   {
    "depends_on": "competitor_brand",
    "fieldname": "comp_brand_remarks",
    "fieldtype": "Small Text",
-   "label": "Brand Remarks"
+   "label": "Competitor Brand Remarks"
   },
   {
    "fieldname": "column_break_dcbl",
@@ -247,11 +224,36 @@
    "fieldtype": "Date",
    "label": "Next Expected Order Date",
    "mandatory_depends_on": "eval:doc.ord_nrc_reason === \"Stock available at customer point\""
+  },
+  {
+   "fieldname": "comp_item",
+   "fieldtype": "Link",
+   "label": "Competitor Item",
+   "options": "Item"
+  },
+  {
+   "depends_on": "competitor",
+   "fieldname": "comp_item_remarks",
+   "fieldtype": "Small Text",
+   "label": "Competitor Remarks"
+  },
+  {
+   "depends_on": "is_order_recieved",
+   "fieldname": "month_cons",
+   "fieldtype": "Float",
+   "label": "Monthly Consumption"
+  },
+  {
+   "depends_on": "is_order_recieved",
+   "fieldname": "month_cons_uom",
+   "fieldtype": "Link",
+   "label": "Monthly Consumption UOM",
+   "options": "UOM"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-24 19:08:31.056258",
+ "modified": "2025-05-25 11:12:34.298922",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Target",

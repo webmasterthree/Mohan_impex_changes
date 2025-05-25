@@ -9,6 +9,7 @@
   "column_break_jkue",
   "naming_series",
   "conduct_by",
+  "assigned_to",
   "trial_type",
   "trial_loc",
   "customer_level",
@@ -36,7 +37,6 @@
   "state",
   "pincode",
   "cust_edit_needed",
-  "assigned_to_tsm",
   "section_break_hsnf",
   "trial_plan_table",
   "section_break_lyzf",
@@ -47,7 +47,6 @@
   "visit_duration",
   "workflow_state",
   "column_break_ksif",
-  "assigned_to",
   "area",
   "status"
  ],
@@ -183,6 +182,7 @@
    "options": "Workflow State"
   },
   {
+   "depends_on": "eval:doc.conduct_by === \"TSM Required\"",
    "fieldname": "assigned_to",
    "fieldtype": "Link",
    "label": "Assigned To",
@@ -328,14 +328,6 @@
    "label": "Approved Date"
   },
   {
-   "depends_on": "eval:doc.conduct_by === \"TSM Required\"",
-   "fieldname": "assigned_to_tsm",
-   "fieldtype": "Link",
-   "ignore_user_permissions": 1,
-   "label": "Assigned To TSM",
-   "options": "Employee"
-  },
-  {
    "default": "Today",
    "fieldname": "created_date",
    "fieldtype": "Date",
@@ -356,7 +348,7 @@
    "link_fieldname": "trial_plan"
   }
  ],
- "modified": "2025-05-24 10:41:15.331742",
+ "modified": "2025-05-24 20:15:12.012013",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",
