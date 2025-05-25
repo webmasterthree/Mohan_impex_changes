@@ -239,12 +239,18 @@ def get_item_templates():
 @frappe.whitelist()
 def get_item_variants():
     query = """
-        SELECT i.item_code, i.item_name, i.item_category, c.name AS competitor, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
-        FROM `tabItem` AS i
-        LEFT JOIN `tabCompetitor Item` AS ci ON i.name = ci.item_code
-        LEFT JOIN `tabCompetitor` AS c ON c.name = ci.parent
-        WHERE i.has_variants = 0
+        select i.item_code, i.item_name, i.item_category, cd.competitor, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
+        from `tabItem` as i
+        left join `tabCompetitor Detail` as cd on cd.parent = i.name
+        where has_variants = 0
     """
+    # query = """
+    #     SELECT i.item_code, i.item_name, i.item_category, c.name AS competitor, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
+    #     FROM `tabItem` AS i
+    #     LEFT JOIN `tabCompetitor Item` AS ci ON i.name = ci.item_code
+    #     LEFT JOIN `tabCompetitor` AS c ON c.name = ci.parent
+    #     WHERE i.has_variants = 0
+    # """
     if frappe.form_dict.get("item_template"):
         query += """ AND variant_of="{0}" """.format(frappe.form_dict.get("item_template"))
     if frappe.form_dict.get("item_category"):
@@ -295,12 +301,6 @@ def get_competitor_items():
 
 @frappe.whitelist()
 def get_items():
-    # query = """
-    #     select i.item_code, i.item_name, i.item_category, cd.competitor, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
-    #     from `tabItem` as i
-    #     left join `tabCompetitor Detail` as cd on cd.parent = i.name
-    #     where has_variants = 0
-    # """
     query = """
         select i.item_code, i.item_name, i.item_category, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
         from `tabItem` as i
