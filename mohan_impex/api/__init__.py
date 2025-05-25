@@ -276,16 +276,18 @@ def competitor_consolidate(item_list):
 
 @frappe.whitelist()
 def get_competitor_items():
+    if not frappe.form_dict.get("competitor"):
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = "Please give the competitor value for filter"
+        return
     query = """
-        select distinct ci.item_code, item_name
+        select distinct item_name
         from `tabCompetitor Item` as ci
-        join `tabItem` as i on i.name = ci.item_code
         where parent is not null
     """
     if frappe.form_dict.get("competitor"):
         query += """ AND ci.parent="{0}" """.format(frappe.form_dict.get("competitor"))
-    if frappe.form_dict.get("search_text"):
-        query += """ AND (ci.parent LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
     competitors = frappe.db.sql(query, as_dict=True)
     frappe.local.response['status'] = True
     frappe.local.response['message'] = "Competitor Items fetched successfully"
@@ -293,6 +295,12 @@ def get_competitor_items():
 
 @frappe.whitelist()
 def get_items():
+    # query = """
+    #     select i.item_code, i.item_name, i.item_category, cd.competitor, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
+    #     from `tabItem` as i
+    #     left join `tabCompetitor Detail` as cd on cd.parent = i.name
+    #     where has_variants = 0
+    # """
     query = """
         select i.item_code, i.item_name, i.item_category, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
         from `tabItem` as i

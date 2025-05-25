@@ -9,6 +9,16 @@ def get_trial_template(item_code):
 
 @frappe.whitelist()
 def get_trial_target(trial_target):
+    if not trial_target:
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = "Please select the Trial Target"
+        return
+    if not frappe.db.exists("Trial Target", trial_target):
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = "Please select the valid Trial Target"
+        return
     trial_target = frappe.get_doc("Trial Target", {"name": trial_target}, ["*"])
     trial_target = trial_target.as_dict()
     fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield"]
@@ -22,6 +32,9 @@ def get_trial_target(trial_target):
                 {k: v for k, v in item.items() if k not in fields_to_remove}
                 for item in trial_target[child_name]
             ]
+    trial_target["item_name"] = frappe.get_value("Item", trial_target.get("item_code"), "item_name")
+    trial_target["comp_item_name"] = frappe.get_value("Item", trial_target.get("comp_item"), "item_name") if trial_target.get("comp_item") else ""
+    trial_target["parameters"] = trial_target.pop("trial_target_table")
     frappe.local.response['status'] = True
     frappe.local.response['data'] = trial_target
 
@@ -34,9 +47,9 @@ def update_trial_target():
         trial_target_doc = frappe.get_doc("Trial Target", trial_target)
         parameters = trial_plan_table_dict.get("parameters")
         trial_row_fields = [
-            "batch_no", "mfg_date", "batch_size", "batch_uom", "no_of_batches", "has_competitor", "competitor_brand", "comp_brand_remarks", 
-            "competitor", "competitor_remarks", "current_dosage", "dosage_uom", "reason_for_competition", "competition_remarks", "reason", 
-            "reason_remarks", "mon_cons", "mon_cons_uom", "is_order_recieved", "ord_nrc_reason"
+            "batch_no", "mfg_date", "batch_size", "batch_uom", "no_of_batches", "has_competitor", "competitor_brand", "comp_brand_remarks", "current_dosage", "dosage_uom", "reason_for_competition", "competition_remarks", "reason",
+            "reason_remarks", "mon_cons", "mon_cons_uom", "is_order_recieved", "ord_nrc_reason", "comp_item", "comp_item_remarks",
+            "demo_result", "next_expec_order_date", "ord_nrc_remarks"
         ]
         for field in trial_row_fields:
             setattr(trial_target_doc, field, trial_plan_table_dict.get(field))
