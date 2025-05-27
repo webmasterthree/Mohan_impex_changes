@@ -2,7 +2,7 @@ import frappe
 import math
 from datetime import datetime, timedelta
 from erpnext.accounts.party import get_dashboard_info
-from mohan_impex.api import get_role_filter
+from mohan_impex.api.sales_order import get_role_filter
 
 @frappe.whitelist()
 def my_customer_list():
