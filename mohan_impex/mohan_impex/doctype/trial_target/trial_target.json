@@ -145,7 +145,7 @@
    "options": "\nPrice\nEase of use\nRecommendations from others\nReputation\nDosage\nTechnical support\nAvailability\nBrand loyalty\nOthers"
   },
   {
-   "depends_on": "eval:doc.reason === \"Others\"",
+   "depends_on": "eval:doc.demo_result && doc.reason === \"Others\"",
    "fieldname": "reason_remarks",
    "fieldtype": "Small Text",
    "label": "Reason Remarks"
@@ -161,16 +161,17 @@
    "fieldname": "ord_nrc_reason",
    "fieldtype": "Select",
    "label": "Reason For Order Not Recieved",
-   "options": "Price\nStock available at customer point\nOthers"
+   "options": "\nPrice\nStock available at customer point\nOthers"
   },
   {
+   "depends_on": "eval:doc.demo_result === \"Unsuccessful\"",
    "fieldname": "reason",
    "fieldtype": "Select",
    "label": "Reason",
    "options": "\nTaste\nTexture\nProduct Appearance\nFlavour\nVolume\nColour\nOthers"
   },
   {
-   "depends_on": "eval:doc.reason_for_competition === \"Others\"",
+   "depends_on": "eval:doc.has_competitor && doc.reason_for_competition === \"Others\"",
    "fieldname": "competition_remarks",
    "fieldtype": "Small Text",
    "label": "Competition Remarks"
@@ -183,7 +184,7 @@
    "options": "Competitor"
   },
   {
-   "depends_on": "competitor_brand",
+   "depends_on": "eval:doc.has_competitor && doc.competitor_brand",
    "fieldname": "comp_brand_remarks",
    "fieldtype": "Small Text",
    "label": "Competitor Brand Remarks"
@@ -205,6 +206,7 @@
    "label": "Result & Order Status"
   },
   {
+   "default": "Unsuccessful",
    "fieldname": "demo_result",
    "fieldtype": "Select",
    "label": "Demo Result",
@@ -215,27 +217,26 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.ord_nrc_reason === \"Others\"",
+   "depends_on": "eval:!doc.is_order_recieved && doc.ord_nrc_reason === \"Others\"",
    "fieldname": "ord_nrc_remarks",
    "fieldtype": "Small Text",
    "label": "Remarks for Order Note Recieved"
   },
   {
-   "depends_on": "eval:doc.ord_nrc_reason === \"Stock available at customer point\"",
+   "depends_on": "eval:!doc.is_order_recieved && doc.ord_nrc_reason === \"Stock available at customer point\"",
    "fieldname": "next_expec_order_date",
    "fieldtype": "Date",
    "label": "Next Expected Order Date",
-   "mandatory_depends_on": "eval:doc.ord_nrc_reason === \"Stock available at customer point\""
+   "mandatory_depends_on": "eval:doc.is_order_recieved && doc.ord_nrc_reason === \"Stock available at customer point\""
   },
   {
    "depends_on": "has_competitor",
    "fieldname": "comp_item",
-   "fieldtype": "Link",
-   "label": "Competitor Item",
-   "options": "Item"
+   "fieldtype": "Autocomplete",
+   "label": "Competitor Item"
   },
   {
-   "depends_on": "comp_item",
+   "depends_on": "eval:doc.has_competitor && doc.comp_item",
    "fieldname": "comp_item_remarks",
    "fieldtype": "Small Text",
    "label": "Competitor Remarks"
@@ -256,7 +257,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-25 12:33:07.594939",
+ "modified": "2025-05-25 19:43:53.744266",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Target",

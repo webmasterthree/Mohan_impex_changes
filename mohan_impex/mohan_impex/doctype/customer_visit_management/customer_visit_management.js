@@ -33,7 +33,7 @@ frappe.ui.form.on("Customer Visit Management", {
     if (frm.is_new() && !frm.doc.visit_start) {
       const now = new Date();
       frm.set_value("visit_start", convertToDateTime(now));
-      set_session_employee(frm)
+      // set_session_employee(frm)
       set_current_map_location(frm);
     }
   },
@@ -79,7 +79,7 @@ frappe.ui.form.on("Customer Visit Management", {
     const visit_end = new Date(frm.doc.visit_end);
     const differenceInSeconds = Math.floor((visit_end - visit_start) / 1000);
     frm.set_value("visit_duration", differenceInSeconds);
-    set_session_employee(frm)
+    // set_session_employee(frm)
   },
   after_save(frm){
     frm.call("trial_plan")
@@ -207,11 +207,13 @@ cur_frm.set_query("item_code", "product_pitching", function (frm, cdt, cdn) {
   var args = {
     "product" : row.product
   }
+  console.log("r.message")
   frappe.call({
       method: "mohan_impex.mohan_impex.doctype.customer_visit_management.customer_visit_management.get_product_items",
       args: args,
       async: false,
       callback(r){
+        console.log([r.message, "LLLLLL"])
         product_items = r.message
       }
   })

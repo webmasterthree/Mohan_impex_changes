@@ -11,7 +11,8 @@
   "item_name",
   "column_break_qwtm",
   "trial_target",
-  "cvm_trial_id"
+  "cvm_trial_id",
+  "trial_status"
  ],
  "fields": [
   {
@@ -19,7 +20,6 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Item Code",
-   "link_filters": "[[\"Item\",\"has_variants\",\"=\",0]]",
    "options": "Item",
    "reqd": 1
   },
@@ -47,19 +47,29 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Trial Target",
-   "options": "Trial Target"
+   "options": "Trial Target",
+   "read_only": 1
   },
   {
    "fieldname": "cvm_trial_id",
    "fieldtype": "Data",
    "label": "CVM Trial ID",
    "read_only": 1
+  },
+  {
+   "default": "Pending",
+   "fieldname": "trial_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Trial Status",
+   "options": "Pending\nCompleted",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-24 19:10:27.675832",
+ "modified": "2025-05-25 17:45:45.303781",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan Table",

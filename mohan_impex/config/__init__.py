@@ -9,7 +9,7 @@ def get_address_list(party_type, party_name):
     return address_list
 
 @frappe.whitelist()
-def get_contacts(verific_type, customer=None, unv_customer=None):
+def get_contacts(verific_type=None, customer=None, unv_customer=None):
     contacts = []
     if verific_type == "Verified" and customer:
         contacts = get_contact_list("Customer", customer)

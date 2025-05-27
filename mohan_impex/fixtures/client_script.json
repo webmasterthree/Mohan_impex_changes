@@ -2,6 +2,17 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "POS Invoice",
+  "enabled": 1,
+  "modified": "2025-04-06 11:19:38.322858",
+  "module": "Mohan Impex",
+  "name": "POS Invoice",
+  "script": "frappe.ui.form.on('POS Invoice', {\n\trefresh(frm) {\n\t\t// your code here\n\t},\n\tonload(frm) {\n        if (!frm.is_new() || frm.doc.company) return;\n        frappe.db.get_list('Employee', {\n            filters: { user_id: frappe.session.user },\n            fields: ['company'],\n            limit: 1\n        }).then(r => {\n            if (r.length) frm.set_value('company', r[0].company);\n        });\n    }\n})",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Transport RFQ",
   "enabled": 1,
   "modified": "2025-04-11 14:51:54.667831",

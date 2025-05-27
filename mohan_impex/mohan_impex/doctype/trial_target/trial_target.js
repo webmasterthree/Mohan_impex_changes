@@ -5,8 +5,25 @@ frappe.ui.form.on("Trial Target", {
 	refresh(frm) {
 
 	},
+    async validate(frm){
+        await update_trial_status(frm)
+        // await validate_trial(frm)
+    },
+    async before_workflow_action(frm){
+        console.log(frm.doc.workflow_state)
+        // frappe.throw("kihgufdytsyd")
+        await validate_trial(frm)
+    },
+    after_workflow_action(frm){
+        // frappe.throw("kihgufdytsyd")
+        update_trial_status(frm)
+    },
     item_code(frm){
         set_target_template(frm)
+    },
+    competitor_brand(frm){
+        console.log(frm.doc)
+        set_comp_item_filter(frm)
     }
 });
 
@@ -25,4 +42,41 @@ function set_target_template(frm){
     else{
         frm.set_value("trial_target_table", [])
     }
+}
+
+function set_comp_item_filter(frm){
+    frm.set_value("comp_item", "")
+    if (frm.doc.competitor_brand){
+        frappe.call({
+            method: "mohan_impex.api.get_competitor_items",
+            args: {
+                competitor: frm.doc.competitor_brand
+            },
+            callback: function(r){
+                const comp_items = r.data.map(item => item.item_name);
+                frm.fields_dict.comp_item.set_data(comp_items)
+            }
+        })
+    }
+    else{
+        frm.fields_dict.comp_item.set_data([])
+    }
+}
+
+async function validate_trial(frm){
+    await frm.call("validate_trial").then(async(r) => {
+        console.log(r.message)
+        if (r.message) {
+          frappe.throw(r.message)
+        }
+    });
+}
+
+async function update_trial_status(frm){
+    await frm.call("update_trial_status").then(async(r) => {
+        console.log(r.message)
+        if (r.message) {
+          frappe.throw(r.message)
+        }
+    });
 }
