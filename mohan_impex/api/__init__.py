@@ -367,7 +367,7 @@ def get_customer_list(search_text=""):
 def get_customer_info(role_filter=None, customer_level="", channel_partner="", kyc_status="", search_text=""):
     if not role_filter:
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp)
+        role_filter = get_territory_role_filter(emp)
     query = """
         SELECT cu.name as name, cu.customer_name, cu.custom_shop as shop, cu.custom_shop_name as shop_name, ct.name as contact, cu.customer_level, cu.custom_channel_partner as channel_partner, cu.kyc_status
         FROM `tabCustomer` AS cu

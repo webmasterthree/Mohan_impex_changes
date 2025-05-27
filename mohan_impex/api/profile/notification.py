@@ -38,6 +38,7 @@ def notification_list():
             notific["content"] = BeautifulSoup(notific["content"], "html.parser").get_text(separator=" ").strip() if notific["content"] else ""
             notific["creation"] = frappe.utils.time_diff_in_seconds(frappe.utils.now(), notific["creation"])
             notific["creation"] = frappe.utils.format_duration(notific["creation"], False)
+            notific["creation"] = notific["creation"].split(" ")[0]
             user_image = frappe.get_value("User", {"name": notific["from_user"]}, "user_image")
             notific["user_image"] = default_user_image
             if user_image: 
