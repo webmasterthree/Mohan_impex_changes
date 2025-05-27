@@ -19,7 +19,7 @@ def notification_list():
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
         query = """
-            select name, subject, email_content as content, from_user, COUNT(*) OVER() AS total_count
+            select name, subject, email_content as content, from_user, creation, COUNT(*) OVER() AS total_count
             from `tabNotification Log` as nl
             where for_user = "{user_id}"
         """.format(user_id=frappe.session.user)
@@ -30,11 +30,14 @@ def notification_list():
         query += order_and_group_by
         query += pagination
         notific_info = frappe.db.sql(query, as_dict=True)
-        frappe.errprint(notific_info)
         default_user_image = frappe.get_single("Mohan Impex Settings").default_profile_image
         default_user_image = get_signed_token(default_user_image)
         for notific in notific_info:
+            notific["subject"] = BeautifulSoup(notific["subject"], "html.parser").get_text(separator=" ").strip() if notific["subject"] else ""
+            notific["subject"] = ' '.join(notific["subject"].split())
             notific["content"] = BeautifulSoup(notific["content"], "html.parser").get_text(separator=" ").strip() if notific["content"] else ""
+            notific["creation"] = frappe.utils.time_diff_in_seconds(frappe.utils.now(), notific["creation"])
+            notific["creation"] = frappe.utils.format_duration(notific["creation"], False)
             user_image = frappe.get_value("User", {"name": notific["from_user"]}, "user_image")
             notific["user_image"] = default_user_image
             if user_image: 

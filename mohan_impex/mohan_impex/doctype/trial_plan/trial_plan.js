@@ -128,6 +128,31 @@ cur_frm.set_query("location", function async (frm) {
   };
 });
 
+cur_frm.set_query("item_code", "trial_plan_table", function (frm, cdt, cdn) {
+  var row = locals[cdt][cdn];
+  var product_items = []
+  var args = {
+    "product" : row.product
+  }
+  console.log("r.message")
+  frappe.call({
+      method: "mohan_impex.mohan_impex.doctype.customer_visit_management.customer_visit_management.get_product_items",
+      args: args,
+      async: false,
+      callback(r){
+        console.log(r.message)
+        product_items = r.message
+      }
+  })
+
+  return {
+    filters: [
+      ["has_variants", "=", 1],
+      ["name", "in", product_items]
+    ],
+  };
+});
+
 function set_customer_info(frm){
   frm.call("get_contact_and_address").then((r) => {
     if (r.message) {

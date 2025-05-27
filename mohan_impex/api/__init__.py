@@ -339,11 +339,10 @@ def material_list():
 @frappe.whitelist()
 def get_customer_list(search_text=""):
     emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-    role_filter = get_role_filter(emp)
+    area_role_filter = get_role_filter(emp)
+    territory_role_filter = get_territory_role_filter(emp)
     customer_list = []
-    filters = {
-        "role_filter": role_filter
-    }
+    filters = {}
     if search_text:
         filters.update({"search_text": search_text})
     if frappe.form_dict.get("channel_partner"):
@@ -356,12 +355,12 @@ def get_customer_list(search_text=""):
         if frappe.form_dict.get("verification_type") == "Verified":
             if frappe.form_dict.get("kyc_status"):
                 filters.update({"kyc_status": frappe.form_dict.get("kyc_status")})
-            customer_list.extend(get_customer_info(**filters))
+            customer_list.extend(get_customer_info(**filters, role_filter=territory_role_filter))
         elif frappe.form_dict.get("verification_type") == "Unverified":
-            customer_list.extend(unv_customer_list(**filters))
+            customer_list.extend(unv_customer_list(**filters, role_filter=area_role_filter))
     else:
-        customer_list.extend(get_customer_info(**filters))
-        customer_list.extend(unv_customer_list(**filters))
+        customer_list.extend(get_customer_info(**filters, role_filter=territory_role_filter))
+        customer_list.extend(unv_customer_list(**filters, role_filter=area_role_filter))
     return customer_list
 
 @frappe.whitelist()
@@ -406,7 +405,7 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
     return customer_info
 
 @frappe.whitelist()
-def unv_customer_list(role_filter=None, customer_level="", channel_partner="", search_text=""):
+def unv_customer_list(role_filter=None, customer_level="", channel_partner="", kyc_status="", search_text=""):
     try:
         if not role_filter:
             customer_level = "Primary"
@@ -552,6 +551,16 @@ def get_role_filter(emp):
     else:
         areas = f"""{emp.get("area")}"""
     return f"""area in ('{areas}') """
+
+def get_territory_role_filter(emp):
+    from frappe.utils.nestedset import get_descendants_of
+    sub_areas = get_descendants_of("Territory", emp.get('area'))
+    if sub_areas:
+        sub_areas.append(emp.get('area'))
+        areas = "', '".join(sub_areas)
+    else:
+        areas = f"""{emp.get("area")}"""
+    return f"""territory in ('{areas}') """
 
 @frappe.whitelist()
 def get_sales_invoices(customer):

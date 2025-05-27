@@ -1,5 +1,5 @@
 import frappe
-
+from mohan_impex.mohan_impex.comment import workflow_status_update
 
 @frappe.whitelist()
 def get_trial_template(item_code):
@@ -33,7 +33,7 @@ def get_trial_target(trial_target):
                 for item in trial_target[child_name]
             ]
     trial_target["item_name"] = frappe.get_value("Item", trial_target.get("item_code"), "item_name")
-    trial_target["comp_item_name"] = frappe.get_value("Item", trial_target.get("comp_item"), "item_name") if trial_target.get("comp_item") else ""
+    # trial_target["comp_item_name"] = frappe.get_value("Item", trial_target.get("comp_item"), "item_name") if trial_target.get("comp_item") else ""
     trial_target["parameters"] = trial_target.pop("trial_target_table")
     frappe.local.response['status'] = True
     frappe.local.response['data'] = trial_target
@@ -76,5 +76,31 @@ def update_trial_target():
         frappe.local.response['status'] = False
         frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
 
-
-    
+@frappe.whitelist()
+def complete_trial_target():
+    try:
+        trial_target_id = frappe.form_dict.get("trial_target_id")
+        if not trial_target_id:
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Please select the Trial Target"
+            return
+        if not frappe.db.exists("Trial Target", trial_target_id):
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Please select the valid Trial Target"
+            return
+        trial_target_doc = frappe.get_doc("Trial Target", trial_target_id)
+        invalid_err_msg = trial_target_doc.validate_trial()
+        if invalid_err_msg:
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = invalid_err_msg
+            return
+        trial_target_doc.status = "Completed"
+        response = workflow_status_update("Trial Target", trial_target_id, "Draft")
+        return response
+    except Exception as err:
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"

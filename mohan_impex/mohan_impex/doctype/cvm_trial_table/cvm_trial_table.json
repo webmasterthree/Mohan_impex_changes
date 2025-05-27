@@ -31,13 +31,13 @@
    "fieldname": "report",
    "fieldtype": "Select",
    "label": "Report",
-   "options": "Pending"
+   "options": "Pending\nCompleted"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-24 12:11:16.025093",
+ "modified": "2025-05-26 21:03:01.072252",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "CVM Trial Table",
