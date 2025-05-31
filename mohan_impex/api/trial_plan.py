@@ -105,6 +105,14 @@ def trial_form():
                     {k: v for k, v in item.items() if k not in fields_to_remove}
                     for item in trial_doc[child_name]
                 ]
+        grouped = {}
+        for item in trial_doc.get("trial_plan_table"):
+            product = item["product"]
+            if product in grouped:
+                grouped[product].append(item)
+            else:
+                grouped[product] = [item]
+        trial_doc["trial_plan_table"] = [{"product": product, "items": items} for product, items in grouped.items()]
         activities = get_comments("Trial Plan", trial_doc["name"])
         trial_doc["activities"] = activities
         trial_doc["tsm_info"] = frappe.get_value("Employee", {"name": trial_doc["assigned_to"]}, ["employee_name as name", "cell_number as mobile", "company_email as email"], as_dict=True) or {}
