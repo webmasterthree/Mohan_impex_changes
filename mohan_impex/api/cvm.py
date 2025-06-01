@@ -123,6 +123,14 @@ def cvm_form():
                 else:
                     grouped[product] = [item]
             cvm_doc["product_pitching"] = [{"product": product, "items": items} for product, items in grouped.items()]
+            trial_grouped = {}
+            for item in cvm_doc.get("trial_table"):
+                product = item["product"]
+                if product in trial_grouped:
+                    trial_grouped[product].append(item)
+                else:
+                    trial_grouped[product] = [item]
+            cvm_doc["trial_table"] = [{"product": product, "items": items} for product, items in trial_grouped.items()]
             activities = get_comments("Customer Visit Management", cvm_doc["name"])
             cvm_doc["activities"] = activities
             cvm_doc["image_url"] = image_url
