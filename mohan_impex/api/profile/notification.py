@@ -20,7 +20,8 @@ def notification_list():
         filters = {
             "for_user": frappe.session.user
         }
-        filters["read"] = "0" if frappe.form_dict.get("unread") == "1" else "1"
+        if frappe.form_dict.get("unread") == "1":
+            filters["read"] = "0"
         notific_info = frappe.get_list(
             "Notification Log",
             fields=[
