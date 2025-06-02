@@ -17,19 +17,20 @@ def notification_list():
         current_page = int(current_page)
         limit = int(limit)
         offset = limit * (current_page - 1)
-        pagination = "limit %s offset %s"%(limit, offset)
-        query = """
-            select name, subject, email_content as content, from_user, creation, COUNT(*) OVER() AS total_count
-            from `tabNotification Log` as nl
-            where for_user = "{user_id}"
-        """.format(user_id=frappe.session.user)
-        order_and_group_by = " order by creation desc "
-        and_filters = ""
-        if frappe.form_dict.get("unread") == "1":
-            and_filters += """ and read = "0" """
-        query += order_and_group_by
-        query += pagination
-        notific_info = frappe.db.sql(query, as_dict=True)
+        filters = {
+            "for_user": frappe.session.user
+        }
+        filters["read"] = "0" if frappe.form_dict.get("unread") == "1" else "1"
+        notific_info = frappe.get_list(
+            "Notification Log",
+            fields=[
+                "name", "subject", "email_content as content", "from_user", "creation", "COUNT(*) OVER() AS total_count"
+            ],
+            filters=filters,
+            order_by="creation desc",
+            limit=limit,
+            start=offset
+        )
         default_user_image = frappe.get_single("Mohan Impex Settings").default_profile_image
         default_user_image = get_signed_token(default_user_image)
         for notific in notific_info:
@@ -64,17 +65,12 @@ def notification_list():
         frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
 
 @frappe.whitelist()
-def mark_as_read(notification_id):
+def mark_as_read():
     try:
-        if notification_id:
-            if not frappe.db.exists("Notification Log", notification_id):
-                frappe.local.response['http_status_code'] = 404
-                frappe.local.response['status'] = False
-                frappe.local.response['message'] = "Please give valid notification ID"
-                return
-            frappe.db.set_value("Notification Log", notification_id, "read", 1)
-            frappe.local.response['status'] = True
-            frappe.local.response['message'] = f"Notification has been marked as read"
+        frappe.db.set_value("Notification Log", {"for_user": frappe.session.user, "read": 0}, "read", 1)
+        frappe.db.commit()
+        frappe.local.response['status'] = True
+        frappe.local.response['message'] = f"Notifications has been marked as read"
     except Exception as err:
         frappe.local.response['http_status_code'] = 404
         frappe.local.response['status'] = False
