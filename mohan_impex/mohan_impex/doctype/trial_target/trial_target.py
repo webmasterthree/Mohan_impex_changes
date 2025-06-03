@@ -32,9 +32,10 @@ class TrialTarget(Document):
 			if self.reason_for_competition == "Others":
 				if not self.competition_remarks:
 					return "Competition Remarks is required"
-			if self.competitor_brand == "Others":
-				if not self.competition_remarks:
-					return "Competitor Brand Remarks is required"
+			if self.competitor_brand == "Other" and not self.comp_brand_remarks:
+				return "Competitor Brand Remarks is required"
+			if self.comp_item == "Other" and not self.comp_item_remarks:
+				return "Competitor Item Remarks is required"
 		if self.demo_result == "Unsuccessful":
 			if not self.reason:
 				return "Reason is required"

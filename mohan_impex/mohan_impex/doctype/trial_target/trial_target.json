@@ -184,7 +184,7 @@
    "options": "Competitor"
   },
   {
-   "depends_on": "eval:doc.has_competitor && doc.competitor_brand",
+   "depends_on": "eval:doc.has_competitor && doc.competitor_brand === \"Other\"",
    "fieldname": "comp_brand_remarks",
    "fieldtype": "Small Text",
    "label": "Competitor Brand Remarks"
@@ -236,7 +236,7 @@
    "label": "Competitor Item"
   },
   {
-   "depends_on": "eval:doc.has_competitor && doc.comp_item",
+   "depends_on": "eval:doc.has_competitor && doc.comp_item === \"Other\"",
    "fieldname": "comp_item_remarks",
    "fieldtype": "Small Text",
    "label": "Competitor Remarks"
@@ -257,7 +257,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-25 19:43:53.744266",
+ "modified": "2025-06-03 21:16:37.157427",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Target",
