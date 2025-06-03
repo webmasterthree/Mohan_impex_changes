@@ -175,3 +175,41 @@ def trial_validate(trial_data):
         frappe.local.response['message'] = f"KYC Customer is Missing"
         return
     return valid
+
+@frappe.whitelist()
+def update_trial_timing():
+    try:
+        trial_id = frappe.form_dict.get("trial_id")
+        trial_start = frappe.form_dict.get("trial_start")
+        trial_end = frappe.form_dict.get("trial_end")
+        
+        if not trial_id:
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Trial ID is missing"
+            return
+        
+        if not frappe.db.exists("Trial Plan", trial_id):
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Invalid trial plan ID"
+            return
+
+        if not trial_start and not trial_end:
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Trial start or end time is missing"
+            return
+
+        trial_doc = frappe.get_doc("Trial Plan", trial_id)
+        trial_doc.trial_start = trial_start
+        trial_doc.trial_end = trial_end
+        trial_doc.save()
+        
+        frappe.local.response['status'] = True
+        frappe.local.response['message'] = "Trial timing have been successfully updated"
+    except Exception as err:
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = frappe.local.response.get('message') or str(err)
+

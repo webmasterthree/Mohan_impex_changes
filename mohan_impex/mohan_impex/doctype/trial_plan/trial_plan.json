@@ -46,6 +46,8 @@
   "visit_duration",
   "workflow_state",
   "column_break_ksif",
+  "trial_start",
+  "trial_end",
   "area",
   "status"
  ],
@@ -331,6 +333,16 @@
    "fieldtype": "Table",
    "label": "Trial Plan Table",
    "options": "Trial Plan Table"
+  },
+  {
+   "fieldname": "trial_start",
+   "fieldtype": "Datetime",
+   "label": "Trial Start"
+  },
+  {
+   "fieldname": "trial_end",
+   "fieldtype": "Datetime",
+   "label": "Trial End"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -340,7 +352,7 @@
    "link_fieldname": "trial_plan"
   }
  ],
- "modified": "2025-05-26 21:00:08.908622",
+ "modified": "2025-06-03 20:24:12.346371",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",

@@ -64,6 +64,9 @@ doc_events = {
     },
     "Salary Slip": {
         "on_submit": "mohan_impex.salary_slip.handle_pf_on_submit"
+    },
+    "Competitor": {
+        "before_save": "mohan_impex.mohan_impex.competitor.add_others_in_competitor_item"
     }
 }
 
