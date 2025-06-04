@@ -62,11 +62,17 @@ doc_events = {
     "Transport RFQ": {
         "on_submit": "mohan_impex.Sales.Assign_Transporter.on_submit"
     },
+    "Leave Application": {
+        "validate": "mohan_impex.leave_test.validate_leave_application",
+        "before_save": "mohan_impex.leave_test.on_leave_application_before_save"
+    },
     "Salary Slip": {
         "on_submit": "mohan_impex.salary_slip.handle_pf_on_submit"
     }
 }
-
+# "Salary Slip": {
+#         "on_submit": "mohan_impex.salary_slip.handle_pf_on_submit"
+#     }
 # "Leave Application": {
 #         "validate": "mohan_impex.leave_restriction.validate_leave_application",
 #         "before_save": "mohan_impex.leave_restriction.on_leave_application_before_save"

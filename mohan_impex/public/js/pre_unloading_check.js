@@ -17,6 +17,7 @@ frappe.ui.form.on('Pre-Unloading Check', {
                             row.qty = item.qty || 0;
                             row.uom = item.uom || "";
                             row.rate = item.rate || 0;
+                            row.qty_in_stock_uom = item.stock_qty || 0;
                         });
 
                         frm.refresh_field("items");
@@ -70,7 +71,7 @@ function update_pre_unloading_status(frm) {
     frm.set_value('status', has_pending_approval ? 'Pending' : 'Approved');
 
     // Sum of all qtys
-    let total_qty = frm.doc.items.reduce((sum, item) => sum + (item.qty || 0), 0);
+    let total_qty = frm.doc.items.reduce((sum, item) => sum + (item.qty_in_stock_uom || 0), 0);
     frm.set_value('total_quantity', total_qty);
 
     frm.refresh_fields(['status', 'total_quantity']);

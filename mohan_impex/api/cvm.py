@@ -1,7 +1,7 @@
 import frappe
 import frappe.utils
 from mohan_impex.mohan_impex.doctype.customer_visit_management.customer_visit_management import CustomerVisitManagement
-from mohan_impex.mohan_impex.utils import get_session_employee
+from mohan_impex.mohan_impex.utils import get_session_employee_area
 from mohan_impex.api import create_contact_number
 from frappe.model.workflow import apply_workflow
 import math
@@ -11,7 +11,6 @@ from mohan_impex.mohan_impex.comment import get_comments
 @frappe.whitelist()
 def cvm_list():
     try:
-        show_area_records = False
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
         current_page = frappe.form_dict.get("current_page")
@@ -32,12 +31,10 @@ def cvm_list():
         tab_filter = 'workflow_state = "%s"'%(tab)
         if tab != "Draft":
             tab_filter = "workflow_state != 'Draft'"
-        if frappe.form_dict.get("show_area_records"):
-            show_area_records = int(frappe.form_dict.get("show_area_records"))
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp, show_area_records)
+        role_filter = get_role_filter(emp)
         query = """
-            select cvm.name, shop_name, cl.contact, location, created_by_emp, customer_level, kyc_status, workflow_state, COUNT(*) OVER() AS total_count
+            select cvm.name, shop_name, cl.contact, location, customer_level, kyc_status, workflow_state, COUNT(*) OVER() AS total_count
             from `tabCustomer Visit Management` as cvm
             JOIN `tabContact List` as cl on cl.parent = cvm.name
             where {tab_filter} and {role_filter}
@@ -107,7 +104,7 @@ def cvm_form():
             for image in image_url:
                 image["url"] = get_signed_token(image["file_url"])
             cvm_doc = cvm_doc.as_dict()
-            fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield", "created_by_emp", "area"]
+            fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield", "area"]
             child_doc = ["product_pitching", "product_trial", "item_trial", "contact"]
             cvm_doc = {
                 key: value for key, value in cvm_doc.items() if key not in fields_to_remove
@@ -142,7 +139,7 @@ def create_cvm():
     cvm_data = frappe.form_dict
     cvm_data.pop("cmd")
     cvm_data.update({
-        "created_by_emp": get_session_employee()
+        "area": get_session_employee_area()
     })
     try:
         response = {}
@@ -172,7 +169,7 @@ def create_cvm():
                 "district": cvm_data.district,
                 "state": cvm_data.state,
                 "pincode": cvm_data.pincode,
-                "created_by_emp": get_session_employee(),
+                "area": get_session_employee_area(),
             }
             if cvm_data.get("isupdate"):
                 unv_cus = frappe.get_doc("Unverified Customer", cvm_data.get("unv_customer"))

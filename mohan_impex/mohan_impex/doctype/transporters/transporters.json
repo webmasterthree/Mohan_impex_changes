@@ -12,7 +12,9 @@
   "expected_delivery",
   "remarks",
   "select",
+  "driver",
   "driver_name",
+  "phone_number",
   "contact_number",
   "vehicle_number"
  ],
@@ -78,6 +80,7 @@
   {
    "fieldname": "contact_number",
    "fieldtype": "Phone",
+   "hidden": 1,
    "label": "Contact Number",
    "permlevel": 2
   },
@@ -86,12 +89,25 @@
    "fieldtype": "Data",
    "label": "Vehicle Number",
    "permlevel": 2
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "label": "Driver",
+   "options": "Driver",
+   "permlevel": 2
+  },
+  {
+   "fieldname": "phone_number",
+   "fieldtype": "Data",
+   "label": "Phone Number",
+   "permlevel": 2
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-11 13:18:25.060438",
+ "modified": "2025-05-27 11:19:41.898362",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transporters",

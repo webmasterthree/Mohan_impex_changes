@@ -30,14 +30,16 @@
    "reqd": 1
   },
   {
+   "fetch_from": "pick_list.custom_warehouse",
    "fieldname": "from_location",
-   "fieldtype": "Data",
+   "fieldtype": "Small Text",
    "label": "From Location",
    "reqd": 1
   },
   {
+   "fetch_from": "pick_list.custom_shipping_address",
    "fieldname": "to_location",
-   "fieldtype": "Data",
+   "fieldtype": "Small Text",
    "label": "To Location",
    "reqd": 1
   },
@@ -116,7 +118,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-11 12:12:32.603677",
+ "modified": "2025-05-29 11:42:47.779113",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transport RFQ",

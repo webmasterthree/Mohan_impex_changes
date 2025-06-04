@@ -5,8 +5,8 @@ def handle_pf_on_submit(doc, method):
 
     # Components to exclude from total_deduction
     exclude_components = [
-        "Provident Fund",
-        "Employees State Insurance Corporation"
+        "Employees State Insurance Corporation",
+        "Provident Fund Employer"
     ]
 
     # Total of the excluded deduction components

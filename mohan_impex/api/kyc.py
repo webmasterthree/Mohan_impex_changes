@@ -1,7 +1,8 @@
 import frappe
-from mohan_impex.mohan_impex.utils import get_session_employee
+from mohan_impex.mohan_impex.utils import get_session_employee_area
 import math
-from mohan_impex.api import get_signed_token, get_role_filter
+from mohan_impex.api import get_signed_token
+from mohan_impex.api.sales_order import get_role_filter
 from datetime import datetime
 from mohan_impex.mohan_impex.comment import get_comments
 from mohan_impex.api import create_contact_number
@@ -10,7 +11,6 @@ from mohan_impex.mohan_impex.contact import get_contact_numbers
 @frappe.whitelist()
 def kyc_list():
     try:
-        show_area_records = False
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
         current_page = frappe.form_dict.get("current_page")
@@ -29,10 +29,8 @@ def kyc_list():
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
         tab_filter = 'workflow_state = "%s"'%(tab)
-        if frappe.form_dict.get("show_area_records"):
-            show_area_records = int(frappe.form_dict.get("show_area_records"))
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp, show_area_records)
+        role_filter = get_role_filter(emp)
         order_and_group_by = " group by cu.name order by cu.creation desc "
         query = """
             select cu.name, cu.customer_name, cu.request_date as created_date, IF(workflow_state='KYC Pending', cu.request_date, IF(workflow_state='KYC Completed', cu.kyc_complete_date, cu.request_date)) AS status_date, cu.workflow_state, cu.created_by_emp, COUNT(*) OVER() AS total_count
@@ -98,7 +96,7 @@ def kyc_form():
             return
         kyc_doc = frappe.get_doc("Customer", kyc_name)
         kyc_doc = kyc_doc.as_dict()
-        fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield", "created_by_emp", "area"]
+        fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield", "territory"]
         child_doc = ["product_pitching", "product_trial", "customer_license", "cust_decl"]
         kyc_doc = {
             key: value for key, value in kyc_doc.items() if key not in fields_to_remove
@@ -162,7 +160,7 @@ def create_kyc():
         cust_licenses = [{"cust_lic": cust_license["file_url"]} for cust_license in kyc_data.cust_license]
         data = {
             "unv_customer": kyc_data.unv_customer,
-            "created_by_emp": get_session_employee(),
+            "territory": get_session_employee_area(),
             "customer_name": kyc_data.customer_name,
             "customer_type": kyc_data.customer_type,
             "customer_level": kyc_data.customer_level,

@@ -1,7 +1,7 @@
 [
  {
   "charts": [],
-  "content": "[{\"id\":\"6OkkR5eBQP\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Welcome To Mohan Impex</span>\",\"col\":12}},{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}}]",
+  "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}}]",
   "custom_blocks": [],
   "docstatus": 0,
   "doctype": "Workspace",
@@ -12,42 +12,6 @@
   "is_hidden": 0,
   "label": "Mohan Impex",
   "links": [
-   {
-    "dependencies": null,
-    "description": null,
-    "hidden": 0,
-    "icon": null,
-    "is_query_report": 0,
-    "label": "Sales",
-    "link_count": 1,
-    "link_to": null,
-    "link_type": "DocType",
-    "onboard": 0,
-    "only_for": null,
-    "parent": "Mohan Impex",
-    "parentfield": "links",
-    "parenttype": "Workspace",
-    "report_ref_doctype": null,
-    "type": "Card Break"
-   },
-   {
-    "dependencies": null,
-    "description": null,
-    "hidden": 0,
-    "icon": null,
-    "is_query_report": 0,
-    "label": "Sales Order",
-    "link_count": 0,
-    "link_to": "Sales Order",
-    "link_type": "DocType",
-    "onboard": 0,
-    "only_for": null,
-    "parent": "Mohan Impex",
-    "parentfield": "links",
-    "parenttype": "Workspace",
-    "report_ref_doctype": null,
-    "type": "Link"
-   },
    {
     "dependencies": null,
     "description": null,
@@ -301,7 +265,7 @@
     "type": "Link"
    }
   ],
-  "modified": "2025-05-17 13:21:51.975745",
+  "modified": "2025-05-21 14:57:48.923767",
   "module": "",
   "name": "Mohan Impex",
   "number_cards": [],

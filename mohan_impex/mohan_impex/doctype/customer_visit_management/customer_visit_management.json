@@ -57,7 +57,6 @@
   "visit_duration",
   "column_break_suho",
   "workflow_state",
-  "created_by_emp",
   "area",
   "status"
  ],
@@ -227,13 +226,6 @@
    "options": "Workflow State"
   },
   {
-   "fieldname": "created_by_emp",
-   "fieldtype": "Link",
-   "label": "Created By",
-   "options": "Employee"
-  },
-  {
-   "fetch_from": "created_by_emp.area",
    "fieldname": "area",
    "fieldtype": "Link",
    "label": "Area",
@@ -431,7 +423,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2025-04-02 12:36:17.090457",
+ "modified": "2025-05-18 13:39:59.507471",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",

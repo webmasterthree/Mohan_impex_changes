@@ -12,8 +12,9 @@ def on_submit(doc, method):
     if selected:
         frappe.db.set_value("Pick List", doc.pick_list, {
             "custom_transporter_name": selected.transporter_name,
+            "custom_driver":selected.driver,
             "custom_driver_name": selected.driver_name,
-            "custom_contact_number": selected.contact_number,
+            "custom_contact_number": selected.phone_number,
             "custom_vehicle_number": selected.vehicle_number,
             "custom_transport_charges": selected.quoted_amount,
             "custom_expected_delivery": selected.expected_delivery,

@@ -1,6 +1,6 @@
 import frappe
 from mohan_impex.api.cvm import create_contact_number 
-from mohan_impex.mohan_impex.utils import get_session_employee
+from mohan_impex.mohan_impex.utils import get_session_employee_area
 import math
 from mohan_impex.mohan_impex.comment import get_comments
 from mohan_impex.api import get_role_filter
@@ -8,7 +8,6 @@ from mohan_impex.api import get_role_filter
 @frappe.whitelist()
 def trial_list():
     try:
-        show_area_records = False
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
         current_page = frappe.form_dict.get("current_page")
@@ -30,13 +29,11 @@ def trial_list():
             tab_filter = 'workflow_state in ("%s", "%s")'%("Pending", "Rejected")
         else:
             tab_filter = 'workflow_state = "%s"'%(tab)
-        if frappe.form_dict.get("show_area_records"):
-            show_area_records = int(frappe.form_dict.get("show_area_records"))
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp, show_area_records)
+        role_filter = get_role_filter(emp)
         order_and_group_by = " group by pt.name order by pt.creation desc "
         query = """
-            select pt.name, trial_type, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, shop_name, cl.contact, location, created_by_emp, workflow_state, COUNT(*) OVER() AS total_count
+            select pt.name, trial_type, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, shop_name, cl.contact, location, workflow_state, COUNT(*) OVER() AS total_count
             from `tabTrial Plan` as pt
             Join `tabContact List` as cl on cl.parent = pt.name
             where {tab_filter} and {role_filter} 
@@ -74,16 +71,6 @@ def trial_list():
                 "current_page": current_page
             }
         ]
-        # trial_list = []
-        # for trial in trial_info:
-        #     trial["location"] = trial["location"].rsplit('-', 1)[0] if trial["location"] else ""
-        #     trial["form_url"] = f"{frappe.utils.get_url()}/api/method/mohan_impex.api.trial_plan.trial_form?name={trial['name']}"
-        #     trial_list.append(trial)
-        # approved = list(filter(lambda d: d.get("workflow_state") == "Approved", trial_list))
-        # pending = list(filter(lambda d: d.get("workflow_state") == "Pending", trial_list))
-
-        # if frappe.has_permission("Trial Plan", "create"):
-        #     response["create_perm"] = True
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Trial plan list has been successfully fetched"
         frappe.local.response['data'] = response
@@ -108,7 +95,7 @@ def trial_form():
             return
         trial_doc = frappe.get_doc("Trial Plan", trial_name)
         trial_doc = trial_doc.as_dict()
-        fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield", "created_by_emp", "area"]
+        fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield", "area"]
         child_doc = ["trial_item_table", "product_trial_table", "item_trial_table"]
         trial_doc = {
             key: value for key, value in trial_doc.items() if key not in fields_to_remove
@@ -119,32 +106,6 @@ def trial_form():
                     {k: v for k, v in item.items() if k not in fields_to_remove}
                     for item in trial_doc[child_name]
                 ]
-        activities = [
-                {
-                    "role": "ASM",
-                    "name": "Ravi",
-                    "status": "Approved",
-                    "comments": None,
-                    "date": "2025-02-13",
-                    "time": "13:58:32"
-                },
-                {
-                    "role": "ASM",
-                    "name": "Ravi",
-                    "status": None,
-                    "comments": "Aproving the status",
-                    "date": "2025-02-14",
-                    "time": "13:58:32"
-                },
-                {
-                    "role": "ASM",
-                    "name": "Ravi",
-                    "status": "Approved",
-                    "comments": "Aproving the status",
-                    "date": "2025-02-14",
-                    "time": "13:58:32"
-                }
-            ]
         activities = get_comments("Trial Plan", trial_doc["name"])
         trial_doc["activities"] = activities
         trial_doc["tsm_info"] = frappe.get_value("Employee", {"name": trial_doc["assigned_to_tsm"]}, ["employee_name as name", "cell_number as mobile", "company_email as email"], as_dict=True) or {}
@@ -162,7 +123,7 @@ def create_product_trial():
     trial_data.pop("cmd")
     trial_data.update({
         "doctype" : "Trial Plan",
-        "created_by_emp": get_session_employee()
+        "area": get_session_employee_area()
     })
     try:
         if not trial_validate(trial_data):

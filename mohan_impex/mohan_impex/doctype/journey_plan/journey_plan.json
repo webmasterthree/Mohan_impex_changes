@@ -23,7 +23,6 @@
   "section_break_ikim",
   "remarks",
   "amended_from",
-  "created_by_emp",
   "area",
   "workflow_state"
  ],
@@ -120,13 +119,6 @@
    "options": "Workflow State"
   },
   {
-   "fieldname": "created_by_emp",
-   "fieldtype": "Link",
-   "label": "Created By",
-   "options": "Employee"
-  },
-  {
-   "fetch_from": "created_by_emp.area",
    "fieldname": "area",
    "fieldtype": "Link",
    "label": "Area",
@@ -163,7 +155,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-01 19:33:06.260978",
+ "modified": "2025-05-18 15:25:46.024495",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Journey Plan",
