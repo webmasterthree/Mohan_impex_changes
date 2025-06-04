@@ -61,11 +61,11 @@ def update_trial_target():
             for parameter in parameters:
                 if parameter.get("trial_parameter") == trial_target_row_doc.trial_parameter:
                     if parameter.get("type") == "Satisfaction Status":
-                        trial_target_row_doc.satisfaction_status = parameter.get("value")
+                        trial_target_row_doc.satisfaction_status = parameter.get("satisfaction_status")
                     elif parameter.get("type") == "Minutes":
-                        trial_target_row_doc.minutes = parameter.get("value")
+                        trial_target_row_doc.minutes = parameter.get("minutes")
                     elif parameter.get("type") == "Temperature":
-                        trial_target_row_doc.temperature = parameter.get("value")
+                        trial_target_row_doc.temperature = parameter.get("temperature")
                     trial_target_row_doc.remarks = parameter.get("remarks")
                     trial_target_row_doc.save()
                     break
