@@ -116,11 +116,13 @@
    "label": "Has Competitor"
   },
   {
+   "depends_on": "eval:doc.has_competitor",
    "fieldname": "current_dosage",
    "fieldtype": "Float",
    "label": "Current Dosage"
   },
   {
+   "depends_on": "eval:doc.has_competitor",
    "fieldname": "dosage_uom",
    "fieldtype": "Link",
    "label": "Dosage UOM",
@@ -257,7 +259,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-03 21:16:37.157427",
+ "modified": "2025-06-05 14:59:11.345385",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Target",

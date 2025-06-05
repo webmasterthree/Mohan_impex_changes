@@ -3,7 +3,7 @@
 
 frappe.ui.form.on("Trial Target", {
 	refresh(frm) {
-        set_comp_item_filter(frm, true)
+        set_comp_item_filter(frm)
 	},
     async validate(frm){
         await update_trial_status(frm)
@@ -22,7 +22,7 @@ frappe.ui.form.on("Trial Target", {
         set_target_template(frm)
     },
     competitor_brand(frm){
-        set_comp_item_filter(frm)
+        set_comp_item_filter(frm, true)
     }
 });
 
@@ -44,7 +44,7 @@ function set_target_template(frm){
 }
 
 function set_comp_item_filter(frm, reset=false){
-    if(reset && frm.doc.has_competitor && frm.doc.competitor_brand){
+    if(reset){
         frm.set_value("comp_item", "")
     }
     if (frm.doc.competitor_brand){
@@ -66,7 +66,6 @@ function set_comp_item_filter(frm, reset=false){
 
 async function validate_trial(frm){
     await frm.call("validate_trial").then(async(r) => {
-        console.log(r.message)
         if (r.message) {
           frappe.throw(r.message)
         }

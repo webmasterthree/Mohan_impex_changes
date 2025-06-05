@@ -18,10 +18,6 @@ class TrialTarget(Document):
 			return "Batch Size is required"
 		if not self.batch_uom:
 			return "Batch UOM is required"
-		if not self.current_dosage:
-			return "Current Dosage is required"
-		if not self.dosage_uom:
-			return "Dosage UOM is required"
 		if self.has_competitor:
 			if not self.competitor_brand:
 				return "Competitor Brand is required"
@@ -36,6 +32,10 @@ class TrialTarget(Document):
 				return "Competitor Brand Remarks is required"
 			if self.comp_item == "Other" and not self.comp_item_remarks:
 				return "Competitor Item Remarks is required"
+			if not self.current_dosage:
+				return "Current Dosage is required"
+			if not self.dosage_uom:
+				return "Dosage UOM is required"
 		if self.demo_result == "Unsuccessful":
 			if not self.reason:
 				return "Reason is required"
