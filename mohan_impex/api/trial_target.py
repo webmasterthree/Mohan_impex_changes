@@ -98,7 +98,7 @@ def complete_trial_target():
             frappe.local.response['message'] = invalid_err_msg
             return
         trial_target_doc.status = "Completed"
-        response = workflow_status_update("Trial Target", trial_target_id, "Draft")
+        response = workflow_status_update("Trial Target", trial_target_id, "Complete")
         return response
     except Exception as err:
         frappe.local.response['http_status_code'] = 404
