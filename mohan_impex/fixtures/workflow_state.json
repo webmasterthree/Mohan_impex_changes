@@ -21,9 +21,18 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-02 18:08:28.252357",
-  "name": "Accounts Team Approval Pending",
+  "modified": "2025-05-25 17:06:32.959613",
+  "name": "Completed",
   "style": "",
+  "workflow_state_name": "Completed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-25 09:05:52.881251",
+  "name": "Accounts Team Approval Pending",
+  "style": "Danger",
   "workflow_state_name": "Accounts Team Approval Pending"
  },
  {
@@ -192,9 +201,18 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-25 17:06:32.959613",
-  "name": "Completed",
-  "style": "",
-  "workflow_state_name": "Completed"
+  "modified": "2025-05-24 16:36:46.176556",
+  "name": "Accounts Team Approval Required",
+  "style": "Warning",
+  "workflow_state_name": "Accounts Team Approval Required"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-24 16:52:32.929281",
+  "name": "Self Approval Required",
+  "style": "Success",
+  "workflow_state_name": "Self Approval Required"
  }
 ]

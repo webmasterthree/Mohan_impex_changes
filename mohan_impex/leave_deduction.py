@@ -118,3 +118,7 @@ def create_leave_application(employee, leave_type):
     except Exception as e:
         frappe.logger().error(f"Error creating leave application for {employee}: {str(e)}")
         return "Failed to create Leave Application. Please check logs."
+
+
+
+

@@ -13,7 +13,7 @@ def get_purchase_order_items(purchase_order=None):
         items = frappe.db.get_all(
             "Purchase Order Item",
             filters={"parent": purchase_order},
-            fields=["item_code", "qty", "uom", "rate"]
+            fields=["item_code", "qty", "uom", "rate","stock_qty"]
         )
 
         if not items:
