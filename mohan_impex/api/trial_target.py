@@ -98,6 +98,7 @@ def complete_trial_target():
             frappe.local.response['message'] = invalid_err_msg
             return
         trial_target_doc.status = "Completed"
+        trial_target_doc.update_trial_status()
         response = workflow_status_update("Trial Target", trial_target_id, "Complete")
         return response
     except Exception as err:
