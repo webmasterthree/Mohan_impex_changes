@@ -48,7 +48,7 @@ def update_trial_target():
         parameters = trial_plan_table_dict.get("parameters")
         trial_row_fields = [
             "batch_no", "mfg_date", "batch_size", "batch_uom", "no_of_batches", "has_competitor", "competitor_brand", "comp_brand_remarks", "current_dosage", "dosage_uom", "reason_for_competition", "competition_remarks", "reason",
-            "reason_remarks", "mon_cons", "mon_cons_uom", "is_order_recieved", "ord_nrc_reason", "comp_item", "comp_item_remarks",
+            "reason_remarks", "month_cons", "month_cons_uom", "is_order_recieved", "ord_nrc_reason", "comp_item", "comp_item_remarks",
             "demo_result", "next_expec_order_date", "ord_nrc_remarks"
         ]
         for field in trial_row_fields:
