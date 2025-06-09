@@ -125,6 +125,7 @@ def cvm_form():
             cvm_doc["product_pitching"] = [{"product": product, "items": items} for product, items in grouped.items()]
             trial_grouped = {}
             for item in cvm_doc.get("trial_table"):
+                item["item_name"] = frappe.get_value("Item", {"name": item["item_code"]}, "item_name")
                 product = item["product"]
                 if product in trial_grouped:
                     trial_grouped[product].append(item)
