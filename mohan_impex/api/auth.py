@@ -12,7 +12,6 @@ from io import BytesIO
 
 @frappe.whitelist(allow_guest=True)
 def login(email_id, password):
-    frappe.get_doc("User", {"name": email_id})
     if not frappe.db.exists("User", {"name": email_id}):
         frappe.local.response['http_status_code'] = 404
         frappe.local.response['status'] = False
