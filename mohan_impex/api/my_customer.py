@@ -40,9 +40,9 @@ def my_customer_list():
         query = """
             select cu.name, cu.customer_name, custom_shop_name as custom_shop, mobile_no as contact, customer_primary_address as location, workflow_state, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
-            join `tabDynamic Link` as dl on dl.link_name=cu.name
+            left join `tabDynamic Link` as dl on dl.link_name=cu.name
             {si_join}
-            where {billing_query} {role_filter} and disabled=0 and customer_level="Primary" and kyc_status="Completed" and dl.parenttype="Contact Number"
+            where {billing_query} {role_filter} and disabled=0 and customer_level="Primary" and kyc_status="Completed"
         """.format(si_join=si_join, billing_query=billing_query, role_filter=role_filter)
         group_by = " group by cu.name order by cu.creation desc "
         filter_checks = {
@@ -51,7 +51,7 @@ def my_customer_list():
             "business_type": "business_type",
         }
         if frappe.form_dict.get("search_text"):
-            or_filters = """AND (cu.name LIKE "%{search_text}%" or cu.customer_name LIKE "%{search_text}%" or dl.parent LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
+            or_filters = """AND (cu.name LIKE "%{search_text}%" or cu.customer_name LIKE "%{search_text}%" or (dl.parent LIKE "%{search_text}%" and dl.parenttype="Contact Number")) """.format(search_text=frappe.form_dict.get("search_text"))
             query += or_filters
         and_filters = []
         for key, value in filter_checks.items():
