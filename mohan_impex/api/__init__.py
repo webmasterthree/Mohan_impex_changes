@@ -371,8 +371,8 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
     query = """
         SELECT cu.name as name, cu.customer_name, cu.custom_shop as shop, cu.custom_shop_name as shop_name, ct.name as contact, cu.customer_level, cu.custom_channel_partner as channel_partner, cu.kyc_status
         FROM `tabCustomer` AS cu
-        JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
-        JOIN `tabContact Number` AS ct on ct.name = dl.parent
+        LEFT JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
+        LEFT JOIN `tabContact Number` AS ct on ct.name = dl.parent
         WHERE {role_filter}
     """.format(role_filter=role_filter)
     if search_text:
@@ -400,7 +400,8 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
                 "kyc_status": entry["kyc_status"],
                 "contact": []
             }
-        result[key]["contact"].append(entry["contact"])
+        if entry["contact"]:
+            result[key]["contact"].append(entry["contact"])
     customer_info = list(result.values())
     return customer_info
 
@@ -414,7 +415,7 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", k
         query = """
             select unv.name, customer_name, customer_level, shop, shop_name, contact, channel_partner, kyc_status
             from `tabUnverified Customer` as unv
-            JOIN `tabContact List` as cl on cl.parent = unv.name
+            LEFT JOIN `tabContact List` as cl on cl.parent = unv.name
             WHERE kyc_status = "Pending" and {role_filter}
         """.format(role_filter=role_filter)
         if frappe.form_dict.get("search_text"):
@@ -440,7 +441,8 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", k
                     "kyc_status": entry["kyc_status"],
                     "contact": []
                 }
-            result[key]["contact"].append(entry["contact"])
+            if entry["contact"]:
+                result[key]["contact"].append(entry["contact"])
         unv_customer_list = list(result.values())
         if role_filter:
             return unv_customer_list
