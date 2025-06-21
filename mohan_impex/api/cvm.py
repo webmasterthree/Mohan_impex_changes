@@ -256,7 +256,7 @@ def create_cvm():
         frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
 
 def create_shop(shop, shop_name):
-    if not shop:
+    if shop:
         doc = frappe.get_doc({
             "doctype": "Shop",
             "shop_name": shop_name
@@ -279,10 +279,10 @@ def cvm_validate(cvm_data):
             frappe.local.response['message'] = f"Location is Missing"
             return
         if not frappe.db.exists("Address", cvm_data.location):
-            frappe.local.response['http_status_code'] = 404
-            frappe.local.response['status'] = False
-            frappe.local.response['message'] = f"Given location {cvm_data.location} not found in the system"
-            return
+                frappe.local.response['http_status_code'] = 404
+                frappe.local.response['status'] = False
+                frappe.local.response['message'] = f"Given location {cvm_data.location} not found in the system"
+                return
         if cvm_data.customer_level == "Primary" and cvm_data.verific_type == "Unverified" and not cvm_data.unv_customer:
             frappe.local.response['http_status_code'] = 404
             frappe.local.response['status'] = False

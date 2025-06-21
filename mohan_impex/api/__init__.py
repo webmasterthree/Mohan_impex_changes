@@ -594,3 +594,15 @@ def get_address_text(address_name):
     address_text += f"{addr_doc.state}, " if addr_doc.state else ""
     address_text += f"{addr_doc.pincode}" if addr_doc.pincode else ""
     return address_text
+
+@frappe.whitelist()
+def get_employee_list(area):
+    try:
+        employee_list = frappe.get_all("Employee", {"area": area}, ["name", "employee_name"])
+        frappe.local.response['status'] = True
+        frappe.local.response['message'] = "Employee List has been fetched successfully"
+        frappe.local.response['data'] = employee_list
+    except Exception as err:
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
