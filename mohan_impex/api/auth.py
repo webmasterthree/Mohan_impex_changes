@@ -47,7 +47,8 @@ def login(email_id, password):
         "full_name": user.full_name,
         "employee_id": emp.name,
         "expires_in": expires_in,
-        "role": emp.role_profile
+        "role": emp.role_profile,
+        "area": emp.area
     }]
     frappe.local.response['status'] = True
     frappe.local.response['message'] = "Successfully Logged In"
