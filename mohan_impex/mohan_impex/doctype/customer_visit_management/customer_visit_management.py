@@ -6,7 +6,7 @@ from frappe.model.workflow import apply_workflow, validate_workflow
 from frappe.model.document import Document
 import frappe
 from mohan_impex.item_price import get_item_category_price
-from mohan_impex.mohan_impex.utils import get_session_employee_area
+from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 from datetime import datetime
 
 class CustomerVisitManagement(Document):
@@ -108,6 +108,7 @@ class CustomerVisitManagement(Document):
                 "date": self.date,
                 "time": self.time,
                 "remarksnotes": self.remarksnotes,
+                "created_by_emp": get_session_employee(),
                 "area": get_session_employee_area()
             }
             pt_dict.update(table_dict)

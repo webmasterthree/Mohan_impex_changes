@@ -1,15 +1,16 @@
 import frappe
-from mohan_impex.mohan_impex.utils import get_session_employee_area
+from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 import math
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import get_role_filter
+from mohan_impex.api import get_role_filter, get_self_filter_status
 
 @frappe.whitelist()
 def journey_plan_list():
     try:
-        show_area_records = False
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
+        is_self = int(frappe.form_dict.get("is_self") or 0)
+        other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
             frappe.local.response['http_status_code'] = 404
@@ -29,8 +30,9 @@ def journey_plan_list():
             tab_filter = 'workflow_state in ("%s", "%s")'%("Pending", "Rejected")
         else:
             tab_filter = 'workflow_state = "%s"'%(tab)
-        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp)
+        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)
+        role_filter = get_role_filter(emp, is_self, other_employee)
+        is_self_filter = get_self_filter_status()
         order_by = " order by creation desc "
         query = """
             select name, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, workflow_state as status, COUNT(*) OVER() AS total_count
@@ -68,7 +70,8 @@ def journey_plan_list():
                 "records": journey_info,
                 "total_count": total_count,
                 "page_count": page_count,
-                "current_page": current_page
+                "current_page": current_page,
+                "is_self_filter": is_self_filter
             }
         ]
         # if frappe.has_permission("Journey Plan", "create"):
@@ -95,6 +98,8 @@ def journey_plan_form():
             journey_doc = journey_doc.as_dict()
             activities = get_comments("Journey Plan", journey_doc["name"])
             journey_doc["activities"] = activities
+            is_self_filter = get_self_filter_status()
+            journey_doc["is_self_filter"] = is_self_filter
             frappe.local.response['status'] = True
             frappe.local.response['message'] = "Journey Plan form has been successfully fetched"
             frappe.local.response['data'] = [journey_doc]
@@ -109,6 +114,7 @@ def create_journey_plan():
     journey_plan_data.pop("cmd")
     journey_plan_data.update({
         "doctype" : "Journey Plan",
+        "created_by_emp": get_session_employee(),
         "area": get_session_employee_area()
     })
     try:

@@ -1,7 +1,7 @@
 import frappe
-from mohan_impex.mohan_impex.utils import get_session_employee_area
+from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 from frappe.utils.file_manager import save_file
-from mohan_impex.api import get_role_filter
+from mohan_impex.api import get_role_filter, get_self_filter_status
 import math
 from mohan_impex.mohan_impex.comment import get_comments
 from bs4 import BeautifulSoup
@@ -11,6 +11,8 @@ def complaints_list():
     try:
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
+        is_self = int(frappe.form_dict.get("is_self") or 0)
+        other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
             frappe.local.response['http_status_code'] = 404
@@ -27,8 +29,9 @@ def complaints_list():
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
         tab_filter = 'workflow_state = "%s"'%(tab)
-        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp)
+        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)
+        role_filter = get_role_filter(emp, is_self, other_employee)
+        is_self_filter = get_self_filter_status()
         query = """
             select name, opening_date as created_date, IF(workflow_state='Active', opening_date, IF(workflow_state='Resolved', resolved_date, opening_date)) AS status_date, customer_name, claim_type, workflow_state, COUNT(*) OVER() AS total_count
             from `tabIssue`
@@ -68,7 +71,8 @@ def complaints_list():
                 "records": complaints_info,
                 "total_count": total_count,
                 "page_count": page_count,
-                "current_page": current_page
+                "current_page": current_page,
+                "is_self_filter": is_self_filter
             }
         ]
         frappe.local.response['status'] = True
@@ -127,6 +131,8 @@ def complaints_form():
             complaints_dict["image_url"] = image_url
             activities = get_comments("Issue", complaints_name)
             complaints_dict["activities"] = activities
+            is_self_filter = get_self_filter_status()
+            complaints_dict["is_self_filter"] = is_self_filter
             frappe.local.response['status'] = True
             frappe.local.response['message'] = "Complaints & Claims request form has been successfully fetched"
             frappe.local.response['data'] = [complaints_dict]
@@ -141,6 +147,7 @@ def create_complaint():
     complaint_data.pop("cmd")
     complaint_data.update({
         "doctype" : "Issue",
+        "created_by_emp": get_session_employee(),
         "area": get_session_employee_area()
     })
     try:

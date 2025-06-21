@@ -55,6 +55,7 @@
   "visit_duration",
   "column_break_suho",
   "workflow_state",
+  "created_by_emp",
   "area",
   "status"
  ],
@@ -393,6 +394,12 @@
    "label": "Trial Table",
    "mandatory_depends_on": "has_trial_plan",
    "options": "CVM Trial Table"
+  },
+  {
+   "fieldname": "created_by_emp",
+   "fieldtype": "Link",
+   "label": "Created By Emp",
+   "options": "Employee"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -403,7 +410,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2025-05-25 14:16:19.475827",
+ "modified": "2025-06-21 12:17:35.130213",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",

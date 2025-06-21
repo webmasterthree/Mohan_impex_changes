@@ -18,6 +18,7 @@
   "section_break_cgqy",
   "samp_req_item",
   "remarks",
+  "created_by_emp",
   "area",
   "workflow_state"
  ],
@@ -112,11 +113,17 @@
    "fieldtype": "Date",
    "label": "Created Date",
    "reqd": 1
+  },
+  {
+   "fieldname": "created_by_emp",
+   "fieldtype": "Link",
+   "label": "Created By Emp",
+   "options": "Employee"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-18 15:28:42.278068",
+ "modified": "2025-06-21 14:22:46.737423",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Sample Requisition",

@@ -8,7 +8,7 @@ import frappe
 
 class JourneyPlan(Document):
 	def before_save(self):
-		emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
+		emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)
 		filters = {
 			"visit_from_date": ["<=", self.visit_to_date], 
 			"visit_to_date": [">=", self.visit_from_date], 

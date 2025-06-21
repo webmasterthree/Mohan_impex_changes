@@ -1,14 +1,16 @@
 import frappe
-from mohan_impex.mohan_impex.utils import get_session_employee_area
+from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 import math
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import get_role_filter
+from mohan_impex.api import get_role_filter, get_self_filter_status
 
 @frappe.whitelist()
 def collateral_request_list():
     try:
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
+        is_self = int(frappe.form_dict.get("is_self") or 0)
+        other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
             frappe.local.response['http_status_code'] = 404
@@ -28,8 +30,9 @@ def collateral_request_list():
             tab_filter = 'workflow_state in ("%s", "%s")'%("Pending", "Rejected")
         else:
             tab_filter = 'workflow_state = "%s"'%(tab)
-        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp)
+        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)
+        role_filter = get_role_filter(emp, is_self, other_employee)
+        is_self_filter = get_self_filter_status()
         order_by = " order by creation desc "
         query = """
             select name, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, workflow_state as status, COUNT(*) OVER() AS total_count
@@ -67,7 +70,8 @@ def collateral_request_list():
                 "records": cr_info,
                 "total_count": total_count,
                 "page_count": page_count,
-                "current_page": current_page
+                "current_page": current_page,
+                "is_self_filter": is_self_filter
             }
         ]
         frappe.local.response['status'] = True
@@ -92,6 +96,8 @@ def collateral_request_form():
             cr_doc = cr_doc.as_dict()
             activities = get_comments("Marketing Collateral Request", cr_doc["name"])
             cr_doc["activities"] = activities
+            is_self_filter = get_self_filter_status()
+            cr_doc["is_self_filter"] = is_self_filter
             frappe.local.response['status'] = True
             frappe.local.response['message'] = "Marketing Collateral Request form has been successfully fetched"
             frappe.local.response['data'] = [cr_doc]
@@ -106,6 +112,7 @@ def create_collateral_request():
     cr_data.pop("cmd")
     cr_data.update({
         "doctype" : "Marketing Collateral Request",
+        "created_by_emp": get_session_employee(),
         "area": get_session_employee_area()
     })
     try:

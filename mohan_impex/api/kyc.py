@@ -1,11 +1,11 @@
 import frappe
-from mohan_impex.mohan_impex.utils import get_session_employee_area
+from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 import math
 from mohan_impex.api import get_signed_token
 from mohan_impex.api.sales_order import get_role_filter
 from datetime import datetime
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import create_contact_number
+from mohan_impex.api import create_contact_number, get_self_filter_status
 from mohan_impex.mohan_impex.contact import get_contact_numbers
 
 @frappe.whitelist()
@@ -13,6 +13,8 @@ def kyc_list():
     try:
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
+        is_self = int(frappe.form_dict.get("is_self") or 0)
+        other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
             frappe.local.response['http_status_code'] = 404
@@ -29,8 +31,9 @@ def kyc_list():
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
         tab_filter = 'workflow_state = "%s"'%(tab)
-        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp)
+        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)
+        role_filter = get_role_filter(emp, is_self, other_employee)
+        is_self_filter = get_self_filter_status()
         order_and_group_by = " group by cu.name order by cu.creation desc "
         query = """
             select cu.name, cu.customer_name, cu.request_date as created_date, IF(workflow_state='KYC Pending', cu.request_date, IF(workflow_state='KYC Completed', cu.kyc_complete_date, cu.request_date)) AS status_date, cu.workflow_state, cu.created_by_emp, COUNT(*) OVER() AS total_count
@@ -69,7 +72,8 @@ def kyc_list():
                 "records": kyc_info,
                 "total_count": total_count,
                 "page_count": page_count,
-                "current_page": current_page
+                "current_page": current_page,
+                "is_self_filter": is_self_filter
             }
         ]
         frappe.local.response['status'] = True
@@ -143,6 +147,8 @@ def kyc_form():
         activities = get_comments("Customer", kyc_doc["name"])
         kyc_doc["activities"] = activities
         kyc_doc["contact"] = [contact] if contact else []
+        is_self_filter = get_self_filter_status()
+        kyc_doc["is_self_filter"] = is_self_filter
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "KYC form has been successfully fetched"
         frappe.local.response['data'] = [kyc_doc]
@@ -160,6 +166,7 @@ def create_kyc():
         cust_licenses = [{"cust_lic": cust_license["file_url"]} for cust_license in kyc_data.cust_license]
         data = {
             "unv_customer": kyc_data.unv_customer,
+            "created_by_emp": get_session_employee(),
             "territory": get_session_employee_area(),
             "customer_name": kyc_data.customer_name,
             "customer_type": kyc_data.customer_type,

@@ -1,11 +1,11 @@
 import frappe
 import frappe.utils
 from mohan_impex.mohan_impex.doctype.customer_visit_management.customer_visit_management import CustomerVisitManagement
-from mohan_impex.mohan_impex.utils import get_session_employee_area
+from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 from mohan_impex.api import create_contact_number
 from frappe.model.workflow import apply_workflow
 import math
-from mohan_impex.api import get_signed_token, get_role_filter, get_address_text
+from mohan_impex.api import get_signed_token, get_role_filter, get_address_text, get_self_filter_status
 from mohan_impex.mohan_impex.comment import get_comments
 
 @frappe.whitelist()
@@ -13,6 +13,8 @@ def cvm_list():
     try:
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
+        is_self = int(frappe.form_dict.get("is_self") or 0)
+        other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
             frappe.local.response['http_status_code'] = 404
@@ -31,8 +33,9 @@ def cvm_list():
         tab_filter = 'workflow_state = "%s"'%(tab)
         if tab != "Draft":
             tab_filter = "workflow_state != 'Draft'"
-        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp)
+        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)
+        role_filter = get_role_filter(emp, is_self, other_employee)
+        is_self_filter = get_self_filter_status()
         query = """
             select cvm.name, shop_name, cl.contact, location, customer_level, kyc_status, workflow_state, COUNT(*) OVER() AS total_count
             from `tabCustomer Visit Management` as cvm
@@ -78,7 +81,8 @@ def cvm_list():
                 "records": cvm_info,
                 "total_count": total_count,
                 "page_count": page_count,
-                "current_page": current_page
+                "current_page": current_page,
+                "is_self_filter": is_self_filter
             }
         ]
         frappe.local.response['status'] = True
@@ -135,6 +139,8 @@ def cvm_form():
             activities = get_comments("Customer Visit Management", cvm_doc["name"])
             cvm_doc["activities"] = activities
             cvm_doc["image_url"] = image_url
+            is_self_filter = get_self_filter_status()
+            cvm_doc["is_self_filter"] = is_self_filter
             frappe.local.response['status'] = True
             frappe.local.response['message'] = "Visit form has been successfully fetched"
             frappe.local.response['data'] = [cvm_doc]
@@ -148,6 +154,7 @@ def create_cvm():
     cvm_data = frappe.form_dict
     cvm_data.pop("cmd")
     cvm_data.update({
+        "created_by_emp": get_session_employee(),
         "area": get_session_employee_area()
     })
     # try:
@@ -178,6 +185,7 @@ def create_cvm():
             "district": cvm_data.district,
             "state": cvm_data.state,
             "pincode": cvm_data.pincode,
+            "created_by_emp": get_session_employee(),
             "area": get_session_employee_area(),
         }
         if cvm_data.get("isupdate"):

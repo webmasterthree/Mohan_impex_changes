@@ -1,15 +1,17 @@
 import frappe
 from mohan_impex.api.cvm import create_contact_number 
-from mohan_impex.mohan_impex.utils import get_session_employee_area
+from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 import math
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import get_role_filter
+from mohan_impex.api import get_role_filter, get_self_filter_status
 
 @frappe.whitelist()
 def trial_list():
     try:
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
+        is_self = int(frappe.form_dict.get("is_self") or 0)
+        other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
             frappe.local.response['http_status_code'] = 404
@@ -29,8 +31,9 @@ def trial_list():
             tab_filter = 'workflow_state in ("%s", "%s")'%("Pending", "Rejected")
         else:
             tab_filter = 'workflow_state = "%s"'%(tab)
-        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp)
+        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)
+        role_filter = get_role_filter(emp, is_self, other_employee)
+        is_self_filter = get_self_filter_status()
         order_and_group_by = " group by pt.name order by pt.creation desc "
         query = """
             select pt.name, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, shop_name, cl.contact, location, workflow_state, COUNT(*) OVER() AS total_count
@@ -67,7 +70,8 @@ def trial_list():
                 "records": trial_info,
                 "total_count": total_count,
                 "page_count": page_count,
-                "current_page": current_page
+                "current_page": current_page,
+                "is_self_filter": is_self_filter
             }
         ]
         frappe.local.response['status'] = True
@@ -116,6 +120,8 @@ def trial_form():
         activities = get_comments("Trial Plan", trial_doc["name"])
         trial_doc["activities"] = activities
         trial_doc["tsm_info"] = frappe.get_value("Employee", {"name": trial_doc["assigned_to"]}, ["employee_name as name", "cell_number as mobile", "company_email as email"], as_dict=True) or {}
+        is_self_filter = get_self_filter_status()
+        trial_doc["is_self_filter"] = is_self_filter
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Trial Plan form has been successfully fetched"
         frappe.local.response['data'] = [trial_doc]
@@ -130,6 +136,7 @@ def create_product_trial():
     trial_data.pop("cmd")
     trial_data.update({
         "doctype" : "Trial Plan",
+        "created_by_emp": get_session_employee(),
         "area": get_session_employee_area()
     })
     try:

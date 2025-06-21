@@ -48,6 +48,7 @@
   "column_break_ksif",
   "trial_start",
   "trial_end",
+  "created_by_emp",
   "area",
   "status"
  ],
@@ -343,6 +344,12 @@
    "fieldname": "trial_end",
    "fieldtype": "Datetime",
    "label": "Trial End"
+  },
+  {
+   "fieldname": "created_by_emp",
+   "fieldtype": "Link",
+   "label": "Created By Emp",
+   "options": "Employee"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -352,7 +359,7 @@
    "link_fieldname": "trial_plan"
   }
  ],
- "modified": "2025-06-03 20:24:12.346371",
+ "modified": "2025-06-21 12:29:49.343493",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",

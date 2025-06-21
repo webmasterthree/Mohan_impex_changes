@@ -542,14 +542,17 @@ def is_within_range(origin, destination):
         frappe.local.response['status'] = False
         frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
 
-def get_role_filter(emp):
+def get_role_filter(emp, is_self=False, employee=None):
     sub_areas = get_descendants_of("Territory", emp.get('area'))
-
     if sub_areas:
         sub_areas.append(emp.get('area'))
         areas = "', '".join(sub_areas)
     else:
         areas = f"""{emp.get("area")}"""
+    if employee:
+        return f"""area in ('{areas}') and created_by_emp = '{employee}' """
+    if is_self:
+        return f"""area in ('{areas}') and created_by_emp = '{emp.get('name')}' """
     return f"""area in ('{areas}') """
 
 def get_territory_role_filter(emp):
@@ -561,6 +564,10 @@ def get_territory_role_filter(emp):
     else:
         areas = f"""{emp.get("area")}"""
     return f"""territory in ('{areas}') """
+
+def get_self_filter_status():
+    role_profile = frappe.get_value("Employee", {"user_id": frappe.session.user}, "role_profile")
+    return frappe.db.get_value("Role Profile", role_profile, "is_self_filter")
 
 @frappe.whitelist()
 def get_sales_invoices(customer):

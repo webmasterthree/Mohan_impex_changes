@@ -1,18 +1,19 @@
 import frappe
 from datetime import datetime
-from mohan_impex.mohan_impex.utils import get_session_employee_area
+from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 from mohan_impex.item_price import get_item_category_price
 from frappe.model.workflow import apply_workflow
 import math
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import create_contact_number, get_address_text
+from mohan_impex.api import create_contact_number, get_address_text, get_self_filter_status
 
 @frappe.whitelist()
 def so_list():
     try:
-        show_area_records = False
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
+        is_self = int(frappe.form_dict.get("is_self") or 0)
+        other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
             frappe.local.response['http_status_code'] = 404
@@ -32,7 +33,8 @@ def so_list():
         if tab != "Draft":
             tab_filter = "workflow_state != 'Draft'"
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp)
+        role_filter = get_role_filter(emp, is_self, other_employee)
+        is_self_filter = get_self_filter_status()
         order_by = " order by so.creation desc "
         query = """
             select name, shop_name, contact_number as contact, customer_address as location, workflow_state, COUNT(*) OVER() AS total_count
@@ -62,7 +64,8 @@ def so_list():
                 "records": so_info,
                 "total_count": total_count,
                 "page_count": page_count,
-                "current_page": current_page
+                "current_page": current_page,
+                "is_self_filter": is_self_filter
             }
         ]
         # my_orders = list(filter(lambda d: d.get("workflow_state") != "Draft", so_list))
@@ -136,6 +139,8 @@ def so_form():
         so_dict.update({"items": list(items_by_template.values())})
         activities = get_comments("Sales Order", so_dict["name"])
         so_dict["activities"] = activities
+        is_self_filter = get_self_filter_status()
+        so_dict["is_self_filter"] = is_self_filter
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Sales Order form has been successfully fetched"
         frappe.local.response['data'] = [so_dict]
@@ -161,6 +166,7 @@ def create_so():
             "delivery_date": so_data.get("delivery_date"),
             "remarks": so_data.get("remarks"),
             "cust_edit_needed": so_data.get("cust_edit_needed"),
+            "created_by_emp": get_session_employee(),
             "territory": get_session_employee_area()
         }
         if so_data.get("channel_partner"):
@@ -203,7 +209,7 @@ def create_so():
         frappe.local.response['status'] = False
         frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
 
-def get_role_filter(emp):
+def get_role_filter(emp, is_self=False, employee=None):
     from frappe.utils.nestedset import get_descendants_of
     sub_areas = get_descendants_of("Territory", emp.get('area'))
     if sub_areas:
@@ -211,4 +217,8 @@ def get_role_filter(emp):
         areas = "', '".join(sub_areas)
     else:
         areas = f"""{emp.get("area")}"""
+    if employee:
+        return f"""area in ('{areas}') and created_by_emp = '{employee}' """
+    if is_self:
+        return f"""area in ('{areas}') and created_by_emp = '{emp.get('name')}' """
     return f"""territory in ('{areas}') """

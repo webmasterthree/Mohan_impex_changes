@@ -18,6 +18,7 @@
   "remarks",
   "section_break_dlup",
   "amended_from",
+  "created_by_emp",
   "area",
   "column_break_yjyv",
   "workflow_state"
@@ -111,11 +112,17 @@
    "fieldname": "rejected_date",
    "fieldtype": "Date",
    "label": "Rejected date"
+  },
+  {
+   "fieldname": "created_by_emp",
+   "fieldtype": "Link",
+   "label": "Created By Emp",
+   "options": "Employee"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-18 15:44:01.478911",
+ "modified": "2025-06-21 14:23:25.873767",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Marketing Collateral Request",
