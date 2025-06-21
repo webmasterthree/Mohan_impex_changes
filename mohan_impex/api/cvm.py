@@ -157,103 +157,103 @@ def create_cvm():
         "created_by_emp": get_session_employee(),
         "area": get_session_employee_area()
     })
-    # try:
-    response = {}
-    if not cvm_validate(cvm_data):
-        return
-    if cvm_data.customer_type == "Existing":
-        for contact in cvm_data.contact:
-            if not frappe.db.exists("Contact Number", contact["contact"]):
-                create_contact_number(contact["contact"], "Customer", cvm_data.customer)
-    if cvm_data.customer_type == "New":
-        shop = create_shop(cvm_data.shop, cvm_data.shop_name)
-        if shop: cvm_data.shop = shop
-        created_contact = []
-        for contact in cvm_data.contact:
-            if not frappe.db.exists("Contact Number", contact["contact"]):
-                create_contact_number(contact["contact"])
-            created_contact.append(contact["contact"])
-        unv_cus_dict = {
-            "doctype": "Unverified Customer",
-            "customer_name": cvm_data.unv_customer_name,
-            "customer_level": cvm_data.customer_level,
-            "shop": cvm_data.shop,
-            "shop_name": cvm_data.shop_name,
-            "contact": cvm_data.contact,
-            "address_line1": cvm_data.address_line1,
-            "address_line2": cvm_data.address_line2,
-            "district": cvm_data.district,
-            "state": cvm_data.state,
-            "pincode": cvm_data.pincode,
-            "created_by_emp": get_session_employee(),
-            "area": get_session_employee_area(),
-        }
-        if cvm_data.get("isupdate"):
-            unv_cus = frappe.get_doc("Unverified Customer", cvm_data.get("unv_customer"))
-            unv_cus.update(unv_cus_dict)
+    try:
+        response = {}
+        if not cvm_validate(cvm_data):
+            return
+        if cvm_data.customer_type == "Existing":
+            for contact in cvm_data.contact:
+                if not frappe.db.exists("Contact Number", contact["contact"]):
+                    create_contact_number(contact["contact"], "Customer", cvm_data.customer)
+        if cvm_data.customer_type == "New":
+            shop = create_shop(cvm_data.shop, cvm_data.shop_name)
+            if shop: cvm_data.shop = shop
+            created_contact = []
+            for contact in cvm_data.contact:
+                if not frappe.db.exists("Contact Number", contact["contact"]):
+                    create_contact_number(contact["contact"])
+                created_contact.append(contact["contact"])
+            unv_cus_dict = {
+                "doctype": "Unverified Customer",
+                "customer_name": cvm_data.unv_customer_name,
+                "customer_level": cvm_data.customer_level,
+                "shop": cvm_data.shop,
+                "shop_name": cvm_data.shop_name,
+                "contact": cvm_data.contact,
+                "address_line1": cvm_data.address_line1,
+                "address_line2": cvm_data.address_line2,
+                "district": cvm_data.district,
+                "state": cvm_data.state,
+                "pincode": cvm_data.pincode,
+                "created_by_emp": get_session_employee(),
+                "area": get_session_employee_area(),
+            }
+            if cvm_data.get("isupdate"):
+                unv_cus = frappe.get_doc("Unverified Customer", cvm_data.get("unv_customer"))
+                unv_cus.update(unv_cus_dict)
+                unv_cus.save()
+            else:
+                unv_cus = frappe.new_doc('Unverified Customer')
+                unv_cus.update(unv_cus_dict)
+                unv_cus.insert(ignore_permissions=True, ignore_mandatory=True)
+            address_dict = {
+                "doctype":"Address",
+                "address_type": "Billing",
+                "address_title": cvm_data.unv_cus,
+                "address_line1": cvm_data.address_line1,
+                "address_line2": cvm_data.address_line2,
+                "district": cvm_data.district,
+                "city": cvm_data.district,
+                "state": cvm_data.state,
+                "pincode": cvm_data.pincode
+            }
+            if cvm_data.location and cvm_data.isupdate:
+                addr_doc = frappe.get_doc("Address", cvm_data.location)
+                addr_doc.update(address_dict)
+                addr_doc.save(ignore_permissions=True)
+            else:
+                addr_doc = frappe.new_doc("Address")
+                addr_doc.update(address_dict)
+                addr_doc.append("links",{
+                    "link_doctype": "Unverified Customer",
+                    "link_name": unv_cus.name
+                })
+                addr_doc.insert(ignore_permissions=True)
+            cvm_data.location = addr_doc.name
+            unv_cus.address = cvm_data.location
             unv_cus.save()
+            for contact in created_contact:
+                create_contact_number(contact, "Unverified Customer", unv_cus.name)
+            cvm_data.unv_customer = unv_cus.name
+        doctype = "Customer Visit Management"
+        if cvm_data.get("isupdate"):
+            cvm_doc = frappe.get_doc(doctype, cvm_data.get("cvm_id"))
+            cvm_doc.update(cvm_data)
+            cvm_doc.save()
         else:
-            unv_cus = frappe.new_doc('Unverified Customer')
-            unv_cus.update(unv_cus_dict)
-            unv_cus.insert(ignore_permissions=True, ignore_mandatory=True)
-        address_dict = {
-            "doctype":"Address",
-            "address_type": "Billing",
-            "address_title": cvm_data.unv_cus,
-            "address_line1": cvm_data.address_line1,
-            "address_line2": cvm_data.address_line2,
-            "district": cvm_data.district,
-            "city": cvm_data.district,
-            "state": cvm_data.state,
-            "pincode": cvm_data.pincode
-        }
-        if cvm_data.location and cvm_data.isupdate:
-            addr_doc = frappe.get_doc("Address", cvm_data.location)
-            addr_doc.update(address_dict)
-            addr_doc.save(ignore_permissions=True)
-        else:
-            addr_doc = frappe.new_doc("Address")
-            addr_doc.update(address_dict)
-            addr_doc.append("links",{
-                "link_doctype": "Unverified Customer",
-                "link_name": unv_cus.name
-            })
-            addr_doc.insert(ignore_permissions=True)
-        cvm_data.location = addr_doc.name
-        unv_cus.address = cvm_data.location
-        unv_cus.save()
-        for contact in created_contact:
-            create_contact_number(contact, "Unverified Customer", unv_cus.name)
-        cvm_data.unv_customer = unv_cus.name
-    doctype = "Customer Visit Management"
-    if cvm_data.get("isupdate"):
-        cvm_doc = frappe.get_doc(doctype, cvm_data.get("cvm_id"))
-        cvm_doc.update(cvm_data)
-        cvm_doc.save()
-    else:
-        cvm_data.update({"doctype": doctype})
-        cvm_doc = frappe.get_doc(cvm_data)
-        cvm_doc.insert()
-    for image in cvm_data.captured_images:
-        doc = frappe.get_doc("File", image.get("name"))
-        doc.attached_to_doctype = doctype
-        doc.attached_to_name = cvm_doc.name
-        doc.save()
-    cvm_doc.trial_plan()
-    message = "Customer Visit request form has been successfully created as Draft"
-    if cvm_data.action == "Submit":
-        apply_workflow(cvm_doc, "Submit")
-        message = "Customer Visit request form has been successfully submitted"
-    response.update({
-        "cvm": cvm_doc.name
-    })
-    frappe.local.response['status'] = True
-    frappe.local.response['message'] = message
-    frappe.local.response['data'] = [response]
-    # except Exception as err:
-    #     frappe.local.response['http_status_code'] = 404
-    #     frappe.local.response['status'] = False
-    #     frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+            cvm_data.update({"doctype": doctype})
+            cvm_doc = frappe.get_doc(cvm_data)
+            cvm_doc.insert()
+        for image in cvm_data.captured_images:
+            doc = frappe.get_doc("File", image.get("name"))
+            doc.attached_to_doctype = doctype
+            doc.attached_to_name = cvm_doc.name
+            doc.save()
+        cvm_doc.trial_plan()
+        message = "Customer Visit request form has been successfully created as Draft"
+        if cvm_data.action == "Submit":
+            apply_workflow(cvm_doc, "Submit")
+            message = "Customer Visit request form has been successfully submitted"
+        response.update({
+            "cvm": cvm_doc.name
+        })
+        frappe.local.response['status'] = True
+        frappe.local.response['message'] = message
+        frappe.local.response['data'] = [response]
+    except Exception as err:
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
 
 def create_shop(shop, shop_name):
     if not shop:
