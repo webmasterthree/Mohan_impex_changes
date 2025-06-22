@@ -221,3 +221,16 @@ def update_trial_timing():
         frappe.local.response['status'] = False
         frappe.local.response['message'] = frappe.local.response.get('message') or str(err)
 
+@frappe.whitelist()
+def assign_to_employee(trial_id, assigned_to):
+    try:
+        trial_doc = frappe.get_doc("Trial Plan", trial_id)
+        trial_doc.assigned_to = assigned_to
+        trial_doc.save()
+        emp_name = frappe.get_value("Employee", assigned_to, "employee_name")
+        frappe.local.response['status'] = True
+        frappe.local.response['message'] = "Trial plan {0} has been successfully assigned to {1}".format(trial_id, emp_name)
+    except Exception as err:
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = frappe.local.response.get('message') or str(err)

@@ -7,7 +7,10 @@ from frappe.model.document import Document
 
 class TrialPlan(Document):
     def before_save(self):
-        create_trial_target(self)
+        if self.conduct_by == "Self":
+            self.assigned_to = self.created_by_emp
+        # create_trial_target(self)
+        update_assigned_to(self)
         if self.cust_edit_needed:
             if self.verific_type == "Verified":
                 frappe.db.set_value("Customer", self.customer, "cust_edit_needed", self.cust_edit_needed)
@@ -78,3 +81,8 @@ def create_trial_target(trial_plan_doc):
     
     delete_trial_targets = [name for name in trial_target_rows if name not in trial_target_names]
     frappe.db.delete("Trial Target", {"trial_plan": trial_plan_doc.name, "trial_plan_row": ("IN", delete_trial_targets)})
+
+def update_assigned_to(self):
+    trial_target_list = frappe.get_all("Trial Target", {"trial_plan": self.name}, ["name", "assigned_to"])
+    for trial_target in trial_target_list:
+        frappe.db.set_value("Trial Target", trial_target["name"], "assigned_to", self.assigned_to)

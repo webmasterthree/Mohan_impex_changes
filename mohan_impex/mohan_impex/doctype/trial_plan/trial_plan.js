@@ -3,6 +3,7 @@
 
 frappe.ui.form.on("Trial Plan", {
   async refresh(frm) {
+    assigned_to_employee(frm)
     if (frm.is_new()){
       frm.set_value("channel_partner", "");
     }
@@ -13,6 +14,14 @@ frappe.ui.form.on("Trial Plan", {
     }
     else if (frm.doc.status === "Rejected"){
       frappe.db.set_value("Trial Plan", frm.doc.name, 'rejected_date', frappe.datetime.nowdate())
+    }
+  },
+  conduct_by(frm){
+    if (frm.doc.conduct_by === "TSM Required"){
+      frm.set_value("assigned_to", "")
+    }
+    else{
+      frm.set_value("assigned_to", frm.doc.created_by_emp)
     }
   },
   customer_level(frm){
@@ -56,14 +65,14 @@ frappe.ui.form.on("Trial Plan", {
       frm.set_value("location", "");
     }
   },
-	// onload(frm) {
-  //   if (frm.is_new()) {
-  //       set_session_employee(frm)
-  //   }
-  // },
-  // before_save(frm) {
-  //     set_session_employee(frm)
-  // },
+	onload(frm) {
+    if (frm.is_new()) {
+        set_session_employee(frm)
+    }
+  },
+  before_save(frm) {
+      set_session_employee(frm)
+  },
 });
 
 cur_frm.set_query("customer", function (frm) {
@@ -182,6 +191,41 @@ function set_session_employee(frm){
       }
     });
   }
+}
+
+function assigned_to_employee(frm){
+  frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "role_profile").then((r) => {
+    if (frm.doc.conduct_by === "TSM Required" && frm.doc.status !== "Rejected" && (r.message.role_profile === "NSM" || frappe.session.user === "Administrator")){
+      frm.add_custom_button(__('Assign Employee'), function() {
+        var d = new frappe.ui.Dialog({
+          title: __("Select Employee"),
+          fields: [
+            {
+              fieldtype: "Link",
+              label: __("Assign To"),
+              options: "Employee",
+              fieldname: "employee",
+              reqd: 1,
+              default: frm.doc.assigned_to,
+              get_query() {
+                return {
+                  filters: {
+                    "role_profile": "TSM"
+                  }
+                }
+              }
+            }
+          ],
+          primary_action: function() {
+            frm.set_value("assigned_to", d.fields_dict.employee.get_value());
+            frm.save();
+            d.hide();
+          }
+        });
+        d.show();
+      });
+    }
+  })
 }
 
 // cur_frm.set_query("product", "product_pitching", function (frm, cdt, cdn) {

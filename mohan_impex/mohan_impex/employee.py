@@ -8,20 +8,26 @@ def get_reports_to_filter(role):
 
 @frappe.whitelist()
 def set_user_permissions(self, status):
+    frappe.db.set_value("User", {"name": self.user_id}, "role_profile_name", self.role_profile)
     if self.role_profile:
-        if self.role_profile == "SE":
+        if self.role_profile == "TSM":
             set_employee_permission(self)
+        if self.role_profile == "SE":
+            set_employee_permission(self, apply_to_all_doc=0, applicable_for="Trial Target")
         set_territory_permission(self)
 
-def set_employee_permission(self):
-    emp_user_perm = frappe.get_value("User Permission", {"for_value": self.name, "allow": "Employee", "user": self.user_id}, ["name"])
+def set_employee_permission(self, apply_to_all_doc=1, applicable_for=None):
+    filters = {
+        "for_value": self.name,
+        "allow": "Employee", 
+        "user": self.user_id,
+        "apply_to_all_doctypes": apply_to_all_doc,
+        "applicable_for": applicable_for 
+    }
+    emp_user_perm = frappe.get_value("User Permission", filters, ["name"])
     if not emp_user_perm:
-        doc = frappe.get_doc({
-            "doctype": "User Permission",
-            "user": self.user_id,
-            "allow": "Employee",
-            "for_value": self.name
-        })
+        filters.update({"doctype": "User Permission"})
+        doc = frappe.get_doc(filters)
         doc.insert(ignore_permissions=True)
 
 def set_territory_permission(self):

@@ -2,6 +2,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
+  "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
   "modified": "2025-04-09 20:32:17.066994",
   "name": "CP",
@@ -49,6 +50,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
+  "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
   "modified": "2025-01-29 21:50:51.496175",
   "name": "SE",
@@ -114,6 +116,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
+  "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
   "modified": "2025-01-31 22:17:18.287071",
   "name": "TSM",
@@ -131,6 +134,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
+  "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
   "modified": "2025-01-30 21:39:34.983319",
   "name": "ASM",
@@ -202,6 +206,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
+  "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
   "modified": "2025-02-01 09:28:13.442684",
   "name": "NSM",

@@ -6,6 +6,7 @@ from frappe.utils import now_datetime, get_datetime, get_url
 from frappe.utils.file_manager import get_file_path
 from werkzeug.wrappers import Response
 import requests
+from mohan_impex.mohan_impex.utils import get_session_employee
 from frappe.utils.nestedset import get_descendants_of
 
 @frappe.whitelist()
@@ -558,7 +559,6 @@ def get_role_filter(emp, is_self=False, employee=None):
     return f"""area in ('{areas}') """
 
 def get_territory_role_filter(emp):
-    from frappe.utils.nestedset import get_descendants_of
     sub_areas = get_descendants_of("Territory", emp.get('area'))
     if sub_areas:
         sub_areas.append(emp.get('area'))
@@ -596,9 +596,19 @@ def get_address_text(address_name):
     return address_text
 
 @frappe.whitelist()
-def get_employee_list(area):
+def get_employee_list(area, role_profile=None):
+    session_emp = get_session_employee()
+    sub_areas = get_descendants_of("Territory", area) or []
+    sub_areas.append(area)
     try:
-        employee_list = frappe.get_all("Employee", {"area": area}, ["name", "employee_name"])
+        filters = {
+            "area": ["in", sub_areas],
+            "status": "Active",
+            "name": ["!=", session_emp]
+        }
+        if role_profile:
+            filters["role_profile"] = role_profile
+        employee_list = frappe.get_all("Employee", filters, ["name", "employee_name"])
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Employee List has been fetched successfully"
         frappe.local.response['data'] = employee_list

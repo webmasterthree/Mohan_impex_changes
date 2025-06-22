@@ -9,6 +9,7 @@
  "field_order": [
   "trial_plan",
   "product",
+  "assigned_to",
   "column_break_dcbl",
   "item_code",
   "trial_plan_row",
@@ -255,11 +256,18 @@
    "fieldtype": "Link",
    "label": "Monthly Consumption UOM",
    "options": "UOM"
+  },
+  {
+   "fetch_from": "trial_plan.assigned_to",
+   "fieldname": "assigned_to",
+   "fieldtype": "Link",
+   "label": "Assigned To",
+   "options": "Employee"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-05 14:59:11.345385",
+ "modified": "2025-06-22 14:30:04.701605",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Target",
