@@ -35,7 +35,7 @@ def journey_plan_list():
         is_self_filter = get_self_filter_status()
         order_by = " order by creation desc "
         query = """
-            select name, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, workflow_state as status, COUNT(*) OVER() AS total_count
+            select name, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, workflow_state as status, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count
             from `tabJourney Plan`
             where {tab_filter} and {role_filter} 
         """.format(tab_filter=tab_filter, role_filter=role_filter)
@@ -71,7 +71,7 @@ def journey_plan_list():
                 "total_count": total_count,
                 "page_count": page_count,
                 "current_page": current_page,
-                "is_self_filter": is_self_filter
+                "has_toggle_filter": is_self_filter
             }
         ]
         # if frappe.has_permission("Journey Plan", "create"):
@@ -99,7 +99,8 @@ def journey_plan_form():
             activities = get_comments("Journey Plan", journey_doc["name"])
             journey_doc["activities"] = activities
             is_self_filter = get_self_filter_status()
-            journey_doc["is_self_filter"] = is_self_filter
+            journey_doc["has_toggle_filter"] = is_self_filter
+            journey_doc["created_person_mobile_no"] = frappe.get_value("Employee", journey_doc.get("created_by_emp"), "custom_personal_mobile_number")
             frappe.local.response['status'] = True
             frappe.local.response['message'] = "Journey Plan form has been successfully fetched"
             frappe.local.response['data'] = [journey_doc]

@@ -19,6 +19,7 @@
   "section_break_dlup",
   "amended_from",
   "created_by_emp",
+  "created_by_name",
   "area",
   "column_break_yjyv",
   "workflow_state"
@@ -118,11 +119,17 @@
    "fieldtype": "Link",
    "label": "Created By Emp",
    "options": "Employee"
+  },
+  {
+   "fetch_from": "created_by_emp.employee_name",
+   "fieldname": "created_by_name",
+   "fieldtype": "Data",
+   "label": "Created By Name"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-21 14:23:25.873767",
+ "modified": "2025-06-22 10:21:22.434847",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Marketing Collateral Request",

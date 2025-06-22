@@ -49,6 +49,7 @@
   "trial_start",
   "trial_end",
   "created_by_emp",
+  "created_by_name",
   "area",
   "status"
  ],
@@ -350,6 +351,12 @@
    "fieldtype": "Link",
    "label": "Created By Emp",
    "options": "Employee"
+  },
+  {
+   "fetch_from": "created_by_emp.employee_name",
+   "fieldname": "created_by_name",
+   "fieldtype": "Data",
+   "label": "Created By Name"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -359,7 +366,7 @@
    "link_fieldname": "trial_plan"
   }
  ],
- "modified": "2025-06-21 12:29:49.343493",
+ "modified": "2025-06-22 10:18:02.624095",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",

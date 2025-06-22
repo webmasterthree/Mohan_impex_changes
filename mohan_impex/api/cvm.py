@@ -37,7 +37,7 @@ def cvm_list():
         role_filter = get_role_filter(emp, is_self, other_employee)
         is_self_filter = get_self_filter_status()
         query = """
-            select cvm.name, shop_name, cl.contact, location, customer_level, kyc_status, workflow_state, COUNT(*) OVER() AS total_count
+            select cvm.name, shop_name, cl.contact, location, customer_level, kyc_status, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count
             from `tabCustomer Visit Management` as cvm
             JOIN `tabContact List` as cl on cl.parent = cvm.name
             where {tab_filter} and {role_filter}
@@ -82,7 +82,7 @@ def cvm_list():
                 "total_count": total_count,
                 "page_count": page_count,
                 "current_page": current_page,
-                "is_self_filter": is_self_filter
+                "has_toggle_filter": is_self_filter
             }
         ]
         frappe.local.response['status'] = True
@@ -140,7 +140,8 @@ def cvm_form():
             cvm_doc["activities"] = activities
             cvm_doc["image_url"] = image_url
             is_self_filter = get_self_filter_status()
-            cvm_doc["is_self_filter"] = is_self_filter
+            cvm_doc["has_toggle_filter"] = is_self_filter
+            cvm_doc["created_person_mobile_no"] = frappe.get_value("Employee", cvm_doc.get("created_by_emp"), "custom_personal_mobile_number")
             frappe.local.response['status'] = True
             frappe.local.response['message'] = "Visit form has been successfully fetched"
             frappe.local.response['data'] = [cvm_doc]

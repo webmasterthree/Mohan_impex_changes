@@ -37,7 +37,7 @@ def so_list():
         is_self_filter = get_self_filter_status()
         order_by = " order by so.creation desc "
         query = """
-            select name, shop_name, contact_number as contact, customer_address as location, workflow_state, COUNT(*) OVER() AS total_count
+            select name, shop_name, contact_number as contact, customer_address as location, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count
             from `tabSales Order` as so
             where {tab_filter} and {role_filter} 
         """.format(tab_filter=tab_filter, role_filter=role_filter)
@@ -65,7 +65,7 @@ def so_list():
                 "total_count": total_count,
                 "page_count": page_count,
                 "current_page": current_page,
-                "is_self_filter": is_self_filter
+                "has_toggle_filter": is_self_filter
             }
         ]
         # my_orders = list(filter(lambda d: d.get("workflow_state") != "Draft", so_list))
@@ -140,7 +140,9 @@ def so_form():
         activities = get_comments("Sales Order", so_dict["name"])
         so_dict["activities"] = activities
         is_self_filter = get_self_filter_status()
-        so_dict["is_self_filter"] = is_self_filter
+        so_dict["has_toggle_filter"] = is_self_filter
+        so_dict["created_person_mobile_no"] = frappe.get_value("Employee", so_dict.get("created_by_emp"), "custom_personal_mobile_number")
+
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Sales Order form has been successfully fetched"
         frappe.local.response['data'] = [so_dict]

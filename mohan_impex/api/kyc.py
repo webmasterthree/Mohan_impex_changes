@@ -36,7 +36,7 @@ def kyc_list():
         is_self_filter = get_self_filter_status()
         order_and_group_by = " group by cu.name order by cu.creation desc "
         query = """
-            select cu.name, cu.customer_name, cu.request_date as created_date, IF(workflow_state='KYC Pending', cu.request_date, IF(workflow_state='KYC Completed', cu.kyc_complete_date, cu.request_date)) AS status_date, cu.workflow_state, cu.created_by_emp, COUNT(*) OVER() AS total_count
+            select cu.name, cu.customer_name, cu.request_date as created_date, IF(workflow_state='KYC Pending', cu.request_date, IF(workflow_state='KYC Completed', cu.kyc_complete_date, cu.request_date)) AS status_date, cu.workflow_state, cu.created_by_emp, cu.created_by_name, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
             JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
             where customer_level= "Primary" and dl.parenttype = "Contact Number" and {tab_filter} and {role_filter}
@@ -73,7 +73,7 @@ def kyc_list():
                 "total_count": total_count,
                 "page_count": page_count,
                 "current_page": current_page,
-                "is_self_filter": is_self_filter
+                "has_toggle_filter": is_self_filter
             }
         ]
         frappe.local.response['status'] = True
@@ -148,7 +148,8 @@ def kyc_form():
         kyc_doc["activities"] = activities
         kyc_doc["contact"] = [contact] if contact else []
         is_self_filter = get_self_filter_status()
-        kyc_doc["is_self_filter"] = is_self_filter
+        kyc_doc["has_toggle_filter"] = is_self_filter
+        kyc_doc["created_person_mobile_no"] = frappe.get_value("Employee", kyc_doc.get("created_by_emp"), "custom_personal_mobile_number")
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "KYC form has been successfully fetched"
         frappe.local.response['data'] = [kyc_doc]

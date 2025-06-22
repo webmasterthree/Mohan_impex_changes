@@ -569,7 +569,7 @@ def get_territory_role_filter(emp):
 
 def get_self_filter_status():
     role_profile = frappe.get_value("Employee", {"user_id": frappe.session.user}, "role_profile")
-    return frappe.db.get_value("Role Profile", role_profile, "is_self_filter")
+    return frappe.db.get_value("Role Profile", role_profile, "has_toggle_filter")
 
 @frappe.whitelist()
 def get_sales_invoices(customer):

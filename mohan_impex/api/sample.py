@@ -35,7 +35,7 @@ def sample_list():
         is_self_filter = get_self_filter_status()
         order_by = " order by creation desc "
         query = """
-            select name, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, workflow_state as status, COUNT(*) OVER() AS total_count
+            select name, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, workflow_state as status, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count
             from `tabSample Requisition`
             where {tab_filter} and {role_filter}
         """.format(tab_filter=tab_filter, role_filter=role_filter)
@@ -69,7 +69,7 @@ def sample_list():
                 "total_count": total_count,
                 "page_count": page_count,
                 "current_page": current_page,
-                "is_self_filter": is_self_filter
+                "has_toggle_filter": is_self_filter
             }
         ]
         frappe.local.response['status'] = True
@@ -99,7 +99,8 @@ def sample_form():
         activities = get_comments("Sample Requisition", sample_doc["name"])
         sample_doc["activities"] = activities
         is_self_filter = get_self_filter_status()
-        sample_doc["is_self_filter"] = is_self_filter
+        sample_doc["has_toggle_filter"] = is_self_filter
+        sample_doc["created_person_mobile_no"] = frappe.get_value("Employee", sample_doc.get("created_by_emp"), "custom_personal_mobile_number")
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Sample request form has been successfully fetched"
         frappe.local.response['data'] = [sample_doc]

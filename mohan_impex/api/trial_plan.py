@@ -36,7 +36,7 @@ def trial_list():
         is_self_filter = get_self_filter_status()
         order_and_group_by = " group by pt.name order by pt.creation desc "
         query = """
-            select pt.name, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, shop_name, cl.contact, location, workflow_state, COUNT(*) OVER() AS total_count
+            select pt.name, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, shop_name, cl.contact, location, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count
             from `tabTrial Plan` as pt
             Join `tabContact List` as cl on cl.parent = pt.name
             where {tab_filter} and {role_filter} 
@@ -71,7 +71,7 @@ def trial_list():
                 "total_count": total_count,
                 "page_count": page_count,
                 "current_page": current_page,
-                "is_self_filter": is_self_filter
+                "has_toggle_filter": is_self_filter
             }
         ]
         frappe.local.response['status'] = True
@@ -121,7 +121,8 @@ def trial_form():
         trial_doc["activities"] = activities
         trial_doc["tsm_info"] = frappe.get_value("Employee", {"name": trial_doc["assigned_to"]}, ["employee_name as name", "cell_number as mobile", "company_email as email"], as_dict=True) or {}
         is_self_filter = get_self_filter_status()
-        trial_doc["is_self_filter"] = is_self_filter
+        trial_doc["has_toggle_filter"] = is_self_filter
+        trial_doc["created_person_mobile_no"] = frappe.get_value("Employee", trial_doc.get("created_by_emp"), "custom_personal_mobile_number")
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Trial Plan form has been successfully fetched"
         frappe.local.response['data'] = [trial_doc]
