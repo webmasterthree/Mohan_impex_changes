@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:sm",
  "creation": "2024-12-27 17:03:26.813277",
@@ -18,7 +19,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-12-27 17:04:17.805096",
+ "modified": "2025-06-06 10:59:50.899277",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "SM",

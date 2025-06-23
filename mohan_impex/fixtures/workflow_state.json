@@ -3,6 +3,87 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-06-19 17:45:19.485086",
+  "name": "Approval Required from Logistics Team",
+  "style": "Warning",
+  "workflow_state_name": "Approval Required from Logistics Team"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-19 17:47:10.471572",
+  "name": "Logistics Team Approved",
+  "style": "Success",
+  "workflow_state_name": "Logistics Team Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 11:05:08.260430",
+  "name": "Closed – Rejected by Logistics",
+  "style": "Danger",
+  "workflow_state_name": "Closed – Rejected by Logistics"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 12:25:30.857945",
+  "name": "Delivery Team Assigned",
+  "style": "Success",
+  "workflow_state_name": "Delivery Team Assigned"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 12:32:33.431175",
+  "name": "Assign Delivery Team",
+  "style": "Warning",
+  "workflow_state_name": "Assign Delivery Team"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 15:04:11.872803",
+  "name": "Billing Team Approval Pending",
+  "style": "Danger",
+  "workflow_state_name": "Billing Team Approval Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 15:05:17.815660",
+  "name": "Approved By Billing Team",
+  "style": "Success",
+  "workflow_state_name": "Approved By Billing Team"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 15:06:27.344583",
+  "name": "Generate Sales Invoice",
+  "style": "Warning",
+  "workflow_state_name": "Generate Sales Invoice"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 16:32:43.283219",
+  "name": "Sales Invoice Generated",
+  "style": "Primary",
+  "workflow_state_name": "Sales Invoice Generated"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-03-28 12:10:35.797659",
   "name": "Received",
   "style": "",

@@ -5,6 +5,7 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "pick_list",
   "transport_date",
   "from_location",
   "column_break_zhmj",
@@ -18,7 +19,6 @@
   "transporter_details",
   "section_break_eabp",
   "status",
-  "pick_list",
   "amended_from"
  ],
  "fields": [
@@ -118,7 +118,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-05-29 11:42:47.779113",
+ "modified": "2025-06-20 11:31:47.205734",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transport RFQ",

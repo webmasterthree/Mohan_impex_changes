@@ -1,0 +1,40 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2025-06-19 15:53:06.347290",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2025-06-19 15:53:50.182213",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Monthly Accrual Leave Balance",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Leave Ledger Entry",
+ "report_name": "Monthly Accrual Leave Balance",
+ "report_script": "",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "All"
+  },
+  {
+   "role": "HR Manager"
+  },
+  {
+   "role": "HR User"
+  },
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "HR Asst. Manager"
+  }
+ ],
+ "timeout": 0
+}

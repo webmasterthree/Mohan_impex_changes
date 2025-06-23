@@ -57,7 +57,9 @@ doc_events = {
         "on_submit": "mohan_impex.rfq.send_rfq_email"
     },
     "Employee Checkin": {
-        "before_save": "mohan_impex.leave_deduction.before_save_employee_checkin"
+        "before_save": "mohan_impex.leave_deduction.before_save_employee_checkin",
+        "before_save": "mohan_impex.leave_deduction_out.before_save_employee_checkin"
+
     },
     "Transport RFQ": {
         "on_submit": "mohan_impex.Sales.Assign_Transporter.on_submit"
@@ -249,13 +251,20 @@ scheduler_events = {
     "cron": {
         "15 12 * * *": [
             "mohan_impex.auto_close_rfq.close_expired_rfqs"
+        ],
+        "0 20 * * *": [  # 8:00 PM every day
+            "mohan_impex.missed_checkout.get_today_missed_checkout_status"
+        ],
+        "0 10 25 * *":[
+            "mohan_impex.birthday_leave.send_birthday_notifications"
         ]
-    },
-    "monthly":[
-        "mohan_impex.leave_balance.monthly_leaves"
-    ]
+    }
 }
 
+
+# "monthly": [
+#         "mohan_impex.leave_balance.monthly_leaves"
+#     ]
     # "monthly": [
     #     "mohan_impex.late_checkin_count.get_employee_late_checkins"
     # ]

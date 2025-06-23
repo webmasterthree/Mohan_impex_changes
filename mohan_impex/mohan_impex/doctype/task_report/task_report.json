@@ -1,44 +1,40 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-03-26 10:17:54.637032",
+ "creation": "2025-06-14 10:25:57.615026",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "item_code",
-  "qty",
-  "uom"
+  "report",
+  "column_break_hmak",
+  "duration"
  ],
  "fields": [
   {
-   "fieldname": "item_code",
-   "fieldtype": "Link",
+   "fieldname": "report",
+   "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Item Name",
-   "options": "Item"
+   "label": "Report"
   },
   {
-   "fieldname": "qty",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Qty"
+   "fieldname": "column_break_hmak",
+   "fieldtype": "Column Break"
   },
   {
-   "fieldname": "uom",
-   "fieldtype": "Link",
+   "fieldname": "duration",
+   "fieldtype": "Time",
    "in_list_view": 1,
-   "label": "UOM",
-   "options": "UOM"
+   "label": "Duration"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-06-19 14:37:14.738154",
+ "modified": "2025-06-14 10:30:02.215574",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
- "name": "Transport RFQ Item",
+ "name": "Task Report",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

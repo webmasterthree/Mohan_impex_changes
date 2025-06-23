@@ -22,7 +22,7 @@
    "fieldname": "item_code",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Item Code",
+   "label": "Item Name",
    "options": "Item",
    "read_only": 1
   },
@@ -88,7 +88,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-29 16:44:53.323389",
+ "modified": "2025-06-19 13:27:56.268835",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Pre-Unloading Check Item",

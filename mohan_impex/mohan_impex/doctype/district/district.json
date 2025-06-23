@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:district",
  "creation": "2025-02-21 23:42:45.017275",
@@ -29,7 +30,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-22 08:33:28.067246",
+ "modified": "2025-06-06 10:48:41.098229",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "District",
