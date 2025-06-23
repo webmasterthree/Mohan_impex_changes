@@ -3,7 +3,7 @@ from mohan_impex.api.cvm import create_contact_number
 from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 import math
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import get_role_filter, get_self_filter_status
+from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception
 
 @frappe.whitelist()
 def trial_list():
@@ -78,9 +78,7 @@ def trial_list():
         frappe.local.response['message'] = "Trial plan list has been successfully fetched"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def trial_form():
@@ -127,9 +125,7 @@ def trial_form():
         frappe.local.response['message'] = "Trial Plan form has been successfully fetched"
         frappe.local.response['data'] = [trial_doc]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def create_product_trial():
@@ -161,12 +157,15 @@ def create_product_trial():
         frappe.local.response['message'] = "Trial plan has been successfully submitted"
         frappe.local.response['data'] = [response]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 def trial_validate(trial_data):
     valid = True
+    if not trial_data.location:
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = "Location is Missing"
+        return
     if not frappe.db.exists("Address", trial_data.location):
         frappe.local.response['http_status_code'] = 404
         frappe.local.response['status'] = False

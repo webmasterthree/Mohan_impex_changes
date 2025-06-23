@@ -1,6 +1,7 @@
 import frappe
 from bs4 import BeautifulSoup
 from frappe.model.workflow import apply_workflow
+from mohan_impex.api import get_exception
 
 def status_update(self, method):
     doctype = self.reference_doctype
@@ -53,9 +54,7 @@ def create_comment():
         frappe.local.response['status'] = True
         frappe.local.response['message'] = f"Successfully made the comment"
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def workflow_status_update(doctype, docname, status):
@@ -66,6 +65,4 @@ def workflow_status_update(doctype, docname, status):
         frappe.local.response['message'] = f"Status has been changed to {status}"
         return 
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)

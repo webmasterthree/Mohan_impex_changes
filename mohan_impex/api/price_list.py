@@ -1,5 +1,6 @@
 import frappe
 import math
+from mohan_impex.api import get_exception
 
 @frappe.whitelist()
 def price_list():
@@ -52,9 +53,7 @@ def price_list():
         frappe.local.response['message'] = "Price list has been successfully fetched"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 # price_info_query = f"""
 #     WITH RankedData AS (

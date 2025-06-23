@@ -1,7 +1,7 @@
 import frappe
 from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 from frappe.utils.file_manager import save_file
-from mohan_impex.api import get_role_filter, get_self_filter_status
+from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception
 import math
 from mohan_impex.mohan_impex.comment import get_comments
 from bs4 import BeautifulSoup
@@ -79,9 +79,7 @@ def complaints_list():
         frappe.local.response['message'] = "Complaints & Claims request list has been successfully fetched"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def complaints_form():
@@ -139,9 +137,7 @@ def complaints_form():
             frappe.local.response['message'] = "Complaints & Claims request form has been successfully fetched"
             frappe.local.response['data'] = [complaints_dict]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def create_complaint():
@@ -168,9 +164,7 @@ def create_complaint():
         frappe.local.response['message'] = "Complaints & Claims request form has been successfully created"
         frappe.local.response['data'] = [response]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def complaint_attachments(complaint_id):
@@ -200,6 +194,4 @@ def complaint_attachments(complaint_id):
         frappe.local.response['message'] = f"Captured Image has been saved for the visit {complaint_id}"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)

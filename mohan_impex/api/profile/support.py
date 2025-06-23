@@ -1,5 +1,5 @@
 import frappe
-from mohan_impex.api import get_signed_token
+from mohan_impex.api import get_signed_token, get_exception
 
 @frappe.whitelist()
 def get_support_and_questions():
@@ -16,6 +16,4 @@ def get_support_and_questions():
         frappe.local.response['message'] = "Support and Frequently Asked Questions list has been successfully fetched"
         frappe.local.response['data'] = data
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)

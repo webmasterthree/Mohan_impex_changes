@@ -3,6 +3,7 @@ import math
 from datetime import datetime, timedelta
 from erpnext.accounts.party import get_dashboard_info
 from mohan_impex.api.sales_order import get_role_filter
+from mohan_impex.api import get_exception
 
 @frappe.whitelist()
 def my_customer_list():
@@ -81,9 +82,7 @@ def my_customer_list():
         frappe.local.response['message'] = "My Customer list has been successfully fetched"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def my_customer_form():
@@ -114,9 +113,7 @@ def my_customer_form():
         frappe.local.response['message'] = "KYC form has been successfully fetched"
         frappe.local.response['data'] = [cus_doc]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def my_customer_ledger():
@@ -186,6 +183,4 @@ def my_customer_ledger():
         frappe.local.response['message'] = "My Customer Ledger has been successfully fetched"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)

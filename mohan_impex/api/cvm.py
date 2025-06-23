@@ -5,7 +5,7 @@ from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session
 from mohan_impex.api import create_contact_number
 from frappe.model.workflow import apply_workflow
 import math
-from mohan_impex.api import get_signed_token, get_role_filter, get_address_text, get_self_filter_status
+from mohan_impex.api import get_signed_token, get_role_filter, get_address_text, get_self_filter_status, get_exception
 from mohan_impex.mohan_impex.comment import get_comments
 
 @frappe.whitelist()
@@ -89,9 +89,7 @@ def cvm_list():
         frappe.local.response['message'] = "Visit history list has been successfully fetched"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def cvm_form():
@@ -146,9 +144,7 @@ def cvm_form():
             frappe.local.response['message'] = "Visit form has been successfully fetched"
             frappe.local.response['data'] = [cvm_doc]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def create_cvm():
@@ -252,9 +248,7 @@ def create_cvm():
         frappe.local.response['message'] = message
         frappe.local.response['data'] = [response]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 def create_shop(shop, shop_name):
     if shop:
@@ -325,9 +319,7 @@ def capture_image():
         frappe.local.response['message'] = f"Captured Image has been saved"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def convert_to_order(cvm_id):
@@ -344,9 +336,7 @@ def convert_to_order(cvm_id):
             frappe.local.response['message'] = f"Sales Order has been created for the visit {cvm_id}"
             frappe.local.response['data'] = [response]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def get_customer_address():
@@ -382,6 +372,4 @@ def get_customer_address():
         frappe.local.response['message'] = f"Address has been fetched"
         frappe.local.response['data'] = address_dict
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)

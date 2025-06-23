@@ -5,7 +5,7 @@ from mohan_impex.item_price import get_item_category_price
 from frappe.model.workflow import apply_workflow
 import math
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import create_contact_number, get_address_text, get_self_filter_status
+from mohan_impex.api import create_contact_number, get_address_text, get_self_filter_status, get_exception
 
 @frappe.whitelist()
 def so_list():
@@ -81,9 +81,7 @@ def so_list():
         frappe.local.response['message'] = "Sales Order list has been successfully fetched"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def so_form():
@@ -147,9 +145,7 @@ def so_form():
         frappe.local.response['message'] = "Sales Order form has been successfully fetched"
         frappe.local.response['data'] = [so_dict]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def create_so():
@@ -207,9 +203,7 @@ def create_so():
         frappe.local.response['message'] = message
         frappe.local.response['data'] = [response]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 def get_role_filter(emp, is_self=False, employee=None):
     from frappe.utils.nestedset import get_descendants_of

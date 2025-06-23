@@ -1,8 +1,7 @@
 import frappe
-from mohan_impex.api import get_signed_token
+from mohan_impex.api import get_signed_token, get_exception
 import math
 from bs4 import BeautifulSoup
-import html
 
 @frappe.whitelist()
 def notification_list():
@@ -61,9 +60,7 @@ def notification_list():
         frappe.local.response['message'] = "Notification list has been successfully fetched"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def mark_as_read():
@@ -73,6 +70,4 @@ def mark_as_read():
         frappe.local.response['status'] = True
         frappe.local.response['message'] = f"Notifications has been marked as read"
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)

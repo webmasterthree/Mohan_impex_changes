@@ -1,11 +1,10 @@
 import frappe
 from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 import math
-from mohan_impex.api import get_signed_token
+from mohan_impex.api import get_signed_token, get_exception, create_contact_number, get_self_filter_status
 from mohan_impex.api.sales_order import get_role_filter
 from datetime import datetime
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import create_contact_number, get_self_filter_status
 from mohan_impex.mohan_impex.contact import get_contact_numbers
 
 @frappe.whitelist()
@@ -80,9 +79,7 @@ def kyc_list():
         frappe.local.response['message'] = "KYC request list has been successfully fetched"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def kyc_form():
@@ -154,9 +151,7 @@ def kyc_form():
         frappe.local.response['message'] = "KYC form has been successfully fetched"
         frappe.local.response['data'] = [kyc_doc]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def create_kyc():
@@ -207,9 +202,7 @@ def create_kyc():
         frappe.local.response['message'] = "KYC request has been successfully created"
         frappe.local.response['data'] = [response]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 def update_file_doc(name, kyc_id):
     doc = frappe.get_doc("File", name)

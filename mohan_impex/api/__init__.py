@@ -8,6 +8,7 @@ from werkzeug.wrappers import Response
 import requests
 from mohan_impex.mohan_impex.utils import get_session_employee
 from frappe.utils.nestedset import get_descendants_of
+from bs4 import BeautifulSoup
 
 @frappe.whitelist()
 def dashboard():
@@ -332,9 +333,7 @@ def material_list():
         frappe.local.response['message'] = "Material list fetched successfully"
         frappe.local.response['data'] = material_list
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 
 @frappe.whitelist()
@@ -451,9 +450,7 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", k
         frappe.local.response['message'] = "Unverified Customer list fetched successfully"
         frappe.local.response['data'] = unv_customer_list
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 SECRET_KEY = frappe.local.conf.get("jwt_secret")
 def get_signed_token(file_path, access_token=""):
@@ -541,9 +538,7 @@ def is_within_range(origin, destination):
         frappe.local.response['message'] = "Issue with LOCATION or API_KEY"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 def get_role_filter(emp, is_self=False, employee=None):
     sub_areas = get_descendants_of("Territory", emp.get('area'))
@@ -613,6 +608,15 @@ def get_employee_list(area, role_profile=None):
         frappe.local.response['message'] = "Employee List has been fetched successfully"
         frappe.local.response['data'] = employee_list
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
+    
+def get_exception(err):
+    frappe.local.response['http_status_code'] = 404
+    frappe.local.response['status'] = False
+    if len(frappe.local.message_log) > 0:
+        err = frappe.local.message_log[0].get("message") or err
+    soup = BeautifulSoup(err, "html.parser")
+    for br in soup.find_all("br"):
+        br.replace_with(". ")
+    err = soup.get_text()
+    frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"

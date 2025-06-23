@@ -1,6 +1,6 @@
 import frappe
 import math
-from mohan_impex.api import get_signed_token
+from mohan_impex.api import get_signed_token, get_exception
 
 @frappe.whitelist()
 def digital_mc_list():
@@ -48,6 +48,4 @@ def digital_mc_list():
         frappe.local.response['message'] = "Digital Marketing Collateral list has been successfully fetched"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)

@@ -2,7 +2,7 @@ import frappe
 from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 import math
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import get_role_filter, get_self_filter_status
+from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception
 
 @frappe.whitelist()
 def collateral_request_list():
@@ -78,9 +78,7 @@ def collateral_request_list():
         frappe.local.response['message'] = "Collateral Request list has been successfully fetched"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def collateral_request_form():
@@ -103,9 +101,7 @@ def collateral_request_form():
             frappe.local.response['message'] = "Marketing Collateral Request form has been successfully fetched"
             frappe.local.response['data'] = [cr_doc]
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
     
 @frappe.whitelist()
 def create_collateral_request():
@@ -126,6 +122,4 @@ def create_collateral_request():
         frappe.local.response['message'] = "Collateral request has been successfully created"
         frappe.local.response['data'] = response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)

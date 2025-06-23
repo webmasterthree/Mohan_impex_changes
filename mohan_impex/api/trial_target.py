@@ -1,5 +1,6 @@
 import frappe
 from mohan_impex.mohan_impex.comment import workflow_status_update
+from mohan_impex.mohan_impex.api import get_exception
 
 @frappe.whitelist()
 def get_trial_template(item_code):
@@ -72,9 +73,7 @@ def update_trial_target():
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Trial Target Updated Successfully"
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def complete_trial_target():
@@ -102,6 +101,4 @@ def complete_trial_target():
         response = workflow_status_update("Trial Target", trial_target_id, "Complete")
         return response
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)

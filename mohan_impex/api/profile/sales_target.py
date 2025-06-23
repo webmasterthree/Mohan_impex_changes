@@ -1,7 +1,7 @@
 import frappe
 from erpnext.accounts.utils import get_fiscal_year
 from frappe.utils import nowdate
-from mohan_impex.api import get_signed_token
+from mohan_impex.api import get_signed_token, get_exception
 
 @frappe.whitelist()
 def get_sales_target():
@@ -40,9 +40,7 @@ def get_sales_target():
         frappe.local.response['message'] = "Sales Target has been successfully fetched"
         frappe.local.response['data'] = sales_target
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 def get_sales_target_by_sales_invoice(sales_person, fiscal_year, month, year):
     uom = frappe.get_single("Stock Settings").stock_uom or "Kgs"
@@ -220,9 +218,7 @@ def get_leader_board():
         frappe.local.response['message'] = "Leadboard fetched successfully"
         frappe.local.response['data'] = leader_board
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 def convert_to_uom(value, uom):
     return f"{value} {uom}"

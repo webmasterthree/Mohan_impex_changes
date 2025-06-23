@@ -1,5 +1,5 @@
 import frappe
-from mohan_impex.api import get_signed_token
+from mohan_impex.api import get_signed_token, get_exception
 
 @frappe.whitelist()
 def get_account_info():
@@ -16,9 +16,7 @@ def get_account_info():
         frappe.local.response['message'] = "Account Information list has been successfully fetched"
         frappe.local.response['data'] = account_info
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
 
 @frappe.whitelist()
 def update_account_info():
@@ -35,9 +33,7 @@ def update_account_info():
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Account Information has been successfully updated"
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
         
 @frappe.whitelist()
 def get_leader_board():
@@ -47,6 +43,4 @@ def get_leader_board():
         frappe.local.response['message'] = "Leader Board list has been successfully fetched"
         frappe.local.response['data'] = leader_board
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+        get_exception(err)
