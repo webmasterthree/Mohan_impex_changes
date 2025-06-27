@@ -183,7 +183,7 @@
   "doctype": "Workflow",
   "document_type": "Trial Plan",
   "is_active": 1,
-  "modified": "2025-06-22 12:40:33.360638",
+  "modified": "2025-06-27 07:45:32.215018",
   "name": "Trial plan",
   "override_status": 0,
   "send_email_alert": 0,
@@ -246,21 +246,6 @@
     "state": "Rejected",
     "update_field": "status",
     "update_value": "Rejected",
-    "workflow_builder_id": null
-   },
-   {
-    "allow_edit": "TSM",
-    "avoid_status_override": 0,
-    "doc_status": "0",
-    "is_optional_state": 0,
-    "message": null,
-    "next_action_email_template": null,
-    "parent": "Trial plan",
-    "parentfield": "states",
-    "parenttype": "Workflow",
-    "state": "Pending",
-    "update_field": "status",
-    "update_value": "Pending",
     "workflow_builder_id": null
    }
   ],

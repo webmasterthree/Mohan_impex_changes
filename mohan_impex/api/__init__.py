@@ -620,3 +620,8 @@ def get_exception(err):
         br.replace_with(". ")
     err = soup.get_text()
     frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+
+def get_workflow_statuses(doctype, role):
+    workflow_name = frappe.get_value("Workflow", {"doc_type": doctype}, "name")
+    workflow_statuses = frappe.get_all("Workflow Transition", {"parent": workflow_name, "allowed": role}, ["action"], pluck="action")
+    return workflow_statuses

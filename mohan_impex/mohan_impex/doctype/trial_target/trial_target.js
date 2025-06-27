@@ -73,10 +73,11 @@ async function validate_trial(frm){
 }
 
 async function update_trial_status(frm){
-    await frm.call("update_trial_status").then(async(r) => {
-        console.log(r.message)
-        if (r.message) {
-          frappe.throw(r.message)
-        }
-    });
+    await frm.call("update_trial_status")
+    // .then(async(r) => {
+        // console.log(r.message)
+        // if (r.message) {
+        //   frappe.throw(r.message)
+        // }
+    // });
 }

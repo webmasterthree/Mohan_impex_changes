@@ -1,7 +1,7 @@
 {
  "charts": [],
- "content": "[{\"id\":\"6OkkR5eBQP\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Mohan Impex</span>\",\"col\":12}},{\"id\":\"BujyBj0SYY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"User\",\"col\":3}},{\"id\":\"dchJKTFqol\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee\",\"col\":3}},{\"id\":\"oI-z3u4hyp\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"IccXzDwjg4\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales\",\"col\":4}},{\"id\":\"PFvhBluw_z\",\"type\":\"card\",\"data\":{\"card_name\":\"Requests\",\"col\":4}},{\"id\":\"COPHJKSsFZ\",\"type\":\"card\",\"data\":{\"card_name\":\"Masters\",\"col\":4}}]",
- "creation": "2025-03-26 22:17:51.793452",
+ "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}}]",
+ "creation": "2025-06-22 11:02:37.212236",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -16,8 +16,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Sales",
-   "link_count": 1,
+   "label": "Ground Team",
+   "link_count": 4,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -25,9 +25,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Sales Order",
+   "label": "Pre-Unloading Check",
    "link_count": 0,
-   "link_to": "Sales Order",
+   "link_to": "Pre-Unloading Check",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -35,18 +35,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Requests",
-   "link_count": 6,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Customer Visit Management",
+   "label": "Purchase Order",
    "link_count": 0,
-   "link_to": "Customer Visit Management",
+   "link_to": "Purchase Order",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -54,9 +45,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Trial Plan",
+   "label": "Purchase Receipt",
    "link_count": 0,
-   "link_to": "Trial Plan",
+   "link_to": "Purchase Receipt",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -64,19 +55,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Sample Requisition",
+   "label": "Delivery Note",
    "link_count": 0,
-   "link_to": "Sample Requisition",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Journey Plan",
-   "link_count": 0,
-   "link_to": "Journey Plan",
+   "link_to": "Delivery Note",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -104,8 +85,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Masters",
-   "link_count": 6,
+   "label": "Account Executive - Banking",
+   "link_count": 5,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -113,9 +94,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Customer KYC",
+   "label": "Account",
    "link_count": 0,
-   "link_to": "Customer",
+   "link_to": "Account",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -133,9 +114,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Item",
+   "label": "Bank",
    "link_count": 0,
-   "link_to": "Item",
+   "link_to": "Bank",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -143,9 +124,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Pricing Rule",
+   "label": "Bank Account",
    "link_count": 0,
-   "link_to": "Pricing Rule",
+   "link_to": "Bank Account",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -153,9 +134,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Item Price",
+   "label": "Bank Account Subtype",
    "link_count": 0,
-   "link_to": "Item Price",
+   "link_to": "Bank Account Subtype",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -163,15 +144,15 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Digital Marketing Collateral",
+   "label": "Bank Transaction",
    "link_count": 0,
-   "link_to": "Digital Marketing Collateral",
+   "link_to": "Bank Transaction",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   }
  ],
- "modified": "2025-04-06 11:24:56.852982",
+ "modified": "2025-06-27 08:07:20.492089",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Mohan Impex",
@@ -182,23 +163,6 @@
  "quick_lists": [],
  "roles": [],
  "sequence_id": 1.0,
- "shortcuts": [
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Employee",
-   "link_to": "Employee",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "User",
-   "link_to": "User",
-   "stats_filter": "[]",
-   "type": "DocType"
-  }
- ],
+ "shortcuts": [],
  "title": "Mohan Impex"
 }
