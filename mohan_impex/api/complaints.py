@@ -1,7 +1,7 @@
 import frappe
-from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
+from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee, get_session_emp_role
 from frappe.utils.file_manager import save_file
-from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception
+from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception, get_workflow_statuses, has_create_perm
 import math
 from mohan_impex.mohan_impex.comment import get_comments
 from bs4 import BeautifulSoup
@@ -72,7 +72,8 @@ def complaints_list():
                 "total_count": total_count,
                 "page_count": page_count,
                 "current_page": current_page,
-                "has_toggle_filter": is_self_filter
+                "has_toggle_filter": is_self_filter,
+                "create": has_create_perm("Issue")
             }
         ]
         frappe.local.response['status'] = True
@@ -131,6 +132,7 @@ def complaints_form():
             activities = get_comments("Issue", complaints_name)
             complaints_dict["activities"] = activities
             is_self_filter = get_self_filter_status()
+            complaints_dict["status_fields"] = get_workflow_statuses("Issue", get_session_emp_role())
             complaints_dict["has_toggle_filter"] = is_self_filter
             complaints_dict["created_person_mobile_no"] = frappe.get_value("Employee", complaints_dict.get("created_by_emp"), "custom_personal_mobile_number")
             frappe.local.response['status'] = True
