@@ -97,7 +97,7 @@ def trial_form():
             return
         trial_doc = frappe.get_doc("Trial Plan", trial_name)
         trial_doc = trial_doc.as_dict()
-        fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield", "area"]
+        fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "parent", "parenttype", "parentfield", "area"]
         child_doc = ["trial_item_table", "product_trial_table", "item_trial_table"]
         trial_doc = {
             key: value for key, value in trial_doc.items() if key not in fields_to_remove

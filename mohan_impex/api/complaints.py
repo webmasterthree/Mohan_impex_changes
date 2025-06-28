@@ -94,6 +94,8 @@ def complaints_form():
                 return
             complaints_doc = frappe.get_doc("Issue", complaints_name)
             complaints_dict = {
+                "name": complaints_doc.name,
+                "doctype": complaints_doc.doctype,
                 "subject":  complaints_doc.subject,
                 "claim_type":  complaints_doc.claim_type,
                 "customer_level": complaints_doc.customer_level,

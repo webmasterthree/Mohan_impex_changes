@@ -107,7 +107,7 @@ def cvm_form():
             for image in image_url:
                 image["url"] = get_signed_token(image["file_url"])
             cvm_doc = cvm_doc.as_dict()
-            fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield", "area"]
+            fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "parent", "parenttype", "parentfield", "area"]
             child_doc = ["product_pitching", "product_trial", "item_trial", "contact"]
             cvm_doc = {
                 key: value for key, value in cvm_doc.items() if key not in fields_to_remove

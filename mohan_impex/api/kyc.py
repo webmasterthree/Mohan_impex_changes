@@ -98,7 +98,7 @@ def kyc_form():
             return
         kyc_doc = frappe.get_doc("Customer", kyc_name)
         kyc_doc = kyc_doc.as_dict()
-        fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield", "territory"]
+        fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "parent", "parenttype", "parentfield", "territory"]
         child_doc = ["product_pitching", "product_trial", "customer_license", "cust_decl"]
         kyc_doc = {
             key: value for key, value in kyc_doc.items() if key not in fields_to_remove

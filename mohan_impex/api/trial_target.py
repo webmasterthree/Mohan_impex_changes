@@ -22,7 +22,7 @@ def get_trial_target(trial_target):
         return
     trial_target = frappe.get_doc("Trial Target", {"name": trial_target}, ["*"])
     trial_target = trial_target.as_dict()
-    fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield"]
+    fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "parent", "parenttype", "parentfield"]
     child_doc = ["trial_target_table"]
     trial_target = {
         key: value for key, value in trial_target.items() if key not in fields_to_remove

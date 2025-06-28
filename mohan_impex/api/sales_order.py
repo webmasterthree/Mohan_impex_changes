@@ -102,6 +102,7 @@ def so_form():
         so_doc = frappe.get_doc("Sales Order", so_name)
         so_dict = {
             "name": so_doc.name,
+            "doctype": so_doc.doctype,
             "customer_level": so_doc.customer_level,
             "customer": so_doc.customer,
             "customer_name": so_doc.customer_name,
