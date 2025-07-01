@@ -253,7 +253,7 @@ def create_cvm():
         get_exception(err)
 
 def create_shop(shop, shop_name):
-    if shop:
+    if not shop:
         doc = frappe.get_doc({
             "doctype": "Shop",
             "shop_name": shop_name
