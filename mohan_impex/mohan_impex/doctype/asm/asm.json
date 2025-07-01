@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:asm",
  "creation": "2024-12-27 17:02:18.712736",
@@ -18,7 +19,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-12-27 17:02:59.662142",
+ "modified": "2025-06-24 16:35:59.523365",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "ASM",

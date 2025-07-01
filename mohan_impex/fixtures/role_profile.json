@@ -134,9 +134,9 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
-  "has_toggle_filter": 0,
+  "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
-  "modified": "2025-01-30 21:39:34.983319",
+  "modified": "2025-06-28 15:15:53.616174",
   "name": "ASM",
   "role_full_name": null,
   "role_profile": "ASM",
@@ -200,6 +200,12 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Support Team"
+   },
+   {
+    "parent": "ASM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Leave Approver"
    }
   ]
  },

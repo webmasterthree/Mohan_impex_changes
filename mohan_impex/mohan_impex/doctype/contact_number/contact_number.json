@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:contact_number",
  "creation": "2025-03-27 14:42:12.139719",
@@ -28,7 +29,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-27 14:43:12.801637",
+ "modified": "2025-06-30 22:37:09.186272",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Contact Number",

@@ -9,6 +9,9 @@
   "transporter_name",
   "transporter",
   "quoted_amount",
+  "slab",
+  "column_break_jyqp",
+  "actual_cost",
   "expected_delivery",
   "remarks",
   "select",
@@ -40,7 +43,6 @@
   {
    "fieldname": "expected_delivery",
    "fieldtype": "Date",
-   "in_list_view": 1,
    "label": "Expected Delivery",
    "permlevel": 2
   },
@@ -102,12 +104,31 @@
    "fieldtype": "Data",
    "label": "Phone Number",
    "permlevel": 2
+  },
+  {
+   "fieldname": "slab",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Slab",
+   "options": "\nPer KG\nPer Ton\nTotal Frieght",
+   "reqd": 1
+  },
+  {
+   "fieldname": "actual_cost",
+   "fieldtype": "Currency",
+   "label": "Actual Cost",
+   "permlevel": 2,
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_jyqp",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-27 11:19:41.898362",
+ "modified": "2025-06-28 12:04:07.861582",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transporters",

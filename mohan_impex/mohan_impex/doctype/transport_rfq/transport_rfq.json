@@ -15,6 +15,7 @@
   "transporters",
   "section_break_titp",
   "locations",
+  "total_weightin_kg",
   "add_transporter_details_section",
   "transporter_details",
   "section_break_eabp",
@@ -61,7 +62,8 @@
    "fieldname": "transporters",
    "fieldtype": "Table",
    "label": "Transporters",
-   "options": "Transporters"
+   "options": "Transporters",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_eabp",
@@ -113,12 +115,19 @@
    "fieldtype": "Table",
    "label": "Transporter Details",
    "options": "Transporter Details"
+  },
+  {
+   "bold": 1,
+   "fieldname": "total_weightin_kg",
+   "fieldtype": "Float",
+   "label": "Total Weight(In KG)",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-20 11:31:47.205734",
+ "modified": "2025-06-28 12:01:53.115797",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transport RFQ",
