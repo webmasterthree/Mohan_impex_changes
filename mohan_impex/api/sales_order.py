@@ -49,6 +49,8 @@ def so_list():
             and_filters.append("""so.transaction_date between "{0}" and "{1}" """.format(frappe.form_dict["from_date"], frappe.form_dict["to_date"]))
         and_filters = " AND ".join(and_filters)
         query += """ AND ({0})""".format(and_filters) if and_filters else ""
+        if frappe.form_dict.get("visit_type"):
+            query += """ AND so.customer_level = "{0}" """.format(frappe.form_dict.get("visit_type"))
         query += order_by
         query += pagination
         frappe.errprint(query)
