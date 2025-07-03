@@ -12,7 +12,7 @@ def so_list():
     try:
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
-        is_self = int(frappe.form_dict.get("is_self") or 0)
+        is_self = frappe.form_dict.get("is_self")
         other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
@@ -53,7 +53,6 @@ def so_list():
             query += """ AND so.customer_level = "{0}" """.format(frappe.form_dict.get("visit_type"))
         query += order_by
         query += pagination
-        frappe.errprint(query)
         so_info = frappe.db.sql(query, as_dict=True)
         for so in so_info:
             so["location"] = get_address_text(so["location"]) if so["location"] else ""
@@ -156,6 +155,7 @@ def so_form():
 @frappe.whitelist()
 def create_so():
     try:
+        frappe.db.begin()
         response = {}
         so_data = frappe.form_dict
         so_dict = {
@@ -208,10 +208,12 @@ def create_so():
         frappe.local.response['status'] = True
         frappe.local.response['message'] = message
         frappe.local.response['data'] = [response]
+        frappe.db.commit()
     except Exception as err:
+        frappe.db.rollback()
         get_exception(err)
 
-def get_role_filter(emp, is_self=False, employee=None):
+def get_role_filter(emp, is_self=None, employee=None):
     from frappe.utils.nestedset import get_descendants_of
     sub_areas = get_descendants_of("Territory", emp.get('area'))
     if sub_areas:
@@ -221,6 +223,9 @@ def get_role_filter(emp, is_self=False, employee=None):
         areas = f"""{emp.get("area")}"""
     if employee:
         return f"""territory in ('{areas}') and created_by_emp = '{employee}' """
-    if is_self:
-        return f"""territory in ('{areas}') and created_by_emp = '{emp.get('name')}' """
+    if is_self is not None:
+        if int(is_self) == 1:
+            return f"""territory in ('{areas}') and created_by_emp = '{emp.get('name')}' """
+        elif int(is_self) == 0:
+            return f"""territory in ('{areas}') and created_by_emp != '{emp.get('name')}' """
     return f"""territory in ('{areas}') """

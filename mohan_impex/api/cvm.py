@@ -13,7 +13,7 @@ def cvm_list():
     try:
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
-        is_self = int(frappe.form_dict.get("is_self") or 0)
+        is_self = frappe.form_dict.get("is_self")
         other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
@@ -157,6 +157,7 @@ def create_cvm():
         "area": get_session_employee_area()
     })
     try:
+        frappe.db.begin()
         response = {}
         if not cvm_validate(cvm_data):
             return
@@ -166,7 +167,8 @@ def create_cvm():
                     create_contact_number(contact["contact"], "Customer", cvm_data.customer)
         if cvm_data.customer_type == "New":
             shop = create_shop(cvm_data.shop, cvm_data.shop_name)
-            if shop: cvm_data.shop = shop
+            if shop:
+                cvm_data.shop = shop
             created_contact = []
             for contact in cvm_data.contact:
                 if not frappe.db.exists("Contact Number", contact["contact"]):
@@ -196,7 +198,7 @@ def create_cvm():
                 unv_cus.update(unv_cus_dict)
                 unv_cus.insert(ignore_permissions=True, ignore_mandatory=True)
             address_dict = {
-                "doctype":"Address",
+                "doctype": "Address",
                 "address_type": "Billing",
                 "address_title": cvm_data.unv_cus,
                 "address_line1": cvm_data.address_line1,
@@ -213,7 +215,7 @@ def create_cvm():
             else:
                 addr_doc = frappe.new_doc("Address")
                 addr_doc.update(address_dict)
-                addr_doc.append("links",{
+                addr_doc.append("links", {
                     "link_doctype": "Unverified Customer",
                     "link_name": unv_cus.name
                 })
@@ -249,7 +251,9 @@ def create_cvm():
         frappe.local.response['status'] = True
         frappe.local.response['message'] = message
         frappe.local.response['data'] = [response]
+        frappe.db.commit()
     except Exception as err:
+        frappe.db.rollback()
         get_exception(err)
 
 def create_shop(shop, shop_name):

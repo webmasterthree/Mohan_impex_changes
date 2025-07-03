@@ -10,7 +10,7 @@ def trial_list():
     try:
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
-        is_self = int(frappe.form_dict.get("is_self") or 0)
+        is_self = frappe.form_dict.get("is_self")
         other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:

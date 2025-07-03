@@ -540,7 +540,7 @@ def is_within_range(origin, destination):
     except Exception as err:
         get_exception(err)
 
-def get_role_filter(emp, is_self=False, employee=None):
+def get_role_filter(emp, is_self=None, employee=None):
     sub_areas = get_descendants_of("Territory", emp.get('area'))
     if sub_areas:
         sub_areas.append(emp.get('area'))
@@ -549,8 +549,11 @@ def get_role_filter(emp, is_self=False, employee=None):
         areas = f"""{emp.get("area")}"""
     if employee:
         return f"""area in ('{areas}') and created_by_emp = '{employee}' """
-    if is_self:
-        return f"""area in ('{areas}') and created_by_emp = '{emp.get('name')}' """
+    if is_self is not None:
+        if int(is_self) == 1:
+            return f"""area in ('{areas}') and created_by_emp = '{emp.get('name')}' """
+        elif int(is_self) == 0:
+            return f"""area in ('{areas}') and created_by_emp != '{emp.get('name')}' """
     return f"""area in ('{areas}') """
 
 def get_territory_role_filter(emp):
