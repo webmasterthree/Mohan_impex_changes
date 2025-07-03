@@ -160,6 +160,7 @@ def create_kyc():
     kyc_data = frappe.form_dict
     kyc_data.pop("cmd")
     try:
+        frappe.db.begin()
         cust_decls = [{"cust_decl": cust_decl["file_url"]} for cust_decl in kyc_data.cust_decl]
         cust_licenses = [{"cust_lic": cust_license["file_url"]} for cust_license in kyc_data.cust_license]
         data = {
@@ -203,7 +204,9 @@ def create_kyc():
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "KYC request has been successfully created"
         frappe.local.response['data'] = [response]
+        frappe.db.commit()
     except Exception as err:
+        frappe.db.rollback()
         get_exception(err)
 
 def update_file_doc(name, kyc_id):

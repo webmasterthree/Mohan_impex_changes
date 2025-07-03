@@ -143,6 +143,12 @@ def create_contact(contactno, doctype=None, link_name=None):
         contact_link.save(ignore_permissions=True)
 
 def create_contact_number(contactno, doctype=None, link_name=None):
+    import re
+    if not re.match(r'^\d{10}$', contactno):
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = f"Contact Number {contactno} must be a 10 digit mobile number"
+        return
     if frappe.db.exists("Contact Number", contactno):
         contact_doc = frappe.get_doc("Contact Number", contactno)
     else:
