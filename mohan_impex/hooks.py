@@ -11,7 +11,7 @@ role_list = ("SE", "ASM", "TSM", "NSM", "CP")
 fixtures = [
     "Client Script",
     {"dt": "Custom DocPerm", "filters": [["role", "in", role_list]]},
-    {"dt": "Property Setter", "filters": [["doc_type", "in", ("Customer")], ["property", "in", "options"]]},
+    {"dt": "Property Setter", "filters": [["doc_type", "in", ("Customer", "Notification Log")], ["property", "in", "options"]]},
     {"dt": "Role", "filters": [["name", "in", role_list]]},
     {"dt": "Role Profile", "filters": [["name", "in", role_list]]},
     {"dt": "Designation", "filters": [["name", "in", role_list]]},
@@ -74,6 +74,9 @@ doc_events = {
         "before_save": "mohan_impex.mohan_impex.competitor.add_others_in_competitor_item"
     },
     "Comment": {
+        "after_insert": "mohan_impex.api.add_notification_from_comment"
+    },
+    "Notification Log": {
         "after_insert": "mohan_impex.api.send_notification"
     }
 }

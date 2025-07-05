@@ -645,18 +645,53 @@ def get_workflow_statuses(doctype, doc_name, role):
 def has_create_perm(doctype):
     return 1 if frappe.has_permission(doctype, "create", user=frappe.session.user) else 0
 
-def send_notification(doc, method):
+def add_notification_from_comment(doc, method):
     doctype_lists = ["Customer Visit Management", "Trial Plan", "Trial Target", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan"]
     if doc.reference_doctype in doctype_lists:
-        owner = frappe.get_value(doc.reference_doctype, doc.reference_name, "owner")
-        if doc.get("comment_type") in ["Workflow", "Comment"] and owner and owner != "Administrator":
-            device_tokens = frappe.get_all("Push Notification Device", filters={"user": owner}, pluck="device_token")
-            # soup = BeautifulSoup(doc.content, "html.parser")
-            # body = soup.get_text(separator=" ")
-            title = f"New comment on {doc.reference_doctype}"
-            body = f"{doc.comment_by} commented on {doc.reference_doctype} of {doc.reference_name}"
+        try:
+            owner = frappe.get_value(doc.reference_doctype, doc.reference_name, "owner")
+            # if owner and owner != "Administrator":
+            if owner:
+                has_notification = 0
+                if doc.get("comment_type") == "Workflow":
+                    has_notification = 1
+                    title = f"{doc.reference_doctype} status has been updated"
+                    body = f"{doc.reference_doctype} {doc.reference_name} status has been updated to {doc.content} by {doc.comment_by}"
+                elif doc.get("comment_type") == "Comment":
+                    has_notification = 1
+                    title = f"{doc.comment_by} commented in {doc.reference_doctype}"
+                    soup = BeautifulSoup(doc.content, "html.parser")
+                    body = soup.get_text(separator=" ")
+                if has_notification:
+                    notify_doc = frappe.new_doc("Notification Log")
+                    notify_doc.update({
+                        "for_user": owner,
+                        "read": 0,
+                        "subject": title,
+                        "email_content": body,
+                        "type": doc.get("comment_type"),
+                        "document_type" : doc.reference_doctype,
+                        "document_name": doc.reference_name
+                    })
+                    notify_doc.insert(ignore_permissions=True)
+        except Exception as e:
+            frappe.log_error(message=frappe.get_traceback(), title="Notification Log Error")
+
+def send_notification(doc, method):
+    doctype_lists = ["Customer Visit Management", "Trial Plan", "Trial Target", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan"]
+    if doc.document_type in doctype_lists:
+        frappe.get_value("User", doc.for_user, "full_name")
+        if doc.for_user and doc.for_user != "Administrator":
+            device_tokens = frappe.get_all("Push Notification Device", filters={"user": doc.for_user, "disabled": 0}, pluck="device_token")
+            soup = BeautifulSoup(doc.subject, "html.parser")
+            title = soup.get_text(separator=" ")
+            body = doc.email_content
+            data = {
+                "type": doc.document_type,
+                "id": doc.document_name
+            }
             for device_token in device_tokens:
-                send_push_notification(device_token, title, body)
+                send_push_notification(device_token, title, body, data)
 
 @frappe.whitelist()
 def send_push_notification(device_token, title, body, data=None):
@@ -695,6 +730,9 @@ def send_push_notification(device_token, title, body, data=None):
 
     try:
         response = requests.post(url, headers=headers, data=json.dumps(payload))
+        if response.status_code == 404 and "UNREGISTERED" in response.text:
+            # Mark token as invalid or remove it
+            frappe.db.set_value("Push Notification Device", {"device_token": device_token}, "disabled", 1)
         if response.status_code == 200:
             frappe.local.response["status"] = True 
             frappe.local.response["message"] = response.json()

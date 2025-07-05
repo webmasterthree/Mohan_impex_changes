@@ -1,13 +1,14 @@
 {
  "actions": [],
- "autoname": "field:device_token",
+ "autoname": "hash",
  "creation": "2025-07-03 18:08:55.272209",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "user",
   "device_token",
-  "platform"
+  "platform",
+  "disabled"
  ],
  "fields": [
   {
@@ -20,26 +21,31 @@
   },
   {
    "fieldname": "device_token",
-   "fieldtype": "Data",
+   "fieldtype": "Small Text",
    "in_list_view": 1,
    "label": "Device Token",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "fieldname": "platform",
    "fieldtype": "Select",
    "label": "Platform",
    "options": "\nAndroid\niOS\nWeb"
+  },
+  {
+   "default": "0",
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-03 18:11:08.257920",
+ "modified": "2025-07-05 21:22:22.405200",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Push Notification Device",
- "naming_rule": "By fieldname",
+ "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [
   {
