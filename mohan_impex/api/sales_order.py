@@ -142,7 +142,7 @@ def so_form():
         activities = get_comments("Sales Order", so_dict["name"])
         so_dict["activities"] = activities
         is_self_filter = get_self_filter_status()
-        so_dict["status_fields"] = get_workflow_statuses("Sales Order", get_session_emp_role())
+        so_dict["status_fields"] = get_workflow_statuses("Sales Order", so_name, get_session_emp_role())
         so_dict["has_toggle_filter"] = is_self_filter
         so_dict["created_person_mobile_no"] = frappe.get_value("Employee", so_dict.get("created_by_emp"), "custom_personal_mobile_number")
 

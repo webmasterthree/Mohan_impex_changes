@@ -98,7 +98,7 @@ def sample_form():
         activities = get_comments("Sample Requisition", sample_doc["name"])
         sample_doc["activities"] = activities
         is_self_filter = get_self_filter_status()
-        sample_doc["status_fields"] = get_workflow_statuses("Sample Requisition", get_session_emp_role())
+        sample_doc["status_fields"] = get_workflow_statuses("Sample Requisition", sample_name, get_session_emp_role())
         sample_doc["has_toggle_filter"] = is_self_filter
         sample_doc["created_person_mobile_no"] = frappe.get_value("Employee", sample_doc.get("created_by_emp"), "custom_personal_mobile_number")
         frappe.local.response['status'] = True

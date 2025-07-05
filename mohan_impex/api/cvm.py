@@ -139,7 +139,7 @@ def cvm_form():
             cvm_doc["activities"] = activities
             cvm_doc["image_url"] = image_url
             is_self_filter = get_self_filter_status()
-            cvm_doc["status_fields"] = get_workflow_statuses("Customer Visit Management", get_session_emp_role())
+            cvm_doc["status_fields"] = get_workflow_statuses("Customer Visit Management", cvm_name, get_session_emp_role())
             cvm_doc["has_toggle_filter"] = is_self_filter
             cvm_doc["created_person_mobile_no"] = frappe.get_value("Employee", cvm_doc.get("created_by_emp"), "custom_personal_mobile_number")
             frappe.local.response['status'] = True

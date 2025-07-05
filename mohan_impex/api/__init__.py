@@ -13,6 +13,7 @@ import json
 import requests
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account
+from frappe.model.workflow import get_transitions
 
 @frappe.whitelist()
 def dashboard():
@@ -634,9 +635,11 @@ def get_exception(err):
     err = soup.get_text()
     frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
 
-def get_workflow_statuses(doctype, role):
-    workflow_name = frappe.get_value("Workflow", {"document_type": doctype}, "name")
-    workflow_statuses = frappe.get_all("Workflow Transition", {"parent": workflow_name, "allowed": role}, ["action"], pluck="action", order_by="idx")
+def get_workflow_statuses(doctype, doc_name, role):
+    doc = frappe.get_doc(doctype, doc_name)
+    workflow_statuses = get_transitions(doc)
+    workflow_statuses = list(filter(lambda workflow: workflow["allowed"] == role, workflow_statuses))
+    workflow_statuses = [workflow["action"] for workflow in workflow_statuses]
     return workflow_statuses
 
 def has_create_perm(doctype):

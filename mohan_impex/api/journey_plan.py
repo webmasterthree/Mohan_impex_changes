@@ -98,7 +98,7 @@ def journey_plan_form():
             activities = get_comments("Journey Plan", journey_doc["name"])
             journey_doc["activities"] = activities
             is_self_filter = get_self_filter_status()
-            journey_doc["status_fields"] = get_workflow_statuses("Journey Plan", get_session_emp_role())
+            journey_doc["status_fields"] = get_workflow_statuses("Journey Plan", journey_name, get_session_emp_role())
             journey_doc["has_toggle_filter"] = is_self_filter
             journey_doc["created_person_mobile_no"] = frappe.get_value("Employee", journey_doc.get("created_by_emp"), "custom_personal_mobile_number")
             frappe.local.response['status'] = True

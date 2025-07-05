@@ -146,7 +146,7 @@ def kyc_form():
         kyc_doc["activities"] = activities
         kyc_doc["contact"] = [contact] if contact else []
         is_self_filter = get_self_filter_status()
-        kyc_doc["status_fields"] = get_workflow_statuses("Customer", get_session_emp_role())
+        kyc_doc["status_fields"] = get_workflow_statuses("Customer", kyc_name, get_session_emp_role())
         kyc_doc["has_toggle_filter"] = is_self_filter
         kyc_doc["created_person_mobile_no"] = frappe.get_value("Employee", kyc_doc.get("created_by_emp"), "custom_personal_mobile_number")
         frappe.local.response['status'] = True
