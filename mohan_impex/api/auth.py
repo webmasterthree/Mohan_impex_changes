@@ -11,7 +11,7 @@ import io
 from io import BytesIO
 
 @frappe.whitelist(allow_guest=True)
-def login(email_id, password):
+def login(email_id, password, device_token=None):
     if not frappe.db.exists("User", {"name": email_id}):
         frappe.local.response['http_status_code'] = 404
         frappe.local.response['status'] = False
@@ -29,6 +29,13 @@ def login(email_id, password):
         frappe.local.response['message'] = "Incorrect Password"
         frappe.local.response['data'] = []
         return
+    if device_token:
+        doc = frappe.get_doc({
+            'doctype': 'Push Notification Device',
+            'device_token': device_token,
+            'user': user.name or frappe.session.user
+        })
+        doc.insert(ignore_permissions=True)
     sys_settings = frappe.get_single("System Settings")
     hours, minutes = sys_settings.session_expiry.split(":")
     seconds = (int(hours) * 3600) + (int(minutes) * 60)

@@ -1263,5 +1263,16 @@
   "name": "Sales Invoice1",
   "script": "frappe.ui.form.on('Sales Invoice', {\n    onload: function(frm) {\n        // Avoid adding transport charges multiple times\n        const already_added = frm.doc.taxes.some(tax => tax.description === \"Transporter Charges\");\n        if (already_added) return;\n\n        // Get unique Delivery Notes from items table\n        const delivery_notes = [\n            ...new Set(\n                (frm.doc.items || [])\n                    .map(item => item.delivery_note)\n                    .filter(dn => dn)\n            )\n        ];\n\n        if (delivery_notes.length === 0) return;\n\n        // Now fetch each DN and total transport charges\n        let total_transport = 0;\n        let processed = 0;\n\n        delivery_notes.forEach(dn => {\n            frappe.call({\n                method: \"frappe.client.get\",\n                args: {\n                    doctype: \"Delivery Note\",\n                    name: dn\n                },\n                callback: function(r) {\n                    if (r.message) {\n                        let transport = r.message.custom_transport_charges || 0;\n                        total_transport += transport;\n                    }\n\n                    processed++;\n                    if (processed === delivery_notes.length && total_transport > 0) {\n                        let row = frm.add_child(\"taxes\");\n                        row.charge_type = \"Actual\";\n                        row.account_head = \"Sales Expenses - MISL\"; // Adjust this\n                        row.description = \"Transporter Charges\";\n                        row.tax_amount = total_transport;\n                        row.cost_center = \"Main - MISL\"; // Adjust this too\n                        frm.refresh_field(\"taxes\");\n                    }\n                }\n            });\n        });\n    }\n});\n",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Work Order",
+  "enabled": 1,
+  "modified": "2025-07-03 20:14:06.873054",
+  "module": "Mohan Impex",
+  "name": "Work Order",
+  "script": "frappe.ui.form.on('Work Order', {\n\trefresh(frm) {\n\t\t// your code here\n\t\tif(!frm.doc.process_line_testing_completed){\n            frm.remove_custom_button(\"Start\")\t\t    \n\t\t}\n\t}\n})",
+  "view": "Form"
  }
 ]

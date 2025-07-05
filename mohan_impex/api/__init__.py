@@ -9,6 +9,10 @@ import requests
 from mohan_impex.mohan_impex.utils import get_session_employee
 from frappe.utils.nestedset import get_descendants_of
 from bs4 import BeautifulSoup
+import json
+import requests
+from google.auth.transport.requests import Request
+from google.oauth2 import service_account
 
 @frappe.whitelist()
 def dashboard():
@@ -637,3 +641,71 @@ def get_workflow_statuses(doctype, role):
 
 def has_create_perm(doctype):
     return 1 if frappe.has_permission(doctype, "create", user=frappe.session.user) else 0
+
+def send_notification(doc, method):
+    doctype_lists = ["Customer Visit Management", "Trial Plan", "Trial Target", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan"]
+    if doc.reference_doctype in doctype_lists:
+        owner = frappe.get_value(doc.reference_doctype, doc.reference_name, "owner")
+        if doc.get("comment_type") in ["Workflow", "Comment"] and owner and owner != "Administrator":
+            device_tokens = frappe.get_all("Push Notification Device", filters={"user": owner}, pluck="device_token")
+            # soup = BeautifulSoup(doc.content, "html.parser")
+            # body = soup.get_text(separator=" ")
+            title = f"New comment on {doc.reference_doctype}"
+            body = f"{doc.comment_by} commented on {doc.reference_doctype} of {doc.reference_name}"
+            for device_token in device_tokens:
+                send_push_notification(device_token, title, body)
+
+@frappe.whitelist()
+def send_push_notification(device_token, title, body, data=None):
+    service_account_path = 'mohan-impex-erp-551f3-1f9a5f51dd38.json'
+
+    project_id = 'mohan-impex-erp-551f3'
+
+    SCOPES = ['https://www.googleapis.com/auth/firebase.messaging']
+
+    # Authenticate and get access token
+    credentials = service_account.Credentials.from_service_account_file(
+        service_account_path, scopes=SCOPES)
+    credentials.refresh(Request())
+    access_token = credentials.token
+
+    # Prepare the notification payload
+    payload = {
+        "message": {
+            "token": device_token,
+            "notification": {
+                "title": title,
+                "body": body
+            }
+        }
+    }
+
+    if data:
+        payload["message"]["data"] = data  # Optional custom data
+
+    # Send request to FCM
+    url = f"https://fcm.googleapis.com/v1/projects/{project_id}/messages:send"
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json; UTF-8"
+    }
+
+    try:
+        response = requests.post(url, headers=headers, data=json.dumps(payload))
+        if response.status_code == 200:
+            frappe.local.response["status"] = True 
+            frappe.local.response["message"] = response.json()
+        else:
+            frappe.log_error(title="Error sending push notification", message=f"Error sending push notification: {response.text}")
+            frappe.log_error(
+                title=f"Push Notification Invalid Status: {title}",
+                message=f"Device Token: {device_token}, Body: {body}, Error: {response.text}"
+            )
+            frappe.local.response["status"] = False
+            frappe.local.response["message"] = response.json()
+    except Exception as err:
+        frappe.log_error(
+            title=f"Push Notification Error: {title}",
+            message=f"Device Token: {device_token}, Body: {body}, Error: {err}"
+        )
+        get_exception(err)
