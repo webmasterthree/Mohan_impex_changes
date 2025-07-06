@@ -719,6 +719,8 @@ def send_push_notification(device_token, title, body, data=None):
     }
 
     if data:
+        if isinstance(data, str):
+            data = json.loads(data)
         payload["message"]["data"] = data  # Optional custom data
 
     # Send request to FCM
