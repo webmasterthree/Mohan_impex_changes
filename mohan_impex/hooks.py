@@ -78,6 +78,9 @@ doc_events = {
     },
     "Notification Log": {
         "after_insert": "mohan_impex.api.send_notification"
+    },
+    "Stock Entry": {
+        "before_submit": "mohan_impex.mohan_impex.stock_entry.inspection_validation"
     }
 }
 # "Salary Slip": {
@@ -93,7 +96,8 @@ api_methods = [
 ]
 
 override_doctype_class = {
-    "Transport RFQ": "mohan_impex.Sales.transport_rfq.TransportRFQ"
+    "Transport RFQ": "mohan_impex.Sales.transport_rfq.TransportRFQ",
+    "Quality Inspection": "mohan_impex.override.quality_inspection.QualityInspection"
 }
 
 
