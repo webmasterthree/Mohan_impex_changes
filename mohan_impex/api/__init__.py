@@ -679,7 +679,7 @@ def add_notification_from_comment(doc, method):
 def send_notification(doc, method):
     doctype_lists = ["Customer Visit Management", "Trial Plan", "Trial Target", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan"]
     if doc.document_type in doctype_lists:
-        role_profile = frappe.get_value("User", doc.for_user, "role_profile")
+        role_profile = frappe.get_value("User", doc.for_user, "role_profile_name")
         if doc.for_user and doc.for_user != "Administrator":
             device_tokens = frappe.get_all("Push Notification Device", filters={"user": doc.for_user, "disabled": 0}, pluck="device_token")
             soup = BeautifulSoup(doc.subject, "html.parser")
