@@ -10,7 +10,7 @@ def my_customer_list():
     try:
         limit = frappe.form_dict.get("limit")
         current_page = frappe.form_dict.get("current_page")
-        is_self = int(frappe.form_dict.get("is_self") or 0)
+        is_self = frappe.form_dict.get("is_self")
         other_employee = frappe.form_dict.get("employee")
         if not limit or not current_page:
             frappe.local.response['http_status_code'] = 404

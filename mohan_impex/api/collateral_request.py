@@ -9,7 +9,7 @@ def collateral_request_list():
     try:
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
-        is_self = int(frappe.form_dict.get("is_self") or 0)
+        is_self = frappe.form_dict.get("is_self")
         other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
@@ -96,7 +96,7 @@ def collateral_request_form():
             activities = get_comments("Marketing Collateral Request", cr_doc["name"])
             cr_doc["activities"] = activities
             is_self_filter = get_self_filter_status()
-            cr_doc["status_fields"] = get_workflow_statuses("Marketing Collateral Request", get_session_emp_role())
+            cr_doc["status_fields"] = get_workflow_statuses("Marketing Collateral Request", cr_name, get_session_emp_role())
             cr_doc["has_toggle_filter"] = is_self_filter
             cr_doc["created_person_mobile_no"] = frappe.get_value("Employee", cr_doc.get("created_by_emp"), "custom_personal_mobile_number")
             frappe.local.response['status'] = True

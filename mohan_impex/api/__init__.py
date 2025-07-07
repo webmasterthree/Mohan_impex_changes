@@ -9,6 +9,11 @@ import requests
 from mohan_impex.mohan_impex.utils import get_session_employee
 from frappe.utils.nestedset import get_descendants_of
 from bs4 import BeautifulSoup
+import json
+import requests
+from google.auth.transport.requests import Request
+from google.oauth2 import service_account
+from frappe.model.workflow import get_transitions
 
 @frappe.whitelist()
 def dashboard():
@@ -143,6 +148,12 @@ def create_contact(contactno, doctype=None, link_name=None):
         contact_link.save(ignore_permissions=True)
 
 def create_contact_number(contactno, doctype=None, link_name=None):
+    import re
+    if not re.match(r'^\d{10}$', contactno):
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = f"Contact Number {contactno} must be a 10 digit mobile number"
+        return
     if frappe.db.exists("Contact Number", contactno):
         contact_doc = frappe.get_doc("Contact Number", contactno)
     else:
@@ -540,7 +551,7 @@ def is_within_range(origin, destination):
     except Exception as err:
         get_exception(err)
 
-def get_role_filter(emp, is_self=False, employee=None):
+def get_role_filter(emp, is_self=None, employee=None):
     sub_areas = get_descendants_of("Territory", emp.get('area'))
     if sub_areas:
         sub_areas.append(emp.get('area'))
@@ -549,8 +560,11 @@ def get_role_filter(emp, is_self=False, employee=None):
         areas = f"""{emp.get("area")}"""
     if employee:
         return f"""area in ('{areas}') and created_by_emp = '{employee}' """
-    if is_self:
-        return f"""area in ('{areas}') and created_by_emp = '{emp.get('name')}' """
+    if is_self is not None:
+        if int(is_self) == 1:
+            return f"""area in ('{areas}') and created_by_emp = '{emp.get('name')}' """
+        elif int(is_self) == 0:
+            return f"""area in ('{areas}') and created_by_emp != '{emp.get('name')}' """
     return f"""area in ('{areas}') """
 
 def get_territory_role_filter(emp):
@@ -621,10 +635,120 @@ def get_exception(err):
     err = soup.get_text()
     frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
 
-def get_workflow_statuses(doctype, role):
-    workflow_name = frappe.get_value("Workflow", {"document_type": doctype}, "name")
-    workflow_statuses = frappe.get_all("Workflow Transition", {"parent": workflow_name, "allowed": role}, ["action"], pluck="action", order_by="idx")
+def get_workflow_statuses(doctype, doc_name, role):
+    doc = frappe.get_doc(doctype, doc_name)
+    workflow_statuses = get_transitions(doc)
+    workflow_statuses = list(filter(lambda workflow: workflow["allowed"] == role, workflow_statuses))
+    workflow_statuses = [workflow["action"] for workflow in workflow_statuses]
     return workflow_statuses
 
 def has_create_perm(doctype):
     return 1 if frappe.has_permission(doctype, "create", user=frappe.session.user) else 0
+
+def add_notification_from_comment(doc, method):
+    doctype_lists = ["Customer Visit Management", "Trial Plan", "Trial Target", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan"]
+    if doc.reference_doctype in doctype_lists:
+        try:
+            owner = frappe.get_value(doc.reference_doctype, doc.reference_name, "owner")
+            # if owner and owner != "Administrator":
+            if owner:
+                has_notification = 0
+                if doc.get("comment_type") == "Workflow":
+                    has_notification = 1
+                    title = f"{doc.reference_doctype} status has been updated"
+                    body = f"{doc.reference_doctype} {doc.reference_name} status has been updated to {doc.content} by {doc.comment_by}"
+                elif doc.get("comment_type") == "Comment":
+                    has_notification = 1
+                    title = f"{doc.comment_by} commented in {doc.reference_doctype}"
+                    soup = BeautifulSoup(doc.content, "html.parser")
+                    body = soup.get_text(separator=" ")
+                if has_notification:
+                    notify_doc = frappe.new_doc("Notification Log")
+                    notify_doc.update({
+                        "for_user": owner,
+                        "read": 0,
+                        "subject": title,
+                        "email_content": body,
+                        "document_type" : doc.reference_doctype,
+                        "document_name": doc.reference_name
+                    })
+                    notify_doc.insert(ignore_permissions=True)
+        except Exception as e:
+            frappe.log_error(message=frappe.get_traceback(), title="Notification Log Error")
+
+def send_notification(doc, method):
+    doctype_lists = ["Customer Visit Management", "Trial Plan", "Trial Target", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan"]
+    if doc.document_type in doctype_lists:
+        role_profile = frappe.get_value("User", doc.for_user, "role_profile_name")
+        if doc.for_user and doc.for_user != "Administrator":
+            device_tokens = frappe.get_all("Push Notification Device", filters={"user": doc.for_user, "disabled": 0}, pluck="device_token")
+            soup = BeautifulSoup(doc.subject, "html.parser")
+            title = soup.get_text(separator=" ")
+            body = doc.email_content
+            data = {
+                "type": doc.document_type,
+                "id": doc.document_name,
+                "role_profile": role_profile
+            }
+            for device_token in device_tokens:
+                send_push_notification(device_token, title, body, data)
+
+@frappe.whitelist()
+def send_push_notification(device_token, title, body, data=None):
+    service_account_path = 'mohan-impex-erp-551f3-1f9a5f51dd38.json'
+
+    project_id = 'mohan-impex-erp-551f3'
+
+    SCOPES = ['https://www.googleapis.com/auth/firebase.messaging']
+
+    # Authenticate and get access token
+    credentials = service_account.Credentials.from_service_account_file(
+        service_account_path, scopes=SCOPES)
+    credentials.refresh(Request())
+    access_token = credentials.token
+
+    # Prepare the notification payload
+    payload = {
+        "message": {
+            "token": device_token,
+            "notification": {
+                "title": title,
+                "body": body
+            }
+        }
+    }
+
+    if data:
+        if isinstance(data, str):
+            data = json.loads(data)
+        payload["message"]["data"] = data  # Optional custom data
+
+    # Send request to FCM
+    url = f"https://fcm.googleapis.com/v1/projects/{project_id}/messages:send"
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json; UTF-8"
+    }
+
+    try:
+        response = requests.post(url, headers=headers, data=json.dumps(payload))
+        if response.status_code == 404 and "UNREGISTERED" in response.text:
+            # Mark token as invalid or remove it
+            frappe.db.set_value("Push Notification Device", {"device_token": device_token}, "disabled", 1)
+        if response.status_code == 200:
+            frappe.local.response["status"] = True 
+            frappe.local.response["message"] = response.json()
+        else:
+            frappe.log_error(title="Error sending push notification", message=f"Error sending push notification: {response.text}")
+            frappe.log_error(
+                title=f"Push Notification Invalid Status: {title}",
+                message=f"Device Token: {device_token}, Body: {body}, Error: {response.text}"
+            )
+            frappe.local.response["status"] = False
+            frappe.local.response["message"] = response.json()
+    except Exception as err:
+        frappe.log_error(
+            title=f"Push Notification Error: {title}",
+            message=f"Device Token: {device_token}, Body: {body}, Error: {err}"
+        )
+        get_exception(err)

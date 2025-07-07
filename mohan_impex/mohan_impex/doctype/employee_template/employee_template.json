@@ -25,7 +25,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-04 12:57:01.414388",
+ "modified": "2025-07-07 13:26:59.950420",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Employee Template",
@@ -41,6 +41,7 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "select": 1,
    "share": 1,
    "write": 1
   }

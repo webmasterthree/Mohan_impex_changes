@@ -12,7 +12,7 @@ def so_list():
     try:
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
-        is_self = int(frappe.form_dict.get("is_self") or 0)
+        is_self = frappe.form_dict.get("is_self")
         other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
@@ -49,9 +49,10 @@ def so_list():
             and_filters.append("""so.transaction_date between "{0}" and "{1}" """.format(frappe.form_dict["from_date"], frappe.form_dict["to_date"]))
         and_filters = " AND ".join(and_filters)
         query += """ AND ({0})""".format(and_filters) if and_filters else ""
+        if frappe.form_dict.get("visit_type"):
+            query += """ AND so.customer_level = "{0}" """.format(frappe.form_dict.get("visit_type"))
         query += order_by
         query += pagination
-        frappe.errprint(query)
         so_info = frappe.db.sql(query, as_dict=True)
         for so in so_info:
             so["location"] = get_address_text(so["location"]) if so["location"] else ""
@@ -141,7 +142,7 @@ def so_form():
         activities = get_comments("Sales Order", so_dict["name"])
         so_dict["activities"] = activities
         is_self_filter = get_self_filter_status()
-        so_dict["status_fields"] = get_workflow_statuses("Sales Order", get_session_emp_role())
+        so_dict["status_fields"] = get_workflow_statuses("Sales Order", so_name, get_session_emp_role())
         so_dict["has_toggle_filter"] = is_self_filter
         so_dict["created_person_mobile_no"] = frappe.get_value("Employee", so_dict.get("created_by_emp"), "custom_personal_mobile_number")
 
@@ -154,6 +155,7 @@ def so_form():
 @frappe.whitelist()
 def create_so():
     try:
+        frappe.db.begin()
         response = {}
         so_data = frappe.form_dict
         so_dict = {
@@ -206,10 +208,12 @@ def create_so():
         frappe.local.response['status'] = True
         frappe.local.response['message'] = message
         frappe.local.response['data'] = [response]
+        frappe.db.commit()
     except Exception as err:
+        frappe.db.rollback()
         get_exception(err)
 
-def get_role_filter(emp, is_self=False, employee=None):
+def get_role_filter(emp, is_self=None, employee=None):
     from frappe.utils.nestedset import get_descendants_of
     sub_areas = get_descendants_of("Territory", emp.get('area'))
     if sub_areas:
@@ -219,6 +223,9 @@ def get_role_filter(emp, is_self=False, employee=None):
         areas = f"""{emp.get("area")}"""
     if employee:
         return f"""territory in ('{areas}') and created_by_emp = '{employee}' """
-    if is_self:
-        return f"""territory in ('{areas}') and created_by_emp = '{emp.get('name')}' """
+    if is_self is not None:
+        if int(is_self) == 1:
+            return f"""territory in ('{areas}') and created_by_emp = '{emp.get('name')}' """
+        elif int(is_self) == 0:
+            return f"""territory in ('{areas}') and created_by_emp != '{emp.get('name')}' """
     return f"""territory in ('{areas}') """

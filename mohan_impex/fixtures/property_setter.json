@@ -14,5 +14,21 @@
   "property_type": "Text",
   "row_name": null,
   "value": "CUST-.YYYY.-\nMI-.YYYY.-.#####"
+ },
+ {
+  "default_value": null,
+  "doc_type": "Notification Log",
+  "docstatus": 0,
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocField",
+  "field_name": "type",
+  "is_system_generated": 0,
+  "modified": "2025-07-05 21:38:57.180112",
+  "module": null,
+  "name": "Notification Log-type-options",
+  "property": "options",
+  "property_type": null,
+  "row_name": null,
+  "value": "\nMention\nEnergy Point\nAssignment\nShare\nAlert\nComment\nWorkflow"
  }
 ]

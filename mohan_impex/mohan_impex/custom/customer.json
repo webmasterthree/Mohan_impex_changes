@@ -81,7 +81,7 @@
    "description": null,
    "docstatus": 0,
    "dt": "Customer",
-   "fetch_from": "unv_customer.created_by_emp",
+   "fetch_from": "",
    "fetch_if_empty": 0,
    "fieldname": "created_by_emp",
    "fieldtype": "Link",

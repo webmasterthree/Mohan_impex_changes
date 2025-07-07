@@ -10,7 +10,7 @@ def trial_list():
     try:
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
-        is_self = int(frappe.form_dict.get("is_self") or 0)
+        is_self = frappe.form_dict.get("is_self")
         other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
@@ -120,7 +120,7 @@ def trial_form():
         trial_doc["activities"] = activities
         trial_doc["tsm_info"] = frappe.get_value("Employee", {"name": trial_doc["assigned_to"]}, ["employee_name as name", "cell_number as mobile", "company_email as email"], as_dict=True) or {}
         is_self_filter = get_self_filter_status()
-        trial_doc["status_fields"] = get_workflow_statuses("Trial Plan", get_session_emp_role())
+        trial_doc["status_fields"] = get_workflow_statuses("Trial Plan", trial_name, get_session_emp_role())
         trial_doc["has_toggle_filter"] = is_self_filter
         trial_doc["created_person_mobile_no"] = frappe.get_value("Employee", trial_doc.get("created_by_emp"), "custom_personal_mobile_number")
         frappe.local.response['status'] = True

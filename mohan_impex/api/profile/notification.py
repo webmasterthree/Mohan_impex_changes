@@ -24,7 +24,7 @@ def notification_list():
         notific_info = frappe.get_list(
             "Notification Log",
             fields=[
-                "name", "subject", "email_content as content", "from_user", "creation", "COUNT(*) OVER() AS total_count"
+                "name", "subject", "email_content as content", "document_type as type", "document_name as id", "from_user", "creation", "COUNT(*) OVER() AS total_count"
             ],
             filters=filters,
             order_by="creation desc",

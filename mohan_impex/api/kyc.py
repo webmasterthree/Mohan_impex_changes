@@ -12,7 +12,7 @@ def kyc_list():
     try:
         tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
-        is_self = int(frappe.form_dict.get("is_self") or 0)
+        is_self = frappe.form_dict.get("is_self")
         other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
         if not tab:
@@ -146,7 +146,7 @@ def kyc_form():
         kyc_doc["activities"] = activities
         kyc_doc["contact"] = [contact] if contact else []
         is_self_filter = get_self_filter_status()
-        kyc_doc["status_fields"] = get_workflow_statuses("Customer", get_session_emp_role())
+        kyc_doc["status_fields"] = get_workflow_statuses("Customer", kyc_name, get_session_emp_role())
         kyc_doc["has_toggle_filter"] = is_self_filter
         kyc_doc["created_person_mobile_no"] = frappe.get_value("Employee", kyc_doc.get("created_by_emp"), "custom_personal_mobile_number")
         frappe.local.response['status'] = True
@@ -160,6 +160,7 @@ def create_kyc():
     kyc_data = frappe.form_dict
     kyc_data.pop("cmd")
     try:
+        frappe.db.begin()
         cust_decls = [{"cust_decl": cust_decl["file_url"]} for cust_decl in kyc_data.cust_decl]
         cust_licenses = [{"cust_lic": cust_license["file_url"]} for cust_license in kyc_data.cust_license]
         data = {
@@ -203,7 +204,9 @@ def create_kyc():
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "KYC request has been successfully created"
         frappe.local.response['data'] = [response]
+        frappe.db.commit()
     except Exception as err:
+        frappe.db.rollback()
         get_exception(err)
 
 def update_file_doc(name, kyc_id):
