@@ -3,13 +3,15 @@ import math
 from datetime import datetime, timedelta
 from erpnext.accounts.party import get_dashboard_info
 from mohan_impex.api.sales_order import get_role_filter
-from mohan_impex.api import get_exception
+from mohan_impex.api import get_exception, get_self_filter_status
 
 @frappe.whitelist()
 def my_customer_list():
     try:
         limit = frappe.form_dict.get("limit")
         current_page = frappe.form_dict.get("current_page")
+        is_self = int(frappe.form_dict.get("is_self") or 0)
+        other_employee = frappe.form_dict.get("employee")
         if not limit or not current_page:
             frappe.local.response['http_status_code'] = 404
             frappe.local.response['status'] = False
@@ -20,7 +22,8 @@ def my_customer_list():
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-        role_filter = get_role_filter(emp)
+        role_filter = get_role_filter(emp, is_self, other_employee)
+        is_self_filter = get_self_filter_status()
         si_join = ""
         billing_query = ""
         if (frappe.form_dict.get("from_date") and frappe.form_dict.get("to_date")) or frappe.form_dict.get("zero_billing"):
@@ -39,7 +42,7 @@ def my_customer_list():
                 AND si.posting_date {date_range}
             """.format(date_range=date_range)
         query = """
-            select cu.name, cu.customer_name, custom_shop_name as custom_shop, mobile_no as contact, customer_primary_address as location, workflow_state, COUNT(*) OVER() AS total_count
+            select cu.name, cu.customer_name, custom_shop_name as custom_shop, mobile_no as contact, customer_primary_address as location, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
             left join `tabDynamic Link` as dl on dl.link_name=cu.name
             {si_join}
@@ -75,7 +78,8 @@ def my_customer_list():
                 "records": customer_info,
                 "total_count": total_count,
                 "page_count": page_count,
-                "current_page": current_page
+                "current_page": current_page,
+                "has_toggle_filter": is_self_filter
             }
         ]
         frappe.local.response['status'] = True

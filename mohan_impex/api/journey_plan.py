@@ -1,8 +1,8 @@
 import frappe
-from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
+from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee, get_session_emp_role
 import math
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception
+from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception, get_workflow_statuses, has_create_perm
 
 @frappe.whitelist()
 def journey_plan_list():
@@ -71,7 +71,8 @@ def journey_plan_list():
                 "total_count": total_count,
                 "page_count": page_count,
                 "current_page": current_page,
-                "has_toggle_filter": is_self_filter
+                "has_toggle_filter": is_self_filter,
+                "create": has_create_perm("Journey Plan")
             }
         ]
         # if frappe.has_permission("Journey Plan", "create"):
@@ -97,6 +98,7 @@ def journey_plan_form():
             activities = get_comments("Journey Plan", journey_doc["name"])
             journey_doc["activities"] = activities
             is_self_filter = get_self_filter_status()
+            journey_doc["status_fields"] = get_workflow_statuses("Journey Plan", get_session_emp_role())
             journey_doc["has_toggle_filter"] = is_self_filter
             journey_doc["created_person_mobile_no"] = frappe.get_value("Employee", journey_doc.get("created_by_emp"), "custom_personal_mobile_number")
             frappe.local.response['status'] = True

@@ -70,9 +70,9 @@ class TrialTarget(Document):
 	
 	@frappe.whitelist()
 	def update_trial_status(self):
-		frappe.set_value("Trial Plan Table", self.trial_plan_row, "trial_status", "Completed")
+		frappe.db.set_value("Trial Plan Table", self.trial_plan_row, "trial_status", "Completed")
 		cvm_trial_id = frappe.get_value("Trial Plan Table", self.trial_plan_row, "cvm_trial_id")
-		if cvm_trial_id: frappe.set_value("CVM Trial Table", cvm_trial_id, "report", "Completed")
+		if cvm_trial_id: frappe.db.set_value("CVM Trial Table", cvm_trial_id, "report", "Completed")
 
 @frappe.whitelist()
 def get_item_trial_template(item_code):

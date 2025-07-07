@@ -8,13 +8,15 @@ def get_reports_to_filter(role):
 
 @frappe.whitelist()
 def set_user_permissions(self, status):
-    frappe.db.set_value("User", {"name": self.user_id}, "role_profile_name", self.role_profile)
-    if self.role_profile:
-        if self.role_profile == "TSM":
-            set_employee_permission(self)
-        if self.role_profile == "SE":
-            set_employee_permission(self, apply_to_all_doc=0, applicable_for="Trial Target")
-        set_territory_permission(self)
+    if not self.is_new():
+        frappe.db.set_value("User", {"name": self.user_id}, "role_profile_name", self.role_profile)
+        if self.role_profile:
+            if self.role_profile == "TSM":
+                set_employee_permission(self)
+            if self.role_profile == "SE":
+                set_employee_permission(self, apply_to_all_doc=0, applicable_for="Trial Target")
+            if self.role_profile != "TSM":
+                set_territory_permission(self)
 
 def set_employee_permission(self, apply_to_all_doc=1, applicable_for=None):
     filters = {

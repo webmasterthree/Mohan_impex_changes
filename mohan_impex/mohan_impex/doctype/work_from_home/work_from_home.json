@@ -124,7 +124,8 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status ",
-   "options": "Open\nApproved\nRejected"
+   "options": "Open\nApproved\nRejected",
+   "permlevel": 1
   },
   {
    "fieldname": "section_break_ctkz",
@@ -170,7 +171,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-20 18:43:48.698316",
+ "modified": "2025-07-05 11:05:46.595498",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Work From Home",

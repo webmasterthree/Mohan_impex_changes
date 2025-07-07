@@ -1,7 +1,7 @@
 [
  {
   "charts": [],
-  "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}}]",
+  "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}},{\"id\":\"TZLLsfGe6c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contact Number\",\"col\":3}}]",
   "custom_blocks": [],
   "docstatus": 0,
   "doctype": "Workspace",
@@ -319,7 +319,7 @@
     "type": "Link"
    }
   ],
-  "modified": "2025-06-25 16:56:48.118562",
+  "modified": "2025-07-01 14:36:40.135113",
   "module": "",
   "name": "Mohan Impex",
   "number_cards": [],
@@ -329,7 +329,24 @@
   "restrict_to_domain": null,
   "roles": [],
   "sequence_id": 1.0,
-  "shortcuts": [],
+  "shortcuts": [
+   {
+    "color": "Green",
+    "doc_view": "List",
+    "format": "{}",
+    "icon": null,
+    "kanban_board": null,
+    "label": "Contact Number",
+    "link_to": "Contact Number",
+    "parent": "Mohan Impex",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "restrict_to_domain": null,
+    "stats_filter": "[]",
+    "type": "DocType",
+    "url": null
+   }
+  ],
   "title": "Mohan Impex"
  }
 ]

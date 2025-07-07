@@ -168,7 +168,7 @@ from collections import defaultdict
 from frappe.utils import today
 
 @frappe.whitelist()
-def get_today_missed_checkout_status():
+def get_today_missed_checkout_statuss():
     current_date = today()
 
     # Step 1: Get all check-ins for today

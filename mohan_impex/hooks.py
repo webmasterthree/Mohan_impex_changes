@@ -44,6 +44,7 @@ doc_events = {
         "before_save": "mohan_impex.mohan_impex.sales_order.update_customer_edit_needed"
     },
     "Employee": {
+        "after_insert": "mohan_impex.mohan_impex.employee.set_user_permissions",
         "before_save": "mohan_impex.mohan_impex.employee.set_user_permissions"
     },
     "Customer": {
@@ -68,9 +69,6 @@ doc_events = {
         "validate": "mohan_impex.leave_test.validate_leave_application",
         "before_save": "mohan_impex.leave_test.on_leave_application_before_save"
     },
-    "Salary Slip": {
-        "on_submit": "mohan_impex.salary_slip.handle_pf_on_submit"
-    },
     "Competitor": {
         "before_save": "mohan_impex.mohan_impex.competitor.add_others_in_competitor_item"
     }
@@ -91,7 +89,9 @@ override_doctype_class = {
     "Transport RFQ": "mohan_impex.Sales.transport_rfq.TransportRFQ"
 }
 
-
+# "Salary Slip": {
+#         "on_submit": "mohan_impex.salary_slip.handle_pf_on_submit"
+#     },
 # doctype_js = {
 #     "BOM": "public/js/bom.js"
 # }
@@ -253,10 +253,13 @@ scheduler_events = {
             "mohan_impex.auto_close_rfq.close_expired_rfqs"
         ],
         "0 20 * * *": [  # 8:00 PM every day
-            "mohan_impex.missed_checkout.get_today_missed_checkout_status"
+            "mohan_impex.missed_checkout.get_today_missed_checkout_statuss"
         ],
         "0 10 25 * *":[
-            "mohan_impex.birthday_leave.send_birthday_notifications"
+            "mohan_impex.birthday_leave.send_birthday_notification"
+        ],
+        "0 10 25 * *":[
+            "mohan_impex.company_import.import_all_companies"
         ]
     }
 }

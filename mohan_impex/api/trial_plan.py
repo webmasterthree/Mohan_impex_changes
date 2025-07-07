@@ -1,9 +1,9 @@
 import frappe
 from mohan_impex.api.cvm import create_contact_number 
-from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
+from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee, get_session_emp_role
 import math
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception
+from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception, get_workflow_statuses, has_create_perm
 
 @frappe.whitelist()
 def trial_list():
@@ -71,7 +71,8 @@ def trial_list():
                 "total_count": total_count,
                 "page_count": page_count,
                 "current_page": current_page,
-                "has_toggle_filter": is_self_filter
+                "has_toggle_filter": is_self_filter,
+                "create": has_create_perm("Trial Plan")
             }
         ]
         frappe.local.response['status'] = True
@@ -96,7 +97,7 @@ def trial_form():
             return
         trial_doc = frappe.get_doc("Trial Plan", trial_name)
         trial_doc = trial_doc.as_dict()
-        fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield", "area"]
+        fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "parent", "parenttype", "parentfield", "area"]
         child_doc = ["trial_item_table", "product_trial_table", "item_trial_table"]
         trial_doc = {
             key: value for key, value in trial_doc.items() if key not in fields_to_remove
@@ -119,6 +120,7 @@ def trial_form():
         trial_doc["activities"] = activities
         trial_doc["tsm_info"] = frappe.get_value("Employee", {"name": trial_doc["assigned_to"]}, ["employee_name as name", "cell_number as mobile", "company_email as email"], as_dict=True) or {}
         is_self_filter = get_self_filter_status()
+        trial_doc["status_fields"] = get_workflow_statuses("Trial Plan", get_session_emp_role())
         trial_doc["has_toggle_filter"] = is_self_filter
         trial_doc["created_person_mobile_no"] = frappe.get_value("Employee", trial_doc.get("created_by_emp"), "custom_personal_mobile_number")
         frappe.local.response['status'] = True

@@ -1,7 +1,7 @@
 import frappe
 from frappe.utils import nowdate, getdate
 
-def send_birthday_notifications():
+def send_birthday_notification():
     today = getdate(nowdate())
     current_month = today.month
     current_year = today.year

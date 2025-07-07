@@ -1,7 +1,7 @@
 import frappe
-from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
+from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee, get_session_emp_role
 import math
-from mohan_impex.api import get_signed_token, get_exception, create_contact_number, get_self_filter_status
+from mohan_impex.api import get_signed_token, get_exception, create_contact_number, get_self_filter_status, get_workflow_statuses, has_create_perm
 from mohan_impex.api.sales_order import get_role_filter
 from datetime import datetime
 from mohan_impex.mohan_impex.comment import get_comments
@@ -72,7 +72,8 @@ def kyc_list():
                 "total_count": total_count,
                 "page_count": page_count,
                 "current_page": current_page,
-                "has_toggle_filter": is_self_filter
+                "has_toggle_filter": is_self_filter,
+                "create": has_create_perm("Customer")
             }
         ]
         frappe.local.response['status'] = True
@@ -97,7 +98,7 @@ def kyc_form():
             return
         kyc_doc = frappe.get_doc("Customer", kyc_name)
         kyc_doc = kyc_doc.as_dict()
-        fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "doctype", "parent", "parenttype", "parentfield", "territory"]
+        fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "parent", "parenttype", "parentfield", "territory"]
         child_doc = ["product_pitching", "product_trial", "customer_license", "cust_decl"]
         kyc_doc = {
             key: value for key, value in kyc_doc.items() if key not in fields_to_remove
@@ -145,6 +146,7 @@ def kyc_form():
         kyc_doc["activities"] = activities
         kyc_doc["contact"] = [contact] if contact else []
         is_self_filter = get_self_filter_status()
+        kyc_doc["status_fields"] = get_workflow_statuses("Customer", get_session_emp_role())
         kyc_doc["has_toggle_filter"] = is_self_filter
         kyc_doc["created_person_mobile_no"] = frappe.get_value("Employee", kyc_doc.get("created_by_emp"), "custom_personal_mobile_number")
         frappe.local.response['status'] = True
