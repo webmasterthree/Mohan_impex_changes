@@ -30,12 +30,14 @@ def login(email_id, password, device_token=None):
         frappe.local.response['data'] = []
         return
     if device_token:
-        doc = frappe.get_doc({
-            'doctype': 'Push Notification Device',
-            'device_token': device_token,
-            'user': user.name or frappe.session.user
-        })
-        doc.insert(ignore_permissions=True)
+        exists_pnd = frappe.db.get_value("Push Notification Device", {"device_token": device_token}, "name")
+        if not exists_pnd:
+            doc = frappe.get_doc({
+                'doctype': 'Push Notification Device',
+                'device_token': device_token,
+                'user': user.name or frappe.session.user
+            })
+            doc.insert(ignore_permissions=True)
     sys_settings = frappe.get_single("System Settings")
     hours, minutes = sys_settings.session_expiry.split(":")
     seconds = (int(hours) * 3600) + (int(minutes) * 60)
