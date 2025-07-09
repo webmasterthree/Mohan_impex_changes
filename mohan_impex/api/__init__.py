@@ -666,8 +666,9 @@ def add_notification_from_comment(doc, method):
             role, area = frappe.get_value("Employee", {"user_id": owner}, ["role_profile", "area"])
             parent_areas = get_parent_areas(area)
             notification_users = frappe.get_all("Employee", {"area": ["in", parent_areas]}, pluck = "user_id") or []
-            # if not frappe.has_permission(doc.reference_doctype, "read", doc.reference_name, user=owner):
-            #     notification_users.remove(owner)
+            # Check for the User who has permission for the record (Specifically for TSM)
+            if not frappe.has_permission(doc.reference_doctype, "read", doc.reference_name, user=owner):
+                notification_users.remove(owner)
             comment_owner = doc.owner
             notification_users.insert(0, owner)
             if comment_owner in notification_users:
@@ -679,7 +680,6 @@ def add_notification_from_comment(doc, method):
                 title = f"{doc.comment_by} commented in {doc.reference_doctype}"
                 soup = BeautifulSoup(doc.content, "html.parser")
                 body = soup.get_text(separator=" ")
-            frappe.errprint(notification_users)
             create_notification_log(doc, notification_users, title, body)
     except Exception as e:
         frappe.log_error(message=frappe.get_traceback(), title="Notification Log from Comment Error")

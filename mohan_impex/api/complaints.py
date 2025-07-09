@@ -28,6 +28,10 @@ def complaints_list():
         limit = int(limit)
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
+        if tab == "Active":
+            tab_filter = 'workflow_state != "Resolved"'
+        else:
+            tab_filter = 'workflow_state = "%s"'%(tab)
         tab_filter = 'workflow_state = "%s"'%(tab)
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)
         role_filter = get_role_filter(emp, is_self, other_employee)

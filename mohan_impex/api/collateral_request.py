@@ -27,7 +27,7 @@ def collateral_request_list():
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
         if tab == "Pending":
-            tab_filter = 'workflow_state in ("%s", "%s")'%("Pending", "Rejected")
+            tab_filter = 'workflow_state != "Approved"'
         else:
             tab_filter = 'workflow_state = "%s"'%(tab)
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)

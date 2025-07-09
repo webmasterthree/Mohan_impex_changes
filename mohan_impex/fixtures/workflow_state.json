@@ -295,5 +295,32 @@
   "name": "Self Approval Required",
   "style": "Success",
   "workflow_state_name": "Self Approval Required"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-09 12:08:14.261643",
+  "name": "ASM Approved",
+  "style": "",
+  "workflow_state_name": "ASM Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-09 13:21:18.395065",
+  "name": "ASM KYC Completed",
+  "style": "",
+  "workflow_state_name": "ASM KYC Completed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-09 13:54:04.655061",
+  "name": "ASM Resolved",
+  "style": "",
+  "workflow_state_name": "ASM Resolved"
  }
 ]
