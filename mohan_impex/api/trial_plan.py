@@ -118,7 +118,7 @@ def trial_form():
         trial_doc["trial_plan_table"] = [{"product": product, "items": items} for product, items in grouped.items()]
         activities = get_comments("Trial Plan", trial_doc["name"])
         trial_doc["activities"] = activities
-        trial_doc["tsm_info"] = frappe.get_value("Employee", {"name": trial_doc["assigned_to"]}, ["employee_name as name", "cell_number as mobile", "company_email as email"], as_dict=True) or {}
+        trial_doc["tsm_info"] = frappe.get_value("Employee", {"name": trial_doc["assigned_to_emp"]}, ["employee_name as name", "cell_number as mobile", "company_email as email"], as_dict=True) or {}
         is_self_filter = get_self_filter_status()
         trial_doc["status_fields"] = get_workflow_statuses("Trial Plan", trial_name, get_session_emp_role())
         trial_doc["has_toggle_filter"] = is_self_filter
@@ -223,12 +223,12 @@ def update_trial_timing():
         frappe.local.response['message'] = frappe.local.response.get('message') or str(err)
 
 @frappe.whitelist()
-def assign_to_employee(trial_id, assigned_to):
+def assign_to_employee(trial_id, assigned_to_emp):
     try:
         trial_doc = frappe.get_doc("Trial Plan", trial_id)
-        trial_doc.assigned_to = assigned_to
+        trial_doc.assigned_to_emp = assigned_to_emp
         trial_doc.save()
-        emp_name = frappe.get_value("Employee", assigned_to, "employee_name")
+        emp_name = frappe.get_value("Employee", assigned_to_emp, "employee_name")
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Trial plan {0} has been successfully assigned to {1}".format(trial_id, emp_name)
     except Exception as err:

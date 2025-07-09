@@ -66,3 +66,7 @@ def workflow_status_update(doctype, docname, status):
         return 
     except Exception as err:
         get_exception(err)
+
+def update_comment_by(self, method):
+    if not self.comment_by:
+        self.comment_by = frappe.get_value("User", {"name": frappe.session.user}, "full_name") or frappe.session.user

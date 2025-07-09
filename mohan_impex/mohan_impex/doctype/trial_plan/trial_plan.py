@@ -3,12 +3,13 @@
 
 import frappe
 from frappe.model.document import Document
+from frappe.desk.form.assign_to import add as add_assignment, remove as remove_assignment
 
 
 class TrialPlan(Document):
     def before_save(self):
         if self.conduct_by == "Self":
-            self.assigned_to = self.created_by_emp
+            self.assigned_to_emp = self.created_by_emp
         # create_trial_target(self)
         update_assigned_to(self)
         if self.cust_edit_needed:
@@ -83,6 +84,14 @@ def create_trial_target(trial_plan_doc):
     frappe.db.delete("Trial Target", {"trial_plan": trial_plan_doc.name, "trial_plan_row": ("IN", delete_trial_targets)})
 
 def update_assigned_to(self):
-    trial_target_list = frappe.get_all("Trial Target", {"trial_plan": self.name}, ["name", "assigned_to"])
-    for trial_target in trial_target_list:
-        frappe.db.set_value("Trial Target", trial_target["name"], "assigned_to", self.assigned_to)
+    previous_value = self.get_doc_before_save().assigned_to_emp if self.get_doc_before_save() else None
+    if previous_value != self.assigned_to_emp:
+        if previous_value:
+            user_id = frappe.get_value("Employee", {"name": previous_value}, "user_id")
+            frappe.db.set_value("ToDo", {"reference_type": self.doctype, "reference_name": self.name, "allocated_to": user_id, "status": "Open"}, "status", "Cancelled")
+        if self.conduct_by == "TSM Required" and self.assigned_to_emp:
+            user_id = frappe.get_value("Employee", {"name": self.assigned_to_emp}, "user_id")
+            add_assignment({"doctype": self.doctype, "name": self.name, "assign_to": [user_id]})
+        trial_target_list = frappe.get_all("Trial Target", {"trial_plan": self.name}, ["name", "assigned_to_emp"])
+        for trial_target in trial_target_list:
+            frappe.db.set_value("Trial Target", trial_target["name"], "assigned_to_emp", self.assigned_to_emp)

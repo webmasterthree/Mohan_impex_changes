@@ -9,7 +9,7 @@
   "column_break_jkue",
   "naming_series",
   "conduct_by",
-  "assigned_to",
+  "assigned_to_emp",
   "trial_loc",
   "customer_level",
   "verific_type",
@@ -185,13 +185,6 @@
    "options": "Workflow State"
   },
   {
-   "fieldname": "assigned_to",
-   "fieldtype": "Link",
-   "label": "Assigned To",
-   "options": "Employee",
-   "read_only": 1
-  },
-  {
    "fieldname": "customer_level",
    "fieldtype": "Select",
    "label": "Visit Type",
@@ -357,6 +350,13 @@
    "fieldname": "created_by_name",
    "fieldtype": "Data",
    "label": "Created By Name"
+  },
+  {
+   "fieldname": "assigned_to_emp",
+   "fieldtype": "Link",
+   "label": "Assigned To",
+   "options": "Employee",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
@@ -366,7 +366,7 @@
    "link_fieldname": "trial_plan"
   }
  ],
- "modified": "2025-06-22 20:34:38.045286",
+ "modified": "2025-07-08 14:41:21.973788",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",

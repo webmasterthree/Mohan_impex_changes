@@ -9,7 +9,7 @@
  "field_order": [
   "trial_plan",
   "product",
-  "assigned_to",
+  "assigned_to_emp",
   "column_break_dcbl",
   "item_code",
   "trial_plan_row",
@@ -259,7 +259,7 @@
   },
   {
    "fetch_from": "trial_plan.assigned_to",
-   "fieldname": "assigned_to",
+   "fieldname": "assigned_to_emp",
    "fieldtype": "Link",
    "label": "Assigned To",
    "options": "Employee"
@@ -267,7 +267,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-22 14:30:04.701605",
+ "modified": "2025-07-08 14:45:41.532776",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Target",

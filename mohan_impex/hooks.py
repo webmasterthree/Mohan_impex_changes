@@ -72,7 +72,11 @@ doc_events = {
     "Competitor": {
         "before_save": "mohan_impex.mohan_impex.competitor.add_others_in_competitor_item"
     },
+    "ToDo": {
+        "after_insert": "mohan_impex.api.add_notification_from_assignment"
+    },
     "Comment": {
+        "before_insert": "mohan_impex.mohan_impex.comment.update_comment_by",
         "after_insert": "mohan_impex.api.add_notification_from_comment"
     },
     "Notification Log": {

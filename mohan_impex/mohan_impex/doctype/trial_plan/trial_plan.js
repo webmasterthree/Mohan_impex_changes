@@ -18,10 +18,10 @@ frappe.ui.form.on("Trial Plan", {
   },
   conduct_by(frm){
     if (frm.doc.conduct_by === "TSM Required"){
-      frm.set_value("assigned_to", "")
+      frm.set_value("assigned_to_emp", "")
     }
     else{
-      frm.set_value("assigned_to", frm.doc.created_by_emp)
+      frm.set_value("assigned_to_emp", frm.doc.created_by_emp)
     }
   },
   customer_level(frm){
@@ -206,7 +206,7 @@ function assigned_to_employee(frm){
               options: "Employee",
               fieldname: "employee",
               reqd: 1,
-              default: frm.doc.assigned_to,
+              default: frm.doc.assigned_to_emp,
               get_query() {
                 return {
                   filters: {
@@ -217,7 +217,7 @@ function assigned_to_employee(frm){
             }
           ],
           primary_action: function() {
-            frm.set_value("assigned_to", d.fields_dict.employee.get_value());
+            frm.set_value("assigned_to_emp", d.fields_dict.employee.get_value());
             frm.save();
             d.hide();
           }

@@ -645,40 +645,73 @@ def get_workflow_statuses(doctype, doc_name, role):
 def has_create_perm(doctype):
     return 1 if frappe.has_permission(doctype, "create", user=frappe.session.user) else 0
 
+
+# def add_notification_from_assignment(doc, method):
+    # doctype_lists = ["Trial Plan"]
+    # try:
+    #     if doc.reference_type in doctype_lists:
+    #         assigned_by = doc.assigned_by_full_name
+    #         assigned_to = doc.allocated_to
+    #         title = f"{doc.reference_type} has been assigned to you"
+    #         body = f"{doc.reference_type} {doc.reference_name} has been assigned to you by {assigned_by}" 
+    #         create_notification_log(doc, [assigned_to], title, body)
+    # except Exception as e:
+    #     frappe.log_error(message=frappe.get_traceback(), title="Notification Log from Assignment Error")
+
 def add_notification_from_comment(doc, method):
-    doctype_lists = ["Customer Visit Management", "Trial Plan", "Trial Target", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan"]
-    if doc.reference_doctype in doctype_lists:
-        try:
+    doctype_lists = ["Customer Visit Management", "Trial Plan", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan"]
+    try:
+        if doc.reference_doctype in doctype_lists and doc.get("comment_type") in ["Comment", "Workflow"]:
             owner = frappe.get_value(doc.reference_doctype, doc.reference_name, "owner")
-            # if owner and owner != "Administrator":
-            if owner:
-                has_notification = 0
-                if doc.get("comment_type") == "Workflow":
-                    has_notification = 1
-                    title = f"{doc.reference_doctype} status has been updated"
-                    body = f"{doc.reference_doctype} {doc.reference_name} status has been updated to {doc.content} by {doc.comment_by}"
-                elif doc.get("comment_type") == "Comment":
-                    has_notification = 1
-                    title = f"{doc.comment_by} commented in {doc.reference_doctype}"
-                    soup = BeautifulSoup(doc.content, "html.parser")
-                    body = soup.get_text(separator=" ")
-                if has_notification:
-                    notify_doc = frappe.new_doc("Notification Log")
-                    notify_doc.update({
-                        "for_user": owner,
-                        "read": 0,
-                        "subject": title,
-                        "email_content": body,
-                        "document_type" : doc.reference_doctype,
-                        "document_name": doc.reference_name
-                    })
-                    notify_doc.insert(ignore_permissions=True)
-        except Exception as e:
-            frappe.log_error(message=frappe.get_traceback(), title="Notification Log Error")
+            role, area = frappe.get_value("Employee", {"user_id": owner}, ["role_profile", "area"])
+            parent_areas = get_parent_areas(area)
+            notification_users = frappe.get_all("Employee", {"area": ["in", parent_areas]}, pluck = "user_id") or []
+            # if not frappe.has_permission(doc.reference_doctype, "read", doc.reference_name, user=owner):
+            #     notification_users.remove(owner)
+            comment_owner = doc.owner
+            notification_users.insert(0, owner)
+            if comment_owner in notification_users:
+                notification_users.remove(comment_owner)
+            if doc.get("comment_type") == "Workflow":
+                title = f"{doc.reference_doctype} status has been updated"
+                body = f"{doc.reference_doctype} {doc.reference_name} status has been updated by {doc.comment_by} to {doc.content}"
+            elif doc.get("comment_type") == "Comment":
+                title = f"{doc.comment_by} commented in {doc.reference_doctype}"
+                soup = BeautifulSoup(doc.content, "html.parser")
+                body = soup.get_text(separator=" ")
+            frappe.errprint(notification_users)
+            create_notification_log(doc, notification_users, title, body)
+    except Exception as e:
+        frappe.log_error(message=frappe.get_traceback(), title="Notification Log from Comment Error")
+
+def create_notification_log(doc, users_list, title, body):
+    for user in users_list:
+        notify_doc = frappe.new_doc("Notification Log")
+        notify_doc.update({
+            "for_user": user,
+            "read": 0,
+            "subject": title,
+            "email_content": body,
+            "document_type" : doc.reference_doctype,
+            "document_name": doc.reference_name
+        })
+        notify_doc.insert(ignore_permissions=True)
+
+def get_parent_areas(area):
+    parent_areas = []
+    current_area = area
+    while current_area:
+        parent_area = frappe.get_value("Territory", current_area, "parent_territory")
+        if parent_area:
+            parent_areas.append(parent_area)
+            current_area = parent_area
+        else:
+            break
+    return parent_areas
 
 def send_notification(doc, method):
-    doctype_lists = ["Customer Visit Management", "Trial Plan", "Trial Target", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan"]
-    if doc.document_type in doctype_lists:
+    doctype_lists = ["Customer Visit Management", "Trial Plan", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan"]
+    if doc.document_type in doctype_lists and doc.type in ("", "Assignment"):
         role_profile = frappe.get_value("User", doc.for_user, "role_profile_name")
         if doc.for_user and doc.for_user != "Administrator":
             device_tokens = frappe.get_all("Push Notification Device", filters={"user": doc.for_user, "disabled": 0}, pluck="device_token")
@@ -691,10 +724,10 @@ def send_notification(doc, method):
                 "role_profile": role_profile
             }
             for device_token in device_tokens:
-                send_push_notification(device_token, title, body, data)
+                send_push_notification(doc.for_user, device_token, title, body, data)
 
 @frappe.whitelist()
-def send_push_notification(device_token, title, body, data=None):
+def send_push_notification(for_user, device_token, title, body, data=None):
     service_account_path = 'mohan-impex-erp-551f3-1f9a5f51dd38.json'
 
     project_id = 'mohan-impex-erp-551f3'
@@ -731,24 +764,39 @@ def send_push_notification(device_token, title, body, data=None):
     }
 
     try:
+        pnl_log = frappe.new_doc("Push Notification Log")
+        log_dict = {
+            "user": for_user,
+            "device_token": device_token,
+            "payload": json.dumps(payload, indent=4),
+        }
         response = requests.post(url, headers=headers, data=json.dumps(payload))
-        if response.status_code == 404 and "UNREGISTERED" in response.text:
-            # Mark token as invalid or remove it
-            frappe.db.set_value("Push Notification Device", {"device_token": device_token}, "disabled", 1)
         if response.status_code == 200:
             frappe.local.response["status"] = True 
             frappe.local.response["message"] = response.json()
+            log_dict.update({
+                "error_text": response.text,
+                "status": "Sent"
+            })
         else:
-            frappe.log_error(title="Error sending push notification", message=f"Error sending push notification: {response.text}")
-            frappe.log_error(
-                title=f"Push Notification Invalid Status: {title}",
-                message=f"Device Token: {device_token}, Body: {body}, Error: {response.text}"
-            )
+            if response.status_code == 404 and "UNREGISTERED" in response.text:
+                frappe.db.set_value("Push Notification Device", {"device_token": device_token}, "disabled", 1)
+            log_dict.update({
+                "error_text": response.text,
+                "status": "Error"
+            })
             frappe.local.response["status"] = False
             frappe.local.response["message"] = response.json()
+        pnl_log.update(log_dict)
+        pnl_log.insert(ignore_permissions=True)
     except Exception as err:
-        frappe.log_error(
-            title=f"Push Notification Error: {title}",
-            message=f"Device Token: {device_token}, Body: {body}, Error: {err}"
-        )
+        pnl_log = frappe.new_doc("Push Notification Log")
+        pnl_log.update({
+            "user": for_user,
+            "device_token": device_token,
+            "payload": json.dumps(payload, indent=4),
+            "error_text": str(err),
+            "status": "Error"
+        })
+        pnl_log.insert(ignore_permissions=True)
         get_exception(err)
