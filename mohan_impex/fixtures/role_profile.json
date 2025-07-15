@@ -214,7 +214,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
-  "modified": "2025-06-27 08:30:33.357090",
+  "modified": "2025-07-11 12:27:27.252980",
   "name": "NSM",
   "role_full_name": null,
   "role_profile": "NSM",
@@ -272,6 +272,18 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Support Team"
+   },
+   {
+    "parent": "NSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Leave Approver"
+   },
+   {
+    "parent": "NSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Work From Home Approver"
    }
   ]
  }

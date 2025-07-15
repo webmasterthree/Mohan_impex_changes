@@ -19,7 +19,8 @@ fixtures = [
     {"dt": "Workspace", "filters": [["name", "in", ("Mohan Impex")]]},
     "Workflow",
     "Workflow State",
-    "Workflow Action Master"
+    "Workflow Action Master",
+    "Print Format"
 ]
 
 doctype_js ={
@@ -32,9 +33,6 @@ doctype_js ={
     "Pre-Unloading Check": "public/js/pre_unloading_check.js",
     "Increment Letter":"public/js/increment_letter.js"
 }
-# "Purchase Receipt":"public/js/PR_Connection.js",
-# "Purchase Receipt":"public/js/GRN1_Item.js",
-# "User": "public/js/user.js",
 
 doc_events = {
 	"Comment": {
@@ -86,13 +84,7 @@ doc_events = {
         "before_submit": "mohan_impex.mohan_impex.stock_entry.inspection_validation"
     }
 }
-# "Salary Slip": {
-#         "on_submit": "mohan_impex.salary_slip.handle_pf_on_submit"
-#     }
-# "Leave Application": {
-#         "validate": "mohan_impex.leave_restriction.validate_leave_application",
-#         "before_save": "mohan_impex.leave_restriction.on_leave_application_before_save"
-#     }
+
 # Whitelist API methods for external use
 api_methods = [
     "mohan_impex.leave_deduction.create_casual_leave"
@@ -103,19 +95,6 @@ override_doctype_class = {
     "Quality Inspection": "mohan_impex.override.quality_inspection.QualityInspection"
 }
 
-# "Salary Slip": {
-#         "on_submit": "mohan_impex.salary_slip.handle_pf_on_submit"
-#     },
-# doctype_js = {
-#     "BOM": "public/js/bom.js"
-# }
-
-# 
-# api = {
-#     "methods": [
-#         "mohan_impex.api.download_attendance_report"
-#     ]
-# }
 
 # Apps
 # ------------------
@@ -256,11 +235,7 @@ override_doctype_class = {
 # 		"on_trash": "method"
 # 	}
 # }
-# scheduler_events = {
-#     "hourly": [
-#         "mohan_impex.auto_close_rfq.close_expired_rfqs"
-#     ]
-# }
+
 scheduler_events = {
     "cron": {
         "15 12 * * *": [
@@ -271,20 +246,12 @@ scheduler_events = {
         ],
         "0 10 25 * *":[
             "mohan_impex.birthday_leave.send_birthday_notification"
-        ],
-        "0 10 25 * *":[
-            "mohan_impex.company_import.import_all_companies"
         ]
     }
 }
 
 
-# "monthly": [
-#         "mohan_impex.leave_balance.monthly_leaves"
-#     ]
-    # "monthly": [
-    #     "mohan_impex.late_checkin_count.get_employee_late_checkins"
-    # ]
+
 # Scheduled Tasks
 # ---------------
 

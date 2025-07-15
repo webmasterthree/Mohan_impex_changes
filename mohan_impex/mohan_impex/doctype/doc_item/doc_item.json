@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-07-09 11:47:36.660853",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "documents",
+  "column_break_wrbq",
+  "upload"
+ ],
+ "fields": [
+  {
+   "fieldname": "documents",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Documents",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "upload",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Upload"
+  },
+  {
+   "fieldname": "column_break_wrbq",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-07-09 16:02:56.422628",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Doc Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

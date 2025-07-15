@@ -1,41 +1,27 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:employee_template_name",
- "creation": "2025-07-04 12:50:49.691124",
+ "autoname": "field:name1",
+ "creation": "2025-07-10 11:52:41.143732",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "employee_template_name",
-  "assign_employee",
-  "job_type"
+  "name1"
  ],
  "fields": [
   {
-   "fieldname": "employee_template_name",
+   "fieldname": "name1",
    "fieldtype": "Data",
-   "label": "Employee Template Name",
+   "label": "Name",
    "unique": 1
-  },
-  {
-   "fieldname": "assign_employee",
-   "fieldtype": "Table MultiSelect",
-   "label": "Assign Employee",
-   "options": "Job Card Time Log"
-  },
-  {
-   "fieldname": "job_type",
-   "fieldtype": "Link",
-   "label": "Job Type",
-   "options": "Operation"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-07-08 11:26:24.820578",
+ "modified": "2025-07-10 11:53:12.272250",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
- "name": "Employee Template",
+ "name": "Developer",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -48,7 +34,6 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
-   "select": 1,
    "share": 1,
    "write": 1
   }

@@ -2390,8 +2390,13 @@
   "docstatus": 0,
   "doctype": "Workflow",
   "document_type": "Sales Order",
+<<<<<<< HEAD
   "is_active": 1,
   "modified": "2025-07-09 13:53:29.594901",
+=======
+  "is_active": 0,
+  "modified": "2025-07-05 18:07:24.859049",
+>>>>>>> 2c70bc2 (15 july)
   "name": "Sales Order",
   "override_status": 0,
   "send_email_alert": 0,
@@ -2694,8 +2699,8 @@
   "docstatus": 0,
   "doctype": "Workflow",
   "document_type": "Sales Order",
-  "is_active": 0,
-  "modified": "2025-05-31 10:33:37.313152",
+  "is_active": 1,
+  "modified": "2025-07-09 13:09:19.761260",
   "name": "Sales Flow",
   "override_status": 0,
   "send_email_alert": 0,
