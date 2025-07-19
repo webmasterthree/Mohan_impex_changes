@@ -20,7 +20,8 @@ fixtures = [
     "Workflow",
     "Workflow State",
     "Workflow Action Master",
-    "Print Format"
+    "Print Format",
+    "Server Script"
 ]
 
 doctype_js ={
@@ -31,8 +32,10 @@ doctype_js ={
     "Additional Salary": "public/js/additional_salary.js",
     "Request for Quotation" : "public/js/rfq.js",
     "Pre-Unloading Check": "public/js/pre_unloading_check.js",
-    "Increment Letter":"public/js/increment_letter.js"
+    "Increment Letter":"public/js/increment_letter.js",
+    "Sales Order": "public/js/floating_notifications.js"
 }
+
 
 doc_events = {
 	"Comment": {
@@ -82,6 +85,9 @@ doc_events = {
     },
     "Stock Entry": {
         "before_submit": "mohan_impex.mohan_impex.stock_entry.inspection_validation"
+    },
+    "Salary Slip": {
+        "before_submit": "mohan_impex.salary_slip.before_submit"
     }
 }
 
@@ -94,8 +100,7 @@ override_doctype_class = {
     "Transport RFQ": "mohan_impex.Sales.transport_rfq.TransportRFQ",
     "Quality Inspection": "mohan_impex.override.quality_inspection.QualityInspection"
 }
-
-
+ 
 # Apps
 # ------------------
 

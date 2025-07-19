@@ -2,6 +2,39 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Sales Order",
+  "enabled": 1,
+  "modified": "2025-07-18 16:09:33.902442",
+  "module": "Mohan Impex",
+  "name": "List Sales Order",
+  "script": "frappe.listview_settings['Sales Order'] = {\n    onload: function(listview) {\n        frappe.call({\n            method: \"mohan_impex.testapi.get_my_assignment_notifications\",\n            callback: function(r) {\n                if (r.message && r.message.length) {\n                    let msg = \"You have the following assignments:<br><br>\";\n\n                    r.message.forEach(log => {\n                        msg += `<b>${log.subject}</b><br>${log.email_content}<br><hr>`;\n                    });\n\n                    frappe.msgprint({\n                        title: \"My Assignments\",\n                        message: msg,\n                        indicator: \"blue\"\n                    });\n                }\n            }\n        });\n    }\n};\n",
+  "view": "List"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Salary Slip",
+  "enabled": 0,
+  "modified": "2025-07-19 14:50:34.180969",
+  "module": "Mohan Impex",
+  "name": "Salary Slip",
+  "script": "frappe.ui.form.on('Salary Slip', {\n    refresh: function(frm) {\n        update_salary_fields(frm);\n    },\n\n    leave_without_pay: function(frm) {\n        update_salary_fields(frm);\n    }\n});\n\nfunction update_salary_fields(frm) {\n    const base_day = 30;\n    const lop = frm.doc.leave_without_pay || 0;\n    const payment_days = base_day - lop;\n\n    frm.set_value('total_working_days', base_day);\n    frm.set_value('payment_days', payment_days);\n\n    let total_earnings = 0;\n\n    frm.doc.earnings.forEach(row => {\n        row.amount = (row.amount / base_day) * payment_days;\n        total_earnings += row.amount;\n    });\n\n    frm.set_value('gross_pay', total_earnings);\n\n    const total_deduction = frm.doc.total_deduction || 0;\n    const net_pay = total_earnings - total_deduction;\n    const rounded_total = Math.round(net_pay);\n\n    frm.set_value('net_pay', net_pay);\n    frm.set_value('rounded_total', rounded_total);\n\n    frappe.call({\n        method: \"mohan_impex.amount_in_word.get_money_in_words\",\n        args: {\n            amount: rounded_total\n        },\n        callback: function(r) {\n            if (r.message) {\n                frm.set_value(\"total_in_words\", r.message);\n            }\n        }\n    });\n\n    frm.refresh_field('earnings');\n}\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Batch",
+  "enabled": 0,
+  "modified": "2025-07-18 15:06:19.260658",
+  "module": "Mohan Impex",
+  "name": "Next Id For Batch",
+  "script": "frappe.ui.form.on('Batch', {\n    onload: function(frm) {\n        // Only fetch if it's a new doc and batch_id is empty\n        if (frm.is_new() && !frm.doc.batch_id) {\n            frappe.call({\n                method: 'mohan_impex.batch_api.get_next_batch_id',\n                args: {\n                    item: frm.doc.item\n                },\n                callback: function(r) {\n                    if (r.message && r.message.next_batch_id) {\n                        frm.set_value('batch_id', r.message.next_batch_id);\n                    }\n                }\n            });\n        }\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "POS Invoice",
   "enabled": 1,
   "modified": "2025-04-06 11:19:38.322858",
@@ -641,11 +674,11 @@
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "Sales Order",
-  "enabled": 0,
-  "modified": "2025-02-21 12:49:52.015955",
-  "module": null,
+  "enabled": 1,
+  "modified": "2025-07-18 15:02:21.896281",
+  "module": "Mohan Impex",
   "name": "Script for Item Template",
-  "script": "frappe.ui.form.on('Sales Order Item', {\n    item_code: function(frm, cdt, cdn) {\n        let row = locals[cdt][cdn];\n\n        if (!row.item_code) {\n            // Step 1: Fetch Item Templates\n            frappe.call({\n                method: \"frappe.client.get_list\",\n                args: {\n                    doctype: \"Item\",\n                    filters: { \"variant_of\": \"\" },  // Fetch only Item Templates\n                    fields: [\"item_code\", \"item_name\"]\n                },\n                callback: function(response) {\n                    let templates = response.message.map(item => ({\n                        label: item.item_name, \n                        value: item.item_code\n                    }));\n\n                    // Prompt user to select an Item Template\n                    frappe.prompt([\n                        {\n                            label: \"Select Item Template\",\n                            fieldname: \"selected_template\",\n                            fieldtype: \"Select\",\n                            options: templates\n                        }\n                    ], (template_data) => {\n                        let selected_template = template_data.selected_template;\n                        fetch_variant_attributes(selected_template, frm, cdt, cdn);\n                    });\n                }\n            });\n        }\n    }\n});\n\n// Function to fetch attributes dynamically from the selected Item Template\nfunction fetch_variant_attributes(template, frm, cdt, cdn) {\n    frappe.call({\n        method: \"frappe.client.get\",\n        args: {\n            doctype: \"Item\",\n            name: template\n        },\n        callback: function(response) {\n            if (response.message) {\n                let item_template = response.message;\n                let attributes = item_template.attributes || [];\n\n                if (attributes.length > 0) {\n                    let attribute_list = attributes.map(attr => attr.attribute);\n                    iterate_attributes_selection(template, attribute_list, {}, frm, cdt, cdn);\n                } else {\n                    frappe.msgprint(\"No variant attributes found for this template.\");\n                }\n            }\n        }\n    });\n}\n\n// Function to iterate through each attribute selection\nfunction iterate_attributes_selection(template, attributes, selected_values, frm, cdt, cdn) {\n    if (attributes.length === 0) {\n        fetch_matching_variant(template, selected_values, frm, cdt, cdn);\n        return;\n    }\n\n    let current_attr = attributes.shift();\n\n    frappe.call({\n        method: \"frappe.client.get_list\",\n        args: {\n            doctype: \"Item Attribute Value\",\n            filters: { \"parent\": current_attr },\n            fields: [\"attribute_value\"]\n        },\n        callback: function(response) {\n            if (response.message.length > 0) {\n                let options = response.message.map(attr => ({\n                    label: attr.attribute_value,\n                    value: attr.attribute_value\n                }));\n\n                frappe.prompt([\n                    {\n                        label: `Select ${current_attr}`,\n                        fieldname: current_attr,\n                        fieldtype: \"Select\",\n                        options: options\n                    }\n                ], (data) => {\n                    selected_values[current_attr] = data[current_attr];\n                    iterate_attributes_selection(template, attributes, selected_values, frm, cdt, cdn);\n                });\n            } else {\n                frappe.msgprint(`No values found for attribute ${current_attr}`);\n            }\n        }\n    });\n}\n\n// Function to fetch final variant based on selected attributes\nfunction fetch_matching_variant(template, selected_values, frm, cdt, cdn) {\n    let filters = { \"variant_of\": template };\n    \n    // Add selected attribute values as filters\n    Object.keys(selected_values).forEach(attr => {\n        filters[`attribute_${attr.toLowerCase()}`] = selected_values[attr];\n    });\n\n    frappe.call({\n        method: \"frappe.client.get_list\",\n        args: {\n            doctype: \"Item\",\n            filters: filters,\n            fields: [\"item_code\", \"item_name\"]\n        },\n        callback: function(response) {\n            if (response.message.length === 1) {\n                // Auto-select the final variant\n                frappe.model.set_value(cdt, cdn, \"item_code\", response.message[0].item_code);\n            } else if (response.message.length > 1) {\n                // If multiple variants match, allow user to choose\n                let options = response.message.map(item => ({\n                    label: item.item_name,\n                    value: item.item_code\n                }));\n\n                frappe.prompt([\n                    {\n                        label: \"Select Final Variant\",\n                        fieldname: \"final_variant\",\n                        fieldtype: \"Select\",\n                        options: options\n                    }\n                ], (final_data) => {\n                    frappe.model.set_value(cdt, cdn, \"item_code\", final_data.final_variant);\n                });\n            } else {\n                frappe.msgprint(\"No matching variant found. Please check attribute selections.\");\n            }\n        }\n    });\n}",
+  "script": "frappe.ui.form.on('Sales Order', {\n    onload: function(frm) {\n        frappe.call({\n            method: \"mohan_impex.testapi.get_my_assignment_notifications\",\n            callback: function(r) {\n                if (r.message && r.message.length) {\n                    let msg = \"You have the following assignments:<br><br>\";\n\n                    r.message.forEach(log => {\n                        msg += `<b>${log.subject}</b><br>${log.email_content}<br><hr>`;\n                    });\n\n                    frappe.msgprint({\n                        title: \"My Assignments\",\n                        message: msg,\n                        indicator: \"blue\"\n                    });\n                }\n            }\n        });\n    }\n});\n",
   "view": "Form"
  },
  {

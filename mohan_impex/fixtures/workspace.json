@@ -1,8 +1,16 @@
 [
  {
   "charts": [],
-  "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"MI\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"MI\",\"col\":4}},{\"id\":\"TZLLsfGe6c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contact Number\",\"col\":3}}]",
-  "custom_blocks": [],
+  "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"MI\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"MI\",\"col\":4}},{\"id\":\"TZLLsfGe6c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contact Number\",\"col\":3}},{\"id\":\"XAsoxPPvBJ\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Assignment\",\"col\":12}}]",
+  "custom_blocks": [
+   {
+    "custom_block_name": "Assignment",
+    "label": "Assignment",
+    "parent": "Mohan Impex",
+    "parentfield": "custom_blocks",
+    "parenttype": "Workspace"
+   }
+  ],
   "docstatus": 0,
   "doctype": "Workspace",
   "for_user": "",
@@ -283,7 +291,7 @@
     "type": "Link"
    }
   ],
-  "modified": "2025-07-10 15:19:41.418142",
+  "modified": "2025-07-18 15:19:22.909457",
   "module": "",
   "name": "Mohan Impex",
   "number_cards": [],

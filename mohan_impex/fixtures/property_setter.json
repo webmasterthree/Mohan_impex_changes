@@ -7,11 +7,7 @@
   "doctype_or_field": "DocField",
   "field_name": "naming_series",
   "is_system_generated": 0,
-<<<<<<< HEAD
-  "modified": "2025-07-07 20:29:54.437208",
-=======
-  "modified": "2025-07-11 14:53:34.575246",
->>>>>>> 2c70bc2 (15 july)
+  "modified": "2025-07-19 13:05:17.491066",
   "module": null,
   "name": "Customer-naming_series-options",
   "property": "options",
