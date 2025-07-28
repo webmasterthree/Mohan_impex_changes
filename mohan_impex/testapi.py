@@ -116,3 +116,22 @@ def download_salary_slip(name: str):
         "content_type": frappe.local.response.type,
         "base64": frappe.safe_encode(frappe.local.response.filecontent, "base64"),
     }
+
+
+
+
+
+
+import frappe
+from frappe import _
+
+@frappe.whitelist(allow_guest=False)
+def get_notifications(to_user):
+    return frappe.db.get_all(
+        "PWA Notification",
+        filters={"to_user": to_user},
+        fields=[
+            "to_user", "from_user", "message",
+            "reference_document_type", "reference_document_name", "read"
+        ]
+    )

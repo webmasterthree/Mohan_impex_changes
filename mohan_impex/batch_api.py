@@ -2,7 +2,7 @@ import frappe
 import re
 
 @frappe.whitelist()
-def get_next_batch_id(item):
+def get_next_batch_id(item=None):
     """
     Suggest the next unique batch ID in NSE-XXXX format.
     Ensures uniqueness even if some NSE-XXXX values were manually added.

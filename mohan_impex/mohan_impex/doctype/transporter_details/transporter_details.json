@@ -65,8 +65,7 @@
    "fieldname": "driver",
    "fieldtype": "Link",
    "label": "Driver",
-   "options": "Driver",
-   "reqd": 1
+   "options": "Driver"
   },
   {
    "fetch_from": "driver.full_name",
@@ -90,7 +89,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-07-07 11:21:19.502032",
+ "modified": "2025-07-21 18:17:18.376283",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transporter Details",
