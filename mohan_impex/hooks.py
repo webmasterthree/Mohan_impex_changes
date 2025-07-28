@@ -38,9 +38,6 @@ doctype_js ={
 
 
 doc_events = {
-	"Comment": {
-		"after_insert": "mohan_impex.mohan_impex.comment.status_update"
-	},
     "Sales Order": {
         "before_save": "mohan_impex.mohan_impex.sales_order.update_customer_edit_needed"
     },
@@ -78,7 +75,10 @@ doc_events = {
     # },
     "Comment": {
         "before_insert": "mohan_impex.mohan_impex.comment.update_comment_by",
-        "after_insert": "mohan_impex.api.add_notification_from_comment"
+        "after_insert": [
+            "mohan_impex.mohan_impex.comment.status_update",
+            "mohan_impex.api.add_notification_from_comment"
+        ]
     },
     "Notification Log": {
         "after_insert": "mohan_impex.api.send_notification"
