@@ -36,7 +36,6 @@
   "section_break_xsde",
   "product_pitching",
   "section_break_qsmq",
-  "appointment_date",
   "conduct_by",
   "column_break_iwjg",
   "trial_loc",
@@ -44,6 +43,7 @@
   "time",
   "section_break_jhgm",
   "trial_table",
+  "trial_plan_remarks",
   "section_break_gbyh",
   "map_location",
   "section_break_lyzf",
@@ -179,12 +179,6 @@
    "fieldname": "section_break_qsmq",
    "fieldtype": "Section Break",
    "label": "Trial Plan"
-  },
-  {
-   "fieldname": "appointment_date",
-   "fieldtype": "Date",
-   "label": "Appointment Date",
-   "mandatory_depends_on": "eval:doc.has_trial_plan === 1"
   },
   {
    "fieldname": "visit_duration",
@@ -407,6 +401,12 @@
    "fieldname": "created_by_name",
    "fieldtype": "Data",
    "label": "Created By Name"
+  },
+  {
+   "depends_on": "has_trial_plan",
+   "fieldname": "trial_plan_remarks",
+   "fieldtype": "Small Text",
+   "label": "Trial Plan Remarks"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -417,7 +417,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2025-06-22 10:15:09.316103",
+ "modified": "2025-08-03 17:47:49.751270",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",

@@ -101,13 +101,12 @@ class CustomerVisitManagement(Document):
                 "city": self.district,
                 "state": self.state,
                 "pincode": self.pincode,
-                "appointment_date":  self.appointment_date,
                 "visit_start": self.visit_start,
                 "visit_end": self.visit_end,
                 "visit_duration": self.visit_duration,
-                "date": self.date,
+                "trial_date": self.trial_date,
                 "time": self.time,
-                "remarksnotes": self.remarksnotes,
+                "remarksnotes": self.trial_plan_remarks,
                 "created_by_emp": get_session_employee(),
                 "area": get_session_employee_area()
             }

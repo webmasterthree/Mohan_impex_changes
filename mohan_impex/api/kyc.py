@@ -232,7 +232,7 @@ def create_contact(kyc_doc, kyc_data, primary_contact_number):
     is_email_exists = next(filter(lambda i: i.email_id, contact_doc.email_ids), None)
     if is_email_exists:
         is_email_exists.is_primary = 1
-    else:
+    elif kyc_data.email_id:
         if has_primary_email:
             has_primary_email.is_primary = 0
         contact_doc.append("email_ids", {

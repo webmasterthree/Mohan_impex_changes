@@ -25,7 +25,6 @@
   "time",
   "column_break_xbea",
   "created_date",
-  "appointment_date",
   "approved_date",
   "rejected_date",
   "contact",
@@ -98,12 +97,6 @@
    "fieldname": "remarksnotes",
    "fieldtype": "Small Text",
    "label": "Remarks/Notes"
-  },
-  {
-   "fieldname": "appointment_date",
-   "fieldtype": "Date",
-   "label": "Appointment Date",
-   "reqd": 1
   },
   {
    "fieldname": "section_break_hsnf",
@@ -366,7 +359,7 @@
    "link_fieldname": "trial_plan"
   }
  ],
- "modified": "2025-07-08 14:41:21.973788",
+ "modified": "2025-08-03 17:47:23.206358",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",

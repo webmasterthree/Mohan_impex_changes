@@ -12,6 +12,16 @@
  {
   "appraisal_template": null,
   "description": null,
+  "designation_name": "ASM",
+  "docstatus": 0,
+  "doctype": "Designation",
+  "modified": "2025-01-18 16:56:06.039911",
+  "name": "ASM",
+  "skills": []
+ },
+ {
+  "appraisal_template": null,
+  "description": null,
   "designation_name": "TSM",
   "docstatus": 0,
   "doctype": "Designation",
@@ -27,16 +37,6 @@
   "doctype": "Designation",
   "modified": "2025-01-18 16:56:15.776816",
   "name": "NSM",
-  "skills": []
- },
- {
-  "appraisal_template": null,
-  "description": null,
-  "designation_name": "ASM",
-  "docstatus": 0,
-  "doctype": "Designation",
-  "modified": "2025-01-18 16:56:06.039911",
-  "name": "ASM",
   "skills": []
  }
 ]
