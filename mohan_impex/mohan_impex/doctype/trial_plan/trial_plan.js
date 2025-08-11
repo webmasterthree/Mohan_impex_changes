@@ -195,7 +195,7 @@ function set_session_employee(frm){
 
 function assigned_to_employee(frm){
   frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "role_profile").then((r) => {
-    if (frm.doc.conduct_by === "TSM Required" && frm.doc.status !== "Rejected" && (r.message.role_profile === "NSM" || frappe.session.user === "Administrator")){
+    if (frm.doc.conduct_by === "TSM Required" && frm.doc.workflow_state === "Approved" && frm.doc.status !== "Rejected" && (["NSM", "ZSM"].includes(r.message.role_profile) || frappe.session.user === "Administrator")){
       frm.add_custom_button(__('Assign Employee'), function() {
         var d = new frappe.ui.Dialog({
           title: __("Select Employee"),

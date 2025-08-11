@@ -6,7 +6,7 @@ app_email = "arunlrajamanickam@gmail.com"
 app_license = "mit"
 
 
-role_list = ("SE", "ASM", "TSM", "NSM", "CP")
+role_list = ("SE", "ASM", "TSM", "NSM", "ZSM", "RSM", "CP")
 
 fixtures = [
     "Client Script",

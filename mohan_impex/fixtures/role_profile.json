@@ -2,6 +2,72 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
+  "has_toggle_filter": 1,
+  "is_multiple_area_management": 0,
+  "modified": "2025-08-05 21:19:09.655661",
+  "name": "ZSM",
+  "role_full_name": null,
+  "role_profile": "ZSM",
+  "roles": [
+   {
+    "parent": "ZSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Customer"
+   },
+   {
+    "parent": "ZSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "ZSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales User"
+   },
+   {
+    "parent": "ZSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Master Manager"
+   },
+   {
+    "parent": "ZSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "ZSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "SE"
+   },
+   {
+    "parent": "ZSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Support Team"
+   },
+   {
+    "parent": "ZSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "ZSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "ZSM"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
   "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
   "modified": "2025-04-09 20:32:17.066994",
@@ -44,6 +110,72 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Sales User"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-06-14 16:00:53.070968",
+  "name": "SE",
+  "role_full_name": null,
+  "role_profile": "SE",
+  "roles": [
+   {
+    "parent": "SE",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales User"
+   },
+   {
+    "parent": "SE",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "SE",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "SE",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Customer"
+   },
+   {
+    "parent": "SE",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock User"
+   },
+   {
+    "parent": "SE",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "SE"
+   },
+   {
+    "parent": "SE",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Support Team"
+   },
+   {
+    "parent": "SE",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "SE",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Master Manager"
    }
   ]
  },
@@ -148,7 +280,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
-  "modified": "2025-07-11 12:27:27.252980",
+  "modified": "2025-06-27 08:30:33.357090",
   "name": "NSM",
   "role_full_name": null,
   "role_profile": "NSM",
@@ -206,84 +338,72 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Support Team"
-   },
-   {
-    "parent": "NSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Leave Approver"
-   },
-   {
-    "parent": "NSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Work From Home Approver"
    }
   ]
  },
  {
   "docstatus": 0,
   "doctype": "Role Profile",
-  "has_toggle_filter": 0,
+  "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
-  "modified": "2025-07-24 11:14:52.851776",
-  "name": "SE",
+  "modified": "2025-08-05 21:19:58.280682",
+  "name": "RSM",
   "role_full_name": null,
-  "role_profile": "SE",
+  "role_profile": "RSM",
   "roles": [
    {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Item Manager"
-   },
-   {
-    "parent": "SE",
+    "parent": "RSM",
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Customer"
    },
    {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "SE"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Support Team"
-   },
-   {
-    "parent": "SE",
+    "parent": "RSM",
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Employee"
    },
    {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Manager"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Master Manager"
-   },
-   {
-    "parent": "SE",
+    "parent": "RSM",
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Sales User"
    },
    {
-    "parent": "SE",
+    "parent": "RSM",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Stock User"
+    "role": "Sales Master Manager"
+   },
+   {
+    "parent": "RSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "RSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "SE"
+   },
+   {
+    "parent": "RSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Support Team"
+   },
+   {
+    "parent": "RSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "RSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "RSM"
    }
   ]
  }

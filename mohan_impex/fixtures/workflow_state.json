@@ -48,6 +48,15 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-06-20 15:04:11.872803",
+  "name": "Billing Team Approval Pending",
+  "style": "Danger",
+  "workflow_state_name": "Billing Team Approval Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-06-20 15:05:17.815660",
   "name": "Approved By Billing Team",
   "style": "Success",
@@ -84,10 +93,28 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-03-29 16:54:54.715762",
+  "name": "Published",
+  "style": "",
+  "workflow_state_name": "Published"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-05-25 17:06:32.959613",
   "name": "Completed",
   "style": "",
   "workflow_state_name": "Completed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-25 09:05:52.881251",
+  "name": "Accounts Team Approval Pending",
+  "style": "Danger",
+  "workflow_state_name": "Accounts Team Approval Pending"
  },
  {
   "docstatus": 0,
@@ -155,6 +182,15 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
+  "icon": "ok-sign",
+  "modified": "2024-12-25 19:18:52.878440",
+  "name": "Approved",
+  "style": "Success",
+  "workflow_state_name": "Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
   "icon": "remove",
   "modified": "2024-12-25 19:18:52.879665",
   "name": "Rejected",
@@ -196,6 +232,24 @@
   "name": "KYC Completed",
   "style": "",
   "workflow_state_name": "KYC Completed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-02-19 21:28:00.068954",
+  "name": "Draft",
+  "style": "",
+  "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-24 13:54:33.220687",
+  "name": "Approval in Progress – HR Manager",
+  "style": "Danger",
+  "workflow_state_name": "Approval in Progress – HR Manager"
  },
  {
   "docstatus": 0,
@@ -246,54 +300,27 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-03-29 16:54:54.715762",
-  "name": "Published",
+  "modified": "2025-07-09 12:08:14.261643",
+  "name": "ASM Approved",
   "style": "",
-  "workflow_state_name": "Published"
+  "workflow_state_name": "ASM Approved"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-25 09:05:52.881251",
-  "name": "Accounts Team Approval Pending",
-  "style": "Danger",
-  "workflow_state_name": "Accounts Team Approval Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-24 13:54:33.220687",
-  "name": "Approval in Progress – HR Manager",
-  "style": "Danger",
-  "workflow_state_name": "Approval in Progress – HR Manager"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "ok-sign",
-  "modified": "2024-12-25 19:18:52.878440",
-  "name": "Approved",
-  "style": "Success",
-  "workflow_state_name": "Approved"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-06-20 15:04:11.872803",
-  "name": "Billing Team Approval Pending",
-  "style": "Danger",
-  "workflow_state_name": "Billing Team Approval Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-02-19 21:28:00.068954",
-  "name": "Draft",
+  "modified": "2025-07-09 13:21:18.395065",
+  "name": "ASM KYC Completed",
   "style": "",
-  "workflow_state_name": "Draft"
+  "workflow_state_name": "ASM KYC Completed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-09 13:54:04.655061",
+  "name": "ASM Resolved",
+  "style": "",
+  "workflow_state_name": "ASM Resolved"
  }
 ]

@@ -588,7 +588,7 @@
   "doctype": "Workflow",
   "document_type": "Trial Plan",
   "is_active": 1,
-  "modified": "2025-07-05 18:05:40.325134",
+  "modified": "2025-08-05 21:11:01.358451",
   "name": "Trial plan",
   "override_status": 0,
   "send_email_alert": 0,
@@ -667,39 +667,30 @@
     "update_field": "status",
     "update_value": "Pending",
     "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "ASM",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Trial plan",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
    }
   ],
   "transitions": [
    {
     "action": "Approve",
     "allow_self_approval": 0,
-    "allowed": "SE",
-    "condition": "doc.conduct_by != \"TSM Required\" or (doc.conduct_by == \"TSM Required\" and doc.assigned_to != \"\")",
-    "next_state": "Approved",
-    "parent": "Trial plan",
-    "parentfield": "transitions",
-    "parenttype": "Workflow",
-    "state": "Pending",
-    "workflow_builder_id": null
-   },
-   {
-    "action": "Reject",
-    "allow_self_approval": 0,
-    "allowed": "SE",
-    "condition": "doc.conduct_by != \"TSM Required\" or (doc.conduct_by == \"TSM Required\" and doc.assigned_to != \"\")",
-    "next_state": "Rejected",
-    "parent": "Trial plan",
-    "parentfield": "transitions",
-    "parenttype": "Workflow",
-    "state": "Pending",
-    "workflow_builder_id": null
-   },
-   {
-    "action": "Approve",
-    "allow_self_approval": 0,
     "allowed": "ASM",
     "condition": "doc.conduct_by != \"TSM Required\" or (doc.conduct_by == \"TSM Required\" and doc.assigned_to != \"\")",
-    "next_state": "Approved",
+    "next_state": "ASM Approved",
     "parent": "Trial plan",
     "parentfield": "transitions",
     "parenttype": "Workflow",
@@ -731,22 +722,10 @@
     "workflow_builder_id": null
    },
    {
-    "action": "Reject",
-    "allow_self_approval": 0,
-    "allowed": "NSM",
-    "condition": "doc.conduct_by != \"TSM Required\" or (doc.conduct_by == \"TSM Required\" and doc.assigned_to != \"\")",
-    "next_state": "Rejected",
-    "parent": "Trial plan",
-    "parentfield": "transitions",
-    "parenttype": "Workflow",
-    "state": "Pending",
-    "workflow_builder_id": null
-   },
-   {
     "action": "Approve",
     "allow_self_approval": 0,
-    "allowed": "TSM",
-    "condition": "doc.conduct_by != \"TSM Required\" or (doc.conduct_by == \"TSM Required\" and doc.assigned_to != \"\")",
+    "allowed": "ZSM",
+    "condition": "",
     "next_state": "Approved",
     "parent": "Trial plan",
     "parentfield": "transitions",
@@ -757,13 +736,49 @@
    {
     "action": "Reject",
     "allow_self_approval": 0,
-    "allowed": "TSM",
-    "condition": "doc.conduct_by != \"TSM Required\" or (doc.conduct_by == \"TSM Required\" and doc.assigned_to != \"\")",
+    "allowed": "NSM",
+    "condition": "",
     "next_state": "Rejected",
     "parent": "Trial plan",
     "parentfield": "transitions",
     "parenttype": "Workflow",
     "state": "Pending",
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Reject",
+    "allow_self_approval": 0,
+    "allowed": "ZSM",
+    "condition": "",
+    "next_state": "Rejected",
+    "parent": "Trial plan",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Pending",
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Approve",
+    "allow_self_approval": 1,
+    "allowed": "NSM",
+    "condition": null,
+    "next_state": "Approved",
+    "parent": "Trial plan",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Approve",
+    "allow_self_approval": 1,
+    "allowed": "ZSM",
+    "condition": null,
+    "next_state": "Approved",
+    "parent": "Trial plan",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
     "workflow_builder_id": null
    }
   ],
@@ -1527,7 +1542,7 @@
   "doctype": "Workflow",
   "document_type": "Customer Visit Management",
   "is_active": 1,
-  "modified": "2025-07-05 18:08:20.948633",
+  "modified": "2025-07-09 12:11:48.650754",
   "name": "CVM",
   "override_status": 0,
   "send_email_alert": 0,
@@ -1606,6 +1621,21 @@
     "update_field": "status",
     "update_value": "Pending",
     "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "ASM",
+    "avoid_status_override": 0,
+    "doc_status": "1",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "CVM",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
    }
   ],
   "transitions": [
@@ -1650,7 +1680,7 @@
     "allow_self_approval": 0,
     "allowed": "ASM",
     "condition": null,
-    "next_state": "Approved",
+    "next_state": "ASM Approved",
     "parent": "CVM",
     "parentfield": "transitions",
     "parenttype": "Workflow",
@@ -1668,6 +1698,18 @@
     "parenttype": "Workflow",
     "state": "Pending",
     "workflow_builder_id": null
+   },
+   {
+    "action": "Approve",
+    "allow_self_approval": 1,
+    "allowed": "NSM",
+    "condition": null,
+    "next_state": "Approved",
+    "parent": "CVM",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
+    "workflow_builder_id": null
    }
   ],
   "workflow_data": null,
@@ -1679,7 +1721,7 @@
   "doctype": "Workflow",
   "document_type": "Sample Requisition",
   "is_active": 1,
-  "modified": "2025-07-05 18:04:31.884987",
+  "modified": "2025-07-09 14:26:57.475483",
   "name": "Sample Requisition",
   "override_status": 0,
   "send_email_alert": 0,
@@ -1758,6 +1800,21 @@
     "update_field": "status",
     "update_value": "Received",
     "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "ASM",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Sample Requisition",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
    }
   ],
   "transitions": [
@@ -1832,6 +1889,18 @@
     "parenttype": "Workflow",
     "state": "Approved",
     "workflow_builder_id": null
+   },
+   {
+    "action": "Approve",
+    "allow_self_approval": 1,
+    "allowed": "NSM",
+    "condition": null,
+    "next_state": "Approved",
+    "parent": "Sample Requisition",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
+    "workflow_builder_id": null
    }
   ],
   "workflow_data": null,
@@ -1843,7 +1912,7 @@
   "doctype": "Workflow",
   "document_type": "Journey Plan",
   "is_active": 1,
-  "modified": "2025-07-05 18:05:01.770155",
+  "modified": "2025-07-09 14:23:53.520756",
   "name": "Journey Plan",
   "override_status": 0,
   "send_email_alert": 0,
@@ -1907,6 +1976,21 @@
     "update_field": "status",
     "update_value": "Pending",
     "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "ASM",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Journey Plan",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
    }
   ],
   "transitions": [
@@ -1915,7 +1999,7 @@
     "allow_self_approval": 0,
     "allowed": "ASM",
     "condition": null,
-    "next_state": "Approved",
+    "next_state": "ASM Approved",
     "parent": "Journey Plan",
     "parentfield": "transitions",
     "parenttype": "Workflow",
@@ -1956,6 +2040,18 @@
     "parentfield": "transitions",
     "parenttype": "Workflow",
     "state": "Pending",
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Approve",
+    "allow_self_approval": 1,
+    "allowed": "NSM",
+    "condition": null,
+    "next_state": "Approved",
+    "parent": "Journey Plan",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
     "workflow_builder_id": null
    }
   ],
@@ -1968,7 +2064,7 @@
   "doctype": "Workflow",
   "document_type": "Marketing Collateral Request",
   "is_active": 1,
-  "modified": "2025-07-05 18:08:02.037893",
+  "modified": "2025-07-09 13:18:14.820200",
   "name": "Marketing Collateral Request",
   "override_status": 0,
   "send_email_alert": 0,
@@ -2032,6 +2128,21 @@
     "update_field": "status",
     "update_value": "Pending",
     "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "ASM",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Marketing Collateral Request",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
    }
   ],
   "transitions": [
@@ -2040,7 +2151,7 @@
     "allow_self_approval": 0,
     "allowed": "ASM",
     "condition": null,
-    "next_state": "Approved",
+    "next_state": "ASM Approved",
     "parent": "Marketing Collateral Request",
     "parentfield": "transitions",
     "parenttype": "Workflow",
@@ -2081,6 +2192,18 @@
     "parentfield": "transitions",
     "parenttype": "Workflow",
     "state": "Pending",
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Approve",
+    "allow_self_approval": 1,
+    "allowed": "NSM",
+    "condition": null,
+    "next_state": "Approved",
+    "parent": "Marketing Collateral Request",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
     "workflow_builder_id": null
    }
   ],
@@ -2093,7 +2216,7 @@
   "doctype": "Workflow",
   "document_type": "Issue",
   "is_active": 1,
-  "modified": "2025-07-05 18:06:13.017218",
+  "modified": "2025-07-09 13:54:54.244578",
   "name": "Complaints & Claims",
   "override_status": 0,
   "send_email_alert": 0,
@@ -2142,6 +2265,21 @@
     "update_field": "status",
     "update_value": "Open",
     "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "ASM",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Complaints & Claims",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "ASM Resolved",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
    }
   ],
   "transitions": [
@@ -2150,7 +2288,7 @@
     "allow_self_approval": 0,
     "allowed": "ASM",
     "condition": null,
-    "next_state": "Resolved",
+    "next_state": "ASM Resolved",
     "parent": "Complaints & Claims",
     "parentfield": "transitions",
     "parenttype": "Workflow",
@@ -2168,6 +2306,18 @@
     "parenttype": "Workflow",
     "state": "Active",
     "workflow_builder_id": null
+   },
+   {
+    "action": "Resolve",
+    "allow_self_approval": 1,
+    "allowed": "NSM",
+    "condition": null,
+    "next_state": "Resolved",
+    "parent": "Complaints & Claims",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "ASM Resolved",
+    "workflow_builder_id": null
    }
   ],
   "workflow_data": null,
@@ -2179,7 +2329,7 @@
   "doctype": "Workflow",
   "document_type": "Customer",
   "is_active": 1,
-  "modified": "2025-07-05 18:07:44.827591",
+  "modified": "2025-07-09 13:26:53.032534",
   "name": "Customer KYC",
   "override_status": 0,
   "send_email_alert": 0,
@@ -2213,6 +2363,21 @@
     "update_field": "kyc_status",
     "update_value": "Completed",
     "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "ASM",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Customer KYC",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "ASM KYC Completed",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
    }
   ],
   "transitions": [
@@ -2221,7 +2386,7 @@
     "allow_self_approval": 0,
     "allowed": "ASM",
     "condition": "",
-    "next_state": "KYC Completed",
+    "next_state": "ASM KYC Completed",
     "parent": "Customer KYC",
     "parentfield": "transitions",
     "parenttype": "Workflow",
@@ -2239,6 +2404,18 @@
     "parenttype": "Workflow",
     "state": "KYC Pending",
     "workflow_builder_id": null
+   },
+   {
+    "action": "Complete KYC",
+    "allow_self_approval": 1,
+    "allowed": "NSM",
+    "condition": null,
+    "next_state": "KYC Completed",
+    "parent": "Customer KYC",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "ASM KYC Completed",
+    "workflow_builder_id": null
    }
   ],
   "workflow_data": null,
@@ -2249,8 +2426,8 @@
   "docstatus": 0,
   "doctype": "Workflow",
   "document_type": "Sales Order",
-  "is_active": 0,
-  "modified": "2025-07-05 18:07:24.859049",
+  "is_active": 1,
+  "modified": "2025-07-09 13:53:29.594901",
   "name": "Sales Order",
   "override_status": 0,
   "send_email_alert": 0,
@@ -2329,6 +2506,21 @@
     "update_field": "",
     "update_value": "",
     "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "ASM",
+    "avoid_status_override": 0,
+    "doc_status": "1",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Sales Order",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
    }
   ],
   "transitions": [
@@ -2390,6 +2582,18 @@
     "parentfield": "transitions",
     "parenttype": "Workflow",
     "state": "Pending",
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Approve",
+    "allow_self_approval": 1,
+    "allowed": "NSM",
+    "condition": null,
+    "next_state": "Approved",
+    "parent": "Sales Order",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "ASM Approved",
     "workflow_builder_id": null
    }
   ],
@@ -2526,14 +2730,14 @@
   "docstatus": 0,
   "doctype": "Workflow",
   "document_type": "Sales Order",
-  "is_active": 1,
-  "modified": "2025-07-16 13:40:12.199587",
+  "is_active": 0,
+  "modified": "2025-05-31 10:33:37.313152",
   "name": "Sales Flow",
   "override_status": 0,
   "send_email_alert": 0,
   "states": [
    {
-    "allow_edit": "All",
+    "allow_edit": "Sales Executive",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -2548,7 +2752,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "All",
+    "allow_edit": "Account Executive - Banking",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -2563,7 +2767,7 @@
     "workflow_builder_id": "2"
    },
    {
-    "allow_edit": "All",
+    "allow_edit": "Account Executive - Banking",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -2578,7 +2782,7 @@
     "workflow_builder_id": "3"
    },
    {
-    "allow_edit": "All",
+    "allow_edit": "Account Executive - Banking",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -2597,7 +2801,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "All",
+    "allowed": "Account Executive - Banking",
     "condition": null,
     "next_state": "Approved",
     "parent": "Sales Flow",
@@ -2609,7 +2813,7 @@
    {
     "action": "Reject",
     "allow_self_approval": 1,
-    "allowed": "All",
+    "allowed": "Account Executive - Banking",
     "condition": null,
     "next_state": "Rejected",
     "parent": "Sales Flow",
@@ -2621,7 +2825,7 @@
    {
     "action": "Send for Accounts Review",
     "allow_self_approval": 1,
-    "allowed": "All",
+    "allowed": "Sales Executive",
     "condition": "doc.custom_outstanding_amount > 0",
     "next_state": "Accounts Team Approval Pending",
     "parent": "Sales Flow",
@@ -2633,7 +2837,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "All",
+    "allowed": "Sales Executive",
     "condition": "doc.custom_outstanding_amount == 0",
     "next_state": "Approved",
     "parent": "Sales Flow",

@@ -387,7 +387,8 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
         WHERE {role_filter}
     """.format(role_filter=role_filter)
     if search_text:
-        search_cond = """ AND (cu.customer_name LIKE "%{search_text}%" or ct.name LIKE "%{search_text}%" or cu.custom_shop LIKE "%{search_text}%") """.format(search_text=search_text)
+        # or cu.custom_shop LIKE "%{search_text}%"
+        search_cond = """ AND (cu.customer_name LIKE "%{search_text}%" or ct.name LIKE "%{search_text}%") """.format(search_text=search_text)
         query += search_cond
     if customer_level:
         query += """ AND cu.customer_level = "{0}" """.format(customer_level)
@@ -430,7 +431,8 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", k
             WHERE kyc_status = "Pending" and {role_filter}
         """.format(role_filter=role_filter)
         if frappe.form_dict.get("search_text"):
-            or_filters = """ AND (unv.customer_name LIKE "%{search_text}%" or unv.shop_name LIKE "%{search_text}%" or cl.contact LIKE "%{search_text}%") """.format(search_text=search_text)
+            # or unv.shop_name LIKE "%{search_text}%"
+            or_filters = """ AND (unv.customer_name LIKE "%{search_text}%" or cl.contact LIKE "%{search_text}%") """.format(search_text=search_text)
             query += or_filters
         if customer_level:
             query += """ AND unv.customer_level = "{0}" """.format(customer_level)

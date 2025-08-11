@@ -107,8 +107,6 @@ def complaints_form():
                 "customer_name": complaints_doc.customer_name,
                 "contact": complaints_doc.contact_number,
                 "date": complaints_doc.opening_date,
-                "shop": complaints_doc.shop,
-                "shop_name": complaints_doc.shop_name,
                 "invoice_no": complaints_doc.invoice_no,
                 "invoice_date": complaints_doc.invoice_date,
                 "district": complaints_doc.district,
