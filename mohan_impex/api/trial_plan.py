@@ -3,7 +3,7 @@ from mohan_impex.api.cvm import create_contact_number
 from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee, get_session_emp_role
 import math
 from mohan_impex.mohan_impex.comment import get_comments
-from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception, get_workflow_statuses, has_create_perm
+from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception, get_workflow_statuses, has_create_perm, convert_to_12_hour
 
 @frappe.whitelist()
 def trial_list():
@@ -115,6 +115,8 @@ def trial_form():
                 grouped[product].append(item)
             else:
                 grouped[product] = [item]
+        if trial_doc.get("time"):
+            trial_doc["time"] = convert_to_12_hour(trial_doc["time"])
         trial_doc["trial_plan_table"] = [{"product": product, "items": items} for product, items in grouped.items()]
         activities = get_comments("Trial Plan", trial_doc["name"])
         trial_doc["activities"] = activities
