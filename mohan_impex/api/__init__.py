@@ -803,6 +803,10 @@ def send_push_notification(for_user, device_token, title, body, data=None):
         pnl_log.insert(ignore_permissions=True)
         get_exception(err)
 
-def convert_to_12_hour(time_str):
+def convert_to_12_hour(db_time):
+    db_time = (datetime.min + db_time).time()
+    time_str = str(db_time)
+    if "." in time_str:
+        time_str = time_str.split(".")[0]
     time_obj = datetime.strptime(time_str, "%H:%M:%S")
     return time_obj.strftime("%I:%M:%S %p")
