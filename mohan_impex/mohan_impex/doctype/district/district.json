@@ -15,6 +15,7 @@
    "fieldname": "district",
    "fieldtype": "Data",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "District",
    "reqd": 1,
    "unique": 1
@@ -23,6 +24,7 @@
    "fieldname": "state",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "State",
    "options": "State",
    "reqd": 1
@@ -30,7 +32,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-06-06 10:48:41.098229",
+ "modified": "2025-08-04 12:10:47.134417",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "District",
