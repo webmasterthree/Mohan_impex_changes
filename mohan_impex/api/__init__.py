@@ -10,7 +10,7 @@ from mohan_impex.mohan_impex.utils import get_session_employee
 from frappe.utils.nestedset import get_descendants_of
 from bs4 import BeautifulSoup
 import json
-import requests
+from datetime import datetime
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account
 from frappe.model.workflow import get_transitions
@@ -802,3 +802,11 @@ def send_push_notification(for_user, device_token, title, body, data=None):
         })
         pnl_log.insert(ignore_permissions=True)
         get_exception(err)
+
+def convert_to_12_hour(db_time):
+    db_time = (datetime.min + db_time).time()
+    time_str = str(db_time)
+    if "." in time_str:
+        time_str = time_str.split(".")[0]
+    time_obj = datetime.strptime(time_str, "%H:%M:%S")
+    return time_obj.strftime("%I:%M:%S %p")

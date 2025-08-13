@@ -104,7 +104,7 @@ class CustomerVisitManagement(Document):
                 "visit_start": self.visit_start,
                 "visit_end": self.visit_end,
                 "visit_duration": self.visit_duration,
-                "trial_date": self.trial_date,
+                "date": self.date,
                 "time": self.time,
                 "remarksnotes": self.trial_plan_remarks,
                 "created_by_emp": get_session_employee(),
