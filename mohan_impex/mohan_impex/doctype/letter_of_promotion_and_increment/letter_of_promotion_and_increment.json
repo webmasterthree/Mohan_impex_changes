@@ -12,12 +12,18 @@
   "employee_name",
   "location",
   "designation",
+  "department",
+  "sub_department",
   "section_break_lduo",
   "to_date",
   "from_date",
   "new_ctc_amount",
+  "has_notice_period",
+  "notice_period_message",
   "column_break_wjbj",
   "new_designation",
+  "new_department",
+  "new_sub_department",
   "new_location",
   "effective_date",
   "section_break_eevc",
@@ -142,6 +148,7 @@
    "options": "Contribution from Employer"
   },
   {
+   "fetch_from": "employee.ctc",
    "fieldname": "new_ctc_amount",
    "fieldtype": "Currency",
    "label": "New CTC Amount",
@@ -169,11 +176,48 @@
   {
    "fieldname": "column_break_ngnt",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Data",
+   "label": "Department"
+  },
+  {
+   "fetch_from": "employee.sub_department",
+   "fieldname": "sub_department",
+   "fieldtype": "Data",
+   "label": "Sub Department"
+  },
+  {
+   "fieldname": "new_department",
+   "fieldtype": "Link",
+   "label": "New Department",
+   "options": "Department"
+  },
+  {
+   "fieldname": "new_sub_department",
+   "fieldtype": "Link",
+   "label": "New Sub Department",
+   "options": "Department"
+  },
+  {
+   "default": "0",
+   "fieldname": "has_notice_period",
+   "fieldtype": "Check",
+   "label": "Has Notice Period"
+  },
+  {
+   "depends_on": "eval:doc.has_notice_period==\"1\"",
+   "fieldname": "notice_period_message",
+   "fieldtype": "Link",
+   "label": "Notice Period Message",
+   "options": "Notice Period Message"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-28 14:58:15.738665",
+ "modified": "2025-08-13 12:23:41.271864",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Letter of Promotion and Increment",

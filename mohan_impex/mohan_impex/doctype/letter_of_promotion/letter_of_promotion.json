@@ -10,6 +10,8 @@
   "salutation",
   "column_break_jidb",
   "designation",
+  "sub_department",
+  "department",
   "employee_name",
   "location",
   "section_break_yink",
@@ -118,12 +120,24 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fetch_from": "employee.sub_department",
+   "fieldname": "sub_department",
+   "fieldtype": "Data",
+   "label": "Sub Department"
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Data",
+   "label": "Department"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-28 16:51:15.858015",
+ "modified": "2025-08-12 18:21:29.775670",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Letter of Promotion",

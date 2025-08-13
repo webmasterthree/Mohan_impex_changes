@@ -111,15 +111,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-05-25 09:05:52.881251",
-  "name": "Accounts Team Approval Pending",
-  "style": "Danger",
-  "workflow_state_name": "Accounts Team Approval Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-04-04 11:38:04.282959",
   "name": "Transport Quotation Pending",
   "style": "Danger",
@@ -182,15 +173,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "ok-sign",
-  "modified": "2024-12-25 19:18:52.878440",
-  "name": "Approved",
-  "style": "Success",
-  "workflow_state_name": "Approved"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "remove",
   "modified": "2024-12-25 19:18:52.879665",
   "name": "Rejected",
@@ -223,15 +205,6 @@
   "name": "KYC Pending",
   "style": "",
   "workflow_state_name": "KYC Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-01-31 19:26:24.461214",
-  "name": "KYC Completed",
-  "style": "",
-  "workflow_state_name": "KYC Completed"
  },
  {
   "docstatus": 0,
@@ -322,5 +295,32 @@
   "name": "ASM Resolved",
   "style": "",
   "workflow_state_name": "ASM Resolved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-05-25 09:05:52.881251",
+  "name": "Accounts Team Approval Pending",
+  "style": "Danger",
+  "workflow_state_name": "Accounts Team Approval Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-01-31 19:26:24.461214",
+  "name": "KYC Completed",
+  "style": "",
+  "workflow_state_name": "KYC Completed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "ok-sign",
+  "modified": "2024-12-25 19:18:52.878440",
+  "name": "Approved",
+  "style": "Success",
+  "workflow_state_name": "Approved"
  }
 ]
