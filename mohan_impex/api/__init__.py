@@ -566,7 +566,7 @@ def get_role_filter(emp, is_self=None, employee=None):
         if int(is_self) == 1:
             return f"""area in ('{areas}') and created_by_emp = '{emp.get('name')}' """
         elif int(is_self) == 0:
-            return f"""area in ('{areas}') and created_by_emp != '{emp.get('name')}' """
+            return f"""area in ('{areas}') and (created_by_emp != '{emp.get('name')}' or created_by_emp is null) """
     return f"""area in ('{areas}') """
 
 def get_territory_role_filter(emp):
