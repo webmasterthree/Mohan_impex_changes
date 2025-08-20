@@ -400,6 +400,8 @@
    "fetch_from": "created_by_emp.employee_name",
    "fieldname": "created_by_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Created By Name"
   },
   {
@@ -417,7 +419,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2025-08-03 17:47:49.751270",
+ "modified": "2025-08-18 17:37:18.804971",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",

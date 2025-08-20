@@ -48,15 +48,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-06-20 15:04:11.872803",
-  "name": "Billing Team Approval Pending",
-  "style": "Danger",
-  "workflow_state_name": "Billing Team Approval Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-06-20 15:05:17.815660",
   "name": "Approved By Billing Team",
   "style": "Success",
@@ -164,24 +155,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "question-sign",
-  "modified": "2025-04-04 11:54:25.253979",
-  "name": "Pending",
-  "style": "Warning",
-  "workflow_state_name": "Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "remove",
-  "modified": "2024-12-25 19:18:52.879665",
-  "name": "Rejected",
-  "style": "Danger",
-  "workflow_state_name": "Rejected"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "",
   "modified": "2025-01-30 22:54:27.465519",
   "name": "Active",
@@ -205,24 +178,6 @@
   "name": "KYC Pending",
   "style": "",
   "workflow_state_name": "KYC Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-02-19 21:28:00.068954",
-  "name": "Draft",
-  "style": "",
-  "workflow_state_name": "Draft"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-24 13:54:33.220687",
-  "name": "Approval in Progress – HR Manager",
-  "style": "Danger",
-  "workflow_state_name": "Approval in Progress – HR Manager"
  },
  {
   "docstatus": 0,
@@ -273,15 +228,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-07-09 12:08:14.261643",
-  "name": "ASM Approved",
-  "style": "",
-  "workflow_state_name": "ASM Approved"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-07-09 13:21:18.395065",
   "name": "ASM KYC Completed",
   "style": "",
@@ -300,6 +246,123 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-01-31 19:26:24.461214",
+  "name": "KYC Completed",
+  "style": "",
+  "workflow_state_name": "KYC Completed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-06-20 15:04:11.872803",
+  "name": "Billing Team Approval Pending",
+  "style": "Danger",
+  "workflow_state_name": "Billing Team Approval Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-16 15:47:14.512444",
+  "name": "Purchase Team Approval Required",
+  "style": "Primary",
+  "workflow_state_name": "Purchase Team Approval Required"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-16 15:32:24.033728",
+  "name": "GRN In Progress",
+  "style": "Primary",
+  "workflow_state_name": "GRN In Progress"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-16 16:16:13.581672",
+  "name": "Rejected By Purchase Team",
+  "style": "Danger",
+  "workflow_state_name": "Rejected By Purchase Team"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-16 16:05:34.396699",
+  "name": "Purchase Team Approved",
+  "style": "Success",
+  "workflow_state_name": "Purchase Team Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-16 16:03:57.509451",
+  "name": "Purchase Team Approval Pending",
+  "style": "Warning",
+  "workflow_state_name": "Purchase Team Approval Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-24 13:54:33.220687",
+  "name": "Approval in Progress – HR Manager",
+  "style": "Danger",
+  "workflow_state_name": "Approval in Progress – HR Manager"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-19 11:26:46.383632",
+  "name": "Partial ASN Generated",
+  "style": "Info",
+  "workflow_state_name": "Partial ASN Generated"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-18 17:26:53.422797",
+  "name": "ASN Initiation Required",
+  "style": "Info",
+  "workflow_state_name": "ASN Initiation Required"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-18 18:15:43.416252",
+  "name": "ASN In Progress",
+  "style": "Warning",
+  "workflow_state_name": "ASN In Progress"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "remove",
+  "modified": "2024-12-25 19:18:52.879665",
+  "name": "Rejected",
+  "style": "Danger",
+  "workflow_state_name": "Rejected"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-09 12:08:14.261643",
+  "name": "ASM Approved",
+  "style": "",
+  "workflow_state_name": "ASM Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-05-25 09:05:52.881251",
   "name": "Accounts Team Approval Pending",
   "style": "Danger",
@@ -309,10 +372,28 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-01-31 19:26:24.461214",
-  "name": "KYC Completed",
+  "modified": "2025-08-18 13:34:02.343369",
+  "name": "GRN Completed",
   "style": "",
-  "workflow_state_name": "KYC Completed"
+  "workflow_state_name": "GRN Completed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-16 15:36:08.802316",
+  "name": "GRN Pending",
+  "style": "Warning",
+  "workflow_state_name": "GRN Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-02-19 21:28:00.068954",
+  "name": "Draft",
+  "style": "",
+  "workflow_state_name": "Draft"
  },
  {
   "docstatus": 0,
@@ -322,5 +403,32 @@
   "name": "Approved",
   "style": "Success",
   "workflow_state_name": "Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "question-sign",
+  "modified": "2025-04-04 11:54:25.253979",
+  "name": "Pending",
+  "style": "Warning",
+  "workflow_state_name": "Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-16 15:34:12.677945",
+  "name": "Complete GRN",
+  "style": "Success",
+  "workflow_state_name": "Complete GRN"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-08-19 11:35:13.759771",
+  "name": "ASN Fully Processed",
+  "style": "Success",
+  "workflow_state_name": "ASN Fully Processed"
  }
 ]
