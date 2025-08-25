@@ -111,6 +111,7 @@ def so_form():
             "shop_name": so_doc.shop_name,
             "delivery_date": so_doc.delivery_date,
             "channel_partner": so_doc.custom_channel_partner,
+            "cp_name": so_doc.cp_name,
             "deal_type": so_doc.custom_deal_type,
             "location": so_doc.customer_address.rsplit('-', 1)[0] if so_doc.customer_address else "",
             "contact": so_doc.contact_number or "",
@@ -161,6 +162,7 @@ def create_so():
         so_dict = {
             "customer_level": so_data.get("customer_level"),
             "custom_channel_partner": so_data.get("channel_partner") or "",
+            "cp_name": so_data.get("cp_name") or "",
             "customer": so_data.get("customer"),
             "customer_name": so_data.get("customer_name"),
             "custom_deal_type": so_data.get("deal_type"),
