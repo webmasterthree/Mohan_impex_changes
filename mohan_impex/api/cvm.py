@@ -178,8 +178,6 @@ def create_cvm():
                 "doctype": "Unverified Customer",
                 "customer_name": cvm_data.unv_customer_name,
                 "customer_level": cvm_data.customer_level,
-                "channel_partner": cvm_data.channel_partner,
-                "cp_name": cvm_data.cp_name,
                 "shop": cvm_data.shop,
                 "shop_name": cvm_data.shop_name,
                 "contact": cvm_data.contact,
