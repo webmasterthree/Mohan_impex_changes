@@ -529,11 +529,29 @@ def is_within_range(origin, destination):
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "NO API_KEY found in Google Settings"
             return
+        origin_list = [x.strip() for x in origin.split(",") if x]
+        if not (len(origin_list) == 2 and all([isinstance(float(x), float) for x in origin_list])):
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Origin is not a valid float or not separated by comma"
+            return
+        
+        destination_list = [x.strip() for x in destination.split(",")]
+        if not (len(destination_list) == 2 and all([isinstance(float(x), float) for x in destination_list])):
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Destination is not a valid values or not separated by comma"
+            return
         allowed_distance = frappe.get_single("Mohan Impex Settings").allowed_distance
         url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={origin}&destinations={destination}&key={api_key}"
         response = requests.get(url).json()
-        
+        # frappe.errprint(response)
         if response["status"] == "OK":
+            if not response["rows"][0]["elements"][0]["status"] == "OK":
+                frappe.local.response['http_status_code'] = 404
+                frappe.local.response['status'] = False
+                frappe.local.response['message'] = "No Address found for the given Orgin or Destination"
+                return
             distance_meters = response["rows"][0]["elements"][0]["distance"]["value"]  # Distance in meters
             valid_distance = distance_meters <= allowed_distance
             response = {
@@ -551,7 +569,9 @@ def is_within_range(origin, destination):
         frappe.local.response['message'] = "Issue with LOCATION or API_KEY"
         frappe.local.response['data'] = response
     except Exception as err:
-        get_exception(err)
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = f"{err}"
 
 def get_role_filter(emp, is_self=None, employee=None):
     sub_areas = get_descendants_of("Territory", emp.get('area'))
@@ -631,6 +651,7 @@ def get_exception(err):
     frappe.local.response['status'] = False
     if len(frappe.local.message_log) > 0:
         err = frappe.local.message_log[0].get("message") or err
+    frappe.errprint(err)
     soup = BeautifulSoup(err, "html.parser")
     for br in soup.find_all("br"):
         br.replace_with(". ")
