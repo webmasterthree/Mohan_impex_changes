@@ -145,100 +145,100 @@
 //     d.show();
 // }
 
-frappe.ui.form.on("Purchase Order", {
-    refresh: function (frm) {
-        console.log("✅ Client script loaded successfully!");
+// frappe.ui.form.on("Purchase Order", {
+//     refresh: function (frm) {
+//         console.log("✅ Client script loaded successfully!");
 
-        // Ensure the button only binds the event once
-        if (frm.fields_dict.custom_add_items_from_item_template) {
-            frm.fields_dict.custom_add_items_from_item_template.$wrapper.on('click', function () {
-                console.log("🛠 Custom Button Clicked! Running `show_item_selection_dialog` function...");
-                show_item_selection_dialog(frm);
-            });
-        }
-    }
-});
+//         // Ensure the button only binds the event once
+//         if (frm.fields_dict.custom_add_items_from_item_template) {
+//             frm.fields_dict.custom_add_items_from_item_template.$wrapper.on('click', function () {
+//                 console.log("🛠 Custom Button Clicked! Running `show_item_selection_dialog` function...");
+//                 show_item_selection_dialog(frm);
+//             });
+//         }
+//     }
+// });
 
-function show_item_selection_dialog(frm) {
-    let d = new frappe.ui.Dialog({
-        title: __("Select Item Template"),
-        fields: [
-            {
-                label: __("Item Template"),
-                fieldname: "item_code",
-                fieldtype: "Link",
-                options: "Item",
-                reqd: 1,
-                get_query: function () {
-                    return {
-                        filters: {
-                            "has_variants": 1  // ✅ Ensures only template items appear
-                        }
-                    };
-                }
-            }
-        ],
-        primary_action_label: __("Find Matching Variants"),
-        primary_action(values) {
-            if (!values.item_code) {
-                frappe.msgprint(__("Please select an item template."));
-                return;
-            }
+// function show_item_selection_dialog(frm) {
+//     let d = new frappe.ui.Dialog({
+//         title: __("Select Item Template"),
+//         fields: [
+//             {
+//                 label: __("Item Template"),
+//                 fieldname: "item_code",
+//                 fieldtype: "Link",
+//                 options: "Item",
+//                 reqd: 1,
+//                 get_query: function () {
+//                     return {
+//                         filters: {
+//                             "has_variants": 1  // ✅ Ensures only template items appear
+//                         }
+//                     };
+//                 }
+//             }
+//         ],
+//         primary_action_label: __("Find Matching Variants"),
+//         primary_action(values) {
+//             if (!values.item_code) {
+//                 frappe.msgprint(__("Please select an item template."));
+//                 return;
+//             }
 
-            console.log("🔍 Fetching matching variants for item template:", values.item_code);
+//             console.log("🔍 Fetching matching variants for item template:", values.item_code);
 
-            frappe.call({
-                method: "mohan_impex.item_template.get_matching_items",
-                args: { selected_item: values.item_code },
-                callback: function (r) {
-                    if (r.message && r.message.length > 0) {
-                        d.hide();
-                        console.log("✅ Matching variants found:", r.message);
-                        show_matching_items_dialog(frm, r.message);
-                    } else {
-                        frappe.msgprint(__("No matching variants found for this item template."));
-                    }
-                }
-            });
-        }
-    });
+//             frappe.call({
+//                 method: "mohan_impex.item_template.get_matching_items",
+//                 args: { selected_item: values.item_code },
+//                 callback: function (r) {
+//                     if (r.message && r.message.length > 0) {
+//                         d.hide();
+//                         console.log("✅ Matching variants found:", r.message);
+//                         show_matching_items_dialog(frm, r.message);
+//                     } else {
+//                         frappe.msgprint(__("No matching variants found for this item template."));
+//                     }
+//                 }
+//             });
+//         }
+//     });
 
-    d.show();
-}
+//     d.show();
+// }
 
-function show_matching_items_dialog(frm, matching_items) {
-    let d = new frappe.ui.Dialog({
-        title: __("Select Matching Variants"),
-        fields: [
-            {
-                label: __("Matching Variants"),
-                fieldname: "selected_items",
-                fieldtype: "MultiCheck",
-                options: matching_items.map(item => ({
-                    label: `${item.item_code} - ${item.item_name}`,
-                    value: item.item_code
-                }))
-            }
-        ],
-        primary_action_label: __("Add Selected Variants"),
-        primary_action(values) {
-            if (!values.selected_items || values.selected_items.length === 0) {
-                frappe.msgprint(__("Please select at least one variant."));
-                return;
-            }
+// function show_matching_items_dialog(frm, matching_items) {
+//     let d = new frappe.ui.Dialog({
+//         title: __("Select Matching Variants"),
+//         fields: [
+//             {
+//                 label: __("Matching Variants"),
+//                 fieldname: "selected_items",
+//                 fieldtype: "MultiCheck",
+//                 options: matching_items.map(item => ({
+//                     label: `${item.item_code} - ${item.item_name}`,
+//                     value: item.item_code
+//                 }))
+//             }
+//         ],
+//         primary_action_label: __("Add Selected Variants"),
+//         primary_action(values) {
+//             if (!values.selected_items || values.selected_items.length === 0) {
+//                 frappe.msgprint(__("Please select at least one variant."));
+//                 return;
+//             }
 
-            console.log("✅ Adding selected variants to Purchase Order:", values.selected_items);
+//             console.log("✅ Adding selected variants to Purchase Order:", values.selected_items);
 
-            // Add selected variants to the "items" table in Purchase Order
-            values.selected_items.forEach(item_code => {
-                let child = frm.add_child("items");
-                child.item_code = item_code;
-            });
+//             // Add selected variants to the "items" table in Purchase Order
+//             values.selected_items.forEach(item_code => {
+//                 let child = frm.add_child("items");
+//                 child.item_code = item_code;
+//             });
 
-            frm.refresh_field("items"); // Refresh the items table to reflect changes
-            d.hide();
-        }
-    });
+//             frm.refresh_field("items"); // Refresh the items table to reflect changes
+//             d.hide();
+//         }
+//     });
 
-    d.show();
-}
+//     d.show();
+// }

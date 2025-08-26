@@ -36,6 +36,7 @@ doctype_js ={
     "Sales Order": "public/js/floating_notifications.js",
     "Purchase Receipt": "public/js/GRN1.js",
     "Purchase Order": "public/js/ASN.js",
+    "Serial and Batch Bundle": "public/js/shelf_life.js",
 }
 
 
