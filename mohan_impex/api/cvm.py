@@ -189,7 +189,7 @@ def create_cvm():
                 "created_by_emp": get_session_employee(),
                 "area": get_session_employee_area(),
             }
-            if cvm_data.get("isupdate"):
+            if cvm_data.get("isupdate") and frappe.db.exists("Unverified Customer", cvm_data.get("unv_customer")):
                 unv_cus = frappe.get_doc("Unverified Customer", cvm_data.get("unv_customer"))
                 unv_cus.update(unv_cus_dict)
                 unv_cus.save()
