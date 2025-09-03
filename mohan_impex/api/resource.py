@@ -22,7 +22,7 @@ def batch_list():
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "Item code must be provided"
             return
-        batches = frappe.get_list("Batch", filters={"item": item_code, "disabled": 0}, fields=["name", "manufacturing_date", "stock_uom"])
+        batches = frappe.get_all("Batch", filters={"item": item_code, "disabled": 0}, fields=["name", "manufacturing_date", "stock_uom"])
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Batches fetched successfully"
         frappe.local.response['data'] = batches

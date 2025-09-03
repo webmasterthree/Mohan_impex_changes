@@ -688,7 +688,8 @@ def add_notification_from_comment(doc, method):
             owner = frappe.get_value(doc.reference_doctype, doc.reference_name, "owner")
             role, area = frappe.get_value("Employee", {"user_id": owner}, ["role_profile", "area"])
             parent_areas = get_parent_areas(area)
-            notification_users = frappe.get_all("Employee", {"area": ["in", parent_areas]}, pluck = "user_id") or []
+            sales_team = ["SE", "ASM", "TSM", "NSM", "ZSM", "RSM"]
+            notification_users = frappe.get_all("Employee", {"area": ["in", parent_areas], "role_profile": ["in", sales_team]}, pluck = "user_id") or []
             # Check for the User who has permission for the record (Specifically for TSM)
             if not frappe.has_permission(doc.reference_doctype, "read", doc.reference_name, user=owner):
                 notification_users.remove(owner)
