@@ -2,7 +2,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
-  "has_toggle_filter": 1,
+  "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
   "modified": "2025-08-05 21:19:09.655661",
   "name": "ZSM",
@@ -116,7 +116,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
-  "has_toggle_filter": 1,
+  "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
   "modified": "2025-06-27 08:31:40.053369",
   "name": "TSM",
@@ -134,7 +134,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
-  "has_toggle_filter": 1,
+  "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
   "modified": "2025-08-05 21:19:58.280682",
   "name": "RSM",
@@ -200,7 +200,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
-  "has_toggle_filter": 1,
+  "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
   "modified": "2025-06-29 09:42:38.529572",
   "name": "ASM",
@@ -278,7 +278,7 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
-  "has_toggle_filter": 1,
+  "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
   "modified": "2025-08-18 10:24:57.833093",
   "name": "NSM",
