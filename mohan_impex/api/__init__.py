@@ -205,19 +205,19 @@ def get_channel_partner(search_text=""):
     emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
     role_filter = ""
     if emp:
-        role_filter = f"""and employee = "{emp.get('name')}" """
-    query = """
-        SELECT name
-        FROM `tabCompany` AS co
-        WHERE company_type = 'Channel Partner' {role_filter}
+        role_filter = f"""and created_by_emp = "{emp.get('name')}" """
+    query = f"""
+        SELECT cu.name, customer_name
+        FROM `tabCustomer` AS cu
+        LEFT JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
+        LEFT JOIN `tabContact Number` AS ct on ct.name = dl.parent
+        WHERE is_dl=1 {role_filter}
     """.format(role_filter=role_filter)
-    params = []
     if search_text:
-        search_cond = """ AND (name LIKE %s or phone_no LIKE %s)"""
-        con = "%{0}%".format(search_text)
-        params.extend([con, con])
+        search_cond = """ AND (cu.customer_name LIKE "%{search_text}%" or ct.name LIKE "%{search_text}%") """.format(search_text=search_text)
         query += search_cond
-    companies = frappe.db.sql_list(query, params)
+    query += "GROUP BY cu.name"
+    companies = frappe.db.sql(query, as_dict=1)
     return companies
 
 @frappe.whitelist()
@@ -380,11 +380,11 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
         role_filter = get_territory_role_filter(emp)
     query = """
-        SELECT cu.name as name, cu.customer_name, cu.custom_shop as shop, cu.custom_shop_name as shop_name, ct.name as contact, cu.customer_level, cu.custom_channel_partner as channel_partner, cu.kyc_status
+        SELECT cu.name as name, cu.customer_name, cu.custom_shop as shop, cu.custom_shop_name as shop_name, ct.name as contact, cu.customer_level, cu.custom_channel_partner as channel_partner, cu.cp_name, cu.kyc_status
         FROM `tabCustomer` AS cu
         LEFT JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
         LEFT JOIN `tabContact Number` AS ct on ct.name = dl.parent
-        WHERE {role_filter}
+        WHERE {role_filter} and cu.is_dl = 0
     """.format(role_filter=role_filter)
     if search_text:
         # or cu.custom_shop LIKE "%{search_text}%"
@@ -409,6 +409,7 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
                 "shop": entry["shop"],
                 "shop_name": entry["shop_name"],
                 "channel_partner": entry["channel_partner"],
+                "cp_name": entry["cp_name"],
                 "kyc_status": entry["kyc_status"],
                 "contact": []
             }
@@ -425,7 +426,7 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", k
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
         role_filter = get_role_filter(emp)
         query = """
-            select unv.name, customer_name, customer_level, shop, shop_name, contact, channel_partner, kyc_status
+            select unv.name, customer_name, customer_level, shop, shop_name, contact, channel_partner, cp_name, kyc_status
             from `tabUnverified Customer` as unv
             LEFT JOIN `tabContact List` as cl on cl.parent = unv.name
             WHERE kyc_status = "Pending" and {role_filter}
@@ -545,7 +546,7 @@ def is_within_range(origin, destination):
         allowed_distance = frappe.get_single("Mohan Impex Settings").allowed_distance
         url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={origin}&destinations={destination}&key={api_key}"
         response = requests.get(url).json()
-        # frappe.errprint(response)
+        
         if response["status"] == "OK":
             if not response["rows"][0]["elements"][0]["status"] == "OK":
                 frappe.local.response['http_status_code'] = 404
@@ -651,7 +652,6 @@ def get_exception(err):
     frappe.local.response['status'] = False
     if len(frappe.local.message_log) > 0:
         err = frappe.local.message_log[0].get("message") or err
-    frappe.errprint(err)
     soup = BeautifulSoup(err, "html.parser")
     for br in soup.find_all("br"):
         br.replace_with(". ")
