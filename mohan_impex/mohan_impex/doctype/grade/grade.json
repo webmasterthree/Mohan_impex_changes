@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "field:grade",
- "creation": "2025-01-01 13:00:54.165008",
+ "creation": "2025-09-14 15:32:06.313653",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -16,9 +16,10 @@
    "unique": 1
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-01 13:01:33.396356",
+ "modified": "2025-09-14 15:32:06.313653",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Grade",
@@ -38,6 +39,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",

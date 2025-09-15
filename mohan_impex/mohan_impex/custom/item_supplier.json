@@ -93,5 +93,5 @@
    "value": "[\"supplier\", \"supplier_part_no\", \"custom_lead_time_in_days\"]"
   }
  ],
- "sync_on_migrate": 0
+ "sync_on_migrate": 1
 }
