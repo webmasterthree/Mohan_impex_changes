@@ -202,10 +202,10 @@ def upload_attachments():
 
 @frappe.whitelist()
 def get_channel_partner(search_text=""):
-    emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
+    # emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
     role_filter = ""
-    if emp:
-        role_filter = f"""and created_by_emp = "{emp.get('name')}" """
+    # if emp:
+    #     role_filter = f"""and created_by_emp = "{emp.get('name')}" """
     query = f"""
         SELECT cu.name, customer_name
         FROM `tabCustomer` AS cu
