@@ -11,8 +11,6 @@
   "column_break_zhmj",
   "to_location",
   "vehicle_type",
-  "section_break_zvtu",
-  "transporters",
   "section_break_titp",
   "locations",
   "total_weightin_kg",
@@ -55,17 +53,6 @@
   {
    "fieldname": "column_break_zhmj",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "section_break_zvtu",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "transporters",
-   "fieldtype": "Table",
-   "label": "Transporters",
-   "options": "Transporters",
-   "reqd": 1
   },
   {
    "fieldname": "section_break_eabp",
@@ -127,10 +114,11 @@
    "read_only": 1
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-07-23 13:24:08.590389",
+ "modified": "2025-09-20 11:14:11.619077",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transport RFQ",
@@ -149,6 +137,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

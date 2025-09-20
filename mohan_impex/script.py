@@ -1,64 +1,71 @@
 import frappe
+import pprint
 
-def table_exists(table_name):
-    return bool(frappe.db.sql("""
-        SELECT 1 
-        FROM information_schema.tables 
-        WHERE table_schema = DATABASE() 
-        AND table_name = %s
-    """, table_name))
-# get all doctypes (only tables that exist in DB)
-def runscript():
-    doctypes = frappe.get_all("DocType", filters={"istable": 1, "module": ["!=","Mohan Impex"]}, pluck="name")
-    for dt in sorted(doctypes):
-        table_name = f"tab{dt}"
-        if table_exists(table_name):
-            try:
-                count = frappe.db.count(dt)
-                if count > 1:
-                    print(f"{dt} : {count}")
-            except Exception as e:
-                print(f"⚠️ Skipped {dt} ({table_name}) → {str(e)}")
+def find():
+    doctype = "Transport RFQ"
+    query = f"""
+        SELECT 
+            df.parent AS doctype,
+            df.fieldname,
+            df.label,
+            df.fieldtype,
+            df.options
+        FROM (
+            SELECT 
+                parent, fieldname, label, fieldtype, options
+            FROM `tabDocField`
+            WHERE parent = '{doctype}'
+            AND fieldtype IN ('Link', 'Table', 'Table MultiSelect')
+
+            UNION ALL
+
+            SELECT 
+                dt AS parent, fieldname, label, fieldtype, options
+            FROM `tabCustom Field`
+            WHERE dt = '{doctype}'
+            AND fieldtype IN ('Link', 'Table', 'Table MultiSelect')
+        ) AS df
+
+        UNION ALL
+
+        SELECT 
+            CONCAT('{doctype} → ', child.options) AS doctype_path,
+            c.fieldname,
+            c.label,
+            c.fieldtype,
+            c.options
+        FROM (
+            SELECT options
+            FROM `tabDocField`
+            WHERE parent = '{doctype}'
+            AND fieldtype IN ('Table', 'Table MultiSelect')
+
+            UNION
+
+            SELECT options
+            FROM `tabCustom Field`
+            WHERE dt = '{doctype}'
+            AND fieldtype IN ('Table', 'Table MultiSelect')
+        ) AS child
+        JOIN (
+            SELECT 
+                parent, fieldname, label, fieldtype, options
+            FROM `tabDocField`
+            WHERE fieldtype IN ('Link', 'Table', 'Table MultiSelect')
+
+            UNION ALL
+
+            SELECT 
+                dt AS parent, fieldname, label, fieldtype, options
+            FROM `tabCustom Field`
+            WHERE fieldtype IN ('Link', 'Table', 'Table MultiSelect')
+        ) AS c 
+            ON c.parent = child.options
+
+        ORDER BY doctype, fieldtype, fieldname;
 
 
-import os
-import shutil
-import frappe
-
-def export_employee_files():
-    site_path = frappe.get_site_path()
-    base_private = os.path.join(site_path, "private", "files")
-    base_public = os.path.join(site_path, "public", "files")
-
-    # Folder where you want to keep organized employee files
-    export_base = os.path.join(site_path, "employee_files")
-    os.makedirs(export_base, exist_ok=True)
-
-    # Get all files attached to Employee doctype
-    files = frappe.get_all("File",
-        filters={"attached_to_doctype": "Dashboard Info"},
-        fields=["file_url", "file_name", "is_private", "attached_to_name"]
-    )
-
-    for f in files:
-        emp_id = f.attached_to_name or "Unknown"
-        target_folder = os.path.join(export_base, emp_id)
-        os.makedirs(target_folder, exist_ok=True)
-
-        # Pick correct source folder
-        if f.is_private:
-            source_path = os.path.join(base_private, os.path.basename(f.file_url))
-        else:
-            source_path = os.path.join(base_public, os.path.basename(f.file_url))
-
-        # Destination path
-        target_path = os.path.join(target_folder, f.file_name)
-
-        # Copy if exists
-        if os.path.exists(source_path):
-            shutil.copy2(source_path, target_path)  # keeps metadata
-            print(f"✅ Copied {source_path} → {target_path}")
-        else:
-            print(f"⚠️ Missing file: {source_path}")
-
-    print(f"\n🎉 Export completed! Files stored in: {export_base}")
+    """
+    result = frappe.db.sql(query, as_dict=1)
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(result)

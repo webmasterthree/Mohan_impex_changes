@@ -10,7 +10,7 @@
  "enabled": 1,
  "event": "Save",
  "idx": 0,
- "is_standard": 1,
+ "is_standard": 0,
  "message": "<p>Dear HR Manager,</p>\n<p>The employee record for <strong>{{doc.name}}</strong> has been modified by {{ frappe.session.user }}</p>\n<p>\n  <a href=\"{{ frappe.utils.get_url_to_form('Employee', doc.name) }}\" style=\"background: #007bff; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 4px;\">Please review the changes</a>\n</p>\n<p>Thank you</p>\n\n\n<style>\n  .footer { color: #777; font-size: 12px; margin-top: 20px; }\n</style>\n\n<p class=\"footer\">\n  This is an automated notification. Please do not reply to this email.\n</p>",
  "message_type": "Markdown",
  "modified": "2025-09-14 12:27:29.037606",
