@@ -203,15 +203,15 @@ def upload_attachments():
 @frappe.whitelist()
 def get_channel_partner(search_text=""):
     emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-    role_filter = ""
-    if emp:
-        role_filter = f"""and created_by_emp = "{emp.get('name')}" """
+    role_filter = get_territory_role_filter(emp)
+    # if emp:
+    #     role_filter = f"""and created_by_emp = "{emp.get('name')}" """
     query = f"""
         SELECT cu.name, customer_name
         FROM `tabCustomer` AS cu
         LEFT JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
         LEFT JOIN `tabContact Number` AS ct on ct.name = dl.parent
-        WHERE is_dl=1 {role_filter}
+        WHERE is_dl=1 and {role_filter}
     """.format(role_filter=role_filter)
     if search_text:
         search_cond = """ AND (cu.customer_name LIKE "%{search_text}%" or ct.name LIKE "%{search_text}%") """.format(search_text=search_text)
