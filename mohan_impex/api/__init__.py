@@ -202,8 +202,8 @@ def upload_attachments():
 
 @frappe.whitelist()
 def get_channel_partner(search_text=""):
-    # emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
-    role_filter = ""
+    emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
+    role_filter = get_territory_role_filter(emp)
     # if emp:
     #     role_filter = f"""and created_by_emp = "{emp.get('name')}" """
     query = f"""
@@ -211,7 +211,7 @@ def get_channel_partner(search_text=""):
         FROM `tabCustomer` AS cu
         LEFT JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
         LEFT JOIN `tabContact Number` AS ct on ct.name = dl.parent
-        WHERE is_dl=1 {role_filter}
+        WHERE is_dl=1 and {role_filter}
     """.format(role_filter=role_filter)
     if search_text:
         search_cond = """ AND (cu.customer_name LIKE "%{search_text}%" or ct.name LIKE "%{search_text}%") """.format(search_text=search_text)
@@ -523,6 +523,7 @@ def protected_file(token):
 
 @frappe.whitelist()
 def is_within_range(origin, destination):
+    frappe.log_error("LOCATION PARAMS", frappe.form_dict)
     try:
         api_key = frappe.get_single("Google Settings").api_key
         if not api_key:
