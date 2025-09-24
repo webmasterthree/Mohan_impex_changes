@@ -175,8 +175,8 @@ def create_so():
             "created_by_emp": get_session_employee(),
             "territory": get_session_employee_area()
         }
-        if so_data.get("channel_partner"):
-            so_dict.update({"company": so_data.get("channel_partner")})
+        # if so_data.get("channel_partner"):
+        #     so_dict.update({"company": so_data.get("channel_partner")})
         items = []
         for item in so_data.get("items"):
             rate = get_item_category_price(item.get("item_code"), item.get("item_category"))
@@ -213,6 +213,7 @@ def create_so():
         frappe.db.commit()
     except Exception as err:
         frappe.db.rollback()
+        frappe.log_error("SO", frappe.get_traceback())
         get_exception(err)
 
 def get_role_filter(emp, is_self=None, employee=None):
