@@ -135,9 +135,9 @@
    "fieldname": "channel_partner",
    "fieldtype": "Link",
    "label": "Channel Partner",
-   "link_filters": "[[\"Customer\",\"is_dl\",\"=\",1]]",
+   "link_filters": "[[\"Company\",\"custom_company_type\",\"=\",\"Channel Partner\"]]",
    "mandatory_depends_on": "eval:doc.customer_level === \"Secondary\"",
-   "options": "Customer"
+   "options": "Company"
   },
   {
    "fieldname": "cvm",
@@ -353,7 +353,7 @@
    "read_only": 1
   },
   {
-   "fetch_from": "channel_partner.customer_name",
+   "fetch_from": "channel_partner.company_name",
    "fieldname": "cp_name",
    "fieldtype": "Data",
    "label": "Channel Partner Name"
@@ -366,7 +366,7 @@
    "link_fieldname": "trial_plan"
   }
  ],
- "modified": "2025-08-24 22:02:50.173670",
+ "modified": "2025-09-27 20:39:31.279692",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan",

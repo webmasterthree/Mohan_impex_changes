@@ -192,9 +192,9 @@
    "fieldname": "channel_partner",
    "fieldtype": "Link",
    "label": "Channel Partner",
-   "link_filters": "[[\"Customer\",\"is_dl\",\"=\",1]]",
+   "link_filters": "[[\"Company\",\"company_type\",\"=\",\"Channel Partner\"]]",
    "mandatory_depends_on": "eval:doc.customer_level === \"Secondary\"",
-   "options": "Customer"
+   "options": "Company"
   },
   {
    "allow_on_submit": 1,
@@ -305,7 +305,7 @@
    "read_only_depends_on": "eval:doc.customer_type === \"New\""
   },
   {
-   "fetch_from": "unverified_customer.customer_name",
+   "fetch_from": "unv_customer.customer_name",
    "fieldname": "unv_customer_name",
    "fieldtype": "Data",
    "label": "Unverified Customer Name",
@@ -412,7 +412,7 @@
    "label": "Trial Plan Remarks"
   },
   {
-   "fetch_from": "channel_partner.customer_name",
+   "fetch_from": "channel_partner.company_name",
    "fieldname": "cp_name",
    "fieldtype": "Data",
    "hidden": 1,
@@ -427,7 +427,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2025-08-24 22:01:54.604262",
+ "modified": "2025-09-27 20:36:54.475934",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",

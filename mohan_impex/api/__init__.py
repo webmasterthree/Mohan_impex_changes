@@ -204,20 +204,18 @@ def upload_attachments():
 def get_channel_partner(search_text=""):
     emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
     role_filter = get_territory_role_filter(emp)
-    # if emp:
-    #     role_filter = f"""and created_by_emp = "{emp.get('name')}" """
-    query = f"""
-        SELECT cu.name, customer_name
-        FROM `tabCustomer` AS cu
-        LEFT JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
-        LEFT JOIN `tabContact Number` AS ct on ct.name = dl.parent
-        WHERE is_dl=1 and {role_filter}
+    query = """
+        SELECT name
+        FROM `tabCompany` AS co
+        WHERE company_type = 'Channel Partner' {role_filter}
     """.format(role_filter=role_filter)
+    params = []
     if search_text:
-        search_cond = """ AND (cu.customer_name LIKE "%{search_text}%" or ct.name LIKE "%{search_text}%") """.format(search_text=search_text)
+        search_cond = """ AND (name LIKE %s or phone_no LIKE %s)"""
+        con = "%{0}%".format(search_text)
+        params.extend([con, con])
         query += search_cond
-    query += "GROUP BY cu.name"
-    companies = frappe.db.sql(query, as_dict=1)
+    companies = frappe.db.sql_list(query, params)
     return companies
 
 @frappe.whitelist()
@@ -384,7 +382,7 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
         FROM `tabCustomer` AS cu
         LEFT JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
         LEFT JOIN `tabContact Number` AS ct on ct.name = dl.parent
-        WHERE {role_filter} and cu.is_dl = 0
+        WHERE {role_filter}
     """.format(role_filter=role_filter)
     if search_text:
         # or cu.custom_shop LIKE "%{search_text}%"

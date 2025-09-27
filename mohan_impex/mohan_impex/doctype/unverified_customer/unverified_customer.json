@@ -153,9 +153,9 @@
    "fieldname": "channel_partner",
    "fieldtype": "Link",
    "label": "Channel Partner",
-   "link_filters": "[[\"Customer\",\"is_dl\",\"=\",1]]",
+   "link_filters": "[[\"Company\",\"custom_company_type\",\"=\",\"Channel Partner\"]]",
    "mandatory_depends_on": "eval: doc.customer_level === \"Secondary\"",
-   "options": "Customer"
+   "options": "Company"
   },
   {
    "fieldname": "shop",
@@ -172,7 +172,7 @@
    "options": "Employee"
   },
   {
-   "fetch_from": "channel_partner.customer_name",
+   "fetch_from": "channel_partner.company_name",
    "fieldname": "cp_name",
    "fieldtype": "Data",
    "label": "Channel Partner Name"
@@ -180,7 +180,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-24 22:01:23.122334",
+ "modified": "2025-09-27 20:44:47.444966",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Unverified Customer",
