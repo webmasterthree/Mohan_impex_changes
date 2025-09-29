@@ -575,12 +575,11 @@ def is_within_range(origin, destination):
         frappe.local.response['message'] = f"{err}"
 
 def get_role_filter(emp, is_self=None, employee=None):
-    sub_areas = get_descendants_of("Territory", emp.get('area'))
-    if sub_areas:
-        sub_areas.append(emp.get('area'))
-        areas = "', '".join(sub_areas)
-    else:
-        areas = f"""{emp.get("area")}"""
+    territory_list = set(frappe.get_all("User Permission", {"allow": "Territory", "user": emp.get("user_id")}, ["for_value as area"], pluck="area"))
+    consolidated_territory = set(territory_list)
+    for area in territory_list:
+        consolidated_territory.update(get_descendants_of("Territory", area))
+    areas = "', '".join(consolidated_territory) if consolidated_territory else f"""{emp.get("area")}"""
     if employee:
         return f"""area in ('{areas}') and created_by_emp = '{employee}' """
     if is_self is not None:
@@ -591,12 +590,14 @@ def get_role_filter(emp, is_self=None, employee=None):
     return f"""area in ('{areas}') """
 
 def get_territory_role_filter(emp):
-    sub_areas = get_descendants_of("Territory", emp.get('area'))
-    if sub_areas:
-        sub_areas.append(emp.get('area'))
-        areas = "', '".join(sub_areas)
-    else:
-        areas = f"""{emp.get("area")}"""
+    # territory_list = emp.get("multiple_areas", []) if emp.get("is_multiple_area_management") else [emp]
+    # territory_list = [area.get("area") for area in territory_list]
+    user = frappe.session.user
+    territory_list = set(frappe.get_all("User Permission", {"allow": "Territory", "user": user}, ["for_value as area"], pluck="area"))
+    consolidated_territory = set(territory_list)
+    for area in territory_list:
+        consolidated_territory.update(get_descendants_of("Territory", area))
+    areas = "', '".join(consolidated_territory) if consolidated_territory else f"""{emp.get("area")}"""
     return f"""territory in ('{areas}') """
 
 def get_self_filter_status():

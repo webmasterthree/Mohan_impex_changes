@@ -45,7 +45,8 @@ doc_events = {
     },
     "Employee": {
         "after_insert": "mohan_impex.mohan_impex.employee.set_user_permissions",
-        "before_save": "mohan_impex.mohan_impex.employee.set_user_permissions"
+        # "before_save": "mohan_impex.mohan_impex.employee.set_user_permissions",
+        "on_update": "mohan_impex.mohan_impex.employee.set_user_permissions"
     },
     "Customer": {
         "before_save": "mohan_impex.mohan_impex.customer.validate_dup_unv_id",

@@ -218,12 +218,11 @@ def create_so():
 
 def get_role_filter(emp, is_self=None, employee=None):
     from frappe.utils.nestedset import get_descendants_of
-    sub_areas = get_descendants_of("Territory", emp.get('area'))
-    if sub_areas:
-        sub_areas.append(emp.get('area'))
-        areas = "', '".join(sub_areas)
-    else:
-        areas = f"""{emp.get("area")}"""
+    territory_list = set(frappe.get_all("User Permission", {"allow": "Territory", "user": emp.get("user_id")}, ["for_value as area"], pluck="area"))
+    consolidated_territory = set(territory_list)
+    for area in territory_list:
+        consolidated_territory.update(get_descendants_of("Territory", area))
+    areas = "', '".join(consolidated_territory) if consolidated_territory else f"""{emp.get("area")}"""
     if employee:
         return f"""territory in ('{areas}') and created_by_emp = '{employee}' """
     if is_self is not None:
