@@ -81,7 +81,7 @@
    "description": null,
    "docstatus": 0,
    "dt": "Customer",
-   "fetch_from": "custom_channel_partner.customer_name",
+   "fetch_from": "custom_channel_partner.company_name",
    "fetch_if_empty": 0,
    "fieldname": "cp_name",
    "fieldtype": "Data",
