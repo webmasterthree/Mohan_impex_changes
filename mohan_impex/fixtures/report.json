@@ -1,0 +1,149 @@
+[
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "Yes",
+  "javascript": null,
+  "json": "{\"filters\":[[\"Pricing Rule Detail\",\"rule_applied\",\"=\",1,false]],\"fields\":[[\"workflow_state\",\"Sales Order\"],[\"name\",\"Sales Order\"],[\"docstatus\",\"Sales Order\"],[\"customer\",\"Sales Order\"],[\"created_by_name\",\"Sales Order\"],[\"custom_channel_partner\",\"Sales Order\"],[\"shop_name\",\"Sales Order\"],[\"transaction_date\",\"Sales Order\"],[\"delivery_date\",\"Sales Order\"],[\"item_code\",\"Sales Order Item\"],[\"qty\",\"Sales Order Item\"],[\"rate\",\"Sales Order Item\"],[\"rule_applied\",\"Pricing Rule Detail\"],[\"discount_percentage\",\"Sales Order Item\"],[\"pricing_rule\",\"Pricing Rule Detail\"],[\"discount_amount\",\"Sales Order Item\"],[\"grand_total\",\"Sales Order\"],[\"per_delivered\",\"Sales Order\"],[\"per_billed\",\"Sales Order\"],[\"currency\",\"Sales Order\"],[\"base_grand_total\",\"Sales Order\"]],\"order_by\":\"`tabSales Order`.`modified` desc\",\"add_totals_row\":0,\"page_length\":20,\"column_widths\":{\"workflow_state\":120,\"name\":167,\"customer\":120,\"created_by_name\":120,\"custom_channel_partner\":120,\"shop_name\":120,\"transaction_date\":160,\"delivery_date\":120,\"Sales Order Item:item_code\":120,\"Sales Order Item:qty\":120,\"Sales Order Item:rate\":120,\"Pricing Rule Detail:rule_applied\":120,\"Sales Order Item:discount_percentage\":70,\"Pricing Rule Detail:pricing_rule\":120,\"Sales Order Item:discount_amount\":120,\"grand_total\":150,\"per_delivered\":100,\"per_billed\":100,\"currency\":100,\"base_grand_total\":150},\"group_by\":null}",
+  "letter_head": null,
+  "modified": "2025-10-02 17:46:42.619541",
+  "module": "Mohan Impex",
+  "name": "Scheme Utilisation Report",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Sales Order",
+  "reference_report": null,
+  "report_name": "Scheme Utilisation Report",
+  "report_script": null,
+  "report_type": "Report Builder",
+  "roles": [
+   {
+    "parent": "Scheme Utilisation Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales User"
+   },
+   {
+    "parent": "Scheme Utilisation Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "Scheme Utilisation Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "Scheme Utilisation Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Scheme Utilisation Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "Yes",
+  "javascript": null,
+  "json": null,
+  "letter_head": null,
+  "modified": "2025-09-27 01:37:46.656086",
+  "module": "Mohan Impex",
+  "name": "Batches Expiring Soon",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Batch",
+  "reference_report": null,
+  "report_name": "Batches Expiring Soon",
+  "report_script": null,
+  "report_type": "Script Report",
+  "roles": [
+   {
+    "parent": "Batches Expiring Soon",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "TSM"
+   },
+   {
+    "parent": "Batches Expiring Soon",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "System Manager"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"filters\":[[\"Sales Order\",\"is_internal_customer\",\"=\",1,false]],\"fields\":[[\"workflow_state\",\"Sales Order\"],[\"name\",\"Sales Order\"],[\"docstatus\",\"Sales Order\"],[\"customer_name\",\"Sales Order\"],[\"company\",\"Sales Order\"],[\"transaction_date\",\"Sales Order\"],[\"customer\",\"Sales Order\"],[\"delivery_date\",\"Sales Order\"],[\"grand_total\",\"Sales Order\"],[\"status\",\"Sales Order\"],[\"delivery_status\",\"Sales Order\"],[\"per_delivered\",\"Sales Order\"],[\"per_billed\",\"Sales Order\"],[\"billing_status\",\"Sales Order\"],[\"currency\",\"Sales Order\"],[\"base_grand_total\",\"Sales Order\"],[\"order_type\",\"Sales Order\"],[\"skip_delivery_note\",\"Sales Order\"]],\"order_by\":\"`tabSales Order`.`modified` desc\",\"add_totals_row\":0,\"page_length\":20,\"column_widths\":{\"workflow_state\":120,\"name\":120,\"customer_name\":120,\"company\":150,\"transaction_date\":160,\"customer\":120,\"delivery_date\":120,\"grand_total\":150,\"status\":100,\"delivery_status\":120,\"per_delivered\":100,\"per_billed\":100,\"billing_status\":120,\"currency\":100,\"base_grand_total\":150,\"order_type\":120,\"skip_delivery_note\":120},\"group_by\":null}",
+  "letter_head": null,
+  "modified": "2025-10-02 17:43:57.887849",
+  "module": "Mohan Impex",
+  "name": "Distributor Sales",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Sales Order",
+  "reference_report": null,
+  "report_name": "Distributor Sales",
+  "report_script": null,
+  "report_type": "Report Builder",
+  "roles": [
+   {
+    "parent": "Distributor Sales",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales User"
+   },
+   {
+    "parent": "Distributor Sales",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "Distributor Sales",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "Distributor Sales",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Distributor Sales",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   }
+  ],
+  "timeout": 0
+ }
+]

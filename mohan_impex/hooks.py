@@ -17,6 +17,7 @@ fixtures = [
     {"dt": "Designation", "filters": [["name", "in", role_list]]},
     {"dt": "Module Profile", "filters": [["name", "in", ("Mohan Impex")]]},
     {"dt": "Workspace", "filters": [["name", "in", ("Mohan Impex")]]},
+    {"dt": "Report", "filters": [["name", "in", ("Distributor Sales", "Scheme Utilisation Report", "Batches Expiring Soon")]]},
     "Workflow",
     "Workflow State",
     "Workflow Action Master",
