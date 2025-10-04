@@ -12,6 +12,12 @@ def price_list():
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "Either limit or current page is missing"
             return
+        customer_type = frappe.form_dict.get("customer_type")
+        if not customer_type:
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Please give Customer Type"
+            return
         current_page = int(current_page)
         limit = int(limit)
         offset = limit * (current_page - 1)
@@ -21,6 +27,8 @@ def price_list():
             condition = """ and (item_code LIKE "%{0}%" OR item_name LIKE "%{0}%") """.format(frappe.form_dict.get("search_text"))
         if frappe.form_dict.get("item_category"):
             condition = """ and item_category = "{0}" """.format(frappe.form_dict.get("item_category"))
+        if customer_type:
+            condition = """ and customer_type = "{0}" """.format(customer_type)
         price_info_query = """
             WITH RankedPrices AS (
                 SELECT 
@@ -28,10 +36,11 @@ def price_list():
                     item_name,
                     item_category,
                     price_list_rate,
-                    ROW_NUMBER() OVER (PARTITION BY item_code ORDER BY creation DESC) AS rn
+                    customer_type,
+                    ROW_NUMBER() OVER (PARTITION BY item_code ORDER BY modified DESC) AS rn
                 FROM `tabItem Price`
             )
-            SELECT item_code, item_name, item_category, price_list_rate, COUNT(*) OVER() AS total_count
+            SELECT item_code, item_name, item_category, customer_type, price_list_rate, COUNT(*) OVER() AS total_count
             FROM RankedPrices
             WHERE rn = 1 {0}
         """.format(condition)

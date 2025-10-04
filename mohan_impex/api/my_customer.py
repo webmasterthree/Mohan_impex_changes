@@ -111,7 +111,7 @@ def my_customer_form():
         dash_info = get_dashboard_info("Customer", customer_name)
         if dash_info:
             outstanding_amt = dash_info[0].get("total_unpaid") or 0
-        cus_doc["outstanding_amt"] = outstanding_amt
+        cus_doc["outstanding_amt"] = abs(outstanding_amt)
         cus_doc["last_billing_rate"] = frappe.get_value("Sales Invoice", {"customer": customer_name}, "grand_total") or 0
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "KYC form has been successfully fetched"
