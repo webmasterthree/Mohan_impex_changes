@@ -12,12 +12,7 @@ def price_list():
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "Either limit or current page is missing"
             return
-        customer_type = frappe.form_dict.get("customer_type")
-        if not customer_type:
-            frappe.local.response['http_status_code'] = 404
-            frappe.local.response['status'] = False
-            frappe.local.response['message'] = "Please give Customer Type"
-            return
+        customer_type = frappe.form_dict.get("customer_type") or "DP"
         current_page = int(current_page)
         limit = int(limit)
         offset = limit * (current_page - 1)
