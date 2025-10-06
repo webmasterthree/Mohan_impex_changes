@@ -32,8 +32,9 @@ def price_list():
                     item_category,
                     price_list_rate,
                     customer_type,
-                    ROW_NUMBER() OVER (PARTITION BY item_code ORDER BY modified DESC) AS rn
+                    ROW_NUMBER() OVER (PARTITION BY item_code, customer_type ORDER BY modified asc) AS rn
                 FROM `tabItem Price`
+                WHERE selling = 1
             )
             SELECT item_code, item_name, item_category, customer_type, price_list_rate, COUNT(*) OVER() AS total_count
             FROM RankedPrices
