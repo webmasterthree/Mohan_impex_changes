@@ -1,0 +1,2 @@
+bench migrate
+bench restart
