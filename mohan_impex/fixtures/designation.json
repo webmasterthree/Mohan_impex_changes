@@ -1,42 +1,34 @@
 [
  {
-  "appraisal_template": null,
   "description": null,
   "designation_name": "SE",
   "docstatus": 0,
   "doctype": "Designation",
   "modified": "2025-01-18 16:55:59.067324",
-  "name": "SE",
-  "skills": []
+  "name": "SE"
  },
  {
-  "appraisal_template": null,
   "description": null,
   "designation_name": "TSM",
   "docstatus": 0,
   "doctype": "Designation",
   "modified": "2025-01-18 16:56:11.839777",
-  "name": "TSM",
-  "skills": []
+  "name": "TSM"
  },
  {
-  "appraisal_template": null,
   "description": null,
   "designation_name": "NSM",
   "docstatus": 0,
   "doctype": "Designation",
   "modified": "2025-01-18 16:56:15.776816",
-  "name": "NSM",
-  "skills": []
+  "name": "NSM"
  },
  {
-  "appraisal_template": null,
   "description": null,
   "designation_name": "ASM",
   "docstatus": 0,
   "doctype": "Designation",
   "modified": "2025-01-18 16:56:06.039911",
-  "name": "ASM",
-  "skills": []
+  "name": "ASM"
  }
 ]
