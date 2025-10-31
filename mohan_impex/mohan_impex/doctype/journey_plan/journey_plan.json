@@ -8,7 +8,7 @@
  "field_order": [
   "section_break_ygoq",
   "naming_series",
-  "visit_from_date",
+  "visit_date",
   "nature_of_travel",
   "column_break_bash",
   "created_date",
@@ -17,9 +17,6 @@
   "rejected_date",
   "section_break_uvbm",
   "trips",
-  "section_break_qhgx",
-  "primary_customer",
-  "secondary_customer",
   "section_break_ikim",
   "remarks",
   "amended_from",
@@ -42,13 +39,6 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
-  },
-  {
-   "fieldname": "visit_from_date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "Visit Date",
-   "reqd": 1
   },
   {
    "fieldname": "nature_of_travel",
@@ -144,25 +134,16 @@
    "options": "Trips"
   },
   {
-   "fieldname": "section_break_qhgx",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "primary_customer",
-   "fieldtype": "Link",
-   "label": "Primary Customer",
-   "options": "Customer"
-  },
-  {
-   "fieldname": "secondary_customer",
-   "fieldtype": "Link",
-   "label": "Secondary Customer",
-   "options": "Customer"
+   "fieldname": "visit_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Visit Date",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-29 15:04:52.138427",
+ "modified": "2025-10-30 11:33:09.118969",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Journey Plan",

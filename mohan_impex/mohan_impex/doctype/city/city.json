@@ -6,20 +6,31 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "city_name"
+  "city_name",
+  "district"
  ],
  "fields": [
   {
    "fieldname": "city_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "City Name",
+   "reqd": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "district",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "District",
+   "options": "District",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-29 12:19:35.435790",
+ "modified": "2025-10-30 13:48:18.074712",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "City",

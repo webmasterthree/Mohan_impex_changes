@@ -6,14 +6,16 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "primary_customer",
+  "secondary_customer",
+  "mode_of_travel",
+  "column_break_fhqq",
   "travel_state_from",
   "travel_from_district",
   "travel_from_city",
-  "same_as_from_address",
   "travel_to_state",
   "travel_to_district",
-  "travel_to_city",
-  "mode_of_travel"
+  "travel_to_city"
  ],
  "fields": [
   {
@@ -36,13 +38,6 @@
    "in_list_view": 1,
    "label": "Travel From City",
    "options": "City"
-  },
-  {
-   "default": "0",
-   "fieldname": "same_as_from_address",
-   "fieldtype": "Check",
-   "in_list_view": 1,
-   "label": "Same as from address"
   },
   {
    "fieldname": "travel_to_state",
@@ -70,13 +65,31 @@
    "fieldtype": "Link",
    "label": "Mode of Travel",
    "options": "Mode of Travel"
+  },
+  {
+   "fieldname": "primary_customer",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Primary Customer",
+   "link_filters": "[[\"Customer\",\"customer_level\",\"=\",\"Primary\"]]"
+  },
+  {
+   "fieldname": "secondary_customer",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Secondary Customer",
+   "link_filters": "[[\"Customer\",\"customer_level\",\"=\",\"Secondary\"]]"
+  },
+  {
+   "fieldname": "column_break_fhqq",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-10-29 13:34:10.760063",
+ "modified": "2025-10-31 12:36:22.413121",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trips",

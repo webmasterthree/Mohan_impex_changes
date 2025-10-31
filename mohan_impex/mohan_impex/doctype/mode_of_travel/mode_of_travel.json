@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:mode_of_travel",
  "creation": "2025-10-29 12:41:01.711605",
@@ -26,7 +27,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-29 13:17:23.260985",
+ "modified": "2025-10-29 18:31:25.297245",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Mode of Travel",
