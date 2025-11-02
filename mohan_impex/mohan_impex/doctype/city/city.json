@@ -1,23 +1,15 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:city_name",
+ "autoname": "field:city",
  "creation": "2025-10-29 12:16:09.015801",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "city_name",
+  "city",
   "district"
  ],
  "fields": [
-  {
-   "fieldname": "city_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "City Name",
-   "reqd": 1,
-   "unique": 1
-  },
   {
    "fieldname": "district",
    "fieldtype": "Link",
@@ -25,12 +17,20 @@
    "label": "District",
    "options": "District",
    "reqd": 1
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "City Name",
+   "reqd": 1,
+   "unique": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-30 13:48:18.074712",
+ "modified": "2025-11-02 22:06:16.182118",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "City",
