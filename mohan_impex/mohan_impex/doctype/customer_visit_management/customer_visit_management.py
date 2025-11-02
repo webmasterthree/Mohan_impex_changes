@@ -116,15 +116,15 @@ class CustomerVisitManagement(Document):
                 "cvm": self.name,
                 **pt_dict
             })
-            trial_row_list = [{"cvm_trial_id": trial_row.name, "product": trial_row.product, "item_code": trial_row.item_code} for trial_row in self.trial_table]
+            trial_row_list = [{"cvm_trial_id": trial_row.name, "segment": trial_row.segment, "item_code": trial_row.item_code} for trial_row in self.trial_table]
             existing_trial_row = doc.trial_plan_table
             trial_row_to_add_list = []
             trial_row_to_remove_list = []
             for trial_row in trial_row_list:
-                if not any(existing_product.product == trial_row["product"] and existing_product.item_code == trial_row["item_code"] for existing_product in existing_trial_row):
+                if not any(existing_product.segment == trial_row["segment"] and existing_product.item_code == trial_row["item_code"] for existing_product in existing_trial_row):
                     trial_row_to_add_list.append(trial_row)
             for existing_product in existing_trial_row:
-                if not any(trial_row["product"] == existing_product.product and trial_row["item_code"] == existing_product.item_code for trial_row in trial_row_list):
+                if not any(trial_row["segment"] == existing_product.segment and trial_row["item_code"] == existing_product.item_code for trial_row in trial_row_list):
                     trial_row_to_remove_list.append(existing_product.name)
             for trial_row_to_row in trial_row_to_add_list:
                 doc.append("trial_plan_table", trial_row_to_row)
@@ -187,10 +187,6 @@ class CustomerVisitManagement(Document):
 
 
 @frappe.whitelist()
-def get_product_items(product=None):
-    item_list = frappe.get_all("Base Components", {"parent": product}, ["item_code"], pluck="item_code")
+def get_product_items(segment=None):
+    item_list = frappe.get_all("Base Components", {"parent": segment}, ["item_code"], pluck="item_code")
     return item_list
-
-def test():
-    doc = frappe.get_doc("Customer Visit Management", "CVM-2025-01-0025")
-    apply_workflow(doc, "Pending")

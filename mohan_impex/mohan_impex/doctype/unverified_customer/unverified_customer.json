@@ -9,9 +9,6 @@
   "naming_series",
   "customer",
   "customer_name",
-  "customer_level",
-  "channel_partner",
-  "cp_name",
   "shop",
   "shop_name",
   "contact",
@@ -24,8 +21,11 @@
   "address_line1",
   "address_line2",
   "district",
+  "city",
   "state",
-  "pincode"
+  "pincode",
+  "section_break_lnbk",
+  "customer_consumption_info"
  ],
  "fields": [
   {
@@ -142,22 +142,6 @@
    "label": "Customer Edit Needed"
   },
   {
-   "fieldname": "customer_level",
-   "fieldtype": "Select",
-   "label": "Customer Level",
-   "options": "\nPrimary\nSecondary",
-   "reqd": 1
-  },
-  {
-   "depends_on": "eval: doc.customer_level === \"Secondary\"",
-   "fieldname": "channel_partner",
-   "fieldtype": "Link",
-   "label": "Channel Partner",
-   "link_filters": "[[\"Customer\",\"is_dl\",\"=\",1]]",
-   "mandatory_depends_on": "eval: doc.customer_level === \"Secondary\"",
-   "options": "Customer"
-  },
-  {
    "fieldname": "shop",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -172,15 +156,27 @@
    "options": "Employee"
   },
   {
-   "fetch_from": "channel_partner.customer_name",
-   "fieldname": "cp_name",
-   "fieldtype": "Data",
-   "label": "Channel Partner Name"
+   "fieldname": "section_break_lnbk",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "customer_consumption_info",
+   "fieldtype": "Table",
+   "label": "Customer Consumption Info",
+   "options": "Customer Consumption Info"
+  },
+  {
+   "fetch_from": "address.city",
+   "fieldname": "city",
+   "fieldtype": "Link",
+   "label": "City",
+   "options": "City",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-24 22:01:23.122334",
+ "modified": "2025-11-01 20:22:04.910196",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Unverified Customer",
@@ -200,6 +196,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",

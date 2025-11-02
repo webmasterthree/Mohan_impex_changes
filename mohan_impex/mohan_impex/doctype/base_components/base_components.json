@@ -14,7 +14,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Item Code",
-   "link_filters": "[[\"Item\",\"has_variants\",\"=\",0]]",
+   "link_filters": "[[\"Item\",\"has_variants\",\"=\",1]]",
    "options": "Item",
    "reqd": 1
   }
@@ -22,12 +22,13 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-08-19 17:56:23.435015",
+ "modified": "2025-11-01 18:38:30.022174",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Base Components",
  "owner": "Administrator",
  "permissions": [],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

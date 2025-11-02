@@ -8,15 +8,12 @@
   "section_break_ooxc",
   "naming_series",
   "customer_type",
-  "customer_level",
   "verific_type",
   "unv_customer",
   "unv_customer_name",
   "customer",
   "customer_name",
   "kyc_status",
-  "channel_partner",
-  "cp_name",
   "deal_type",
   "latitude",
   "longitude",
@@ -30,12 +27,18 @@
   "location",
   "address_line1",
   "address_line2",
+  "city",
   "district",
   "state",
   "pincode",
   "amended_from",
   "section_break_xsde",
   "product_pitching",
+  "product_consumption_info",
+  "section_break_dikk",
+  "order_status",
+  "column_break_yrbi",
+  "reason",
   "section_break_qsmq",
   "conduct_by",
   "column_break_iwjg",
@@ -188,15 +191,6 @@
    "read_only": 1
   },
   {
-   "depends_on": "eval:doc.customer_level === \"Secondary\"",
-   "fieldname": "channel_partner",
-   "fieldtype": "Link",
-   "label": "Channel Partner",
-   "link_filters": "[[\"Customer\",\"is_dl\",\"=\",1]]",
-   "mandatory_depends_on": "eval:doc.customer_level === \"Secondary\"",
-   "options": "Customer"
-  },
-  {
    "allow_on_submit": 1,
    "default": "Draft",
    "fieldname": "status",
@@ -248,14 +242,6 @@
    "hidden": 1,
    "label": "Customer Name",
    "read_only": 1
-  },
-  {
-   "fieldname": "customer_level",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Visit Type",
-   "options": "Primary\nSecondary",
-   "reqd": 1
   },
   {
    "fetch_from": "location.district",
@@ -412,11 +398,43 @@
    "label": "Trial Plan Remarks"
   },
   {
-   "fetch_from": "channel_partner.customer_name",
-   "fieldname": "cp_name",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Channel Partner Name"
+   "depends_on": "eval:doc.customer_type === \"New\"",
+   "fieldname": "product_consumption_info",
+   "fieldtype": "Table",
+   "label": "Product Consumption Info",
+   "options": "Product Consumption"
+  },
+  {
+   "fieldname": "section_break_dikk",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "order_status",
+   "fieldtype": "Select",
+   "label": "Order Status",
+   "options": "With Order\nWithout Order",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_yrbi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval: doc.order_status === \"Without Order\"",
+   "fieldname": "reason",
+   "fieldtype": "Link",
+   "label": "Reason",
+   "link_filters": "[[\"Reason\",\"for_cvm\",\"=\",1]]",
+   "mandatory_depends_on": "eval: doc.order_status === \"Without Order\"",
+   "options": "Reason"
+  },
+  {
+   "fetch_from": "location.city",
+   "fieldname": "city",
+   "fieldtype": "Link",
+   "label": "City",
+   "options": "City",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
@@ -427,7 +445,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2025-08-24 22:01:54.604262",
+ "modified": "2025-11-01 19:20:13.628916",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",
@@ -448,6 +466,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

@@ -2,36 +2,44 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:product_name",
+ "autoname": "field:segment_name",
  "creation": "2025-02-19 20:18:46.341337",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "product_name",
-  "base_components"
+  "segment_name",
+  "base_components",
+  "base_products"
  ],
  "fields": [
-  {
-   "fieldname": "product_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Product Name",
-   "reqd": 1,
-   "unique": 1
-  },
   {
    "fieldname": "base_components",
    "fieldtype": "Table",
    "label": "Base Components",
    "options": "Base Components"
+  },
+  {
+   "fieldname": "segment_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Segment Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "base_products",
+   "fieldtype": "Table",
+   "label": "Base Product",
+   "options": "Base Product"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-17 23:21:34.374616",
+ "modified": "2025-10-29 21:27:28.105931",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
- "name": "Product",
+ "name": "Segment",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -48,6 +56,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

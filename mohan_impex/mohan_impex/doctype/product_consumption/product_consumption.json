@@ -1,29 +1,37 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-05-24 12:08:18.492308",
+ "creation": "2025-10-29 21:09:54.361875",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "segment",
-  "item_code",
-  "report"
+  "product_name",
+  "consumption_qty",
+  "uom"
  ],
  "fields": [
   {
-   "fieldname": "item_code",
-   "fieldtype": "Link",
+   "fieldname": "product_name",
+   "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Item",
-   "options": "Item",
+   "label": "Base Product Name",
    "reqd": 1
   },
   {
-   "fieldname": "report",
-   "fieldtype": "Select",
-   "label": "Report",
-   "options": "Pending\nCompleted"
+   "fieldname": "consumption_qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Consumption Qty"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "UOM",
+   "options": "UOM",
+   "reqd": 1
   },
   {
    "fieldname": "segment",
@@ -38,10 +46,10 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-10-29 20:56:32.746657",
+ "modified": "2025-11-01 20:28:03.498723",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
- "name": "CVM Trial Table",
+ "name": "Product Consumption",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",

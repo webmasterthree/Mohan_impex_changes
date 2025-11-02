@@ -1,50 +1,37 @@
 {
  "actions": [],
- "allow_import": 1,
  "allow_rename": 1,
- "creation": "2025-02-01 18:07:52.232572",
+ "creation": "2025-11-01 17:11:27.771639",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "state",
-  "code",
-  "column_break_kteo",
-  "country"
+  "city",
+  "district"
  ],
  "fields": [
   {
-   "fieldname": "state",
-   "fieldtype": "Data",
-   "label": "State",
-   "reqd": 1
-  },
-  {
-   "fieldname": "code",
+   "fieldname": "city",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Code",
+   "label": "City",
    "reqd": 1
   },
   {
-   "fieldname": "column_break_kteo",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "country",
+   "fieldname": "district",
    "fieldtype": "Link",
-   "label": "Country",
-   "options": "Country",
+   "in_list_view": 1,
+   "label": "District",
+   "options": "District",
    "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-01 17:32:27.354167",
+ "modified": "2025-11-01 18:09:05.629884",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
- "name": "State",
- "nsm_parent_field": "parent_state",
+ "name": "City",
  "owner": "Administrator",
  "permissions": [
   {
@@ -65,5 +52,5 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "title_field": "state"
+ "title_field": "city"
 }

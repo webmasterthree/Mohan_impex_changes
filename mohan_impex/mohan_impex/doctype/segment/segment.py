@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class Product(Document):
+class Segment(Document):
 	pass

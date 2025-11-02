@@ -609,10 +609,10 @@
   "doctype": "Client Script",
   "dt": "Address",
   "enabled": 1,
-  "modified": "2025-03-22 16:20:33.502215",
+  "modified": "2025-11-01 19:22:08.316837",
   "module": "Mohan Impex",
   "name": "Address",
-  "script": "frappe.ui.form.on('Address', {\n\trefresh(frm) {\n\t\t// your code here\n\t},\n\tdistrict(frm){\n        frm.set_value(\"city\", frm.doc.district)\n\t},\n\tbefore_save(frm){\n\t    frm.set_value(\"city\", frm.doc.district)\n\t}\n})",
+  "script": "frappe.ui.form.on('Address', {\n\trefresh(frm) {\n\t\t// your code here\n\t}\n})",
   "view": "Form"
  },
  {
@@ -734,6 +734,17 @@
   "module": "Mohan Impex",
   "name": "NEW RP",
   "script": "frappe.ui.form.on('Purchase Receipt', {\n    refresh: function(frm) {\n        frm.fields_dict[\"items\"].grid.get_field(\"item_code\").get_query = function (doc, cdt, cdn) {\n            let row = locals[cdt][cdn];\n            return {\n                filters: [\n                    [\"has_variants\", \"=\", 0],\n                    [\"is_sales_item\", \"=\", 1],\n                    [\"variant_of\", \"=\", row.item_template]\n                ]\n            };\n        };\n    },\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Customer Visit Management",
+  "enabled": 1,
+  "modified": "2025-11-01 16:02:59.012932",
+  "module": "FMCG-CP",
+  "name": "Customer Visit Management-Form",
+  "script": "frappe.ui.form.on('Customer Visit Management', {\n\trefresh(frm) {\n\t\tif (frm.is_new()) {\n          frm.set_value(\"channel_partner\", \"\");\n        }\n\t},\n\tcustomer_level(frm){\n        frm.set_value(\"customer\", \"\")\n        frm.set_value(\"unv_customer\", \"\")\n    },\n    customer(frm) {\n        if (!frm.doc.customer) {\n          frm.set_value(\"channel_partner\", \"\");\n        }\n    },\n    unv_customer(frm) {\n        if (!frm.doc.unv_customer) {\n          frm.set_value(\"channel_partner\", \"\");\n        }\n    },\n})",
   "view": "Form"
  }
 ]

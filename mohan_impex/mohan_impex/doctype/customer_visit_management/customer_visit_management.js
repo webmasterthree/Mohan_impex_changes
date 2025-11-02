@@ -5,14 +5,15 @@ frappe.ui.form.on("Customer Visit Management", {
   async refresh(frm) {
     let kyc_status = false
     let customer_url = ""
-    if (frm.doc.customer_level === "Primary"){
+    // console.log(frm.doc.customer_level)
+    // if (frm.doc.customer_level === "Primary" ){
       await frm.call("get_kyc_status").then((r) => {
         if (r.message) {
           kyc_status = r.message.kyc_status
           customer_url = r.message.customer_url
         }
       });
-    }
+    // }
     if (frm.doc.docstatus === 1) {
       if(kyc_status){
         frm.add_custom_button(__("Create Sales Order"), () => {
@@ -25,9 +26,6 @@ frappe.ui.form.on("Customer Visit Management", {
         });
       }
     }
-    if (frm.is_new()) {
-      frm.set_value("channel_partner", "");
-    }
   },
   onload(frm) {
     if (frm.is_new() && !frm.doc.visit_start) {
@@ -36,10 +34,6 @@ frappe.ui.form.on("Customer Visit Management", {
       // set_session_employee(frm)
       set_current_map_location(frm);
     }
-  },
-  customer_level(frm){
-    frm.set_value("customer", "")
-    frm.set_value("unv_customer", "")
   },
   verific_type(frm){
     frm.set_value("customer", "")
@@ -51,25 +45,23 @@ frappe.ui.form.on("Customer Visit Management", {
     }
   },
   customer(frm) {
-    if (frm.doc.customer) {
-      set_customer_info(frm)
-    }
-    else{
+    if (!frm.doc.customer) {
       frm.set_value("shop", "");
-      frm.set_value("channel_partner", "");
       frm.set_value("contact", []);
       frm.set_value("location", "");
+    }
+    else{
+      set_customer_info(frm)
     }
   },
   unv_customer(frm) {
-    if (frm.doc.unv_customer) {
-      set_customer_info(frm)
-    }
-    else{
+    if (!frm.doc.unv_customer) {
       frm.set_value("shop", "");
-      frm.set_value("channel_partner", "");
       frm.set_value("contact", []);
       frm.set_value("location", "");
+    }
+    else{
+      set_customer_info(frm)
     }
   },
   before_save(frm) {
@@ -93,7 +85,6 @@ function set_customer_info(frm){
       console.log(response)
       if(response){
         frm.set_value("shop", response.shop);
-        frm.set_value("channel_partner", response.channel_partner);
         frm.set_value("contact", response.contact);
         frm.set_value("location", response.address);
       }
@@ -205,7 +196,7 @@ cur_frm.set_query("item_code", "product_pitching", function (frm, cdt, cdn) {
   var row = locals[cdt][cdn];
   var product_items = []
   var args = {
-    "product" : row.product
+    "segment" : row.segment
   }
   console.log("r.message")
   frappe.call({
@@ -213,7 +204,6 @@ cur_frm.set_query("item_code", "product_pitching", function (frm, cdt, cdn) {
       args: args,
       async: false,
       callback(r){
-        console.log([r.message, "LLLLLL"])
         product_items = r.message
       }
   })
@@ -235,9 +225,9 @@ frappe.ui.form.on("Product Pitching", {
     }
     frm.refresh_field("product_pitching");
   },
-  product(frm, cdt, cdn) {
+  segment(frm, cdt, cdn) {
     var row = locals[cdt][cdn];
-    row.qty = row.product ? 1 : 0;
+    row.qty = row.segment ? 1 : 0;
     row.item_code=""
     frm.refresh_field("product_pitching");
   },

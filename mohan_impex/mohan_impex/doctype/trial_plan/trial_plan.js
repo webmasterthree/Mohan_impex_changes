@@ -141,7 +141,7 @@ cur_frm.set_query("item_code", "trial_plan_table", function (frm, cdt, cdn) {
   var row = locals[cdt][cdn];
   var product_items = []
   var args = {
-    "product" : row.product
+    "segment" : row.segment
   }
   console.log("r.message")
   frappe.call({

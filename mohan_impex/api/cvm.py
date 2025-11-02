@@ -7,6 +7,7 @@ from frappe.model.workflow import apply_workflow
 import math
 from mohan_impex.api import get_signed_token, get_role_filter, get_address_text, get_self_filter_status, get_exception, get_workflow_statuses, has_create_perm
 from mohan_impex.mohan_impex.comment import get_comments
+from mohan_impex.api.auth import has_cp
 
 @frappe.whitelist()
 def cvm_list():
@@ -36,12 +37,16 @@ def cvm_list():
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)
         role_filter = get_role_filter(emp, is_self, other_employee)
         is_self_filter = get_self_filter_status()
+        if has_cp():
+            fields = "cvm.name, shop_name, cl.contact, location, customer_level, kyc_status, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count"
+        else:
+            fields = "cvm.name, shop_name, cl.contact, location, kyc_status, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count"
         query = """
-            select cvm.name, shop_name, cl.contact, location, customer_level, kyc_status, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count
+            select {fields}
             from `tabCustomer Visit Management` as cvm
             JOIN `tabContact List` as cl on cl.parent = cvm.name
             where {tab_filter} and {role_filter}
-        """.format(tab_filter=tab_filter, role_filter=role_filter)
+        """.format(fields=fields, tab_filter=tab_filter, role_filter=role_filter)
         order_and_group_by = " group by cvm.name order by cvm.creation desc "
         filter_checks = {
             "customer_type": "customer_type",
@@ -108,7 +113,7 @@ def cvm_form():
                 image["url"] = get_signed_token(image["file_url"])
             cvm_doc = cvm_doc.as_dict()
             fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "parent", "parenttype", "parentfield", "area"]
-            child_doc = ["product_pitching", "product_trial", "item_trial", "contact"]
+            child_doc = ["product_pitching", "product_consumption_info", "product_trial", "item_trial", "contact"]
             cvm_doc = {
                 key: value for key, value in cvm_doc.items() if key not in fields_to_remove
             }
@@ -120,27 +125,30 @@ def cvm_form():
                     ]
             grouped = {}
             for item in cvm_doc.get("product_pitching"):
-                product = item["product"]
-                if product in grouped:
-                    grouped[product].append(item)
+                segment = item["segment"]
+                if segment in grouped:
+                    grouped[segment].append(item)
                 else:
-                    grouped[product] = [item]
-            cvm_doc["product_pitching"] = [{"product": product, "items": items} for product, items in grouped.items()]
+                    grouped[segment] = [item]
+            cvm_doc["product_pitching"] = [{"segment": segment, "items": items} for segment, items in grouped.items()]
             trial_grouped = {}
             for item in cvm_doc.get("trial_table"):
                 item["item_name"] = frappe.get_value("Item", {"name": item["item_code"]}, "item_name")
-                product = item["product"]
-                if product in trial_grouped:
-                    trial_grouped[product].append(item)
+                segment = item["segment"]
+                if segment in trial_grouped:
+                    trial_grouped[segment].append(item)
                 else:
-                    trial_grouped[product] = [item]
-            cvm_doc["trial_table"] = [{"product": product, "items": items} for product, items in trial_grouped.items()]
+                    trial_grouped[segment] = [item]
+            cvm_doc["trial_table"] = [{"segment": segment, "items": items} for segment, items in trial_grouped.items()]
             activities = get_comments("Customer Visit Management", cvm_doc["name"])
             cvm_doc["activities"] = activities
             cvm_doc["image_url"] = image_url
             is_self_filter = get_self_filter_status()
             cvm_doc["status_fields"] = get_workflow_statuses("Customer Visit Management", cvm_name, get_session_emp_role())
             cvm_doc["has_toggle_filter"] = is_self_filter
+            cvm_doc["city_name"] = frappe.get_value("City", cvm_doc.get("city"), "city")
+            cvm_doc["district_name"] = frappe.get_value("District", cvm_doc.get("district"), "district")
+            cvm_doc["state_name"] = frappe.get_value("State", cvm_doc.get("state"), "state")
             cvm_doc["created_person_mobile_no"] = frappe.get_value("Employee", cvm_doc.get("created_by_emp"), "custom_personal_mobile_number")
             frappe.local.response['status'] = True
             frappe.local.response['message'] = "Visit form has been successfully fetched"
@@ -150,6 +158,7 @@ def cvm_form():
 
 @frappe.whitelist()
 def create_cvm():
+    has_cp_app = has_cp()
     cvm_data = frappe.form_dict
     cvm_data.pop("cmd")
     cvm_data.update({
@@ -174,23 +183,34 @@ def create_cvm():
                 if not frappe.db.exists("Contact Number", contact["contact"]):
                     create_contact_number(contact["contact"])
                 created_contact.append(contact["contact"])
+            product_consump_info = []
+            for consump_info in cvm_data.product_consumption_info:
+                category_type = calculate_category_type(consump_info["segment"], consump_info["product_name"], consump_info["consumption_qty"])
+                if category_type:
+                    consump_info["category_type"] = category_type
+                    product_consump_info.append(consump_info)
             unv_cus_dict = {
                 "doctype": "Unverified Customer",
                 "customer_name": cvm_data.unv_customer_name,
-                "customer_level": cvm_data.customer_level,
-                "channel_partner": cvm_data.channel_partner,
-                "cp_name": cvm_data.cp_name,
                 "shop": cvm_data.shop,
                 "shop_name": cvm_data.shop_name,
                 "contact": cvm_data.contact,
                 "address_line1": cvm_data.address_line1,
                 "address_line2": cvm_data.address_line2,
                 "district": cvm_data.district,
+                "city": cvm_data.city,
                 "state": cvm_data.state,
                 "pincode": cvm_data.pincode,
                 "created_by_emp": get_session_employee(),
                 "area": get_session_employee_area(),
+                "customer_consumption_info": product_consump_info
             }
+            if has_cp_app:
+                unv_cus_dict.update({
+                    "customer_level": cvm_data.customer_level,
+                    "channel_partner": cvm_data.channel_partner,
+                    "cp_name": cvm_data.cp_name,
+                })
             if cvm_data.get("isupdate") and frappe.db.exists("Unverified Customer", cvm_data.get("unv_customer")):
                 unv_cus = frappe.get_doc("Unverified Customer", cvm_data.get("unv_customer"))
                 unv_cus.update(unv_cus_dict)
@@ -206,7 +226,7 @@ def create_cvm():
                 "address_line1": cvm_data.address_line1,
                 "address_line2": cvm_data.address_line2,
                 "district": cvm_data.district,
-                "city": cvm_data.district,
+                "city": cvm_data.city,
                 "state": cvm_data.state,
                 "pincode": cvm_data.pincode
             }
@@ -258,6 +278,12 @@ def create_cvm():
         frappe.db.rollback()
         get_exception(err)
 
+def calculate_category_type(segment, product_name, qty):
+    frappe.errprint({"parent": segment, "product_name": product_name, "from_qty": ("<=", qty), "to_qty": (">=", qty)})
+    category_type = frappe.get_value("Base Product", {"parent": segment, "product_name": product_name, "from_qty": ("<=", qty), "to_qty": (">=", qty)}, "category_type") or ""
+    frappe.errprint(category_type)
+    return category_type
+
 def create_shop(shop, shop_name):
     if not shop:
         doc = frappe.get_doc({
@@ -296,6 +322,11 @@ def cvm_validate(cvm_data):
             frappe.local.response['status'] = False
             frappe.local.response['message'] = f"KYC Customer is Missing"
             return
+    if cvm_data.customer_level == "Secondary" and not cvm_data.channel_partner:
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = f"Channel Partner is Missing"
+        return
     return valid
 
 @frappe.whitelist()

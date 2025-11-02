@@ -6,7 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "product",
+  "segment",
   "item_code",
   "item_name",
   "column_break_qwtm",
@@ -29,14 +29,6 @@
    "fieldtype": "Data",
    "label": "Item Name",
    "read_only": 1
-  },
-  {
-   "fieldname": "product",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Product",
-   "options": "Product",
-   "reqd": 1
   },
   {
    "fieldname": "column_break_qwtm",
@@ -64,17 +56,27 @@
    "label": "Trial Status",
    "options": "Pending\nCompleted",
    "read_only": 1
+  },
+  {
+   "fieldname": "segment",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Segment",
+   "options": "Segment",
+   "reqd": 1
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-25 17:45:45.303781",
+ "modified": "2025-10-29 20:52:43.869118",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan Table",
  "owner": "Administrator",
  "permissions": [],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
