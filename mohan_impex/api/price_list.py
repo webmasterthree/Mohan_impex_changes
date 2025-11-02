@@ -1,6 +1,7 @@
 import frappe
 import math
 from mohan_impex.api import get_exception
+from mohan_impex.api.auth import has_cp
 
 @frappe.whitelist()
 def price_list():
@@ -12,24 +13,30 @@ def price_list():
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "Either limit or current page is missing"
             return
-        customer_type = frappe.form_dict.get("customer_type") or "DP"
+        if not has_cp() or not frappe.form_dict.get("customer_type"):
+            customer_type = "DP"
+        else:
+            customer_type = frappe.form_dict.get("customer_type")
         current_page = int(current_page)
         limit = int(limit)
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
         condition = ""
         if frappe.form_dict.get("search_text"):
-            condition = """ and (item_code LIKE "%{0}%" OR item_name LIKE "%{0}%") """.format(frappe.form_dict.get("search_text"))
+            condition += """ and (item_code LIKE "%{0}%" OR item_name LIKE "%{0}%") """.format(frappe.form_dict.get("search_text"))
         if frappe.form_dict.get("item_category"):
-            condition = """ and item_category = "{0}" """.format(frappe.form_dict.get("item_category"))
+            condition += """ and item_category = "{0}" """.format(frappe.form_dict.get("item_category"))
+        if frappe.form_dict.get("warehouse"):
+            condition += """ and warehouse = "{0}" """.format(frappe.form_dict.get("warehouse"))
         if customer_type:
-            condition = """ and customer_type = "{0}" """.format(customer_type)
+            condition += """ and customer_type = "{0}" """.format(customer_type)
         price_info_query = """
             WITH RankedPrices AS (
                 SELECT 
                     item_code,
                     item_name,
                     item_category,
+                    warehouse,
                     price_list_rate,
                     customer_type,
                     ROW_NUMBER() OVER (PARTITION BY item_code ORDER BY modified DESC) AS rn
@@ -40,6 +47,7 @@ def price_list():
             WHERE rn = 1 {0}
         """.format(condition)
         price_info_query += pagination
+        frappe.log_error(price_info_query, "price_info_query")
         price_info = frappe.db.sql(price_info_query, as_dict=True)
         total_count = 0
         if price_info:

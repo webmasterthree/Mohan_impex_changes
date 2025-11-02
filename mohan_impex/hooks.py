@@ -101,7 +101,8 @@ api_methods = [
 
 override_doctype_class = {
     "Transport RFQ": "mohan_impex.Sales.transport_rfq.TransportRFQ",
-    "Quality Inspection": "mohan_impex.override.quality_inspection.QualityInspection"
+    "Quality Inspection": "mohan_impex.override.quality_inspection.QualityInspection",
+    "Item Price": "mohan_impex.override.item_price.CustomItemPrice"
 }
  
 # Apps

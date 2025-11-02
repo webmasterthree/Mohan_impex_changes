@@ -6,6 +6,7 @@ from mohan_impex.api.sales_order import get_role_filter
 from datetime import datetime
 from mohan_impex.mohan_impex.comment import get_comments
 from mohan_impex.mohan_impex.contact import get_contact_numbers
+from mohan_impex.api.auth import has_cp
 
 @frappe.whitelist()
 def kyc_list():
@@ -33,6 +34,9 @@ def kyc_list():
             tab_filter = 'workflow_state != "KYC Completed"'
         else:
             tab_filter = 'workflow_state = "%s"'%(tab)
+        level_filter = ""
+        if has_cp():
+            level_filter = "customer_level= 'Primary'"
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)
         role_filter = get_role_filter(emp, is_self, other_employee)
         is_self_filter = get_self_filter_status()
@@ -41,8 +45,8 @@ def kyc_list():
             select cu.name, cu.customer_name, cu.request_date as created_date, IF(workflow_state='KYC Pending', cu.request_date, IF(workflow_state='KYC Completed', cu.kyc_complete_date, cu.request_date)) AS status_date, cu.workflow_state, cu.created_by_emp, cu.created_by_name, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
             JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
-            where customer_level= "Primary" and dl.parenttype = "Contact Number" and {tab_filter} and {role_filter}
-        """.format(tab_filter=tab_filter, role_filter=role_filter)
+            where dl.parenttype = "Contact Number" and {tab_filter} and {role_filter} and {level_filter}
+        """.format(tab_filter=tab_filter, role_filter=role_filter, level_filter=level_filter)
         filter_checks = {
             "customer_type": "customer_type",
             "business_type": "business_type",
@@ -102,7 +106,7 @@ def kyc_form():
         kyc_doc = frappe.get_doc("Customer", kyc_name)
         kyc_doc = kyc_doc.as_dict()
         fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "parent", "parenttype", "parentfield", "territory"]
-        child_doc = ["product_pitching", "product_trial", "customer_license", "cust_decl"]
+        child_doc = ["product_pitching", "product_trial", "credit_limits", "customer_license", "cust_decl"]
         kyc_doc = {
             key: value for key, value in kyc_doc.items() if key not in fields_to_remove
         }
@@ -152,6 +156,13 @@ def kyc_form():
         kyc_doc["status_fields"] = get_workflow_statuses("Customer", kyc_name, get_session_emp_role())
         kyc_doc["has_toggle_filter"] = is_self_filter
         kyc_doc["created_person_mobile_no"] = frappe.get_value("Employee", kyc_doc.get("created_by_emp"), "custom_personal_mobile_number")
+        kyc_doc["credit_days"] = 0
+        kyc_doc["credit_limit"] = 0
+        for credit in kyc_doc["credit_limits"]:
+            if kyc_doc["proposed_credit"] == "Credit":
+                 kyc_doc["credit_days"] = credit["credit_days"]
+                 kyc_doc["credit_limit"] = credit["credit_limit"]
+
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "KYC form has been successfully fetched"
         frappe.local.response['data'] = [kyc_doc]
@@ -166,6 +177,12 @@ def create_kyc():
         frappe.db.begin()
         cust_decls = [{"cust_decl": cust_decl["file_url"]} for cust_decl in kyc_data.cust_decl]
         cust_licenses = [{"cust_lic": cust_license["file_url"]} for cust_license in kyc_data.cust_license]
+        credit_limits = []
+        if kyc_data.proposed_credit == "Credit":
+            credit_limits = [{
+                "credit_days": kyc_data.credit_days,
+                "credit_limit": kyc_data.credit_limit
+            }]
         data = {
             "unv_customer": kyc_data.unv_customer,
             "created_by_emp": get_session_employee(),
@@ -177,6 +194,7 @@ def create_kyc():
             "custom_shop": kyc_data.shop,
             "custom_shop_name": kyc_data.shop_name,
             "gstin": kyc_data.gst_no,
+            "city": kyc_data.city,
             "district": kyc_data.district,
             "state": kyc_data.state,
             "request_date": datetime.today(),
@@ -184,8 +202,10 @@ def create_kyc():
             "pan": kyc_data.pan,
             "cust_decl": cust_decls,
             "customer_license": cust_licenses,
+            "proposed_credit": kyc_data.proposed_credit,
             "email_id": kyc_data.email_id,
-            "customer_details": kyc_data.remarks
+            "customer_details": kyc_data.remarks,
+            "credit_limits": credit_limits
         }
         data.update({"doctype": "Customer"})
         kyc_doc = frappe.get_doc(data)
@@ -275,7 +295,7 @@ def create_address(kyc_doc, address_data, address_type):
         address_type_check : 1,
         "address_line1": address_data["address_line1"],
         "address_line2": address_data["address_line2"],
-        "district": address_data["city"],
+        "district": address_data["district"],
         "city": address_data["city"],
         "state" : address_data["state"],
         "pincode": address_data["pincode"],

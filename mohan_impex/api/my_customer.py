@@ -4,14 +4,22 @@ from datetime import datetime, timedelta
 from erpnext.accounts.party import get_dashboard_info
 from mohan_impex.api.sales_order import get_role_filter
 from mohan_impex.api import get_exception, get_self_filter_status
+from mohan_impex.api.auth import has_cp
 
 @frappe.whitelist()
 def my_customer_list():
     try:
+        tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
         current_page = frappe.form_dict.get("current_page")
         is_self = frappe.form_dict.get("is_self")
         other_employee = frappe.form_dict.get("employee")
+
+        if has_cp() and not tab:
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Please give the list tab"
+            return
         if not limit or not current_page:
             frappe.local.response['http_status_code'] = 404
             frappe.local.response['status'] = False
@@ -45,15 +53,23 @@ def my_customer_list():
             select cu.name, cu.customer_name, custom_shop_name as custom_shop, mobile_no as contact, customer_primary_address as location, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
             left join `tabDynamic Link` as dl on dl.link_name=cu.name
+            left join `tabCustomer Consumption Info` as cci on cci.parent=cu.name
             {si_join}
-            where {billing_query} {role_filter} and disabled=0 and customer_level="Primary" and kyc_status="Completed"
+            where {billing_query} {role_filter} and disabled=0 and kyc_status="Completed"
         """.format(si_join=si_join, billing_query=billing_query, role_filter=role_filter)
         group_by = " group by cu.name order by cu.creation desc "
         filter_checks = {
+            "city": "city",
             "district": "district",
             "state": "state",
             "business_type": "business_type",
         }
+        if frappe.form_dict.get("category_type"):
+            query += """ AND cci.category_type = "{category_type}" """.format(category_type=frappe.form_dict.get("category_type"))
+        if frappe.form_dict.get("segment"):
+            query += """ AND cci.segment = "{segment}" """.format(segment=frappe.form_dict.get("segment"))
+        if tab:
+            query += f""" AND cu.customer_level = "{tab}" """
         if frappe.form_dict.get("search_text"):
             or_filters = """AND (cu.name LIKE "%{search_text}%" or cu.customer_name LIKE "%{search_text}%" or (dl.parent LIKE "%{search_text}%" and dl.parenttype="Contact Number")) """.format(search_text=frappe.form_dict.get("search_text"))
             query += or_filters
@@ -65,6 +81,7 @@ def my_customer_list():
         query += """ AND ({0})""".format(and_filters) if and_filters else ""
         query += group_by
         query += pagination
+        frappe.log_error(query, "Query")
         customer_info = frappe.db.sql(query, as_dict=True)
         for customer in customer_info:
             customer["location"] = frappe.get_value("Address", {"name": customer["location"]}, ["name","address_title", "address_line1", "address_line2", "city", "state", "pincode"], as_dict=True) if customer["location"] else ""
@@ -113,6 +130,8 @@ def my_customer_form():
             outstanding_amt = dash_info[0].get("total_unpaid") or 0
         cus_doc["outstanding_amt"] = abs(outstanding_amt)
         cus_doc["last_billing_rate"] = frappe.get_value("Sales Invoice", {"customer": customer_name}, "grand_total") or 0
+        cus_doc["consumption_info"] = get_customer_segment_info(cus_doc["name"])
+        cus_doc["change_requests"] = get_change_request(cus_doc["name"])
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "KYC form has been successfully fetched"
         frappe.local.response['data'] = [cus_doc]
@@ -188,3 +207,27 @@ def my_customer_ledger():
         frappe.local.response['data'] = response
     except Exception as err:
         get_exception(err)
+
+@frappe.whitelist()
+def add_change_request(customer_id, requested_content):
+    try:
+        customer_doc = frappe.get_doc("Customer", customer_id)
+        row = customer_doc.append("change_request", {
+            "requested_content": requested_content
+        })
+        customer_doc.save()
+        frappe.local.response['status'] = True
+        frappe.local.response['message'] = "Change Request has been successfully created"
+    except Exception as err:
+        # get_exception(err)
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = f"{err}"
+
+@frappe.whitelist()
+def get_change_request(customer_id):
+    change_request = frappe.db.get_all("Change Request", {"parent": customer_id, "parenttype": "Customer", "parentfield": "change_request"}, ["requested_content", "status"])
+    return change_request
+
+def get_customer_segment_info(customer_id):
+    consumption_info = frappe.db.get_all("Customer Consumption Info", {"parent": customer_id, "parenttype": "Customer", "parentfield": "customer_consumption_info"}, ["segment", "product_name", "category_type", "consumption_qty", "uom"])
+    return consumption_info

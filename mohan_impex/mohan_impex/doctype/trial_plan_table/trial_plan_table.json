@@ -9,8 +9,10 @@
   "segment",
   "item_code",
   "item_name",
-  "column_break_qwtm",
   "trial_target",
+  "column_break_qwtm",
+  "qty",
+  "uom",
   "cvm_trial_id",
   "trial_status"
  ],
@@ -37,7 +39,6 @@
   {
    "fieldname": "trial_target",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Trial Target",
    "options": "Trial Target",
    "read_only": 1
@@ -64,13 +65,28 @@
    "label": "Segment",
    "options": "Segment",
    "reqd": 1
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Consumption Qty",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-10-29 20:52:43.869118",
+ "modified": "2025-11-02 14:24:05.693699",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Trial Plan Table",
