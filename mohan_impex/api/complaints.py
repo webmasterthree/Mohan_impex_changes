@@ -131,6 +131,20 @@ def complaints_form():
                     "mfd": item.mfd,
                 })
             complaints_dict["complaint_item"] = complaint_item
+            
+            
+            complaint_reason = []
+            for row in complaints_doc.reason_for_complaints:
+                complaint_reason.append({
+                    "reason":row.reason,
+                    "remarks":row.remarks
+                })
+            complaints_dict["reason_for_complaints"] = complaint_reason
+            
+            
+            
+            
+            
             image_url = frappe.get_all("File", {"attached_to_name": complaints_name}, ["file_name","file_url"])
             site_url = frappe.utils.get_url()
             for url in image_url:

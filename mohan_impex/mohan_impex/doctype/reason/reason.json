@@ -8,6 +8,7 @@
  "field_order": [
   "reason",
   "fo_so",
+  "for_complaints",
   "column_break_uaur",
   "for_cvm",
   "claim_type"
@@ -34,22 +35,29 @@
    "label": "Fo SO"
   },
   {
-   "depends_on": "for_cvm",
+   "depends_on": "for_complaints",
    "fieldname": "claim_type",
    "fieldtype": "Select",
+   "in_standard_filter": 1,
    "label": "Claim Type",
-   "mandatory_depends_on": "for_cvm",
+   "mandatory_depends_on": "for_complaints",
    "options": "Transit\nQuality"
   },
   {
    "fieldname": "column_break_uaur",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "for_complaints",
+   "fieldtype": "Check",
+   "label": "For Complaints"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-01 11:31:41.755503",
+ "modified": "2025-11-04 11:10:00.848450",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Reason",
