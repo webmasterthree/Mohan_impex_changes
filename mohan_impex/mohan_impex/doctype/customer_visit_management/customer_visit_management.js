@@ -131,9 +131,7 @@ function set_current_map_location(frm) {
 }
 
 cur_frm.set_query("customer", function (frm) {
-  var filter_dict = {
-    customer_level: cur_frm.doc.customer_level,
-  }
+  var filter_dict = {}
   if (cur_frm.doc.channel_partner){
     filter_dict.custom_channel_partner = cur_frm.doc.channel_partner
   }
@@ -143,9 +141,7 @@ cur_frm.set_query("customer", function (frm) {
 });
 
 cur_frm.set_query("unv_customer", function (frm) {
-  var filter_dict = {
-    customer_level: cur_frm.doc.customer_level,
-  }
+  var filter_dict = {}
   if (cur_frm.doc.channel_partner){
     filter_dict.channel_partner = cur_frm.doc.channel_partner
   }

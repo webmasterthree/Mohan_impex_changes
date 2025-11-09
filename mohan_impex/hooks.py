@@ -9,7 +9,7 @@ app_license = "mit"
 role_list = ("SE", "ASM", "TSM", "NSM", "ZSM", "RSM", "CP")
 
 fixtures = [
-    "Client Script",
+    {"dt": "Client Script", "filters": [["module", "=", "Mohan Impex"]]},
     {"dt": "Custom DocPerm", "filters": [["role", "in", role_list]]},
     {"dt": "Property Setter", "filters": [["doc_type", "in", ("Customer", "Notification Log")], ["property", "in", "options"]]},
     {"dt": "Role", "filters": [["name", "in", role_list]]},
