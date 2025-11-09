@@ -5,7 +5,9 @@ from mohan_impex.api import get_role_filter, get_self_filter_status, get_excepti
 import math
 from mohan_impex.mohan_impex.comment import get_comments
 from bs4 import BeautifulSoup
+from mohan_impex.api.auth import has_cp
 
+has_cp_app = has_cp()
 @frappe.whitelist()
 def complaints_list():
     try:
@@ -102,23 +104,29 @@ def complaints_form():
                 "doctype": complaints_doc.doctype,
                 "subject":  complaints_doc.subject,
                 "claim_type":  complaints_doc.claim_type,
-                "customer_level": complaints_doc.customer_level,
                 "customer": complaints_doc.customer,
                 "customer_name": complaints_doc.customer_name,
-                "contact": complaints_doc.contact_number,
                 "date": complaints_doc.opening_date,
-                "invoice_no": complaints_doc.invoice_no,
-                "invoice_date": complaints_doc.invoice_date,
-                "address": complaints_doc.address,
-                "address_line1": complaints_doc.address_line1,
-                "address_line2": complaints_doc.address_line2,
-                "district": complaints_doc.district,
-                "state": complaints_doc.state,
-                "pincode": complaints_doc.pincode,
-                "description": BeautifulSoup(complaints_doc.description, "html.parser").get_text(separator=" ").strip() if complaints_doc.description else "",
                 "workflow_state": complaints_doc.workflow_state,
                 "created_by_emp": complaints_doc.created_by_emp
             }
+            if has_cp_app:
+                complaints_dict["customer_level"] = complaints_doc.customer_level
+                if complaints_doc.customer_level == "Primary":
+                    complaints_dict.update({
+                        "invoice_no": complaints_doc.invoice_no,
+                        "invoice_date": complaints_doc.invoice_date,
+                    })
+                elif complaints_doc.customer_level == "Secondary":
+                    complaints_dict.update({
+                        "sales_order": complaints_doc.sales_order,
+                        "sales_order_date": complaints_doc.sales_order_date,
+                    })
+            else:
+                complaints_dict.update({
+                    "invoice_no": complaints_doc.invoice_no,
+                    "invoice_date": complaints_doc.invoice_date,
+                })
             complaint_item = []
             for item in complaints_doc.complaint_item:
                 complaint_item.append({
@@ -131,8 +139,6 @@ def complaints_form():
                     "mfd": item.mfd,
                 })
             complaints_dict["complaint_item"] = complaint_item
-            
-            
             complaint_reason = []
             for row in complaints_doc.reason_for_complaints:
                 complaint_reason.append({
@@ -140,11 +146,6 @@ def complaints_form():
                     "remarks":row.remarks
                 })
             complaints_dict["reason_for_complaints"] = complaint_reason
-            
-            
-            
-            
-            
             image_url = frappe.get_all("File", {"attached_to_name": complaints_name}, ["file_name","file_url"])
             site_url = frappe.utils.get_url()
             for url in image_url:
