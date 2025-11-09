@@ -6,6 +6,11 @@ from frappe.model.workflow import apply_workflow
 import math
 from mohan_impex.mohan_impex.comment import get_comments
 from mohan_impex.api import create_contact_number, get_address_text, get_self_filter_status, get_exception, get_workflow_statuses, has_create_perm
+from frappe import _dict
+from pprint import pprint
+from erpnext.stock.get_item_details import get_item_details as erpnext_get_item_details
+from erpnext.accounts.doctype.pricing_rule.pricing_rule import get_pricing_rule_for_item
+from mohan_impex.api.auth import has_cp
 
 @frappe.whitelist()
 def so_list():
@@ -158,25 +163,38 @@ def create_so():
     try:
         frappe.db.begin()
         response = {}
+        has_cp_app = has_cp()
         so_data = frappe.form_dict
         so_dict = {
-            "customer_level": so_data.get("customer_level"),
-            "custom_channel_partner": so_data.get("channel_partner") or "",
-            "cp_name": so_data.get("cp_name") or "",
             "customer": so_data.get("customer"),
             "customer_name": so_data.get("customer_name"),
             "custom_deal_type": so_data.get("deal_type"),
             "shop": so_data.get("shop"),
             "shop_name": so_data.get("shop_name"),
+            "customer_visit": so_data.get("customer_visit"),
             "contact_number": so_data.get("contact"),
             "delivery_date": so_data.get("delivery_date"),
+            "custom_delivery_term": so_data.get("delivery_term"),
+            "set_warehouse": so_data.get("warehouse"),
             "remarks": so_data.get("remarks"),
             "cust_edit_needed": so_data.get("cust_edit_needed"),
+            "shipping_address_name": so_data.get("shipping_address_name"),
             "created_by_emp": get_session_employee(),
             "territory": get_session_employee_area()
         }
+        if has_cp_app:
+            so_dict.update({
+                "customer_level": so_data.get("customer_level"),
+                "custom_channel_partner": so_data.get("channel_partner") or "",
+                "cp_name": so_data.get("cp_name") or "",
+            })
         # if so_data.get("channel_partner"):
         #     so_dict.update({"company": so_data.get("channel_partner")})
+        payment_term = so_dict.get("payment_term")
+        # payment_schedule = [{
+        #    "payment_term": payment_term, 
+        # }]
+        # so_dict.update({"payment_schedule": payment_schedule})
         items = []
         for item in so_data.get("items"):
             rate = get_item_category_price(item.get("item_code"), item.get("item_category"))
@@ -185,7 +203,10 @@ def create_so():
                 "item_code": item.get("item_code"),
                 "item_name": item.get("item_name"),
                 "qty": item.get("qty"),
-                "rate": rate
+                "uom": item.get("uom"),
+                "rate": item.get("rate") or 0,
+                "quote_custom_rate": item.get("quote_custom_rate") or 0, #This field type is check
+                "quoted_rate": item.get("quoted_rate") or 0,
             }
             items.append(item_dict)
         if so_data.get("contact"):
@@ -199,7 +220,7 @@ def create_so():
         else:
             so_dict.update({"doctype": "Sales Order"})
             doc = frappe.get_doc(so_dict)
-            doc.insert()
+            doc.insert(ignore_mandatory=True)
         message = "Sales Order form has been successfully created as Draft"
         if so_data.action == "Submit":
             apply_workflow(doc, "Submit")
@@ -214,7 +235,7 @@ def create_so():
     except Exception as err:
         frappe.db.rollback()
         frappe.log_error("SO", frappe.get_traceback())
-        get_exception(err)
+        # get_exception(err)
 
 def get_role_filter(emp, is_self=None, employee=None):
     from frappe.utils.nestedset import get_descendants_of
@@ -231,3 +252,75 @@ def get_role_filter(emp, is_self=None, employee=None):
         elif int(is_self) == 0:
             return f"""territory in ('{areas}') and (created_by_emp != '{emp.get('name')}' or created_by_emp is null) """
     return f"""territory in ('{areas}') """
+
+@frappe.whitelist()
+def get_addresses(customer, address_type):
+    try:
+        query = """
+            select a.name, a.address_title, a.address_line1, a.address_line2, a.city, a.district, a.state, a.pincode
+            from `tabAddress` a
+            inner join `tabDynamic Link` b on a.name = b.parent
+            where 
+                b.link_doctype = 'Customer' and b.link_name = "{customer}" and a.address_type = "{address_type}" and
+                b.parenttype = 'Address' and b.parentfield = 'links'
+        """.format(customer=customer, address_type=address_type)
+        address_list = frappe.db.sql(query, as_dict=1)
+        frappe.local.response['status'] = True
+        frappe.local.response['message'] = f"{address_type} addresses have been successfully fetched"
+        frappe.local.response['data'] = address_list
+    except Exception as err:
+        get_exception(err)
+
+
+@frappe.whitelist()
+def get_warehouses():
+    try:
+        company = frappe.defaults.get_defaults().get("company") or None
+        warehouses = frappe.get_all("Warehouse", {"disabled": "0", "company": company}, ["name", "warehouse_name"])
+        frappe.local.response['status'] = True
+        frappe.local.response['message'] = "Warehouses list has been successfully fetched"
+        frappe.local.response['data'] = warehouses
+    except Exception as err:
+        get_exception(err)
+
+import json
+@frappe.whitelist()
+def get_item_details(item_code, uom, customer, warehouse):
+    company = frappe.defaults.get_defaults().get("company") or None
+    currency = frappe.defaults.get_defaults().get("currency") or None
+    args = _dict({
+        "doctype": "Sales Order",
+        "company": company,
+        "price_list": "Standard Selling",
+        "customer": customer,
+        "item_code": item_code,
+        "qty": 1,
+        "uom": uom,
+        "currency":currency,
+        "transaction_type": "Selling",
+        "transaction_date": datetime.today().strftime('%Y-%m-%d'),
+        "warehouse": warehouse,
+        "condition": "custom_delivery_term == '50% payment required at the time of Deliverys' "
+    })
+    item_detail = erpnext_get_item_details(args)
+    rate = item_detail.price_list_rate
+    discount_percentage = item_detail.discount_percentage
+    discount_amount = item_detail.discount_amount
+    applied_discount_amount = 0
+    pricing_rules = json.loads(item_detail.get("pricing_rules") or "[]")
+    pricing_rule = ""
+    if len(pricing_rules) > 0:
+        pricing_rule = pricing_rules[0]
+        rate_or_discount = frappe.get_value("Pricing Rule", pricing_rule, "rate_or_discount")
+        if rate_or_discount == "Discount Percentage":
+            applied_discount_amount = rate * discount_percentage / 100
+        elif rate_or_discount == "Discount Amount":
+            applied_discount_amount = discount_amount
+    rate = rate - applied_discount_amount
+    tax_percentage = frappe.get_value("Item Tax Template", item_detail.item_tax_template, "gst_rate") or 0 # GST DEPENDENT
+    response = {
+        "rate": rate,
+        "pricing_rule": pricing_rule,
+        "tax_percentage": tax_percentage
+    }
+    return response
