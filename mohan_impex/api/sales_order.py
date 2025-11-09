@@ -12,6 +12,7 @@ from erpnext.stock.get_item_details import get_item_details as erpnext_get_item_
 from erpnext.accounts.doctype.pricing_rule.pricing_rule import get_pricing_rule_for_item
 from mohan_impex.api.auth import has_cp
 
+has_cp_app = has_cp()
 @frappe.whitelist()
 def so_list():
     try:
@@ -109,29 +110,51 @@ def so_form():
         so_dict = {
             "name": so_doc.name,
             "doctype": so_doc.doctype,
-            "customer_level": so_doc.customer_level,
             "customer": so_doc.customer,
             "customer_name": so_doc.customer_name,
             "shop": so_doc.shop,
             "shop_name": so_doc.shop_name,
             "delivery_date": so_doc.delivery_date,
-            "channel_partner": so_doc.custom_channel_partner,
-            "cp_name": so_doc.cp_name,
             "deal_type": so_doc.custom_deal_type,
             "location": so_doc.customer_address.rsplit('-', 1)[0] if so_doc.customer_address else "",
             "contact": so_doc.contact_number or "",
             "remarks": so_doc.remarks,
             "workflow_state": so_doc.workflow_state,
-            "cust_edit_needed": so_doc.cust_edit_needed
+            "cust_edit_needed": so_doc.cust_edit_needed,
+            "customer_visit": so_doc.customer_visit or "",
+            "delivery_term": so_doc.custom_delivery_term or "",
+            "warehouse": so_doc.set_warehouse,
         }
+        if has_cp_app:
+            so_dict.update({
+                "customer_level": so_doc.customer_level,
+                "channel_partner": so_doc.custom_channel_partner,
+                "cp_name": so_doc.cp_name,
+            })
+        if so_doc.shipping_address_name:
+            so_dict["shipping_address"] = frappe.db.get_values("Address", so_doc.shipping_address_name, ["name as shipping_address_name", "address_line1", "address_line2", "city", "district", "state", "pincode"], as_dict=1)
+        if so_doc.customer_address:
+            so_dict["billing_address"] = frappe.db.get_values("Address", so_doc.customer_address, ["name as billing_address_name", "address_line1", "address_line2", "city", "district", "state", "pincode"], as_dict=1)
         items_by_template = {}
-
+        tax_total = 0
+        item_total = 0
         for item in so_doc.items:
+            tax_percentage = frappe.get_value("Item Tax Template", item.item_tax_template, "gst_rate") or 0
+            tax_amount = item.amount * (tax_percentage / 100)
+            tax_total += tax_amount
+            item_total += item.amount
             item_dict = {
                 "name": item.name,
                 "item_code": item.item_code,
                 "item_name": item.item_name,
-                "qty": item.qty
+                "qty": item.qty,
+                "uom": item.uom,
+                "amount": item.amount,
+                "rate": item.rate,
+                "quote_custom_rate": item.quote_custom_rate or 0,
+                "quoted_rate": item.quoted_rate or 0,
+                "tax_percentage": tax_percentage, # GST DEPENDENT
+                "tax_amount": tax_amount,
             }
 
             template = item.item_template
@@ -145,6 +168,9 @@ def so_form():
 
         # Convert dictionary values to a list and update so_dict
         so_dict.update({"items": list(items_by_template.values())})
+        so_dict["gst_total_amount"] = tax_total
+        so_dict["item_total_amount"] = item_total
+        so_dict["grand_total_amount"] = item_total + tax_total
         activities = get_comments("Sales Order", so_dict["name"])
         so_dict["activities"] = activities
         is_self_filter = get_self_filter_status()
@@ -163,7 +189,6 @@ def create_so():
     try:
         frappe.db.begin()
         response = {}
-        has_cp_app = has_cp()
         so_data = frappe.form_dict
         so_dict = {
             "customer": so_data.get("customer"),
@@ -179,6 +204,7 @@ def create_so():
             "remarks": so_data.get("remarks"),
             "cust_edit_needed": so_data.get("cust_edit_needed"),
             "shipping_address_name": so_data.get("shipping_address_name"),
+            "customer_address": so_data.get("billing_address_name"),
             "created_by_emp": get_session_employee(),
             "territory": get_session_employee_area()
         }

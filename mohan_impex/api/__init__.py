@@ -674,13 +674,14 @@ def get_employee_list(area, role_profile=None):
 def get_exception(err):
     frappe.local.response['http_status_code'] = 404
     frappe.local.response['status'] = False
-    if len(frappe.local.message_log) > 0:
-        err = frappe.local.message_log[0].get("message") or err
-    soup = BeautifulSoup(err, "html.parser")
-    for br in soup.find_all("br"):
-        br.replace_with(". ")
-    err = soup.get_text()
-    frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+    frappe.log_error(title="API Error", message=frappe.get_traceback())
+    # if len(frappe.local.message_log) > 0:
+    #     err = frappe.local.message_log[0].get("message") or err
+    # soup = BeautifulSoup(err, "html.parser")
+    # for br in soup.find_all("br"):
+    #     br.replace_with(". ")
+    # err = soup.get_text()
+    frappe.local.response['message'] = frappe.local.response.get('message')
 
 def get_workflow_statuses(doctype, doc_name, role):
     doc = frappe.get_doc(doctype, doc_name)
