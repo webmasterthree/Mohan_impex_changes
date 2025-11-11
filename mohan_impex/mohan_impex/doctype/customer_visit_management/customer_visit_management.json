@@ -92,7 +92,6 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Customer",
-   "mandatory_depends_on": "eval:((doc.customer_level === \"Primary\" && doc.verific_type === \"Verified\") || doc.customer_level === \"Secondary\")",
    "options": "Customer"
   },
   {

@@ -119,7 +119,7 @@ def my_customer_form():
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "Please give valid Customer ID"
             return
-        cus_doc = frappe.get_value("Customer", {"name": customer_name}, ["name", "customer_name", "custom_shop_name as shop_name", "customer_primary_address", "mobile_no"], as_dict=True)
+        cus_doc = frappe.get_value("Customer", {"name": customer_name}, ["name", "customer_name", "custom_shop_name as shop_name", "customer_primary_address", "mobile_no", "proposed_credit"], as_dict=True)
         location = frappe.get_value("Address", {"name": cus_doc["customer_primary_address"]}, ["name","address_title", "address_line1", "address_line2", "city", "state", "pincode"], as_dict=True)
         cus_doc.pop("customer_primary_address")
         cus_doc["location"] = location
@@ -132,6 +132,7 @@ def my_customer_form():
         cus_doc["last_billing_rate"] = frappe.get_value("Sales Invoice", {"customer": customer_name}, "grand_total") or 0
         cus_doc["consumption_info"] = get_customer_segment_info(cus_doc["name"])
         cus_doc["change_requests"] = get_change_request(cus_doc["name"])
+        cus_doc["credit_days"], cus_doc["credit_limit"] = get_credit_days_and_limit(cus_doc["name"])
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "KYC form has been successfully fetched"
         frappe.local.response['data'] = [cus_doc]
@@ -231,3 +232,13 @@ def get_change_request(customer_id):
 def get_customer_segment_info(customer_id):
     consumption_info = frappe.db.get_all("Customer Consumption Info", {"parent": customer_id, "parenttype": "Customer", "parentfield": "customer_consumption_info"}, ["segment", "product_name", "category_type", "consumption_qty", "uom"])
     return consumption_info
+
+def get_credit_days_and_limit(customer_id):
+    company = frappe.defaults.get_defaults().get("company")
+    credit_limit_doc = frappe.db.get_value("Customer Credit Limit", {"company": company, "parent": customer_id}, ["credit_days", "credit_limit"])
+    if credit_limit_doc:
+        credit_days, credit_limit = credit_limit_doc
+    else:
+        credit_days = 0
+        credit_limit = 0
+    return credit_days, credit_limit
