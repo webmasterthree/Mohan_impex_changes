@@ -4,6 +4,8 @@ import math
 from mohan_impex.mohan_impex.comment import get_comments
 from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception, get_workflow_statuses, has_create_perm
 
+
+
 @frappe.whitelist()
 def journey_plan_list():
     try:
@@ -12,59 +14,105 @@ def journey_plan_list():
         is_self = frappe.form_dict.get("is_self")
         other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
+
+        # Basic validations
         if not tab:
             frappe.local.response['http_status_code'] = 404
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "Please give the list tab"
             return
+
         if not limit or not current_page:
             frappe.local.response['http_status_code'] = 404
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "Either limit or current page is missing"
             return
+
+        # Pagination
         current_page = int(current_page)
         limit = int(limit)
         offset = limit * (current_page - 1)
-        pagination = "limit %s offset %s"%(limit, offset)
+        pagination = "limit %s offset %s" % (limit, offset)
+
+        # Tab filter (workflow)
         if tab == "Pending":
-            tab_filter = 'workflow_state != "Approved"'
+            tab_filter = 'jp.workflow_state != "Approved"'
         else:
-            tab_filter = 'workflow_state = "%s"'%(tab)
-        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)
+            tab_filter = 'jp.workflow_state = "%s"' % (tab)
+
+        # Role visibility filter
+        emp = frappe.get_value(
+            "Employee",
+            {"user_id": frappe.session.user},
+            ["name", "area", "role_profile"],
+            as_dict=True,
+        )
         role_filter = get_role_filter(emp, is_self, other_employee)
         is_self_filter = get_self_filter_status()
-        order_by = " order by creation desc "
+        order_by = " order by jp.creation desc "
+
+        # Base query
         query = """
-            select name, created_date, IF(workflow_state='Approved', approved_date, IF(workflow_state='Rejected', rejected_date, created_date)) AS status_date, workflow_state as status, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count
-            from `tabJourney Plan`
-            where {tab_filter} and {role_filter} 
+            SELECT 
+                jp.name, 
+                jp.created_date,
+                jp.visit_date,
+                IF(jp.workflow_state='Approved', jp.approved_date, 
+                   IF(jp.workflow_state='Rejected', jp.rejected_date, jp.created_date)) AS status_date, 
+                jp.workflow_state AS status, 
+                jp.created_by_emp, 
+                jp.created_by_name, 
+                COUNT(*) OVER() AS total_count
+            FROM `tabJourney Plan` jp
+            LEFT JOIN `tabTrips` t ON t.parent = jp.name
+            WHERE {tab_filter} AND {role_filter}
         """.format(tab_filter=tab_filter, role_filter=role_filter)
+
+        # Frontend → DB field map
         filter_checks = {
-            "date": "date",
-            "status": "status",
-            "nature_of_travel": "nature_of_travel",
-            "mode_of_travel": "mode_of_travel"
+            # Only visit_date is used for the date filter now
+            "date": "jp.visit_date",
+            "status": "jp.workflow_state",
+            "nature_of_travel": "jp.nature_of_travel",
+            "mode_of_travel": "t.mode_of_travel",  # child table field
         }
+
+        # Free text search on docname
         if frappe.form_dict.get("search_text"):
-            or_filters = """AND (name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
-            query += or_filters
+            search_text = frappe.form_dict.get("search_text")
+            query += ' AND (jp.name LIKE "%{0}%")'.format(search_text)
+
+        # Structured filters (date → jp.visit_date only)
         and_filters = []
         for key, value in filter_checks.items():
-            if frappe.form_dict.get(key) and key == "date":
-                and_filters.append(""" visit_from_date <= "{0}" AND visit_to_date >= "{0}" """.format(frappe.form_dict[key]))
-            elif frappe.form_dict.get(key):
-                and_filters.append("""{0} = "{1}" """.format(value, frappe.form_dict[key]))
-        and_filters = " AND ".join(and_filters)
-        query += """ AND ({0})""".format(and_filters) if and_filters else ""
+            if frappe.form_dict.get(key):
+                if key == "date":
+                    date_val = frappe.form_dict[key]
+                    and_filters.append(' {0} = "{1}" '.format(value, date_val))
+                else:
+                    and_filters.append(' {0} = "{1}" '.format(value, frappe.form_dict[key]))
+
+        if and_filters:
+            query += " AND (" + " AND ".join(and_filters) + ")"
+
+        # Finalize query
         query += order_by
         query += pagination
+
+        # Execute
         journey_info = frappe.db.sql(query, as_dict=True)
+
+        # Add form URL per record
+        base_url = frappe.utils.get_url()
         for journey in journey_info:
-            journey["form_url"] = f"{frappe.utils.get_url()}/api/method/mohan_impex.api.journey_plan.journey_form?name={journey['name']}"
-        total_count = 0
-        if journey_info:
-            total_count = journey_info[0]["total_count"]
-        page_count = math.ceil(total_count / int(limit))
+            journey["form_url"] = (
+                f"{base_url}/api/method/mohan_impex.api.journey_plan.journey_form?name={journey['name']}"
+            )
+
+        # Pagination metadata
+        total_count = journey_info[0]["total_count"] if journey_info else 0
+        page_count = math.ceil(total_count / int(limit)) if limit else 0
+
         response = [
             {
                 "records": journey_info,
@@ -72,16 +120,19 @@ def journey_plan_list():
                 "page_count": page_count,
                 "current_page": current_page,
                 "has_toggle_filter": is_self_filter,
-                "create": has_create_perm("Journey Plan")
+                "create": has_create_perm("Journey Plan"),
             }
         ]
-        # if frappe.has_permission("Journey Plan", "create"):
-        #     response["create_perm"] = True
+
+        # API response
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Journey Plan list has been successfully fetched"
         frappe.local.response['data'] = response
+
     except Exception as err:
         get_exception(err)
+
+
 
 @frappe.whitelist()
 def journey_plan_form():
