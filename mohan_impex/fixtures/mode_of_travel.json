@@ -1,0 +1,107 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Bike",
+  "modified": "2025-11-15 14:18:47.095445",
+  "name": "Bike",
+  "roles": [
+   {
+    "parent": "Bike",
+    "parentfield": "roles",
+    "parenttype": "Mode of Travel",
+    "role": "SE"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Taxi",
+  "modified": "2025-11-15 15:02:03.194365",
+  "name": "Taxi",
+  "roles": [
+   {
+    "parent": "Taxi",
+    "parentfield": "roles",
+    "parenttype": "Mode of Travel",
+    "role": "SE"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Auto/Toto",
+  "modified": "2025-11-15 15:02:14.366717",
+  "name": "Auto/Toto",
+  "roles": [
+   {
+    "parent": "Auto/Toto",
+    "parentfield": "roles",
+    "parenttype": "Mode of Travel",
+    "role": "SE"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Bus",
+  "modified": "2025-11-15 15:02:23.749534",
+  "name": "Bus",
+  "roles": [
+   {
+    "parent": "Bus",
+    "parentfield": "roles",
+    "parenttype": "Mode of Travel",
+    "role": "SE"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Train",
+  "modified": "2025-11-15 15:02:31.648726",
+  "name": "Train",
+  "roles": [
+   {
+    "parent": "Train",
+    "parentfield": "roles",
+    "parenttype": "Mode of Travel",
+    "role": "SE"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Metro",
+  "modified": "2025-11-15 15:02:38.638224",
+  "name": "Metro",
+  "roles": [
+   {
+    "parent": "Metro",
+    "parentfield": "roles",
+    "parenttype": "Mode of Travel",
+    "role": "SE"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Flight",
+  "modified": "2025-11-15 15:02:48.513029",
+  "name": "Flight",
+  "roles": [
+   {
+    "parent": "Flight",
+    "parentfield": "roles",
+    "parenttype": "Mode of Travel",
+    "role": "ASM"
+   }
+  ]
+ }
+]

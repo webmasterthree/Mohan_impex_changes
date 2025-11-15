@@ -6,7 +6,6 @@
   "is_multiple_area_management": 0,
   "modified": "2025-09-29 09:14:16.601877",
   "name": "ZSM",
-  "role_full_name": null,
   "role_profile": "ZSM",
   "roles": [
    {
@@ -72,7 +71,6 @@
   "is_multiple_area_management": 0,
   "modified": "2025-04-09 20:32:17.066994",
   "name": "CP",
-  "role_full_name": null,
   "role_profile": "CP",
   "roles": [
    {
@@ -120,7 +118,6 @@
   "is_multiple_area_management": 0,
   "modified": "2025-09-29 09:14:31.891661",
   "name": "TSM",
-  "role_full_name": null,
   "role_profile": "TSM",
   "roles": [
    {
@@ -138,7 +135,6 @@
   "is_multiple_area_management": 0,
   "modified": "2025-09-29 09:14:28.384966",
   "name": "RSM",
-  "role_full_name": null,
   "role_profile": "RSM",
   "roles": [
    {
@@ -204,7 +200,6 @@
   "is_multiple_area_management": 0,
   "modified": "2025-09-29 09:14:23.730347",
   "name": "ASM",
-  "role_full_name": null,
   "role_profile": "ASM",
   "roles": [
    {
@@ -282,7 +277,6 @@
   "is_multiple_area_management": 0,
   "modified": "2025-09-29 09:14:20.167454",
   "name": "NSM",
-  "role_full_name": null,
   "role_profile": "NSM",
   "roles": [
    {
@@ -360,7 +354,6 @@
   "is_multiple_area_management": 0,
   "modified": "2025-09-27 19:09:21.631233",
   "name": "SE",
-  "role_full_name": null,
   "role_profile": "SE",
   "roles": [
    {

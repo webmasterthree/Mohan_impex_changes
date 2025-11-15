@@ -714,6 +714,7 @@ def get_exception(err="Error", message="", data={}):
     if data:
         frappe.log_error(title=f"{message} Data" or "API Error Data", message=data)
     frappe.local.response['message'] = message or frappe.local.response.get('message')
+    frappe.errprint(frappe.get_traceback())
     return
 
 def get_workflow_statuses(doctype, doc_name, role):
@@ -890,3 +891,31 @@ def convert_to_12_hour(db_time):
         time_str = time_str.split(".")[0]
     time_obj = datetime.strptime(time_str, "%H:%M:%S")
     return time_obj.strftime("%I:%M:%S %p")
+
+@frappe.whitelist()
+def get_modes_of_travel(user: str | None = None):
+    user = user or frappe.session.user
+    roles = frappe.get_roles(user)
+
+    if not roles:
+        return []
+    parents = frappe.get_all(
+        "Role Item",
+        filters={
+            "parenttype": "Mode of Travel",
+            "parentfield": "roles",
+            "role": ["in", roles],
+        },
+        pluck="parent",
+        distinct=True,
+    )
+    # keep a stable order
+    if not parents:
+        return []
+
+    all_modes = set(parents)
+    # Optional: ensure only existing Mode of Travel names are returned (and sorted)
+    existing = frappe.get_all("Mode of Travel", filters={"name": ["in", list(all_modes)]}, pluck="name")
+    frappe.local.response["status"] = True
+    frappe.local.response["message"] = "Mode of Travel list has been fetched successfully"
+    frappe.local.response["data"] = sorted(existing)

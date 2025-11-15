@@ -134,7 +134,7 @@ def journey_plan_list():
 
 
 
-@frappe.whitelist()
+@frappe.whitelist(methods=["GET"])
 def journey_plan_form():
     journey_name = frappe.form_dict.get("name")
     try:
@@ -144,20 +144,39 @@ def journey_plan_form():
                 frappe.local.response['status'] = False
                 frappe.local.response['message'] = "Please give valid Journey Plan ID"
                 return
-            journey_doc = frappe.get_doc("Journey Plan", journey_name)
-            journey_doc = journey_doc.as_dict()
-            activities = get_comments("Journey Plan", journey_doc["name"])
-            journey_doc["activities"] = activities
-            is_self_filter = get_self_filter_status()
-            journey_doc["status_fields"] = get_workflow_statuses("Journey Plan", journey_name, get_session_emp_role())
-            journey_doc["has_toggle_filter"] = is_self_filter
-            journey_doc["created_person_mobile_no"] = frappe.get_value("Employee", journey_doc.get("created_by_emp"), "custom_personal_mobile_number")
-            frappe.local.response['status'] = True
-            frappe.local.response['message'] = "Journey Plan form has been successfully fetched"
-            frappe.local.response['data'] = [journey_doc]
+            doc = frappe.get_doc("Journey Plan", journey_name)
+            trips = frappe.db.get_all(
+                "Trips",
+                fields=[
+                    "name", "idx",
+                    "primary_customer", "secondary_customer",
+                    "mode_of_travel",
+                    "travel_state_from", "travel_from_district", "travel_from_city",
+                    "travel_to_state", "travel_to_district", "travel_to_city",
+                ],
+                filters={"parent": doc.name, "parenttype": "Journey Plan"},
+                order_by="idx asc"
+            )
+            # Convert CSV to list
+            def csv_to_list(customers):
+                if not customers:
+                    return []
+                return [customer.strip() for customer in str(customers).split(",") if customer.strip()]
+
+            for trip in trips:
+                trip["primary_customer"] = csv_to_list(trip.get("primary_customer"))
+                trip["secondary_customer"] = csv_to_list(trip.get("secondary_customer"))
+
+            return {
+                "name": doc.name,
+                "visit_date": doc.get("visit_date"),
+                "nature_of_travel": doc.get("nature_of_travel"),
+                "remarks": doc.get("remarks"),
+                "trips": trips,
+            }
     except Exception as err:
-        get_exception(err)
-    
+        get_exception(err, message="JOURNEY PLAN FORM ERROR", data={"name": journey_name})
+
 @frappe.whitelist()
 def create_journey_plan():
     journey_plan_data = frappe.form_dict

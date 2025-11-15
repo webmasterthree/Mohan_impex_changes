@@ -21,7 +21,9 @@ fixtures = [
     "Workflow State",
     "Workflow Action Master",
     "Print Format",
-    "Server Script"
+    "Server Script",
+    "Mode of Travel",
+    "Role Item",
 ]
 
 doctype_js ={
