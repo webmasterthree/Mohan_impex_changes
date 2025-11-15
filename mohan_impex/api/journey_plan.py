@@ -178,3 +178,81 @@ def create_journey_plan():
         frappe.local.response['data'] = [response]
     except Exception as err:
         get_exception(err)
+
+
+@frappe.whitelist(methods=["POST"])
+def update_journey_plan():
+    try:
+        payload = frappe.request.get_json(silent=True) or {}
+        journey_name = payload.get("name") or frappe.form_dict.get("name")
+
+        if not journey_name:
+            frappe.local.response["http_status_code"] = 400
+            frappe.local.response["status"] = False
+            frappe.local.response["message"] = "Please provide Journey Plan ID in 'name'."
+            return
+
+        if not frappe.db.exists("Journey Plan", journey_name):
+            frappe.local.response["http_status_code"] = 404
+            frappe.local.response["status"] = False
+            frappe.local.response["message"] = "Please give valid Journey Plan ID"
+            return
+
+        doc = frappe.get_doc("Journey Plan", journey_name)
+
+        header_fields = [
+            "visit_date",
+            "nature_of_travel",
+            "remarks",
+            "area",
+            "workflow_state",
+            "approved_date",
+            "rejected_date",
+        ]
+        for field in header_fields:
+            if field in payload:
+                doc.set(field, payload[field])
+
+        doc.workflow_state = "Pending"
+        doc.status = "Pending"
+
+        if "trips" in payload and isinstance(payload["trips"], list):
+            doc.set("trips", [])
+            for row in payload["trips"]:
+                doc.append("trips", {
+                    "primary_customer": row.get("primary_customer"),
+                    "secondary_customer": row.get("secondary_customer"),
+                    "mode_of_travel": row.get("mode_of_travel"),
+                    "travel_state_from": row.get("travel_state_from"),
+                    "travel_from_district": row.get("travel_from_district"),
+                    "travel_from_city": row.get("travel_from_city"),
+                    "travel_to_state": row.get("travel_to_state"),
+                    "travel_to_district": row.get("travel_to_district"),
+                    "travel_to_city": row.get("travel_to_city"),
+                })
+
+        doc.save(ignore_permissions=True)
+        frappe.db.commit()
+
+        journey_doc = doc.as_dict()
+        activities = get_comments("Journey Plan", journey_doc["name"])
+        journey_doc["activities"] = activities
+
+        is_self_filter = get_self_filter_status()
+        journey_doc["status_fields"] = get_workflow_statuses(
+            "Journey Plan", journey_name, get_session_emp_role()
+        )
+        journey_doc["has_toggle_filter"] = is_self_filter
+
+        journey_doc["created_person_mobile_no"] = frappe.get_value(
+            "Employee",
+            journey_doc.get("created_by_emp"),
+            "custom_personal_mobile_number",
+        )
+
+        frappe.local.response["status"] = True
+        frappe.local.response["message"] = "Journey Plan has been successfully updated"
+        frappe.local.response["data"] = [journey_doc]
+
+    except Exception as err:
+        get_exception(err)
