@@ -549,6 +549,7 @@ def is_within_range(origin, destination):
     try:
         api_key = frappe.get_single("Google Settings").api_key
         if not api_key:
+            get_exception(err="Error", message="NO API_KEY found in Google Settings")
             frappe.local.response['http_status_code'] = 404
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "NO API_KEY found in Google Settings"
@@ -641,6 +642,29 @@ def get_sales_invoice_items(sales_invoice):
     frappe.local.response['message'] = "Sales Invoice Items has been fetched successfully"
     frappe.local.response['data'] = si_items
 
+@frappe.whitelist()
+def get_sales_orders(customer):
+    query = """
+        SELECT so.name, transaction_date as date
+        FROM `tabSales Order` so
+        JOIN `tabCustomer Visit Management` cv ON so.customer_visit = cv.name
+        WHERE so.customer = %s
+    """
+    params = (customer,)
+    # Print final query with params
+    # frappe.errprint(frappe.db.mogrify(query, params))
+    sales_orders = frappe.db.sql(query, params, as_dict=1)
+    frappe.local.response['status'] = True
+    frappe.local.response['message'] = "Sales Order list has been fetched successfully"
+    frappe.local.response['data'] = sales_orders
+
+@frappe.whitelist()
+def get_sales_order_items(sales_order):
+    so_items = frappe.get_all("Sales Order Item", {"parent": sales_order}, ["item_code", "item_name", "qty", "amount"])
+    frappe.local.response['status'] = True
+    frappe.local.response['message'] = "Sales Order Items has been fetched successfully"
+    frappe.local.response['data'] = so_items
+
 def get_address_text(address_name):
     addr_doc = frappe.get_doc("Address", address_name)
     address_text = ""
@@ -671,17 +695,14 @@ def get_employee_list(area, role_profile=None):
     except Exception as err:
         get_exception(err)
     
-def get_exception(err):
+def get_exception(err, message="", data={}):
     frappe.local.response['http_status_code'] = 404
     frappe.local.response['status'] = False
-    frappe.log_error(title="API Error", message=frappe.get_traceback())
-    # if len(frappe.local.message_log) > 0:
-    #     err = frappe.local.message_log[0].get("message") or err
-    # soup = BeautifulSoup(err, "html.parser")
-    # for br in soup.find_all("br"):
-    #     br.replace_with(". ")
-    # err = soup.get_text()
-    frappe.local.response['message'] = frappe.local.response.get('message')
+    frappe.log_error(title=message or "API Error", message=frappe.get_traceback())
+    if data:
+        frappe.log_error(title=f"{message} Data" or "API Error Data", message=data)
+    frappe.local.response['message'] = message or frappe.local.response.get('message')
+    return
 
 def get_workflow_statuses(doctype, doc_name, role):
     doc = frappe.get_doc(doctype, doc_name)

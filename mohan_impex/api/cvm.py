@@ -55,7 +55,7 @@ def cvm_list():
             "has_trial_plan": "has_trial_plan"
         }
         or_filters = []
-        if frappe.form_dict.get("kyc_status"):
+        if frappe.form_dict.get("kyc_status") and has_cp():
             frappe.form_dict["visit_type"] = "Primary"
         if frappe.form_dict.get("search_text"):
             or_filters = """AND (shop_name LIKE "%{search_text}%" or cl.contact LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
@@ -185,7 +185,7 @@ def create_cvm():
                 created_contact.append(contact["contact"])
             product_consump_info = []
             for consump_info in cvm_data.product_consumption_info:
-                category_type = calculate_category_type(consump_info["segment"], consump_info["product_name"], consump_info["consumption_qty"])
+                category_type = calculate_category_type(consump_info["segment"], consump_info["product_name"], consump_info["consumption_qty"], cvm_data.get("customer_level"))
                 if category_type:
                     consump_info["category_type"] = category_type
                     product_consump_info.append(consump_info)
@@ -278,10 +278,11 @@ def create_cvm():
         frappe.db.rollback()
         get_exception(err)
 
-def calculate_category_type(segment, product_name, qty):
-    frappe.errprint({"parent": segment, "product_name": product_name, "from_qty": ("<=", qty), "to_qty": (">=", qty)})
-    category_type = frappe.get_value("Base Product", {"parent": segment, "product_name": product_name, "from_qty": ("<=", qty), "to_qty": (">=", qty)}, "category_type") or ""
-    frappe.errprint(category_type)
+def calculate_category_type(segment, product_name, qty, customer_level):
+    filter = {"parent": segment, "product_name": product_name, "from_qty": ("<=", qty), "to_qty": (">=", qty)}
+    if customer_level:
+        filter.update({"customer_level": customer_level})
+    category_type = frappe.get_value("Base Product", filter, "category_type") or ""
     return category_type
 
 def create_shop(shop, shop_name):

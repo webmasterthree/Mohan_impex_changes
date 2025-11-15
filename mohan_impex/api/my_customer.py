@@ -29,7 +29,7 @@ def my_customer_list():
         limit = int(limit)
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
-        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
+        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "user_id"], as_dict=True)
         role_filter = get_role_filter(emp, is_self, other_employee)
         is_self_filter = get_self_filter_status()
         si_join = ""
