@@ -380,10 +380,11 @@ def get_customer_list(search_text=""):
     filters = {}
     if search_text:
         filters.update({"search_text": search_text})
-    if frappe.form_dict.get("channel_partner"):
-        filters.update({"channel_partner": frappe.form_dict.get("channel_partner")})
-    if frappe.form_dict.get("customer_level"):
-        filters.update({"customer_level": frappe.form_dict.get("customer_level")})
+    if has_cp():
+        if frappe.form_dict.get("channel_partner"):
+            filters.update({"channel_partner": frappe.form_dict.get("channel_partner")})
+        if frappe.form_dict.get("customer_level"):
+            filters.update({"customer_level": frappe.form_dict.get("customer_level")})
     if frappe.form_dict.get("show_area_records"):
         filters.update({"show_area_records": frappe.form_dict.get("show_area_records")})
     if frappe.form_dict.get("verification_type"):

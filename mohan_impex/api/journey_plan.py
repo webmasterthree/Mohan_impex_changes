@@ -3,7 +3,7 @@ from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session
 import math
 from mohan_impex.mohan_impex.comment import get_comments
 from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception, get_workflow_statuses, has_create_perm
-
+from mohan_impex.api.auth import has_cp
 
 
 @frappe.whitelist()
@@ -132,8 +132,6 @@ def journey_plan_list():
     except Exception as err:
         get_exception(err)
 
-
-
 @frappe.whitelist(methods=["GET"])
 def journey_plan_form():
     journey_name = frappe.form_dict.get("name")
@@ -145,15 +143,18 @@ def journey_plan_form():
                 frappe.local.response['message'] = "Please give valid Journey Plan ID"
                 return
             doc = frappe.get_doc("Journey Plan", journey_name)
+            fields = [
+                "name", "idx",
+                "primary_customer",
+                "mode_of_travel",
+                "travel_state_from", "travel_from_district", "travel_from_city",
+                "travel_to_state", "travel_to_district", "travel_to_city",
+            ]
+            if has_cp():
+                fields.insert(3, "secondary_customer")
             trips = frappe.db.get_all(
                 "Trips",
-                fields=[
-                    "name", "idx",
-                    "primary_customer", "secondary_customer",
-                    "mode_of_travel",
-                    "travel_state_from", "travel_from_district", "travel_from_city",
-                    "travel_to_state", "travel_to_district", "travel_to_city",
-                ],
+                fields=fields,
                 filters={"parent": doc.name, "parenttype": "Journey Plan"},
                 order_by="idx asc"
             )
@@ -165,7 +166,8 @@ def journey_plan_form():
 
             for trip in trips:
                 trip["primary_customer"] = csv_to_list(trip.get("primary_customer"))
-                trip["secondary_customer"] = csv_to_list(trip.get("secondary_customer"))
+                if has_cp():
+                    trip["secondary_customer"] = csv_to_list(trip.get("secondary_customer"))
 
             return {
                 "name": doc.name,
@@ -238,9 +240,8 @@ def update_journey_plan():
         if "trips" in payload and isinstance(payload["trips"], list):
             doc.set("trips", [])
             for row in payload["trips"]:
-                doc.append("trips", {
+                trip_dict = {
                     "primary_customer": row.get("primary_customer"),
-                    "secondary_customer": row.get("secondary_customer"),
                     "mode_of_travel": row.get("mode_of_travel"),
                     "travel_state_from": row.get("travel_state_from"),
                     "travel_from_district": row.get("travel_from_district"),
@@ -248,7 +249,10 @@ def update_journey_plan():
                     "travel_to_state": row.get("travel_to_state"),
                     "travel_to_district": row.get("travel_to_district"),
                     "travel_to_city": row.get("travel_to_city"),
-                })
+                }
+                if has_cp():
+                    trip_dict["secondary_customer"] = row.get("secondary_customer")
+                doc.append("trips", trip_dict)
 
         doc.save(ignore_permissions=True)
         frappe.db.commit()

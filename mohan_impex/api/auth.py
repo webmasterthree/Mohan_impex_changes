@@ -192,6 +192,7 @@ def download_zip(files, output_filename):
 	frappe.local.response.type = "download"
 	zip_stream.close()
 
+@frappe.whitelist()
 def has_cp():
     """Check if fmcg_cp app is installed"""
     installed_apps = frappe.get_installed_apps()
