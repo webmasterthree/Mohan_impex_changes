@@ -8,7 +8,7 @@ import frappe
 from mohan_impex.item_price import get_item_category_price
 from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session_employee
 from datetime import datetime
-
+from mohan_impex.api.auth import has_cp
 class CustomerVisitManagement(Document):
     def before_save(self):
         emp = frappe.get_value('Employee', "user_id", frappe.user, "name")
@@ -50,7 +50,8 @@ class CustomerVisitManagement(Document):
         is_kyc_done = False
         customer_url = ""
         if self.verific_type == "Verified":
-            if self.customer_level == "Primary":
+            if not has_cp() or (has_cp() and self.get("customer_level") == "Primary"):
+            # if self.customer_level == "Primary":
                 kyc_status = frappe.get_value("Customer", self.customer, "kyc_status")
                 customer_url = frappe.utils.get_url_to_form("Customer", self.customer)
                 if kyc_status == "Completed":
