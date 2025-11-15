@@ -5,13 +5,11 @@ frappe.ui.form.on('Journey Plan', {
     setup(frm) {
         // Warm both caches early
         preload_primary_customers();
-        preload_secondary_customers();
     },
     refresh(frm) {
         // Ensure caches are ready, then bind focus handlers once
-        Promise.all([preload_primary_customers(), preload_secondary_customers()]).then(() => {
+        Promise.all([preload_primary_customers()]).then(() => {
             bind_primary_focus_handler(frm);
-            bind_secondary_focus_handler(frm);
         });
     },
     onload(frm) {
@@ -52,20 +50,32 @@ function set_session_employee(frm){
 
 // Caches & bind flags
 let __PRIMARY_CACHE = [];
-let __SECONDARY_CACHE = [];
 let __PRIMARY_BIND_DONE = false;
-let __SECONDARY_BIND_DONE = false;
 
+// Get value from mohans_impex/api/auth.py
+function has_cp() {
+    return new Promise((resolve, reject) => {
+        frappe.call({
+            method: 'mohan_impex.api.auth.has_cp',
+            callback: (r) => {
+                return resolve(r.message);
+            }
+        });
+    });
+}
 // Load once and cache the list of Primary customers
 function preload_primary_customers() {
     if (__PRIMARY_CACHE.length) return Promise.resolve(__PRIMARY_CACHE);
-
+    filters = {}
+    if (has_cp()) {
+        filters = { customer_level: 'Primary' }
+    }
     return new Promise((resolve) => {
         frappe.call({
             method: 'frappe.client.get_list',
             args: {
                 doctype: 'Customer',
-                filters: { customer_level: 'Primary' },
+                filters: filters,
                 fields: ['name'],
                 order_by: 'name asc',
                 limit_page_length: 1000
@@ -73,29 +83,6 @@ function preload_primary_customers() {
             callback: (r) => {
                 __PRIMARY_CACHE = (r.message || []).map(d => d.name);
                 resolve(__PRIMARY_CACHE);
-            },
-            error: () => resolve([])
-        });
-    });
-}
-
-// Load once and cache the list of Secondary customers
-function preload_secondary_customers() {
-    if (__SECONDARY_CACHE.length) return Promise.resolve(__SECONDARY_CACHE);
-
-    return new Promise((resolve) => {
-        frappe.call({
-            method: 'frappe.client.get_list',
-            args: {
-                doctype: 'Customer',
-                filters: { customer_level: 'Secondary' },
-                fields: ['name'],
-                order_by: 'name asc',
-                limit_page_length: 1000
-            },
-            callback: (r) => {
-                __SECONDARY_CACHE = (r.message || []).map(d => d.name);
-                resolve(__SECONDARY_CACHE);
             },
             error: () => resolve([])
         });
@@ -190,33 +177,4 @@ function bind_primary_focus_handler(frm) {
     );
 
     __PRIMARY_BIND_DONE = true;
-}
-
-// ---- Secondary Customer: focus binding ----
-function bind_secondary_focus_handler(frm) {
-    const grid = frm.fields_dict?.trips?.grid;
-    if (!grid || __SECONDARY_BIND_DONE) return;
-
-    $(grid.wrapper).on(
-        'focus',
-        'input[data-fieldname="secondary_customer"], textarea[data-fieldname="secondary_customer"]',
-        function (e) {
-            const $row = $(this).closest('.grid-row');
-            const cdn = $row.attr('data-name');
-            const cdt = grid.doctype;
-            if (!cdn || !cdt) return;
-
-            e.preventDefault();
-            $(this).blur();
-
-            open_customer_picker_dialog({
-                frm, cdt, cdn,
-                fieldname: 'secondary_customer',
-                title: __('Select Secondary Customers'),
-                options_source: () => __SECONDARY_CACHE
-            });
-        }
-    );
-
-    __SECONDARY_BIND_DONE = true;
 }
