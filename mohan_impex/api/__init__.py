@@ -768,7 +768,7 @@ def add_notification_from_comment(doc, method):
     except Exception as e:
         frappe.log_error(message=frappe.get_traceback(), title="Notification Log from Comment Error")
 
-def create_notification_log(doc, users_list, title, body):
+def create_notification_log(doc, users_list, title, body, doctype=None, docname=None):
     for user in users_list:
         notify_doc = frappe.new_doc("Notification Log")
         notify_doc.update({
@@ -776,8 +776,8 @@ def create_notification_log(doc, users_list, title, body):
             "read": 0,
             "subject": title,
             "email_content": body,
-            "document_type" : doc.reference_doctype,
-            "document_name": doc.reference_name
+            "document_type" : doctype or doc.reference_doctype,
+            "document_name": docname or doc.reference_name
         })
         notify_doc.insert(ignore_permissions=True)
 
@@ -794,7 +794,7 @@ def get_parent_areas(area):
     return parent_areas
 
 def send_notification(doc, method):
-    doctype_lists = ["Customer Visit Management", "Trial Plan", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan"]
+    doctype_lists = ["Customer Visit Management", "Trial Plan", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan", "Announcement"]
     if doc.document_type in doctype_lists and doc.type in ("", "Assignment"):
         role_profile = frappe.get_value("User", doc.for_user, "role_profile_name")
         if doc.for_user and doc.for_user != "Administrator":
@@ -812,15 +812,19 @@ def send_notification(doc, method):
 
 @frappe.whitelist()
 def send_push_notification(for_user, device_token, title, body, data=None):
-    service_account_path = 'mohan-impex-erp-551f3-1f9a5f51dd38.json'
-
-    project_id = 'mohan-impex-erp-551f3'
+    settings = frappe.get_single("MI Push Notification Settings")
+    if settings.enabled == 0:
+        return
+    service_account_json = settings.service_account_json
+    project_id = settings.project_id
 
     SCOPES = ['https://www.googleapis.com/auth/firebase.messaging']
 
     # Authenticate and get access token
-    credentials = service_account.Credentials.from_service_account_file(
-        service_account_path, scopes=SCOPES)
+    service_account_info = json.loads(service_account_json)
+    credentials = service_account.Credentials.from_service_account_info(
+        service_account_info, scopes=SCOPES
+    )
     credentials.refresh(Request())
     access_token = credentials.token
 
@@ -854,6 +858,7 @@ def send_push_notification(for_user, device_token, title, body, data=None):
             "device_token": device_token,
             "payload": json.dumps(payload, indent=4),
         }
+        frappe.errprint("LKLKLKLLKLL")
         response = requests.post(url, headers=headers, data=json.dumps(payload))
         if response.status_code == 200:
             frappe.local.response["status"] = True 
