@@ -709,7 +709,7 @@ def add_notification_from_comment(doc, method):
     except Exception as e:
         frappe.log_error(message=frappe.get_traceback(), title="Notification Log from Comment Error")
 
-def create_notification_log(doc, users_list, title, body):
+def create_notification_log(doc, users_list, title, body, doctype=None, docname=None):
     for user in users_list:
         notify_doc = frappe.new_doc("Notification Log")
         notify_doc.update({
@@ -717,8 +717,8 @@ def create_notification_log(doc, users_list, title, body):
             "read": 0,
             "subject": title,
             "email_content": body,
-            "document_type" : doc.reference_doctype,
-            "document_name": doc.reference_name
+            "document_type" : doctype or doc.reference_doctype,
+            "document_name": docname or doc.reference_name
         })
         notify_doc.insert(ignore_permissions=True)
 
@@ -735,7 +735,7 @@ def get_parent_areas(area):
     return parent_areas
 
 def send_notification(doc, method):
-    doctype_lists = ["Customer Visit Management", "Trial Plan", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan"]
+    doctype_lists = ["Customer Visit Management", "Trial Plan", "Sample Requisition", "Sales Order", "Issue", "Marketing Collateral Request", "Customer", "Journey Plan", "Announcement"]
     if doc.document_type in doctype_lists and doc.type in ("", "Assignment"):
         role_profile = frappe.get_value("User", doc.for_user, "role_profile_name")
         if doc.for_user and doc.for_user != "Administrator":
