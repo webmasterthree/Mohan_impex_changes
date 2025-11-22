@@ -390,9 +390,9 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-02-19 21:28:00.068954",
+  "modified": "2025-11-11 17:15:37.258282",
   "name": "Draft",
-  "style": "",
+  "style": "Danger",
   "workflow_state_name": "Draft"
  },
  {
@@ -430,5 +430,14 @@
   "name": "ASN Fully Processed",
   "style": "Success",
   "workflow_state_name": "ASN Fully Processed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-11-11 17:16:27.438810",
+  "name": "Approval Pending",
+  "style": "Danger",
+  "workflow_state_name": "Approval Pending"
  }
 ]

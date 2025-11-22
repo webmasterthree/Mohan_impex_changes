@@ -156,8 +156,9 @@ def create_cvm():
         "created_by_emp": get_session_employee(),
         "area": get_session_employee_area()
     })
+    frappe.log_error("CVM CREATE DATA", frappe.form_dict)
     try:
-        frappe.db.begin()
+        # frappe.db.begin()
         response = {}
         if not cvm_validate(cvm_data):
             return
@@ -256,7 +257,8 @@ def create_cvm():
         frappe.db.commit()
     except Exception as err:
         frappe.db.rollback()
-        get_exception(err)
+        # get_exception(err)
+        frappe.log_error("CVM CREATE ERROR", frappe.get_traceback())
 
 def create_shop(shop, shop_name):
     if not shop:

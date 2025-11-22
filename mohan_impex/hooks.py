@@ -6,7 +6,9 @@ app_email = "arunlrajamanickam@gmail.com"
 app_license = "mit"
 
 
-role_list = ("SE", "ASM", "TSM", "NSM", "ZSM", "RSM", "CP")
+role_list = ("SE", "ASM", "TSM", "NSM", "ZSM", "RSM", "CP",
+             "Sr. Warehouse Executive-Sales","Warehouse Executive-Ld/Unld","Warehouse Executive-Sales",
+             "MIS Logistics Executive","Sr. Logistics Executive","BILLING EXECUTIVE","Logistics Executive")
 
 fixtures = [
     "Client Script",
@@ -36,6 +38,7 @@ doctype_js ={
     "Sales Order": "public/js/floating_notifications.js",
     "Purchase Receipt": "public/js/GRN1.js",
     "Purchase Order": "public/js/ASN.js",
+    "Serial and Batch Bundle": "public/js/shelf_life.js",
 }
 
 

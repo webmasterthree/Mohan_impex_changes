@@ -301,7 +301,7 @@
     "type": "Link"
    }
   ],
-  "modified": "2025-07-01 14:36:40.135113",
+  "modified": "2025-11-13 18:40:11.145997",
   "module": "",
   "name": "Mohan Impex",
   "number_cards": [],
@@ -309,8 +309,21 @@
   "public": 1,
   "quick_lists": [],
   "restrict_to_domain": null,
-  "roles": [],
-  "sequence_id": 1.0,
+  "roles": [
+   {
+    "parent": "Mohan Impex",
+    "parentfield": "roles",
+    "parenttype": "Workspace",
+    "role": "Administrator"
+   },
+   {
+    "parent": "Mohan Impex",
+    "parentfield": "roles",
+    "parenttype": "Workspace",
+    "role": "Ground Team"
+   }
+  ],
+  "sequence_id": 2.0,
   "shortcuts": [
    {
     "color": "Green",

@@ -118,7 +118,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-20 11:14:11.619077",
+ "modified": "2025-11-06 11:21:58.559920",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transport RFQ",
@@ -133,6 +133,18 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Billing",
    "share": 1,
    "write": 1
   }
