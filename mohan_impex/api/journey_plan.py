@@ -134,29 +134,88 @@ def journey_plan_list():
 
 
 
-@frappe.whitelist()
+
+@frappe.whitelist(methods=["GET"])
 def journey_plan_form():
     journey_name = frappe.form_dict.get("name")
     try:
-        if journey_name:
-            if not frappe.db.exists("Journey Plan", journey_name):
-                frappe.local.response['http_status_code'] = 404
-                frappe.local.response['status'] = False
-                frappe.local.response['message'] = "Please give valid Journey Plan ID"
-                return
-            journey_doc = frappe.get_doc("Journey Plan", journey_name)
-            journey_doc = journey_doc.as_dict()
-            activities = get_comments("Journey Plan", journey_doc["name"])
-            journey_doc["activities"] = activities
-            is_self_filter = get_self_filter_status()
-            journey_doc["status_fields"] = get_workflow_statuses("Journey Plan", journey_name, get_session_emp_role())
-            journey_doc["has_toggle_filter"] = is_self_filter
-            journey_doc["created_person_mobile_no"] = frappe.get_value("Employee", journey_doc.get("created_by_emp"), "custom_personal_mobile_number")
-            frappe.local.response['status'] = True
-            frappe.local.response['message'] = "Journey Plan form has been successfully fetched"
-            frappe.local.response['data'] = [journey_doc]
+        if not journey_name:
+            frappe.local.response["http_status_code"] = 400
+            frappe.local.response["status"] = False
+            frappe.local.response["message"] = "Please provide Journey Plan ID in 'name'."
+            return
+
+        if not frappe.db.exists("Journey Plan", journey_name):
+            frappe.local.response["http_status_code"] = 404
+            frappe.local.response["status"] = False
+            frappe.local.response["message"] = "Please give valid Journey Plan ID"
+            return
+
+        journey_doc = frappe.get_doc("Journey Plan", journey_name)
+        journey_doc = journey_doc.as_dict()
+
+        journey_doc["doctype"] = journey_doc.get("doctype") or "Journey Plan"
+        journey_doc["workflow_state"] = journey_doc.get("workflow_state")
+
+        fields = [
+            "name",
+            "idx",
+            "primary_customer",
+            "secondary_customer",
+            "mode_of_travel",
+            "travel_state_from",
+            "travel_from_district",
+            "travel_from_city",
+            "travel_to_state",
+            "travel_to_district",
+            "travel_to_city",
+        ]
+
+        trips = frappe.db.get_all(
+            "Trips",
+            fields=fields,
+            filters={"parent": journey_doc["name"], "parenttype": "Journey Plan"},
+            order_by="idx asc",
+        )
+
+        def csv_to_list(value):
+            if not value:
+                return []
+            return [v.strip() for v in str(value).split(",") if v.strip()]
+
+        for trip in trips:
+            trip["primary_customer"] = csv_to_list(trip.get("primary_customer"))
+            trip["secondary_customer"] = csv_to_list(trip.get("secondary_customer"))
+
+        journey_doc["trips"] = trips
+
+        activities = get_comments("Journey Plan", journey_doc["name"])
+        journey_doc["activities"] = activities or []
+
+        is_self_filter = get_self_filter_status()
+        journey_doc["status_fields"] = (
+            get_workflow_statuses("Journey Plan", journey_name, get_session_emp_role()) or []
+        )
+
+        journey_doc["has_toggle_filter"] = 1 if is_self_filter else 0
+
+        journey_doc["created_person_mobile_no"] = frappe.get_value(
+            "Employee",
+            journey_doc.get("created_by_emp"),
+            "custom_personal_mobile_number",
+        )
+
+        frappe.local.response["status"] = True
+        frappe.local.response["message"] = "Journey Plan form has been successfully fetched"
+        frappe.local.response["data"] = [journey_doc]
+
     except Exception as err:
         get_exception(err)
+
+
+
+
+
     
 @frappe.whitelist()
 def create_journey_plan():
