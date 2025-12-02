@@ -150,7 +150,7 @@ function make_labour_payment_invoice(frm) {
 // Map header fields
 function set_invoice_header_from_pr(pi, pr) {
     Object.assign(pi, {
-        supplier: pr.supplier,
+        supplier: pr.contractors_name,
         grn: pr.name
     });
 }
