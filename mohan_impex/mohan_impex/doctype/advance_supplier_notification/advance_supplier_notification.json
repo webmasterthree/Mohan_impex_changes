@@ -32,7 +32,6 @@
   "column_break_tojm",
   "total_qty",
   "section_break_ntcc",
-  "asn_status",
   "purchase_receipt",
   "amended_from"
  ],
@@ -116,18 +115,13 @@
   },
   {
    "fieldname": "other_supporting_documents",
-   "fieldtype": "Attach",
-   "label": "Other Supporting Documents"
+   "fieldtype": "Table",
+   "label": "Other Supporting Documents",
+   "options": "Doc Item"
   },
   {
    "fieldname": "section_break_ntcc",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "asn_status",
-   "fieldtype": "Select",
-   "label": "ASN Status",
-   "options": "Pending\nIn Transit\nReceived"
   },
   {
    "fieldname": "section_break_jqaj",
@@ -211,7 +205,7 @@
    "link_fieldname": "custom_asn_no"
   }
  ],
- "modified": "2025-08-18 14:12:06.718183",
+ "modified": "2025-11-26 12:33:37.273132",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Advance Supplier Notification",
@@ -230,6 +224,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

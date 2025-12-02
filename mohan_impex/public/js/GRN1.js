@@ -64,10 +64,23 @@ function calculate_remaining_shelf_life(frm, cdt, cdn) {
 }
 
 // Updates overall purchase team approval status and total weight
-function update_pre_unloading_status(frm) {
-    let has_pending = frm.doc.items.some(item => item.custom_purchase_team_approval === "Pending");
+// function update_pre_unloading_status(frm) {
+//     let has_pending = frm.doc.items.some(item => item.custom_purchase_team_approval === "Pending");
 
-    frm.set_value('custom_purchase_team_approval_status', has_pending ? 'Pending' : 'Approved');
+//     frm.set_value('custom_purchase_team_approval_status', has_pending ? 'Pending' : 'Approved');
+
+//     // Calculate total weight: (qty + rejected_qty) * conversion_factor
+//     let total_weight = frm.doc.items.reduce((sum, item) => {
+//         let qty = flt(item.qty) + flt(item.rejected_qty);
+//         let factor = flt(item.conversion_factor || 1);
+//         return sum + (qty * factor);
+//     }, 0);
+
+//     frm.set_value('custom_total_weight', total_weight);
+
+//     frm.refresh_fields(['custom_purchase_team_approval_status', 'custom_total_weight']);
+// }
+function update_pre_unloading_status(frm) {
 
     // Calculate total weight: (qty + rejected_qty) * conversion_factor
     let total_weight = frm.doc.items.reduce((sum, item) => {
@@ -78,30 +91,37 @@ function update_pre_unloading_status(frm) {
 
     frm.set_value('custom_total_weight', total_weight);
 
-    frm.refresh_fields(['custom_purchase_team_approval_status', 'custom_total_weight']);
+    frm.refresh_fields(['custom_total_weight']);
 }
+
 
 // Calculates total labour cost with fallback logic
 function calculate_labour_cost(frm) {
+    let total_weight = flt(frm.doc.custom_total_weight || 0);
+    let labour_rate = flt(frm.doc.custom_labour_rate || 0);
+    let factor = flt(frm.doc.conversion_factor || 1);
+    let additional_cost = flt(frm.doc.additional_cost || 0);
+
+    // Primary new formula
     let total_cost = 0;
 
-    let rate_per_ton = flt(frm.doc.custom_labour_rate_per_ton || 0);
-    let total_weight = flt(frm.doc.custom_total_weight || 0);
-
-    // Primary calculation
-    if (rate_per_ton && total_weight) {
-        total_cost = (rate_per_ton * total_weight) / 1000;
+    if (total_weight && labour_rate) {
+        total_cost = (total_weight * labour_rate) / factor + additional_cost;
     }
 
-    // Fallback if total_cost is still zero
+    // Fallback: if still zero, check labour count logic
     if (total_cost === 0) {
         let no_of_labour = flt(frm.doc.custom_no_of_labour || 0);
-        let labour_rate = flt(frm.doc.custom_labour_rate || 0);
-        total_cost = (no_of_labour * labour_rate * total_weight) / 1000;
+        let rate_per_ton = flt(frm.doc.custom_labour_rate_per_ton || 0);
+
+        if (no_of_labour && rate_per_ton && total_weight) {
+            total_cost = (no_of_labour * rate_per_ton * total_weight) / 1000;
+        }
     }
 
     frm.set_value('custom_total_labour_cost', total_cost);
 }
+
 function set_batch_query_filter(frm) {
     frm.fields_dict.items.grid.get_field('batch_no').get_query = function(doc, cdt, cdn) {
         const row = locals[cdt][cdn];
