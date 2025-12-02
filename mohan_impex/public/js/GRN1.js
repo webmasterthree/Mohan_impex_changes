@@ -1,34 +1,45 @@
 frappe.ui.form.on('Purchase Receipt', {
     // Run all logic before saving the form
-    validate: function(frm) {
+    validate: function (frm) {
         update_pre_unloading_status(frm);
         calculate_labour_cost(frm);
     },
 
     // Recalculate labour cost when related fields are changed
-    custom_labour_rate_per_ton: function(frm) {
+    custom_labour_rate_per_ton: function (frm) {
         calculate_labour_cost(frm);
     },
-    custom_total_weight: function(frm) {
+    custom_total_weight: function (frm) {
         calculate_labour_cost(frm);
     },
-    custom_no_of_labour: function(frm) {
+    custom_no_of_labour: function (frm) {
         calculate_labour_cost(frm);
     },
-    custom_labour_rate: function(frm) {
+    custom_labour_rate: function (frm) {
         calculate_labour_cost(frm);
     },
-    onload: function(frm) {
+    onload: function (frm) {
         set_batch_query_filter(frm);
+
+        if (frm.doc.docstatus === 1) {
+            frm.add_custom_button(
+                __('Labour Payment Entry'),
+                () => make_labour_payment_invoice(frm),
+                __('Create')
+            );
+        }
+    },
+    after_save(frm) {
+        fetch_po_fields_and_set_on_pr(frm);
     }
 });
 
 frappe.ui.form.on('Purchase Receipt Item', {
-    custom_manufacturing_date: function(frm, cdt, cdn) {
+    custom_manufacturing_date: function (frm, cdt, cdn) {
         calculate_remaining_shelf_life(frm, cdt, cdn);
     },
 
-    custom_shelf_life_in_days: function(frm, cdt, cdn) {
+    custom_shelf_life_in_days: function (frm, cdt, cdn) {
         // Recalculate when shelf life is changed
         frappe.ui.form.trigger(cdt, cdn, 'custom_manufacturing_date');
     }
@@ -63,23 +74,7 @@ function calculate_remaining_shelf_life(frm, cdt, cdn) {
     update_pre_unloading_status(frm);
 }
 
-// Updates overall purchase team approval status and total weight
-// function update_pre_unloading_status(frm) {
-//     let has_pending = frm.doc.items.some(item => item.custom_purchase_team_approval === "Pending");
 
-//     frm.set_value('custom_purchase_team_approval_status', has_pending ? 'Pending' : 'Approved');
-
-//     // Calculate total weight: (qty + rejected_qty) * conversion_factor
-//     let total_weight = frm.doc.items.reduce((sum, item) => {
-//         let qty = flt(item.qty) + flt(item.rejected_qty);
-//         let factor = flt(item.conversion_factor || 1);
-//         return sum + (qty * factor);
-//     }, 0);
-
-//     frm.set_value('custom_total_weight', total_weight);
-
-//     frm.refresh_fields(['custom_purchase_team_approval_status', 'custom_total_weight']);
-// }
 function update_pre_unloading_status(frm) {
 
     // Calculate total weight: (qty + rejected_qty) * conversion_factor
@@ -122,8 +117,10 @@ function calculate_labour_cost(frm) {
     frm.set_value('custom_total_labour_cost', total_cost);
 }
 
+
+
 function set_batch_query_filter(frm) {
-    frm.fields_dict.items.grid.get_field('batch_no').get_query = function(doc, cdt, cdn) {
+    frm.fields_dict.items.grid.get_field('batch_no').get_query = function (doc, cdt, cdn) {
         const row = locals[cdt][cdn];
         let filters = {
             item: row.item_code
@@ -137,3 +134,85 @@ function set_batch_query_filter(frm) {
     };
 }
 
+
+// Main function: create Purchase Invoice from Purchase Receipt
+function make_labour_payment_invoice(frm) {
+    frappe.model.with_doctype('Purchase Invoice', () => {
+        const pi = frappe.model.get_new_doc('Purchase Invoice');
+
+        set_invoice_header_from_pr(pi, frm.doc);
+        add_labour_item_row(pi, frm.doc);
+
+        frappe.set_route('Form', 'Purchase Invoice', pi.name);
+    });
+}
+
+// Map header fields
+function set_invoice_header_from_pr(pi, pr) {
+    Object.assign(pi, {
+        supplier: pr.supplier,
+        grn: pr.name
+    });
+}
+
+function add_labour_item_row(pi, pr) {
+    const labour_cost = flt(pr.custom_total_labour_cost || 0);
+
+    if (!labour_cost) {
+        frappe.msgprint(__('Custom Total Labour Cost is zero. Please check before creating invoice.'));
+    }
+
+    const row = frappe.model.add_child(pi, 'Purchase Invoice Item', 'items');
+
+    Object.assign(row, {
+        item_template: 'Service Item',
+        item_code: 'LABOUR CHARGE',
+        item_name: 'LABOUR CHARGE',
+        uom: 'NOS',
+        qty: 1,
+        rate: labour_cost,
+    });
+}
+
+
+//=========== Fetch ASN Details From PO
+function fetch_po_fields_and_set_on_pr(frm) {
+    // Safety: if no items, nothing to do
+    if (!frm.doc.items || frm.doc.items.length === 0) {
+        return;
+    }
+
+    // Use first row's linked Purchase Order (optional guard)
+    const po_in_item = frm.doc.items[0].purchase_order;
+    if (!po_in_item) {
+        return;
+    }
+
+    frappe.call({
+        method: "mohan_impex.PR_Connection.get_linked_purchase_order",
+        args: {
+            purchase_receipt: frm.doc.name
+        },
+        callback: function (r) {
+            if (!r.message) {
+                return;
+            }
+
+            // If API returned an explicit error dict
+            if (r.message.status === "error") {
+                frappe.msgprint(
+                    __("Error fetching Purchase Order details: {0}", [r.message.message])
+                );
+                return;
+            }
+
+            const data = r.message;
+
+            frm.set_value("custom_transporters_name", data.custom_transporter_name || "");
+            frm.set_value("custom_vehicle_no__container_no", data.custom_vehiclecontainer_number || "");
+            frm.set_value("assigned_driver", data.custom_driver_name || "");
+            frm.set_value("driver_mobile_number", data.custom_driver_mobile_number || "");
+            frm.set_value("lr_number", data.lr_no || "");
+        }
+    });
+}

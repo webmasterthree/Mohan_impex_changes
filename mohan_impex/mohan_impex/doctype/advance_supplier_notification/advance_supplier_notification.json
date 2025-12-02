@@ -16,6 +16,7 @@
   "transportation_details_column",
   "transporter_name",
   "vehiclecontainer_number",
+  "lr_no",
   "expected_arrival_date",
   "column_break_pfvt",
   "invoice_copy",
@@ -40,7 +41,8 @@
    "fetch_from": "purchase_order.supplier",
    "fieldname": "supplier",
    "fieldtype": "Data",
-   "label": "Supplier"
+   "label": "Supplier",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_jpto",
@@ -51,7 +53,8 @@
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Purchase Order",
-   "options": "Purchase Order"
+   "options": "Purchase Order",
+   "read_only": 1
   },
   {
    "fieldname": "section_break_pbix",
@@ -191,6 +194,11 @@
   {
    "fieldname": "column_break_tojm",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "lr_no",
+   "fieldtype": "Data",
+   "label": "LR No."
   }
  ],
  "index_web_pages_for_search": 1,
@@ -205,7 +213,7 @@
    "link_fieldname": "custom_asn_no"
   }
  ],
- "modified": "2025-11-26 12:33:37.273132",
+ "modified": "2025-12-02 16:45:31.279956",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Advance Supplier Notification",
