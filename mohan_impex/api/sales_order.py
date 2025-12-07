@@ -183,12 +183,97 @@ def so_form():
     except Exception as err:
         get_exception(err)
 
+# @frappe.whitelist()
+# def create_so():
+#     try:
+#         frappe.db.begin()
+#         response = {}
+#         so_data = frappe.form_dict
+#         so_dict = {
+#             "customer": so_data.get("customer"),
+#             "customer_name": so_data.get("customer_name"),
+#             "custom_deal_type": so_data.get("deal_type"),
+#             "shop": so_data.get("shop"),
+#             "shop_name": so_data.get("shop_name"),
+#             "customer_visit": so_data.get("customer_visit"),
+#             "contact_number": so_data.get("contact"),
+#             "delivery_date": so_data.get("delivery_date"),
+#             "custom_delivery_term": so_data.get("delivery_term"),
+#             "set_warehouse": so_data.get("warehouse"),
+#             "remarks": so_data.get("remarks"),
+#             "cust_edit_needed": so_data.get("cust_edit_needed"),
+#             "shipping_address_name": so_data.get("shipping_address_name"),
+#             "customer_address": so_data.get("billing_address_name"),
+#             "created_by_emp": get_session_employee(),
+#             "territory": get_session_employee_area()
+#         }
+#         if has_cp_app:
+#             so_dict.update({
+#                 "customer_level": so_data.get("customer_level"),
+#                 "custom_channel_partner": so_data.get("channel_partner") or "",
+#                 "cp_name": so_data.get("cp_name") or "",
+#             })
+#         # if so_data.get("channel_partner"):
+#         #     so_dict.update({"company": so_data.get("channel_partner")})
+#         payment_term = so_dict.get("payment_term")
+#         # payment_schedule = [{
+#         #    "payment_term": payment_term, 
+#         # }]
+#         # so_dict.update({"payment_schedule": payment_schedule})
+#         items = []
+#         for item in so_data.get("items"):
+#             rate = get_item_category_price(item.get("item_code"), item.get("item_category"))
+#             item_dict = {
+#                 "item_template": item.get("item_template"),
+#                 "item_code": item.get("item_code"),
+#                 "item_name": item.get("item_name"),
+#                 "qty": item.get("qty"),
+#                 "uom": item.get("uom"),
+#                 "rate": item.get("rate") or 0,
+#                 "quote_custom_rate": item.get("quote_custom_rate") or 0, #This field type is check
+#                 "quoted_rate": item.get("quoted_rate") or 0,
+#             }
+#             items.append(item_dict)
+#         if so_data.get("contact"):
+#             if not frappe.db.exists("Contact Number", so_data.get("contact")):
+#                 create_contact_number(so_data.get("contact"), "Customer", so_data.get("customer"))
+#         so_dict.update({"items": items})
+#         if so_data.get("isupdate"):
+#             doc = frappe.get_doc("Sales Order", so_data.get("so_id"))
+#             doc.update(so_dict)
+#             doc.save()
+#         else:
+#             so_dict.update({"doctype": "Sales Order"})
+#             doc = frappe.get_doc(so_dict)
+#             doc.insert(ignore_mandatory=True)
+#         message = "Sales Order form has been successfully created as Draft"
+#         if so_data.action == "Submit":
+#             apply_workflow(doc, "Submit")
+#             message = "Sales Order form has been successfully submitted"
+#         response.update({
+#             "so_id": doc.name
+#         })
+#         frappe.local.response['status'] = True
+#         frappe.local.response['message'] = message
+#         frappe.local.response['data'] = [response]
+#         frappe.db.commit()
+#     except Exception as err:
+#         frappe.db.rollback()
+#         frappe.log_error("SO", frappe.get_traceback())
+#         # get_exception(err)
+
+ 
 @frappe.whitelist()
 def create_so():
     try:
         frappe.db.begin()
         response = {}
         so_data = frappe.form_dict
+
+        # Decide target doctype per request
+        is_cp = bool(has_cp())
+        target_doctype = "Secondary Sales Order" if is_cp else "Sales Order"
+
         so_dict = {
             "customer": so_data.get("customer"),
             "customer_name": so_data.get("customer_name"),
@@ -207,22 +292,20 @@ def create_so():
             "created_by_emp": get_session_employee(),
             "territory": get_session_employee_area()
         }
-        if has_cp_app:
+
+        # CP-only extra fields (only if your target doctype has these fields)
+        if is_cp:
             so_dict.update({
                 "customer_level": so_data.get("customer_level"),
                 "custom_channel_partner": so_data.get("channel_partner") or "",
                 "cp_name": so_data.get("cp_name") or "",
             })
-        # if so_data.get("channel_partner"):
-        #     so_dict.update({"company": so_data.get("channel_partner")})
-        payment_term = so_dict.get("payment_term")
-        # payment_schedule = [{
-        #    "payment_term": payment_term, 
-        # }]
-        # so_dict.update({"payment_schedule": payment_schedule})
+
         items = []
-        for item in so_data.get("items"):
-            rate = get_item_category_price(item.get("item_code"), item.get("item_category"))
+        for item in (so_data.get("items") or []):
+            # you compute rate but currently you are not using it; keep or use it as needed
+            _rate = get_item_category_price(item.get("item_code"), item.get("item_category"))
+
             item_dict = {
                 "item_template": item.get("item_template"),
                 "item_code": item.get("item_code"),
@@ -230,37 +313,75 @@ def create_so():
                 "qty": item.get("qty"),
                 "uom": item.get("uom"),
                 "rate": item.get("rate") or 0,
-                "quote_custom_rate": item.get("quote_custom_rate") or 0, #This field type is check
+                "quote_custom_rate": item.get("quote_custom_rate") or 0,
                 "quoted_rate": item.get("quoted_rate") or 0,
             }
             items.append(item_dict)
+
         if so_data.get("contact"):
             if not frappe.db.exists("Contact Number", so_data.get("contact")):
                 create_contact_number(so_data.get("contact"), "Customer", so_data.get("customer"))
+
         so_dict.update({"items": items})
+
+        # Update vs Create
         if so_data.get("isupdate"):
-            doc = frappe.get_doc("Sales Order", so_data.get("so_id"))
+            docname = so_data.get("so_id")
+
+            # If doctype passed by client, prefer it; else auto-detect where it exists
+            dt = so_data.get("doctype")
+            if not dt:
+                if frappe.db.exists("Secondary Sales Order", docname):
+                    dt = "Secondary Sales Order"
+                elif frappe.db.exists("Sales Order", docname):
+                    dt = "Sales Order"
+                else:
+                    frappe.throw(f"Document not found: {docname}")
+
+            doc = frappe.get_doc(dt, docname)
             doc.update(so_dict)
             doc.save()
+            target_doctype = dt  # keep response accurate
         else:
-            so_dict.update({"doctype": "Sales Order"})
+            so_dict.update({"doctype": target_doctype})
             doc = frappe.get_doc(so_dict)
             doc.insert(ignore_mandatory=True)
-        message = "Sales Order form has been successfully created as Draft"
-        if so_data.action == "Submit":
+
+        message = f"{target_doctype} has been successfully created as Draft"
+        if so_data.get("action") == "Submit":
             apply_workflow(doc, "Submit")
-            message = "Sales Order form has been successfully submitted"
-        response.update({
-            "so_id": doc.name
-        })
-        frappe.local.response['status'] = True
-        frappe.local.response['message'] = message
-        frappe.local.response['data'] = [response]
+            message = f"{target_doctype} has been successfully submitted"
+
+        response.update({"so_id": doc.name, "doctype": target_doctype})
+
+        frappe.local.response["status"] = True
+        frappe.local.response["message"] = message
+        frappe.local.response["data"] = [response]
+
         frappe.db.commit()
-    except Exception as err:
+
+    except Exception:
         frappe.db.rollback()
-        frappe.log_error("SO", frappe.get_traceback())
-        # get_exception(err)
+        frappe.log_error("CREATE_SO", frappe.get_traceback())
+        frappe.local.response["status"] = False
+        frappe.local.response["message"] = "Error while creating Sales Order"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def get_role_filter(emp, is_self=None, employee=None):
     from frappe.utils.nestedset import get_descendants_of
