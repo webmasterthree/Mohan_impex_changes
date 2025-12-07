@@ -399,6 +399,9 @@ def get_customer_address():
         address_dict = {}
         if address_name:
             address_doc = frappe.get_doc("Address", address_name)
+            city_name = None
+            if address_doc.city:
+                city_name = frappe.db.get_value("City",address_doc.city,"city")
             address_dict = {
                 "name": address_doc.name,
                 "address_title": address_doc.address_title,
@@ -406,7 +409,9 @@ def get_customer_address():
                 "address_line2": address_doc.address_line2,
                 "district": address_doc.district,
                 "state": address_doc.state,
-                "pincode": address_doc.pincode
+                "pincode": address_doc.pincode,
+                "city":address_doc.city,
+                "city_name":city_name
             }
         frappe.local.response['status'] = True
         frappe.local.response['message'] = f"Address has been fetched"
