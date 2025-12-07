@@ -7,10 +7,9 @@ import math
 from mohan_impex.mohan_impex.comment import get_comments
 from mohan_impex.api import create_contact_number, get_address_text, get_self_filter_status, get_exception, get_workflow_statuses, has_create_perm
 from frappe import _dict
-from pprint import pprint
-from erpnext.stock.get_item_details import get_item_details as erpnext_get_item_details
-from erpnext.accounts.doctype.pricing_rule.pricing_rule import get_pricing_rule_for_item
+from erpnext.stock.get_item_details import get_item_details as erp_get_item_details
 from mohan_impex.api.auth import has_cp
+import json
 
 has_cp_app = has_cp()
 @frappe.whitelist()
@@ -309,44 +308,127 @@ def get_warehouses():
     except Exception as err:
         get_exception(err)
 
-import json
 @frappe.whitelist()
-def get_item_details(item_code, uom, customer, warehouse):
-    company = frappe.defaults.get_defaults().get("company") or None
-    currency = frappe.defaults.get_defaults().get("currency") or None
-    args = _dict({
-        "doctype": "Sales Order",
-        "company": company,
-        "price_list": "Standard Selling",
-        "customer": customer,
+def get_item_details():
+    item_code = frappe.form_dict.get("item_code")
+    customer = frappe.form_dict.get("customer")
+    uom = frappe.form_dict.get("uom")
+    warehouse = frappe.form_dict.get("warehouse")
+    delivery_term = frappe.form_dict.get("delivery_term") or ""
+    company = frappe.db.get_single_value("Global Defaults", "default_company")
+    qty = float(frappe.form_dict.get("qty") or 1)
+    price_list = frappe.form_dict.get("price_list") or frappe.db.get_single_value("Selling Settings", "selling_price_list")
+
+    frappe.set_user("Administrator")
+    args = frappe._dict({
         "item_code": item_code,
-        "qty": 1,
+        "customer": customer,
         "uom": uom,
-        "currency":currency,
-        "transaction_type": "Selling",
-        "transaction_date": datetime.today().strftime('%Y-%m-%d'),
         "warehouse": warehouse,
-        "condition": "custom_delivery_term == '50% payment required at the time of Deliverys' "
+        "company": company,
+        "price_list": price_list,
+        "currency": "INR",
+        "transaction_type": "selling",
+        "doctype": "Sales Order",
+        "items": [{"item_code": item_code, "qty": qty, "uom": uom}],
+        "qty": qty
     })
-    item_detail = erpnext_get_item_details(args)
-    rate = item_detail.price_list_rate
-    discount_percentage = item_detail.discount_percentage
-    discount_amount = item_detail.discount_amount
-    applied_discount_amount = 0
-    pricing_rules = json.loads(item_detail.get("pricing_rules") or "[]")
-    pricing_rule = ""
-    if len(pricing_rules) > 0:
-        pricing_rule = pricing_rules[0]
-        rate_or_discount = frappe.get_value("Pricing Rule", pricing_rule, "rate_or_discount")
-        if rate_or_discount == "Discount Percentage":
-            applied_discount_amount = rate * discount_percentage / 100
-        elif rate_or_discount == "Discount Amount":
-            applied_discount_amount = discount_amount
-    rate = rate - applied_discount_amount
-    tax_percentage = frappe.get_value("Item Tax Template", item_detail.item_tax_template, "gst_rate") or 0 # GST DEPENDENT
-    response = {
-        "rate": rate,
-        "pricing_rule": pricing_rule,
-        "tax_percentage": tax_percentage
+    doc = frappe.new_doc("Sales Order")
+    doc.custom_delivery_term = delivery_term
+
+    item_details = erp_get_item_details(args, doc=doc, for_validate=True)
+
+    pricing_rules_applied = json.loads(item_details.get("pricing_rules") or "[]")
+
+    item_details = {
+        "rate": item_details.get("price_list_rate"),
+        "discount_percentage": item_details.get("discount_percentage"),
+        "discount_amount": item_details.get("discount_amount"),
+        "net_rate": item_details.get("net_rate"),
+        "pricing_rules_applied": pricing_rules_applied,
+        "free_items": item_details.get("free_item_data") or []
     }
-    return response
+    frappe.local.response['status'] = True
+    frappe.local.response['data'] = item_details
+
+
+@frappe.whitelist()
+def calculate_item_tax(item_code, qty=1, rate=0):
+
+    company = frappe.db.get_single_value("Global Defaults", "default_company")
+    tax_template = frappe.get_value("Sales Taxes and Charges Template", {"company": company, "is_default": 1}, "name")
+    if not tax_template:
+        frappe.local.response['http_status_code'] = 404
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = "Default Sales Taxes and Charges Template not found"
+        return
+    so = frappe.new_doc("Sales Order")
+    so.company = company
+    so.currency = frappe.db.get_value("Company", company, "default_currency")
+    so.taxes_and_charges = tax_template
+    # Add item row
+    item = so.append("items", {
+        "item_code": item_code,
+        "qty": qty,
+        "rate": rate
+    })
+
+    # Load Tax Template Rows
+    so.set("taxes", [])
+    template_taxes = frappe.get_all(
+        "Sales Taxes and Charges",
+        filters={"parent": tax_template},
+        fields=["*"]
+    )
+    for row in template_taxes:
+        so.append("taxes", row)
+
+    # Recalculate totals
+    so.set_missing_values()
+    so.calculate_taxes_and_totals()
+
+    tax_rate = 0
+    tax_amount = 0
+    total_amount = 0
+    for tax_row in so.taxes:
+        if not tax_row.item_wise_tax_detail:
+            continue
+        item_wise = frappe.parse_json(tax_row.item_wise_tax_detail)
+        
+        if len(item_wise.keys()) == 1:
+            item_code = list(item_wise.keys())[0]
+            tax_info = item_wise[item_code]
+            # tax_info can be: 18.0 or [18.0, 1800.0]
+            if isinstance(tax_info, list):
+                tax_rate = tax_info[0]
+                tax_amount = tax_info[1]
+            else:
+                tax_rate = tax_row.rate
+                tax_amount = tax_info
+
+    total_amount = item.net_amount + tax_amount
+    item_tax_info = {
+        "item_code": item_code,
+        "qty": qty,
+        "rate": rate,
+        "uom": item.uom,
+        "item_net_amount": item.net_amount,
+        "item_tax_rate": tax_rate,
+        "item_tax_amount": tax_amount,
+        "item_total_amount": total_amount
+    }
+    frappe.local.response['status'] = True
+    frappe.local.response['data'] = item_tax_info
+
+@frappe.whitelist()
+def get_tag_list(customer, search_text=""):
+    tag_list = frappe.db.sql_list("""
+        SELECT DISTINCT cvm.name 
+        FROM `tabCustomer Visit Management` cvm
+        LEFT JOIN `tabUnverified Customer` uc ON cvm.unv_customer = uc.name
+        WHERE (cvm.customer = %s OR uc.customer = %s)
+        """ + (f"AND cvm.name LIKE %s" if search_text else ""),
+        (customer, customer) + ((f"%{search_text}%",) if search_text else ())
+    )
+    frappe.local.response['status'] = True
+    frappe.local.response['data'] = tag_list
