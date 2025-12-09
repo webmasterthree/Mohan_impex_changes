@@ -93,6 +93,9 @@ doc_events = {
     },
     "Salary Slip": {
         "before_submit": "mohan_impex.salary_slip.before_submit"
+    },
+    "Secondary Sales Order": {
+        "on_submit": "mohan_impex.api.cp_api.on_submit"
     }
 }
 
