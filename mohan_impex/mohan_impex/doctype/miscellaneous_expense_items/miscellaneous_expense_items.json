@@ -1,0 +1,80 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-08 17:31:39.884549",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "misc_item_template",
+  "item_name",
+  "item_details",
+  "uom",
+  "qty",
+  "rate",
+  "amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "misc_item_template",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Misc. Item Template",
+   "link_filters": "[[\"Item\",\"item_name\",\"=\",\"Miscellaneous\"]]",
+   "options": "Item"
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Name",
+   "link_filters": "[[\"Item\",\"variant_of\",\"=\",\"MISC-001\"]]",
+   "options": "Item"
+  },
+  {
+   "fetch_from": "item_name.item_name",
+   "fieldname": "item_details",
+   "fieldtype": "Data",
+   "label": "Item Details"
+  },
+  {
+   "fetch_from": "item_name.stock_uom",
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Rate"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-12-08 17:48:16.210297",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Miscellaneous Expense Items",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
