@@ -217,7 +217,21 @@ def create_kyc():
         contact_num_doc = create_contact_number(kyc_data["contact"], "Customer", kyc_doc.name)
         contact = create_contact(kyc_doc, kyc_data, contact_num_doc.name)
         billing_address = create_address(kyc_doc, kyc_data["billing_address"], "Billing")
+        if billing_address.get("address") is None:
+            frappe.db.rollback()
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = f"Billing Address Error: {billing_address.get('message')}"
+            return
+        billing_address = billing_address["address"]
         shipping_address = create_address(kyc_doc, kyc_data["shipping_address"], "Shipping")
+        if shipping_address.get("address") is None:
+            frappe.db.rollback()
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = f"Shipping Address Error: {shipping_address.get('message')}"
+            return
+        shipping_address = shipping_address["address"]
         frappe.db.set_value('Customer', kyc_doc.name, 'customer_primary_address', billing_address)
         frappe.db.set_value('Customer', kyc_doc.name, 'customer_primary_contact', contact)
         frappe.db.set_value("Customer", kyc_doc.name, "mobile_no", kyc_data.contact)
@@ -288,36 +302,44 @@ def create_contact(kyc_doc, kyc_data, primary_contact_number):
     return contact_name
 
 def create_address(kyc_doc, address_data, address_type):
-    address_type_check = "is_primary_address" if address_type == "Billing" else "is_shipping_address"
-    address_dict = {
-        "address_title": address_data["title"],
-        "address_type": address_type,
-        address_type_check : 1,
-        "address_line1": address_data["address_line1"],
-        "address_line2": address_data["address_line2"],
-        "district": address_data["district"],
-        "city": address_data["city"],
-        "state" : address_data["state"],
-        "pincode": address_data["pincode"],
-    }
-    if address_data.get("address"):
-        addr_doc = frappe.get_doc("Address", address_data.get("address"))
-        addr_doc.update(address_dict)
-        addr_doc.append("links",{
-            "link_doctype": "Customer",
-            "link_name": kyc_doc.name
-        })
-        addr_doc.save(ignore_permissions=True)
-    else:
-        addr_doc = frappe.new_doc("Address")
-        addr_doc.update(address_dict)
-        addr_doc.append("links",{
-            "link_doctype": "Customer",
-            "link_name": kyc_doc.name
-        })
-        addr_doc.insert(ignore_permissions=True)
-    address_name = addr_doc.name
-    return address_name
+    try:
+        address_type_check = "is_primary_address" if address_type == "Billing" else "is_shipping_address"
+        address_dict = {
+            "address_title": address_data["title"],
+            "address_type": address_type,
+            address_type_check : 1,
+            "address_line1": address_data["address_line1"],
+            "address_line2": address_data["address_line2"],
+            "district": address_data["district"],
+            "city": address_data["city"],
+            "state" : address_data["state"],
+            "pincode": address_data["pincode"],
+        }
+        if address_data.get("address"):
+            addr_doc = frappe.get_doc("Address", address_data.get("address"))
+            addr_doc.update(address_dict)
+            addr_doc.append("links",{
+                "link_doctype": "Customer",
+                "link_name": kyc_doc.name
+            })
+            addr_doc.save(ignore_permissions=True)
+        else:
+            addr_doc = frappe.new_doc("Address")
+            addr_doc.update(address_dict)
+            addr_doc.append("links",{
+                "link_doctype": "Customer",
+                "link_name": kyc_doc.name
+            })
+            addr_doc.insert(ignore_permissions=True)
+        address_name = addr_doc.name
+        return {
+            "address": address_name
+        }
+    except Exception as err:
+        return {
+            "address": None,
+            "message": str(err)
+        }
 
 @frappe.whitelist()
 def kyc_exists_validation(unv_customer):
