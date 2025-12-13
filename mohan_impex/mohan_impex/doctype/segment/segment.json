@@ -9,6 +9,7 @@
  "field_order": [
   "segment_name",
   "base_components",
+  "base_product",
   "base_products"
  ],
  "fields": [
@@ -27,16 +28,22 @@
    "unique": 1
   },
   {
+   "depends_on": "base_product",
    "fieldname": "base_products",
    "fieldtype": "Table",
    "label": "Base Product",
    "options": "Base Product"
+  },
+  {
+   "fieldname": "base_product",
+   "fieldtype": "Data",
+   "label": "Base Product"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-29 21:27:28.105931",
+ "modified": "2025-12-12 00:00:22.181482",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Segment",
