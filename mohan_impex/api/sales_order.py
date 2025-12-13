@@ -7,7 +7,6 @@ import math
 from mohan_impex.mohan_impex.comment import get_comments
 from mohan_impex.api import create_contact_number, get_address_text, get_self_filter_status, get_exception, get_workflow_statuses, has_create_perm
 from frappe import _dict
-from erpnext.stock.get_item_details import get_item_details as erp_get_item_details
 from mohan_impex.api.auth import has_cp
 import json
 
@@ -429,12 +428,6 @@ def create_so():
         frappe.local.response["message"] = "Error while creating Sales Order"
 
 
-
-
-
-
-
-
 def get_role_filter(emp, is_self=None, employee=None):
     from frappe.utils.nestedset import get_descendants_of
     territory_list = set(frappe.get_all("User Permission", {"allow": "Territory", "user": emp.get("user_id")}, ["for_value as area"], pluck="area"))
@@ -480,50 +473,6 @@ def get_warehouses():
         frappe.local.response['data'] = warehouses
     except Exception as err:
         get_exception(err)
-
-@frappe.whitelist()
-def get_item_details():
-    item_code = frappe.form_dict.get("item_code")
-    customer = frappe.form_dict.get("customer")
-    uom = frappe.form_dict.get("uom")
-    warehouse = frappe.form_dict.get("warehouse")
-    delivery_term = frappe.form_dict.get("delivery_term") or ""
-    company = frappe.db.get_single_value("Global Defaults", "default_company")
-    qty = float(frappe.form_dict.get("qty") or 1)
-    price_list = frappe.form_dict.get("price_list") or frappe.db.get_single_value("Selling Settings", "selling_price_list")
-
-    frappe.set_user("Administrator")
-    args = frappe._dict({
-        "item_code": item_code,
-        "customer": customer,
-        "uom": uom,
-        "warehouse": warehouse,
-        "company": company,
-        "price_list": price_list,
-        "currency": "INR",
-        "transaction_type": "selling",
-        "doctype": "Sales Order",
-        "items": [{"item_code": item_code, "qty": qty, "uom": uom}],
-        "qty": qty
-    })
-    doc = frappe.new_doc("Sales Order")
-    doc.custom_delivery_term = delivery_term
-
-    item_details = erp_get_item_details(args, doc=doc, for_validate=True)
-
-    pricing_rules_applied = json.loads(item_details.get("pricing_rules") or "[]")
-
-    item_details = {
-        "rate": item_details.get("price_list_rate"),
-        "discount_percentage": item_details.get("discount_percentage"),
-        "discount_amount": item_details.get("discount_amount"),
-        "net_rate": item_details.get("net_rate"),
-        "pricing_rules_applied": pricing_rules_applied,
-        "free_items": item_details.get("free_item_data") or []
-    }
-    frappe.local.response['status'] = True
-    frappe.local.response['data'] = item_details
-
 
 @frappe.whitelist()
 def calculate_item_tax(item_code, qty=1, rate=0):

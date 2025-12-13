@@ -15,6 +15,7 @@ from google.auth.transport.requests import Request
 from google.oauth2 import service_account
 from frappe.model.workflow import get_transitions
 from mohan_impex.api.auth import has_cp
+from erpnext.stock.get_item_details import get_item_details as erp_get_item_details
 
 @frappe.whitelist()
 def dashboard():
@@ -251,7 +252,7 @@ def get_item_templates():
     frappe.local.response['data'] = item_templates
 
 @frappe.whitelist()
-def get_item_variants():
+def get_item_variants(limit:int=20, customer="", warehouse="", delivery_term=""):
     query = """
         select i.item_code, i.item_name, i.item_category, cd.competitor, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
         from `tabItem` as i
@@ -271,13 +272,17 @@ def get_item_variants():
         query += """ AND item_category="{0}" """.format(frappe.form_dict.get("item_category"))
     if frappe.form_dict.get("search_text"):
         query += """ AND (item_name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
+    query += f" limit {limit}"
     item_variants = frappe.db.sql(query, as_dict=True)
-    consol_item_variants = competitor_consolidate(item_variants)
+    if customer:
+        consol_item_variants = competitor_consolidate(item_variants, customer, warehouse, delivery_term)
+    else:
+        consol_item_variants = competitor_consolidate(item_variants)
     frappe.local.response['status'] = True
     frappe.local.response['message'] = "Items fetched successfully"
     frappe.local.response['data'] = consol_item_variants
 
-def competitor_consolidate(item_list):
+def competitor_consolidate(item_list, customer="", warehouse="", delivery_term=""):
     result = {}
     for item in item_list:
         key = (item["item_code"], item["item_name"], item["item_category"])
@@ -291,8 +296,54 @@ def competitor_consolidate(item_list):
             }
         if item.get("competitor"):
             result[key]["competitors"].append(item["competitor"])
+        if customer:
+            item_details = get_item_details(item["item_code"], item["uom"], customer, warehouse, delivery_term)
+
+            for key_1, value in item_details.items():
+                result[key][key_1] = value
+            # if item_details:
+            #     result[key]["price"] = item_details[0].get("price") or 0.0
+            # else:
+            #     result[key]["price"] = 0.0
     consol_items = list(result.values())
     return consol_items
+
+@frappe.whitelist()
+def get_item_details(item_code, uom, customer, warehouse="", delivery_term=""):
+    company = frappe.db.get_single_value("Global Defaults", "default_company")
+    qty = float(1)
+    price_list = frappe.db.get_single_value("Selling Settings", "selling_price_list")
+
+    frappe.set_user("Administrator")
+    args = frappe._dict({
+        "item_code": item_code,
+        "customer": customer,
+        "uom": uom,
+        "warehouse": warehouse,
+        "company": company,
+        "price_list": price_list,
+        "currency": "INR",
+        "transaction_type": "selling",
+        "doctype": "Sales Order",
+        "items": [{"item_code": item_code, "qty": qty, "uom": uom}],
+        "qty": qty
+    })
+    doc = frappe.new_doc("Sales Order")
+    doc.custom_delivery_term = delivery_term
+
+    item_details = erp_get_item_details(args, doc=doc, for_validate=True)
+
+    pricing_rules_applied = json.loads(item_details.get("pricing_rules") or "[]")
+
+    item_details = {
+        "rate": item_details.get("price_list_rate"),
+        "discount_percentage": item_details.get("discount_percentage"),
+        "discount_amount": item_details.get("discount_amount"),
+        "net_rate": item_details.get("net_rate"),
+        "pricing_rules_applied": pricing_rules_applied,
+        "free_items": item_details.get("free_item_data") or []
+    }
+    return item_details
 
 @frappe.whitelist()
 def get_competitor_items():
@@ -337,6 +388,16 @@ def get_items():
     frappe.local.response['status'] = True
     frappe.local.response['message'] = "Items fetched successfully"
     frappe.local.response['data'] = response
+
+@frappe.whitelist()
+def get_segments():
+    segments = frappe.get_all("Segment", ["name", "segment_name", "base_product"], order_by="name")
+    for segment in segments:
+        base_products = frappe.get_all("Base Product", {"parent": segment["name"]}, "uom", pluck="uom", distinct=True)
+        segment["uoms"] = base_products
+    frappe.local.response['status'] = True
+    frappe.local.response['message'] = "Segments fetched successfully"
+    frappe.local.response['data'] = segments
 
 @frappe.whitelist()
 def get_base_products():
