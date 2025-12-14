@@ -9,7 +9,9 @@
  "field_order": [
   "segment_name",
   "base_components",
+  "section_break_mjtk",
   "base_product",
+  "base_product_uom",
   "base_products"
  ],
  "fields": [
@@ -37,13 +39,24 @@
   {
    "fieldname": "base_product",
    "fieldtype": "Data",
-   "label": "Base Product"
+   "label": "Base Product",
+   "mandatory_depends_on": "base_product"
+  },
+  {
+   "fieldname": "section_break_mjtk",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "base_product_uom",
+   "fieldtype": "Link",
+   "label": "Base Product UOM",
+   "options": "UOM"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-12-12 00:00:22.181482",
+ "modified": "2025-12-14 20:52:30.986321",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Segment",
