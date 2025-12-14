@@ -390,8 +390,8 @@ def get_items():
     frappe.local.response['data'] = response
 
 @frappe.whitelist()
-def get_segments():
-    segments = frappe.get_all("Segment", ["name", "segment_name", "base_product"], order_by="name")
+def get_segments(search_text=""):
+    segments = frappe.get_all("Segment", {"segment_name": ["like", "%{0}%".format(search_text)]}, ["name", "segment_name", "base_product"], order_by="name")
     for segment in segments:
         base_products = frappe.get_all("Base Product", {"parent": segment["name"]}, "uom", pluck="uom", distinct=True)
         segment["uoms"] = base_products
