@@ -456,6 +456,10 @@ def get_addresses(customer, address_type):
                 b.parenttype = 'Address' and b.parentfield = 'links'
         """.format(customer=customer, address_type=address_type)
         address_list = frappe.db.sql(query, as_dict=1)
+        for address in address_list:
+            address["city_name"] = frappe.db.get_value("City", address["city"], "city") or address["city"]
+            address["district_name"] = frappe.db.get_value("District", address["district"], "district") or address["district"]
+            address["state_name"] = frappe.db.get_value("State", address["state"], "state") or address["state"]
         frappe.local.response['status'] = True
         frappe.local.response['message'] = f"{address_type} addresses have been successfully fetched"
         frappe.local.response['data'] = address_list
