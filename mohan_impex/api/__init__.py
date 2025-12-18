@@ -16,6 +16,7 @@ from google.oauth2 import service_account
 from frappe.model.workflow import get_transitions
 from mohan_impex.api.auth import has_cp
 from erpnext.stock.get_item_details import get_item_details as erp_get_item_details
+from frappe.utils import strip_html
 
 @frappe.whitelist()
 def dashboard():
@@ -765,15 +766,15 @@ def get_employee_list(area, role_profile=None):
         frappe.local.response['data'] = employee_list
     except Exception as err:
         get_exception(err)
-    
+
 def get_exception(err="Error", message="", data={}):
     frappe.local.response['http_status_code'] = 404
     frappe.local.response['status'] = False
     frappe.log_error(title=message or "API Error", message=frappe.get_traceback())
     if data:
         frappe.log_error(title=f"{message} Data" or "API Error Data", message=data)
-    frappe.local.response['message'] = message or frappe.local.response.get('message')
-    frappe.errprint(frappe.get_traceback())
+    frappe.local.response['message'] = message or frappe.local.response.get('message') or strip_html(str(err)).replace("\n", " ")
+    # frappe.errprint(frappe.local.response)
     return
 
 def get_workflow_statuses(doctype, doc_name, role):
