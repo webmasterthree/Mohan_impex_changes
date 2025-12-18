@@ -307,125 +307,128 @@ def so_form():
  
 from frappe import _
 
-
 @frappe.whitelist()
 def create_so():
-    try:
-        frappe.db.begin()
+	try:
+		frappe.db.begin()
 
-        so_data = frappe._dict(frappe.form_dict or {})
-        response = {}
+		so_data = frappe._dict(frappe.form_dict or {})
+		response = {}
 
-        is_cp = bool(has_cp())
-        customer_level = (so_data.get("customer_level") or "").strip()
+		is_cp = bool(has_cp())
+		customer_level = (so_data.get("customer_level") or "").strip()
 
-        if is_cp and customer_level != "Secondary":
-            frappe.throw(_("For Channel Partner user, customer_level must be 'Secondary'."))
+		if not is_cp:
+			customer_level = "Primary"
+			target_doctype = "Sales Order"
+		else:
+			if customer_level == "Secondary":
+				target_doctype = "Secondary Sales Order"
+			elif customer_level == "Primary":
+				target_doctype = "Sales Order"
+			else:
+				frappe.throw(_("Invalid customer_level. Allowed values: Primary, Secondary"))
 
-        target_doctype = "Secondary Sales Order" if is_cp else "Sales Order"
+		so_dict = {
+			"customer": so_data.get("customer"),
+			"customer_name": so_data.get("customer_name"),
+			"custom_deal_type": so_data.get("deal_type"),
+			"shop": so_data.get("shop"),
+			"shop_name": so_data.get("shop_name"),
+			"customer_visit": so_data.get("customer_visit"),
+			"contact_number": so_data.get("contact"),
+			"delivery_date": so_data.get("delivery_date"),
+			"custom_delivery_term": so_data.get("delivery_term"),
+			"set_warehouse": so_data.get("warehouse"),
+			"remarks": so_data.get("remarks"),
+			"cust_edit_needed": so_data.get("cust_edit_needed"),
+			"shipping_address_name": so_data.get("shipping_address_name"),
+			"customer_address": so_data.get("billing_address_name"),
+			"payment_terms_template": so_data.get("payment_terms_template"),
+			"created_by_emp": get_session_employee(),
+			"territory": get_session_employee_area(),
+			"customer_level": customer_level,
+		}
 
-        so_dict = {
-            "customer": so_data.get("customer"),
-            "customer_name": so_data.get("customer_name"),
-            "custom_deal_type": so_data.get("deal_type"),
-            "shop": so_data.get("shop"),
-            "shop_name": so_data.get("shop_name"),
-            "customer_visit": so_data.get("customer_visit"),
-            "contact_number": so_data.get("contact"),
-            "delivery_date": so_data.get("delivery_date"),
-            "custom_delivery_term": so_data.get("delivery_term"),
-            "set_warehouse": so_data.get("warehouse"),
-            "remarks": so_data.get("remarks"),
-            "cust_edit_needed": so_data.get("cust_edit_needed"),
-            "shipping_address_name": so_data.get("shipping_address_name"),
-            "customer_address": so_data.get("billing_address_name"),
-            "payment_terms_template": so_data.get("payment_terms_template"),
-            "created_by_emp": get_session_employee(),
-            "territory": get_session_employee_area(),
-        }
+		if target_doctype == "Secondary Sales Order":
+			so_dict.update({
+				"custom_channel_partner": so_data.get("channel_partner") or "",
+				"cp_name": so_data.get("cp_name") or "",
+			})
 
-        if target_doctype == "Secondary Sales Order":
-            so_dict.update(
-                {
-                    "customer_level": customer_level,
-                    "custom_channel_partner": so_data.get("channel_partner") or "",
-                    "cp_name": so_data.get("cp_name") or "",
-                }
-            )
+		items_data = so_data.get("items") or []
+		if isinstance(items_data, str):
+			items_data = frappe.parse_json(items_data)
 
-        items_data = so_data.get("items") or []
-        if isinstance(items_data, str):
-            items_data = frappe.parse_json(items_data)
+		items = []
+		for row in (items_data or []):
+			row = frappe._dict(row or {})
+			items.append({
+				"item_template": row.get("item_template"),
+				"item_code": row.get("item_code"),
+				"item_name": row.get("item_name"),
+				"qty": row.get("qty"),
+				"uom": row.get("uom"),
+				"rate": row.get("rate") or 0,
+				"amount": row.get("amount"),
+				"quote_custom_rate": row.get("quote_custom_rate") or 0,
+				"quoted_rate": row.get("quoted_rate") or 0,
+			})
 
-        items = []
-        for row in (items_data or []):
-            row = frappe._dict(row or {})
-            items.append(
-                {
-                    "item_template": row.get("item_template"),
-                    "item_code": row.get("item_code"),
-                    "item_name": row.get("item_name"),
-                    "qty": row.get("qty"),
-                    "uom": row.get("uom"),
-                    "rate": row.get("rate") or 0,
-                    "amount": row.get("amount"),
-                    "quote_custom_rate": row.get("quote_custom_rate") or 0,
-                    "quoted_rate": row.get("quoted_rate") or 0,
-                }
-            )
+		so_dict["items"] = items
 
-        so_dict["items"] = items
+		contact = (so_data.get("contact") or "").strip()
+		if contact:
+			if not frappe.db.exists("Contact Number", contact):
+				create_contact_number(contact, "Customer", so_data.get("customer"))
 
-        contact = (so_data.get("contact") or "").strip()
-        if contact:
-            if not frappe.db.exists("Contact Number", contact):
-                create_contact_number(contact, "Customer", so_data.get("customer"))
+		isupdate = so_data.get("isupdate")
+		if isinstance(isupdate, str):
+			isupdate = isupdate.strip().lower() in ("1", "true", "yes", "y")
+		else:
+			isupdate = bool(isupdate)
 
-        isupdate = so_data.get("isupdate")
-        if isinstance(isupdate, str):
-            isupdate = isupdate.strip().lower() in ("1", "true", "yes", "y")
-        else:
-            isupdate = bool(isupdate)
+		if isupdate:
+			docname = so_data.get("so_id")
+			if not docname:
+				frappe.throw(_("Missing so_id for update"))
 
-        if isupdate:
-            docname = so_data.get("so_id")
-            if not docname:
-                frappe.throw(_("Missing so_id for update"))
+			if frappe.db.exists("Secondary Sales Order", docname):
+				dt = "Secondary Sales Order"
+			elif frappe.db.exists("Sales Order", docname):
+				dt = "Sales Order"
+			else:
+				frappe.throw(_("Document not found: {0}").format(docname))
 
-            if frappe.db.exists("Secondary Sales Order", docname):
-                dt = "Secondary Sales Order"
-            elif frappe.db.exists("Sales Order", docname):
-                dt = "Sales Order"
-            else:
-                frappe.throw(_("Document not found: {0}").format(docname))
+			doc = frappe.get_doc(dt, docname)
+			doc.update(so_dict)
+			doc.save(ignore_permissions=True)
+			target_doctype = dt
+		else:
+			so_dict["doctype"] = target_doctype
+			doc = frappe.get_doc(so_dict)
+			doc.insert(ignore_mandatory=True, ignore_permissions=True)
 
-            doc = frappe.get_doc(dt, docname)
-            doc.update(so_dict)
-            doc.save(ignore_permissions=True)
-            target_doctype = dt
-        else:
-            so_dict["doctype"] = target_doctype
-            doc = frappe.get_doc(so_dict)
-            doc.insert(ignore_mandatory=True, ignore_permissions=True)
+		message = f"{target_doctype} has been successfully created as Draft"
+		if (so_data.get("action") or "").strip() == "Submit":
+			apply_workflow(doc, "Submit")
+			message = f"{target_doctype} has been successfully submitted"
 
-        message = f"{target_doctype} has been successfully created as Draft"
-        if (so_data.get("action") or "").strip() == "Submit":
-            apply_workflow(doc, "Submit")
-            message = f"{target_doctype} has been successfully submitted"
+		response.update({"so_id": doc.name, "doctype": target_doctype})
 
-        response.update({"so_id": doc.name, "doctype": target_doctype})
+		frappe.local.response["status"] = True
+		frappe.local.response["message"] = message
+		frappe.local.response["data"] = [response]
 
-        frappe.local.response["status"] = True
-        frappe.local.response["message"] = message
-        frappe.local.response["data"] = [response]
+		frappe.db.commit()
 
-        frappe.db.commit()
+	except Exception:
+		frappe.db.rollback()
+		frappe.log_error(frappe.get_traceback(), "CREATE_SO")
+		frappe.local.response["status"] = False
+		frappe.local.response["message"] = "Error while creating Sales Order"
+		frappe.local.response["data"] = []
 
-    except Exception:
-        frappe.db.rollback()
-        frappe.log_error(frappe.get_traceback(), "CREATE_SO")
-        frappe.local.response["status"] = False
-        frappe.local.response["message"] = "Error while creating Sales Order"
 
 
 def get_role_filter(emp, is_self=None, employee=None):
