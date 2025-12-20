@@ -156,155 +156,218 @@ def so_list():
 
 
 
+
+
+
+import frappe
+
 @frappe.whitelist()
 def so_form():
-    try:
-        so_name = frappe.form_dict.get("name")
-        req_doctype = (frappe.form_dict.get("doctype") or "").strip()
+	try:
+		so_name = (frappe.form_dict.get("name") or "").strip()
+		req_doctype = (frappe.form_dict.get("doctype") or "").strip()
 
-        if not so_name:
-            frappe.local.response["http_status_code"] = 404
-            frappe.local.response["status"] = False
-            frappe.local.response["message"] = "Please give Sales Order ID"
-            return
+		if not so_name:
+			frappe.local.response["http_status_code"] = 404
+			frappe.local.response["status"] = False
+			frappe.local.response["message"] = "Please give Sales Order ID"
+			return
 
-        dt = None
-        if req_doctype in ("Sales Order", "Secondary Sales Order"):
-            if frappe.db.exists(req_doctype, so_name):
-                dt = req_doctype
-        if not dt:
-            if frappe.db.exists("Secondary Sales Order", so_name):
-                dt = "Secondary Sales Order"
-            elif frappe.db.exists("Sales Order", so_name):
-                dt = "Sales Order"
+		# Detect doctype safely
+		dt = None
+		if req_doctype in ("Sales Order", "Secondary Sales Order"):
+			if frappe.db.exists(req_doctype, so_name):
+				dt = req_doctype
 
-        if not dt:
-            frappe.local.response["http_status_code"] = 404
-            frappe.local.response["status"] = False
-            frappe.local.response["message"] = "Please give valid Sales Order ID"
-            return
+		if not dt:
+			if frappe.db.exists("Secondary Sales Order", so_name):
+				dt = "Secondary Sales Order"
+			elif frappe.db.exists("Sales Order", so_name):
+				dt = "Sales Order"
 
-        so_doc = frappe.get_doc(dt, so_name)
+		if not dt:
+			frappe.local.response["http_status_code"] = 404
+			frappe.local.response["status"] = False
+			frappe.local.response["message"] = "Please give valid Sales Order ID"
+			return
 
-        so_dict = {
-            "name": so_doc.name,
-            "doctype": so_doc.doctype,
-            "customer": so_doc.customer,
-            "customer_name": so_doc.customer_name,
-            "shop": so_doc.shop,
-            "shop_name": so_doc.shop_name,
-            "delivery_date": so_doc.delivery_date,
-            "deal_type": so_doc.custom_deal_type,
-            "location": so_doc.customer_address.rsplit("-", 1)[0] if so_doc.customer_address else "",
-            "contact": so_doc.contact_number or "",
-            "remarks": so_doc.remarks,
-            "workflow_state": so_doc.workflow_state,
-            "cust_edit_needed": so_doc.cust_edit_needed,
-            "customer_visit": so_doc.customer_visit or "",
-            "delivery_term": so_doc.custom_delivery_term or "",
-            "warehouse": so_doc.set_warehouse,
-        }
+		so_doc = frappe.get_doc(dt, so_name)
 
-        if dt == "Secondary Sales Order":
-            so_dict.update(
-                {
-                    "customer_level": getattr(so_doc, "customer_level", ""),
-                    "channel_partner": getattr(so_doc, "custom_channel_partner", ""),
-                    "cp_name": getattr(so_doc, "cp_name", ""),
-                }
-            )
+		# -------------------------
+		# Warehouse handling (UNCHANGED)
+		# -------------------------
+		warehouse = getattr(so_doc, "set_warehouse", "") or ""
+		warehouse_name = ""
 
-        if so_doc.shipping_address_name:
-            so_dict["shipping_address"] = frappe.db.get_values(
-                "Address",
-                so_doc.shipping_address_name,
-                [
-                    "name as shipping_address_name",
-                    "address_line1",
-                    "address_line2",
-                    "city",
-                    "district",
-                    "state",
-                    "pincode",
-                ],
-                as_dict=1,
-            )
+		if dt == "Secondary Sales Order":
+			# Here: warehouse should be CP Warehouse docname like "CP-WAR-Delhi"
+			if warehouse and frappe.db.exists("CP Warehouse", warehouse):
+				warehouse_name = frappe.db.get_value("CP Warehouse", warehouse, "warehouse_name") or ""
+			else:
+				warehouse_name = ""
+		else:
+			# Here: warehouse should be Warehouse docname like "Goods In Transit - MI"
+			if warehouse and frappe.db.exists("Warehouse", warehouse):
+				warehouse_name = frappe.db.get_value("Warehouse", warehouse, "warehouse_name") or ""
+			else:
+				warehouse_name = ""
 
-        if so_doc.customer_address:
-            so_dict["billing_address"] = frappe.db.get_values(
-                "Address",
-                so_doc.customer_address,
-                [
-                    "name as billing_address_name",
-                    "address_line1",
-                    "address_line2",
-                    "city",
-                    "district",
-                    "state",
-                    "pincode",
-                ],
-                as_dict=1,
-            )
+		# -------------------------
+		# Payment Terms (NEW)
+		# -------------------------
+		payment_terms = getattr(so_doc, "payment_terms_template", "") or ""
+		payment_terms_name = ""
+		# Example: frappe.db.get_value("Payment Terms Template","10 Days","template_name")
+		if payment_terms and frappe.db.exists("Payment Terms Template", payment_terms):
+			payment_terms_name = (
+				frappe.db.get_value("Payment Terms Template", payment_terms, "template_name") or ""
+			)
 
-        items_by_template = {}
-        tax_total = 0
-        item_total = 0
+		# -------------------------
+		# Delivery Term (NEW)
+		# -------------------------
+		delivery_term = getattr(so_doc, "custom_delivery_term", "") or ""
+		delivery_term_name = ""
+		# Example: frappe.db.get_value("Delivery Term","ABC","delivery_term")
+		if delivery_term and frappe.db.exists("Delivery Term", delivery_term):
+			delivery_term_name = (
+				frappe.db.get_value("Delivery Term", delivery_term, "delivery_term") or ""
+			)
 
-        for item in so_doc.items:
-            tax_percentage = frappe.get_value("Item Tax Template", item.item_tax_template, "gst_rate") or 0
-            tax_amount = (item.amount or 0) * (tax_percentage / 100)
+		so_dict = {
+			"name": so_doc.name,
+			"doctype": so_doc.doctype,
+			"customer": so_doc.customer,
+			"customer_name": so_doc.customer_name,
+			"visit_type": getattr(so_doc, "customer_level", "") or "",
+			"shop": getattr(so_doc, "shop", "") or "",
+			"shop_name": getattr(so_doc, "shop_name", "") or "",
+			"delivery_date": getattr(so_doc, "delivery_date", None),
+			"deal_type": getattr(so_doc, "custom_deal_type", "") or "",
+			"location": so_doc.customer_address.rsplit("-", 1)[0] if getattr(so_doc, "customer_address", None) else "",
+			"contact": getattr(so_doc, "contact_number", "") or "",
+			"remarks": getattr(so_doc, "remarks", "") or "",
+			"workflow_state": getattr(so_doc, "workflow_state", "") or "",
+			"cust_edit_needed": getattr(so_doc, "cust_edit_needed", 0) or 0,
+			"customer_visit": getattr(so_doc, "customer_visit", "") or "",
 
-            tax_total += tax_amount
-            item_total += (item.amount or 0)
+			"warehouse": warehouse,
+			"warehouse_name": warehouse_name,
 
-            item_dict = {
-                "name": item.name,
-                "item_code": item.item_code,
-                "item_name": item.item_name,
-                "qty": item.qty,
-                "uom": item.uom,
-                "amount": item.amount,
-                "rate": item.rate,
-                "quote_custom_rate": getattr(item, "quote_custom_rate", 0) or 0,
-                "quoted_rate": getattr(item, "quoted_rate", 0) or 0,
-                "tax_percentage": tax_percentage,
-                "tax_amount": tax_amount,
-            }
+			# Payment terms (code + name)
+			"payment_terms": payment_terms,
+			"payment_terms_name": payment_terms_name,
 
-            template = getattr(item, "item_template", None) or "Default"
-            if template in items_by_template:
-                items_by_template[template]["items"].append(item_dict)
-            else:
-                items_by_template[template] = {"item_template": template, "items": [item_dict]}
+			# Delivery term (code + name)
+			"delivery_term": delivery_term,
+			"delivery_term_name": delivery_term_name,
+		}
 
-        so_dict["items"] = list(items_by_template.values())
-        so_dict["gst_total_amount"] = tax_total
-        so_dict["item_total_amount"] = item_total
-        so_dict["grand_total_amount"] = item_total + tax_total
+		if dt == "Secondary Sales Order":
+			so_dict.update(
+				{
+					"customer_level": getattr(so_doc, "customer_level", "") or "",
+					"channel_partner": getattr(so_doc, "custom_channel_partner", "") or "",
+					"cp_name": getattr(so_doc, "cp_name", "") or "",
+				}
+			)
 
-        activities = get_comments(dt, so_doc.name)
-        so_dict["activities"] = activities
+		# Shipping address
+		if getattr(so_doc, "shipping_address_name", None):
+			so_dict["shipping_address"] = frappe.db.get_values(
+				"Address",
+				so_doc.shipping_address_name,
+				[
+					"name as shipping_address_name",
+					"address_line1",
+					"address_line2",
+					"city",
+					"district",
+					"state",
+					"pincode",
+				],
+				as_dict=1,
+			)
 
-        is_self_filter = get_self_filter_status()
-        so_dict["status_fields"] = get_workflow_statuses(dt, so_name, get_session_emp_role())
-        so_dict["has_toggle_filter"] = is_self_filter
+		# Billing address
+		if getattr(so_doc, "customer_address", None):
+			so_dict["billing_address"] = frappe.db.get_values(
+				"Address",
+				so_doc.customer_address,
+				[
+					"name as billing_address_name",
+					"address_line1",
+					"address_line2",
+					"city",
+					"district",
+					"state",
+					"pincode",
+				],
+				as_dict=1,
+			)
 
-        created_by_emp = getattr(so_doc, "created_by_emp", None)
-        if created_by_emp:
-            so_dict["created_person_mobile_no"] = frappe.get_value(
-                "Employee", created_by_emp, "custom_personal_mobile_number"
-            )
-        else:
-            so_dict["created_person_mobile_no"] = ""
+		# Items + GST
+		items_by_template = {}
+		tax_total = 0
+		item_total = 0
 
-        frappe.local.response["status"] = True
-        frappe.local.response["message"] = "Sales Order form has been successfully fetched"
-        frappe.local.response["data"] = [so_dict]
+		for item in (so_doc.items or []):
+			tax_percentage = frappe.get_value("Item Tax Template", item.item_tax_template, "gst_rate") or 0
+			tax_amount = (item.amount or 0) * (tax_percentage / 100)
 
-    except Exception as err:
-        get_exception(err)
+			tax_total += tax_amount
+			item_total += (item.amount or 0)
 
- 
+			item_dict = {
+				"name": item.name,
+				"item_code": item.item_code,
+				"item_name": item.item_name,
+				"qty": item.qty,
+				"uom": item.uom,
+				"amount": item.amount,
+				"rate": item.rate,
+				"quote_custom_rate": getattr(item, "quote_custom_rate", 0) or 0,
+				"quoted_rate": getattr(item, "quoted_rate", 0) or 0,
+				"tax_percentage": tax_percentage,
+				"tax_amount": tax_amount,
+				"item_total": (item.amount or 0) + tax_amount,
+			}
+
+			template = getattr(item, "item_template", None) or "Default"
+			if template in items_by_template:
+				items_by_template[template]["items"].append(item_dict)
+			else:
+				items_by_template[template] = {"item_template": template, "items": [item_dict]}
+
+		so_dict["items"] = list(items_by_template.values())
+		so_dict["gst_total_amount"] = tax_total
+		so_dict["item_total_amount"] = item_total
+		so_dict["grand_total_amount"] = item_total + tax_total
+
+		# Activities / workflow helpers
+		so_dict["activities"] = get_comments(dt, so_doc.name)
+		is_self_filter = get_self_filter_status()
+		so_dict["status_fields"] = get_workflow_statuses(dt, so_name, get_session_emp_role())
+		so_dict["has_toggle_filter"] = is_self_filter
+
+		# Created by employee mobile
+		created_by_emp = getattr(so_doc, "created_by_emp", None)
+		if created_by_emp:
+			so_dict["created_person_mobile_no"] = frappe.get_value(
+				"Employee", created_by_emp, "custom_personal_mobile_number"
+			) or ""
+		else:
+			so_dict["created_person_mobile_no"] = ""
+
+		frappe.local.response["status"] = True
+		frappe.local.response["message"] = "Sales Order form has been successfully fetched"
+		frappe.local.response["data"] = [so_dict]
+
+	except Exception as err:
+		get_exception(err)
+
+
+
 from frappe import _
 
 @frappe.whitelist()
@@ -348,6 +411,8 @@ def create_so():
 			"created_by_emp": get_session_employee(),
 			"territory": get_session_employee_area(),
 			"customer_level": customer_level,
+			"channel_partner": so_data.get("custom_channel_partner") or "",
+			"channel_partner_name": so_data.get("cp_name") or "",
 		}
 
 		if target_doctype == "Secondary Sales Order":
@@ -422,12 +487,14 @@ def create_so():
 
 		frappe.db.commit()
 
-	except Exception:
+	except Exception as e:
 		frappe.db.rollback()
 		frappe.log_error(frappe.get_traceback(), "CREATE_SO")
+
 		frappe.local.response["status"] = False
-		frappe.local.response["message"] = "Error while creating Sales Order"
+		frappe.local.response["message"] = str(e) if str(e) else "Error while creating Sales Order"
 		frappe.local.response["data"] = []
+		frappe.local.response["http_status_code"] = 400
 
 
 
