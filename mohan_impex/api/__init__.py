@@ -252,36 +252,59 @@ def get_item_templates():
     frappe.local.response['message'] = "Items fetched successfully"
     frappe.local.response['data'] = item_templates
 
+
+import frappe
+
 @frappe.whitelist()
 def get_item_variants(limit:int=20, customer="", warehouse="", delivery_term=""):
     query = """
-        select i.item_code, i.item_name, i.item_category, cd.competitor, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
+        select i.item_code, i.item_name, i.item_category, cd.competitor,
+               IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
         from `tabItem` as i
         left join `tabCompetitor Detail` as cd on cd.parent = i.name
         where has_variants = 0
     """
-    # query = """
-    #     SELECT i.item_code, i.item_name, i.item_category, c.name AS competitor, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
-    #     FROM `tabItem` AS i
-    #     LEFT JOIN `tabCompetitor Item` AS ci ON i.name = ci.item_code
-    #     LEFT JOIN `tabCompetitor` AS c ON c.name = ci.parent
-    #     WHERE i.has_variants = 0
-    # """
+
     if frappe.form_dict.get("item_template"):
         query += """ AND variant_of="{0}" """.format(frappe.form_dict.get("item_template"))
     if frappe.form_dict.get("item_category"):
         query += """ AND item_category="{0}" """.format(frappe.form_dict.get("item_category"))
     if frappe.form_dict.get("search_text"):
-        query += """ AND (item_name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
+        query += """ AND (item_name LIKE "%{search_text}%") """.format(
+            search_text=frappe.form_dict.get("search_text")
+        )
+
     query += f" limit {limit}"
     item_variants = frappe.db.sql(query, as_dict=True)
+
+    # existing logic (kept as-is)
     if customer:
         consol_item_variants = competitor_consolidate(item_variants, customer, warehouse, delivery_term)
     else:
         consol_item_variants = competitor_consolidate(item_variants)
+
+    # ✅ Add item_tax_template + gst_rate using SAME FILE function (no import)
+    tax_cache = {}
+    for row in consol_item_variants:
+        item_code = row.get("item_code")
+        if not item_code:
+            row["item_tax_template"] = ""
+            row["gst_rate"] = 0
+            continue
+
+        if item_code not in tax_cache:
+            tax_cache[item_code] = get_item_tax_and_gst_rate(item_code) or {}
+
+        row["item_tax_template"] = tax_cache[item_code].get("item_tax_template") or ""
+        row["gst_rate"] = tax_cache[item_code].get("gst_rate") or 0
+
     frappe.local.response['status'] = True
     frappe.local.response['message'] = "Items fetched successfully"
     frappe.local.response['data'] = consol_item_variants
+
+
+
+
 
 def competitor_consolidate(item_list, customer="", warehouse="", delivery_term=""):
     result = {}
@@ -984,3 +1007,52 @@ def get_modes_of_travel(user: str | None = None):
     frappe.local.response["status"] = True
     frappe.local.response["message"] = "Mode of Travel list has been fetched successfully"
     frappe.local.response["data"] = sorted(existing)
+    
+    
+    
+    
+@frappe.whitelist()
+def get_item_tax_and_gst_rate(item_code):
+    """
+    Fetch item_tax_template from Item Tax child table
+    and gst_rate from Item Tax Template
+    """
+
+    if not item_code:
+        frappe.local.response["http_status_code"] = 400
+        frappe.local.response["status"] = False
+        frappe.local.response["message"] = "item_code is required"
+        return
+
+    # Check if Item exists
+    if not frappe.db.exists("Item", item_code):
+        frappe.local.response["http_status_code"] = 404
+        frappe.local.response["status"] = False
+        frappe.local.response["message"] = f"Item {item_code} not found"
+        return
+
+    # Fetch item_tax_template from Item Tax (child table)
+    item_tax_template = frappe.db.get_value(
+        "Item Tax",
+        {
+            "parent": item_code,
+            "parenttype": "Item",
+            "parentfield": "taxes"
+        },
+        "item_tax_template"
+    )
+
+    gst_rate = None
+    if item_tax_template:
+        gst_rate = frappe.db.get_value(
+            "Item Tax Template",
+            item_tax_template,
+            "gst_rate"
+        )
+
+    return {
+        "status": True,
+        "item_code": item_code,
+        "item_tax_template": item_tax_template or "",
+        "gst_rate": gst_rate or 0
+    }

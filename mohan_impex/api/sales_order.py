@@ -628,3 +628,53 @@ def get_tag_list(customer, search_text=""):
     )
     frappe.local.response['status'] = True
     frappe.local.response['data'] = tag_list
+    
+    
+
+
+
+@frappe.whitelist()
+def get_item_tax_and_gst_rate(item_code):
+    """
+    Fetch item_tax_template from Item Tax child table
+    and gst_rate from Item Tax Template
+    """
+
+    if not item_code:
+        frappe.local.response["http_status_code"] = 400
+        frappe.local.response["status"] = False
+        frappe.local.response["message"] = "item_code is required"
+        return
+
+    # Check if Item exists
+    if not frappe.db.exists("Item", item_code):
+        frappe.local.response["http_status_code"] = 404
+        frappe.local.response["status"] = False
+        frappe.local.response["message"] = f"Item {item_code} not found"
+        return
+
+    # Fetch item_tax_template from Item Tax (child table)
+    item_tax_template = frappe.db.get_value(
+        "Item Tax",
+        {
+            "parent": item_code,
+            "parenttype": "Item",
+            "parentfield": "taxes"
+        },
+        "item_tax_template"
+    )
+
+    gst_rate = None
+    if item_tax_template:
+        gst_rate = frappe.db.get_value(
+            "Item Tax Template",
+            item_tax_template,
+            "gst_rate"
+        )
+
+    return {
+        "status": True,
+        "item_code": item_code,
+        "item_tax_template": item_tax_template or "",
+        "gst_rate": gst_rate or 0
+    }
