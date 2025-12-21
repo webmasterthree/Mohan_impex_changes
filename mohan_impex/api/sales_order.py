@@ -155,10 +155,6 @@ def so_list():
         get_exception(err)
 
 
-
-
-
-
 import frappe
 
 @frappe.whitelist()
@@ -213,26 +209,33 @@ def so_form():
 				warehouse_name = ""
 
 		# -------------------------
-		# Payment Terms (NEW)
+		# Payment Terms
 		# -------------------------
 		payment_terms = getattr(so_doc, "payment_terms_template", "") or ""
 		payment_terms_name = ""
-		# Example: frappe.db.get_value("Payment Terms Template","10 Days","template_name")
 		if payment_terms and frappe.db.exists("Payment Terms Template", payment_terms):
-			payment_terms_name = (
-				frappe.db.get_value("Payment Terms Template", payment_terms, "template_name") or ""
-			)
+			payment_terms_name = frappe.db.get_value(
+				"Payment Terms Template", payment_terms, "template_name"
+			) or ""
 
 		# -------------------------
-		# Delivery Term (NEW)
+		# Delivery Term
 		# -------------------------
 		delivery_term = getattr(so_doc, "custom_delivery_term", "") or ""
 		delivery_term_name = ""
-		# Example: frappe.db.get_value("Delivery Term","ABC","delivery_term")
 		if delivery_term and frappe.db.exists("Delivery Term", delivery_term):
-			delivery_term_name = (
-				frappe.db.get_value("Delivery Term", delivery_term, "delivery_term") or ""
-			)
+			delivery_term_name = frappe.db.get_value(
+				"Delivery Term", delivery_term, "delivery_term"
+			) or ""
+
+		# -------------------------
+		# Pricing Rules (ONLY pricing_rule field)
+		# -------------------------
+		pricing_rules = []
+		for pr in (getattr(so_doc, "pricing_rules", None) or []):
+			rule = getattr(pr, "pricing_rule", None)
+			if rule:
+				pricing_rules.append(rule)
 
 		so_dict = {
 			"name": so_doc.name,
@@ -261,6 +264,9 @@ def so_form():
 			# Delivery term (code + name)
 			"delivery_term": delivery_term,
 			"delivery_term_name": delivery_term_name,
+
+			# Pricing rules (ONLY pricing_rule)
+			"pricing_rules": pricing_rules,
 		}
 
 		if dt == "Secondary Sales Order":
@@ -365,7 +371,6 @@ def so_form():
 
 	except Exception as err:
 		get_exception(err)
-
 
 
 from frappe import _
