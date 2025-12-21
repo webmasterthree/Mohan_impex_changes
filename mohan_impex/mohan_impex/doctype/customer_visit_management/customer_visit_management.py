@@ -99,7 +99,7 @@ class CustomerVisitManagement(Document):
                 "address_line1": self.address_line1,
                 "address_line2": self.address_line2,
                 "district": self.district,
-                "city": self.district,
+                "city": self.city,
                 "state": self.state,
                 "pincode": self.pincode,
                 "visit_start": self.visit_start,
