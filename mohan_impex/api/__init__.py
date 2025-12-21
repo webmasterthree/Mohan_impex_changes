@@ -329,11 +329,12 @@ def get_item_details(item_code, uom, customer, warehouse="", delivery_term=""):
         "items": [{"item_code": item_code, "qty": qty, "uom": uom}],
         "qty": qty
     })
+    frappe.errprint(args)
     doc = frappe.new_doc("Sales Order")
     doc.custom_delivery_term = delivery_term
 
     item_details = erp_get_item_details(args, doc=doc, for_validate=True)
-
+    frappe.errprint(item_details)
     pricing_rules_applied = json.loads(item_details.get("pricing_rules") or "[]")
 
     item_details = {
@@ -917,7 +918,6 @@ def send_push_notification(for_user, device_token, title, body, data=None):
             "device_token": device_token,
             "payload": json.dumps(payload, indent=4),
         }
-        frappe.errprint("LKLKLKLLKLL")
         response = requests.post(url, headers=headers, data=json.dumps(payload))
         if response.status_code == 200:
             frappe.local.response["status"] = True 
