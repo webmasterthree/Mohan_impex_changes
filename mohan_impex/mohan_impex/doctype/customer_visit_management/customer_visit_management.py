@@ -117,7 +117,7 @@ class CustomerVisitManagement(Document):
                 "cvm": self.name,
                 **pt_dict
             })
-            trial_row_list = [{"cvm_trial_id": trial_row.name, "segment": trial_row.segment, "item_code": trial_row.item_code} for trial_row in self.trial_table]
+            trial_row_list = [{"cvm_trial_id": trial_row.name, "segment": trial_row.segment, "item_code": trial_row.item_code, "qty": trial_row.qty, "uom": trial_row.uom} for trial_row in self.trial_table]
             existing_trial_row = doc.trial_plan_table
             trial_row_to_add_list = []
             trial_row_to_remove_list = []
