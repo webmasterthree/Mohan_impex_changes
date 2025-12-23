@@ -546,7 +546,7 @@ def get_addresses(customer, address_type):
 def get_warehouses():
     try:
         company = frappe.defaults.get_defaults().get("company") or None
-        warehouses = frappe.get_all("Warehouse", {"disabled": "0", "company": company}, ["name", "warehouse_name"])
+        warehouses = frappe.get_all("Warehouse", {"disabled": "0", "company": company,"is_group":"1"}, ["name", "warehouse_name"])
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Warehouses list has been successfully fetched"
         frappe.local.response['data'] = warehouses

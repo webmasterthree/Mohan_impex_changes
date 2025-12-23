@@ -244,6 +244,7 @@ def get_item_templates():
         select item_code, item_name, item_category
         from `tabItem`
         where has_variants = 1
+        AND is_sales_item = 1
     """
     if frappe.form_dict.get("search_text"):
         query += """ AND (item_name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
