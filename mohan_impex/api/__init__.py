@@ -639,6 +639,7 @@ def protected_file(token):
         frappe.log_error(f"File Access Error: {str(e)}")
         return "Invalid Token", 400
 
+
 @frappe.whitelist()
 def is_within_range(origin, destination):
     try:
@@ -646,54 +647,105 @@ def is_within_range(origin, destination):
             "origin": origin,
             "destination": destination
         }
+
+        # Fetch API key
         api_key = frappe.get_single("Google Settings").api_key
         if not api_key:
-            message = "NO API_KEY found in Google Settings"
-            get_exception(message=message)
+            get_exception(message="NO API_KEY found in Google Settings")
             return
-        origin_list = [x.strip() for x in origin.split(",") if x]
-        if not (len(origin_list) == 2 and all([isinstance(float(x), float) for x in origin_list])):
-            message = "Origin is not a valid float or not separated by comma"
-            get_exception(message=message, data=origin_and_dest)
+
+        # Validate origin
+        try:
+            origin_list = [float(x.strip()) for x in origin.split(",")]
+            if len(origin_list) != 2:
+                raise ValueError
+        except Exception:
+            get_exception(
+                message="Origin is not valid. Format should be: lat,lng",
+                data=origin_and_dest
+            )
             return
-        
-        destination_list = [x.strip() for x in destination.split(",")]
-        if not (len(destination_list) == 2 and all([isinstance(float(x), float) for x in destination_list])):
-            message = "Destination is not a valid values or not separated by comma"
-            get_exception(message=message, data=origin_and_dest)
+
+        # Validate destination
+        try:
+            destination_list = [float(x.strip()) for x in destination.split(",")]
+            if len(destination_list) != 2:
+                raise ValueError
+        except Exception:
+            get_exception(
+                message="Destination is not valid. Format should be: lat,lng",
+                data=origin_and_dest
+            )
             return
-        allowed_distance = frappe.get_single("Mohan Impex Settings").allowed_distance
-        url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={origin}&destinations={destination}&key={api_key}"
-        response = requests.get(url).json()
-        
-        if response["status"] == "OK":
-            if not response["rows"][0]["elements"][0]["status"] == "OK":
-                message = "No Address found for the given Orgin or Destination"
-                get_exception(message=message)
-                return
-            distance_meters = response["rows"][0]["elements"][0]["distance"]["value"]  # Distance in meters
-            valid_distance = distance_meters <= allowed_distance
-            response = {
-                "valid": valid_distance, 
-                "distance": distance_meters,
-            }
-            message = "You are within the range to submit the visit" if valid_distance else f"You are {int(allowed_distance)} meters away from the origin to submit the visit"
-            response.update({"message": message})
-            frappe.local.response['status'] = True
-            frappe.local.response['message'] = "Validation of distance for the range has been done"
-            frappe.local.response['data'] = response
+
+        # Allowed distance (meters)
+        allowed_distance = int(
+            frappe.get_single("Mohan Impex Settings").allowed_distance or 0
+        )
+
+        # Call Google Distance Matrix API
+        url = (
+            "https://maps.googleapis.com/maps/api/distancematrix/json"
+            f"?origins={origin}&destinations={destination}&key={api_key}"
+        )
+
+        api_response = requests.get(url).json()
+
+        if api_response.get("status") != "OK":
+            get_exception(message="Issue with LOCATION or API_KEY", data=api_response)
             return
-        message = "Issue with LOCATION or API_KEY"
-        get_exception(message=message, data=response)
-        # frappe.local.response['http_status_code'] = 404
-        # frappe.local.response['status'] = False
-        # frappe.local.response['message'] = "Issue with LOCATION or API_KEY"
-        # frappe.local.response['data'] = response
+
+        element = api_response["rows"][0]["elements"][0]
+        if element.get("status") != "OK":
+            get_exception(message="No address found for given origin or destination")
+            return
+
+        # Distance in meters
+        distance_meters = element["distance"]["value"]
+
+        valid_distance = distance_meters <= allowed_distance
+
+        if valid_distance:
+            message = (
+                f"You are within the allowed range"
+            )
+        else:
+            extra_distance = distance_meters - allowed_distance
+            message = (
+                f"You are {extra_distance} meters away from the origin to submit the visit"
+            )
+
+        frappe.local.response["status"] = True
+        frappe.local.response["message"] = "Validation of distance for the range has been done"
+        frappe.local.response["data"] = {
+            "valid": valid_distance,
+            "distance": distance_meters,
+            "allowed_distance": allowed_distance,
+            "message": message
+        }
+
     except Exception as err:
-        get_exception(message="Issue with LOCATION or API_KEY", data=origin_and_dest)
-        # frappe.local.response['http_status_code'] = 404
-        # frappe.local.response['status'] = False
-        # frappe.local.response['message'] = f"{err}"
+        get_exception(
+            message="Unexpected error while validating location",
+            data={
+                "error": str(err),
+                "origin": origin,
+                "destination": destination
+            }
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def get_role_filter(emp, is_self=None, employee=None):
     territory_list = set(frappe.get_all("User Permission", {"allow": "Territory", "user": emp.get("user_id")}, ["for_value as area"], pluck="area"))
