@@ -623,18 +623,31 @@ def calculate_item_tax(item_code, qty=1, rate=0):
 
 @frappe.whitelist()
 def get_tag_list(customer, search_text=""):
-    tag_list = frappe.db.sql_list("""
-        SELECT DISTINCT cvm.name 
+    raw_tags = frappe.db.sql_list(
+        """
+        SELECT DISTINCT cvm.name
         FROM `tabCustomer Visit Management` cvm
-        LEFT JOIN `tabUnverified Customer` uc ON cvm.unv_customer = uc.name
-        WHERE (cvm.customer = %s OR uc.customer = %s)
-        """ + (f"AND cvm.name LIKE %s" if search_text else ""),
-        (customer, customer) + ((f"%{search_text}%",) if search_text else ())
+        LEFT JOIN `tabUnverified Customer` uc
+            ON cvm.unv_customer = uc.name
+        WHERE
+            (cvm.customer = %s OR uc.customer = %s)
+            AND cvm.order_status = %s
+        """
+        + (" AND cvm.name LIKE %s" if search_text else ""),
+        (customer, customer, "With Order")
+        + ((f"%{search_text}%",) if search_text else ())
     )
-    frappe.local.response['status'] = True
-    frappe.local.response['data'] = tag_list
-    
-    
+
+    # Filter out CVMs where Sales Order already exists
+    tag_list = [
+        cvm_name
+        for cvm_name in raw_tags
+        if not is_os_created(cvm_name)
+    ]
+
+    frappe.local.response["status"] = True
+    frappe.local.response["data"] = tag_list
+
 
 
 
@@ -683,3 +696,20 @@ def get_item_tax_and_gst_rate(item_code):
         "item_tax_template": item_tax_template or "",
         "gst_rate": gst_rate or 0
     }
+
+
+@frappe.whitelist()
+def is_os_created(customer_visit):
+    if not customer_visit:
+        return 0
+
+    exists = frappe.db.exists(
+        "Sales Order",
+        {
+            "customer_visit": customer_visit,
+            "docstatus": ["in", [0, 1]]
+        }
+    )
+
+    return 1 if exists else 0
+
