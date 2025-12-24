@@ -486,30 +486,57 @@ def get_customer_list(search_text=""):
 @frappe.whitelist()
 def get_customer_info(role_filter=None, customer_level="", channel_partner="", kyc_status="", search_text=""):
     if not role_filter:
-        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
+        emp = frappe.get_value(
+            "Employee",
+            {"user_id": frappe.session.user},
+            ["name", "area"],
+            as_dict=True
+        )
         role_filter = get_territory_role_filter(emp)
-    fields = ["cu.name as name", "cu.customer_name", "cu.custom_shop as shop", "cu.custom_shop_name as shop_name", "ct.name as contact", "cu.customer_level","cu.kyc_status"]
+
+    # ✅ ONLY change: added cu.is_dl
+    fields = [
+        "cu.name as name",
+        "cu.customer_name",
+        "cu.custom_shop as shop",
+        "cu.custom_shop_name as shop_name",
+        "ct.name as contact",
+        "cu.customer_level",
+        "cu.kyc_status",
+        "cu.is_dl"          # ✅ ADDED
+    ]
+
     if has_cp():
-        fields.extend(["cu.custom_channel_partner as channel_partner", "cu.cp_name"])
+        fields.extend([
+            "cu.custom_channel_partner as channel_partner",
+            "cu.cp_name"
+        ])
+
     query = """
         SELECT {fields}
         FROM `tabCustomer` AS cu
-        LEFT JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
-        LEFT JOIN `tabContact Number` AS ct on ct.name = dl.parent
-        WHERE {role_filter} and cu.is_dl = 0
-    """.format(fields=','.join(fields), role_filter=role_filter)
+        LEFT JOIN `tabDynamic Link` AS dl ON dl.link_name = cu.name
+        LEFT JOIN `tabContact Number` AS ct ON ct.name = dl.parent
+        WHERE {role_filter}
+    """.format(fields=",".join(fields), role_filter=role_filter)
+
     if search_text:
-        # or cu.custom_shop LIKE "%{search_text}%"
-        search_cond = """ AND (cu.customer_name LIKE "%{search_text}%" or ct.name LIKE "%{search_text}%") """.format(search_text=search_text)
-        query += search_cond
+        query += """
+            AND (cu.customer_name LIKE "%{0}%" OR ct.name LIKE "%{0}%")
+        """.format(search_text)
+
     if customer_level:
         query += """ AND cu.customer_level = "{0}" """.format(customer_level)
+
     if channel_partner:
         query += """ AND cu.custom_channel_partner = "{0}" """.format(channel_partner)
+
     if kyc_status:
         query += """ AND cu.kyc_status = "{0}" """.format(kyc_status)
+
     customers = frappe.db.sql(query, as_dict=True)
-    result={}
+
+    result = {}
     for entry in customers:
         key = entry["name"]
         if key not in result:
@@ -520,16 +547,19 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
                 "shop": entry["shop"],
                 "shop_name": entry["shop_name"],
                 "kyc_status": entry["kyc_status"],
+                "is_dl": entry["is_dl"],   # ✅ PRINTED
                 "contact": []
             }
             if has_cp():
                 result[key]["customer_level"] = entry["customer_level"]
                 result[key]["channel_partner"] = entry["channel_partner"]
                 result[key]["cp_name"] = entry["cp_name"]
+
         if entry["contact"]:
             result[key]["contact"].append(entry["contact"])
-    customer_info = list(result.values())
-    return customer_info
+
+    return list(result.values())
+
 
 @frappe.whitelist()
 def unv_customer_list(role_filter=None, customer_level="", channel_partner="", kyc_status="", search_text=""):
