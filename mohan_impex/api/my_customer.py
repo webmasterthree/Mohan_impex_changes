@@ -8,177 +8,104 @@ from mohan_impex.api.auth import has_cp
 
 @frappe.whitelist()
 def my_customer_list():
-	try:
-		tab = frappe.form_dict.get("tab")
-		limit = frappe.form_dict.get("limit")
-		current_page = frappe.form_dict.get("current_page")
-		is_self = frappe.form_dict.get("is_self")
-		other_employee = frappe.form_dict.get("employee")
+    try:
+        tab = frappe.form_dict.get("tab")
+        limit = frappe.form_dict.get("limit")
+        current_page = frappe.form_dict.get("current_page")
+        is_self = frappe.form_dict.get("is_self")
+        other_employee = frappe.form_dict.get("employee")
 
-		if has_cp() and not tab:
-			frappe.local.response["http_status_code"] = 404
-			frappe.local.response["status"] = False
-			frappe.local.response["message"] = "Please give the list tab"
-			return
+        if has_cp() and not tab:
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Please give the list tab"
+            return
+        if not limit or not current_page:
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Either limit or current page is missing"
+            return
+        current_page = int(current_page)
+        limit = int(limit)
+        offset = limit * (current_page - 1)
+        pagination = "limit %s offset %s"%(limit, offset)
+        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "user_id"], as_dict=True)
+        role_filter = get_role_filter(emp, is_self, other_employee)
+        is_self_filter = get_self_filter_status()
+        si_join = ""
+        billing_query = ""
+        if (frappe.form_dict.get("from_date") and frappe.form_dict.get("to_date")) or frappe.form_dict.get("zero_billing"):
+            one_year_ago = datetime.today() - timedelta(days=365)
+            date_range = ">=" + one_year_ago.strftime("%Y-%m-%d")
+            if frappe.form_dict.get("from_date") and frappe.form_dict.get("to_date"):
+                date_range = "BETWEEN '{0}' AND '{1}' ".format(frappe.form_dict["from_date"], frappe.form_dict["to_date"])
+            billing_query = "si.docstatus = 1 AND"
+            if frappe.form_dict.get("zero_billing"):
+                if isinstance(frappe.form_dict.get("zero_billing"), str):
+                    if int(frappe.form_dict.get("zero_billing")):
+                        billing_query = "(si.docstatus = 0 OR si.docstatus IS NULL) AND"
+            si_join = """
+                LEFT JOIN `tabSales Invoice` si 
+                ON cu.name = si.customer 
+                AND si.posting_date {date_range}
+            """.format(date_range=date_range)
+        query = """
+            select cu.name, cu.customer_name, custom_shop_name as custom_shop, mobile_no as contact, customer_primary_address as location, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count
+            from `tabCustomer` as cu
+            left join `tabDynamic Link` as dl on dl.link_name=cu.name
+            left join `tabCustomer Consumption Info` as cci on cci.parent=cu.name
+            {si_join}
+            where {billing_query} {role_filter} and disabled=0 and kyc_status="Completed"
+        """.format(si_join=si_join, billing_query=billing_query, role_filter=role_filter)
+        group_by = " group by cu.name order by cu.creation desc "
+        filter_checks = {
+            "city": "city",
+            "district": "district",
+            "state": "state",
+            "business_type": "business_type",
+        }
+        if frappe.form_dict.get("category_type"):
+            query += """ AND cci.category_type = "{category_type}" """.format(category_type=frappe.form_dict.get("category_type"))
+        if frappe.form_dict.get("segment"):
+            query += """ AND cci.segment = "{segment}" """.format(segment=frappe.form_dict.get("segment"))
+        if tab:
+            query += f""" AND cu.customer_level = "{tab}" """
+        if frappe.form_dict.get("search_text"):
+            or_filters = """AND (cu.name LIKE "%{search_text}%" or cu.customer_name LIKE "%{search_text}%" or (dl.parent LIKE "%{search_text}%" and dl.parenttype="Contact Number")) """.format(search_text=frappe.form_dict.get("search_text"))
+            query += or_filters
+        and_filters = []
+        for key, value in filter_checks.items():
+            if frappe.form_dict.get(key):
+                and_filters.append("""{0} = "{1}" """.format(value, frappe.form_dict[key]))
+        and_filters = " AND ".join(and_filters)
+        query += """ AND ({0})""".format(and_filters) if and_filters else ""
+        query += group_by
+        query += pagination
+        frappe.log_error(query, "Query")
+        customer_info = frappe.db.sql(query, as_dict=True)
+        for customer in customer_info:
+            customer["location"] = frappe.get_value("Address", {"name": customer["location"]}, ["name","address_title", "address_line1", "address_line2", "city", "state", "pincode"], as_dict=True) if customer["location"] else ""
+            customer["form_url"] = f"{frappe.utils.get_url()}/api/method/mohan_impex.api.my_customer.my_customer_form?name={customer['name']}"
+        total_count = 0
+        if customer_info:
+            total_count = customer_info[0]["total_count"]
+        page_count = math.ceil(total_count / int(limit))
+        response = [
+            {
+                "records": customer_info,
+                "total_count": total_count,
+                "page_count": page_count,
+                "current_page": current_page,
+                "has_toggle_filter": is_self_filter
+            }
+        ]
+        frappe.local.response['status'] = True
+        frappe.local.response['message'] = "My Customer list has been successfully fetched"
+        frappe.local.response['data'] = response
+    except Exception as err:
+        get_exception(err)
 
-		if not limit or not current_page:
-			frappe.local.response["http_status_code"] = 404
-			frappe.local.response["status"] = False
-			frappe.local.response["message"] = "Either limit or current page is missing"
-			return
 
-		current_page = int(current_page)
-		limit = int(limit)
-		offset = limit * (current_page - 1)
-		pagination = "limit %s offset %s" % (limit, offset)
-
-		emp = frappe.get_value(
-			"Employee",
-			{"user_id": frappe.session.user},
-			["name", "area", "user_id"],
-			as_dict=True
-		)
-
-		role_filter = get_role_filter(emp, is_self, other_employee)
-		is_self_filter = get_self_filter_status()
-
-		si_join = ""
-		billing_query = ""
-
-		if (frappe.form_dict.get("from_date") and frappe.form_dict.get("to_date")) or frappe.form_dict.get("zero_billing"):
-			one_year_ago = datetime.today() - timedelta(days=365)
-			date_range = ">=" + one_year_ago.strftime("%Y-%m-%d")
-
-			if frappe.form_dict.get("from_date") and frappe.form_dict.get("to_date"):
-				date_range = "BETWEEN '{0}' AND '{1}' ".format(frappe.form_dict["from_date"], frappe.form_dict["to_date"])
-
-			billing_query = "si.docstatus = 1 AND"
-
-			if frappe.form_dict.get("zero_billing"):
-				if isinstance(frappe.form_dict.get("zero_billing"), str):
-					if int(frappe.form_dict.get("zero_billing")):
-						billing_query = "(si.docstatus = 0 OR si.docstatus IS NULL) AND"
-
-			si_join = """
-				LEFT JOIN `tabSales Invoice` si
-				ON cu.name = si.customer
-				AND si.posting_date {date_range}
-			""".format(date_range=date_range)
-
-		# ✅ UPDATED: fetch contact from Contact Number via Dynamic Link (parenttype="Contact Number", parentfield="links")
-		# Picks latest created Contact Number linked to that Customer
-		query = """
-			SELECT
-				cu.name,
-				cu.customer_name,
-				cu.custom_shop_name AS custom_shop,
-				(
-					SELECT cn.contact_number
-					FROM `tabDynamic Link` dl2
-					INNER JOIN `tabContact Number` cn
-						ON cn.name = dl2.parent
-					WHERE dl2.link_doctype = 'Customer'
-						AND dl2.link_name = cu.name
-						AND dl2.parenttype = 'Contact Number'
-						AND dl2.parentfield = 'links'
-					ORDER BY cn.creation DESC
-					LIMIT 1
-				) AS contact,
-				cu.customer_primary_address AS location,
-				cu.workflow_state,
-				cu.created_by_emp,
-				cu.created_by_name,
-				COUNT(*) OVER() AS total_count
-			FROM `tabCustomer` AS cu
-			LEFT JOIN `tabDynamic Link` AS dl ON dl.link_name = cu.name
-			LEFT JOIN `tabCustomer Consumption Info` AS cci ON cci.parent = cu.name
-			{si_join}
-			WHERE {billing_query} {role_filter}
-				AND cu.disabled = 0
-				AND cu.kyc_status = "Completed"
-		""".format(si_join=si_join, billing_query=billing_query, role_filter=role_filter)
-
-		group_by = " GROUP BY cu.name ORDER BY cu.creation DESC "
-
-		filter_checks = {
-			"city": "city",
-			"district": "district",
-			"state": "state",
-			"business_type": "business_type",
-		}
-
-		if frappe.form_dict.get("category_type"):
-			query += """ AND cci.category_type = "{category_type}" """.format(
-				category_type=frappe.form_dict.get("category_type")
-			)
-
-		if frappe.form_dict.get("segment"):
-			query += """ AND cci.segment = "{segment}" """.format(
-				segment=frappe.form_dict.get("segment")
-			)
-
-		if tab:
-			query += f""" AND cu.customer_level = "{tab}" """
-
-		if frappe.form_dict.get("search_text"):
-			or_filters = """
-				AND (
-					cu.name LIKE "%{search_text}%"
-					OR cu.customer_name LIKE "%{search_text}%"
-					OR (dl.parent LIKE "%{search_text}%" AND dl.parenttype = "Contact Number")
-				)
-			""".format(search_text=frappe.form_dict.get("search_text"))
-			query += or_filters
-
-		and_filters = []
-		for key, value in filter_checks.items():
-			if frappe.form_dict.get(key):
-				and_filters.append("""{0} = "{1}" """.format(value, frappe.form_dict[key]))
-
-		and_filters = " AND ".join(and_filters)
-		query += """ AND ({0})""".format(and_filters) if and_filters else ""
-
-		query += group_by
-		query += pagination
-
-		frappe.log_error(query, "Query")
-
-		customer_info = frappe.db.sql(query, as_dict=True)
-
-		for customer in customer_info:
-			customer["location"] = frappe.get_value(
-				"Address",
-				{"name": customer["location"]},
-				["name", "address_title", "address_line1", "address_line2", "city", "state", "pincode"],
-				as_dict=True
-			) if customer.get("location") else ""
-
-			customer["form_url"] = (
-				f"{frappe.utils.get_url()}/api/method/mohan_impex.api.my_customer.my_customer_form?name={customer['name']}"
-			)
-
-		total_count = 0
-		if customer_info:
-			total_count = customer_info[0].get("total_count") or 0
-
-		page_count = math.ceil(total_count / int(limit)) if int(limit) else 0
-
-		response = [
-			{
-				"records": customer_info,
-				"total_count": total_count,
-				"page_count": page_count,
-				"current_page": current_page,
-				"has_toggle_filter": is_self_filter
-			}
-		]
-
-		frappe.local.response["status"] = True
-		frappe.local.response["message"] = "My Customer list has been successfully fetched"
-		frappe.local.response["data"] = response
-
-	except Exception as err:
-		get_exception(err)
 
 @frappe.whitelist()
 def my_customer_form():
