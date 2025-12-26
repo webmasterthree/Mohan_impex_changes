@@ -1,24 +1,28 @@
 import frappe
-from frappe import _
-
-from erpnext.accounts.utils import get_item_tax_template
 
 @frappe.whitelist()
 def get_tax_template_by_item(item_code):
     if not item_code:
-        frappe.throw(_("Item Code is required"))
+        return None
 
-    # Get default company
-    company = frappe.defaults.get_user_default("company") or \
-              frappe.db.get_single_value("Global Defaults", "default_company")
+    if not frappe.db.exists("Item", item_code):
+        return None
 
-    if not company:
-        frappe.throw(_("Default Company is not set"))
+    # Item -> Item Tax child table
+    item_tax_template = frappe.db.get_value(
+        "Item Tax",
+        {"parent": item_code, "parenttype": "Item", "parentfield": "taxes"},
+        "item_tax_template",
+    )
+    return item_tax_template
 
-    # Call ERPNext function
-    res = get_item_tax_template({
-        "item_code": item_code,
-        "company": company
-    })
 
-    return res
+def set_item_tax_templates(doc):
+    # adjust child table fieldname if different
+    for row in (doc.items or []):
+        if row.item_code and not row.item_tax_template:
+            row.item_tax_template = get_tax_template_by_item(row.item_code)
+
+
+def validate(doc, method=None):
+    set_item_tax_templates(doc)
