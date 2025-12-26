@@ -174,15 +174,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-01-31 19:25:37.051175",
-  "name": "KYC Pending",
-  "style": "",
-  "workflow_state_name": "KYC Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-04-24 12:37:29.659097",
   "name": "Edit Required",
   "style": "",
@@ -430,5 +421,14 @@
   "name": "Approved",
   "style": "Success",
   "workflow_state_name": "Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-01-31 19:25:37.051175",
+  "name": "KYC Pending",
+  "style": "",
+  "workflow_state_name": "KYC Pending"
  }
 ]

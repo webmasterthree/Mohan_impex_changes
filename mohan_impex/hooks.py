@@ -95,9 +95,11 @@ doc_events = {
         "before_submit": "mohan_impex.salary_slip.before_submit"
     },
     "Secondary Sales Order": {
-        "on_submit": "mohan_impex.api.cp_api.on_submit"
+        "on_submit": "mohan_impex.api.cp_api.on_submit",
+        "validate": "mohan_impex.item_tax_template.validate"
     }
 }
+
 
 # Whitelist API methods for external use
 api_methods = [
