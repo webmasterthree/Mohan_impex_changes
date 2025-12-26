@@ -553,20 +553,46 @@ def get_warehouses():
     except Exception as err:
         get_exception(err)
 
+
 @frappe.whitelist()
 def calculate_item_tax(item_code, qty=1, rate=0):
 
+    # -------------------------
+    # Validation: rate required
+    # -------------------------
+    try:
+        rate = float(rate)
+    except (TypeError, ValueError):
+        frappe.local.response['http_status_code'] = 400
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = "Rate must be a valid number"
+        return
+
+    if rate <= 0:
+        frappe.local.response['http_status_code'] = 400
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = "Rate cannot be zero or less"
+        return
+    # -------------------------
+
     company = frappe.db.get_single_value("Global Defaults", "default_company")
-    tax_template = frappe.get_value("Sales Taxes and Charges Template", {"company": company, "is_default": 1}, "name")
+    tax_template = frappe.get_value(
+        "Sales Taxes and Charges Template",
+        {"company": company, "is_default": 1},
+        "name"
+    )
+
     if not tax_template:
         frappe.local.response['http_status_code'] = 404
         frappe.local.response['status'] = False
         frappe.local.response['message'] = "Default Sales Taxes and Charges Template not found"
         return
+
     so = frappe.new_doc("Sales Order")
     so.company = company
     so.currency = frappe.db.get_value("Company", company, "default_currency")
     so.taxes_and_charges = tax_template
+
     # Add item row
     item = so.append("items", {
         "item_code": item_code,
@@ -581,6 +607,7 @@ def calculate_item_tax(item_code, qty=1, rate=0):
         filters={"parent": tax_template},
         fields=["*"]
     )
+
     for row in template_taxes:
         so.append("taxes", row)
 
@@ -590,15 +617,17 @@ def calculate_item_tax(item_code, qty=1, rate=0):
 
     tax_rate = 0
     tax_amount = 0
-    total_amount = 0
+
     for tax_row in so.taxes:
         if not tax_row.item_wise_tax_detail:
             continue
+
         item_wise = frappe.parse_json(tax_row.item_wise_tax_detail)
-        
+
         if len(item_wise.keys()) == 1:
-            item_code = list(item_wise.keys())[0]
-            tax_info = item_wise[item_code]
+            _item_code = list(item_wise.keys())[0]
+            tax_info = item_wise[_item_code]
+
             # tax_info can be: 18.0 or [18.0, 1800.0]
             if isinstance(tax_info, list):
                 tax_rate = tax_info[0]
@@ -608,6 +637,7 @@ def calculate_item_tax(item_code, qty=1, rate=0):
                 tax_amount = tax_info
 
     total_amount = item.net_amount + tax_amount
+
     item_tax_info = {
         "item_code": item_code,
         "qty": qty,
@@ -618,8 +648,13 @@ def calculate_item_tax(item_code, qty=1, rate=0):
         "item_tax_amount": tax_amount,
         "item_total_amount": total_amount
     }
+
     frappe.local.response['status'] = True
     frappe.local.response['data'] = item_tax_info
+
+
+
+
 
 @frappe.whitelist()
 def get_tag_list(customer, search_text=""):
