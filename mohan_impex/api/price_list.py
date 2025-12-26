@@ -3,86 +3,92 @@ import math
 from mohan_impex.api import get_exception
 from mohan_impex.api.auth import has_cp
 
+
 @frappe.whitelist()
 def price_list():
     try:
         limit = frappe.form_dict.get("limit")
         current_page = frappe.form_dict.get("current_page")
+
         if not limit or not current_page:
-            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['http_status_code'] = 400
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "Either limit or current page is missing"
             return
+
+        limit = int(limit)
+        current_page = int(current_page)
+        offset = limit * (current_page - 1)
+
         if not has_cp() or not frappe.form_dict.get("customer_type"):
             customer_type = "DP"
         else:
             customer_type = frappe.form_dict.get("customer_type")
-        current_page = int(current_page)
-        limit = int(limit)
-        offset = limit * (current_page - 1)
-        pagination = "limit %s offset %s"%(limit, offset)
+
         condition = ""
+
         if frappe.form_dict.get("search_text"):
-            condition += """ and (item_code LIKE "%{0}%" OR item_name LIKE "%{0}%") """.format(frappe.form_dict.get("search_text"))
+            txt = frappe.db.escape(f"%{frappe.form_dict.get('search_text')}%")
+            condition += f" AND (item_code LIKE {txt} OR item_name LIKE {txt})"
+
         if frappe.form_dict.get("item_category"):
-            condition += """ and item_category = "{0}" """.format(frappe.form_dict.get("item_category"))
+            condition += f" AND item_category = {frappe.db.escape(frappe.form_dict.get('item_category'))}"
+
         if frappe.form_dict.get("warehouse"):
-            condition += """ and warehouse = "{0}" """.format(frappe.form_dict.get("warehouse"))
+            condition += f" AND warehouse = {frappe.db.escape(frappe.form_dict.get('warehouse'))}"
+
         if customer_type:
-            condition += """ and customer_type = "{0}" """.format(customer_type)
-        price_info_query = """
+            condition += f" AND customer_type = {frappe.db.escape(customer_type)}"
+
+        price_info_query = f"""
             WITH RankedPrices AS (
-                SELECT 
-                    item_code,
-                    item_name,
-                    item_category,
-                    warehouse,
-                    price_list_rate,
-                    customer_type,
-                    ROW_NUMBER() OVER (PARTITION BY item_code ORDER BY modified DESC) AS rn
-                FROM `tabItem Price`
+                SELECT
+                    ip.item_code,
+                    ip.item_name,
+                    ip.item_category,
+                    ip.warehouse,
+                    w.warehouse_name,
+                    ip.price_list_rate,
+                    ip.customer_type,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY ip.item_code
+                        ORDER BY ip.modified DESC
+                    ) AS rn
+                FROM `tabItem Price` ip
+                LEFT JOIN `tabWarehouse` w
+                    ON w.name = ip.warehouse
             )
-            SELECT item_code, item_name, item_category, customer_type, price_list_rate, COUNT(*) OVER() AS total_count
+            SELECT
+                item_code,
+                item_name,
+                item_category,
+                customer_type,
+                price_list_rate,
+                warehouse,
+                warehouse_name,
+                COUNT(*) OVER() AS total_count
             FROM RankedPrices
-            WHERE rn = 1 {0}
-        """.format(condition)
-        price_info_query += pagination
-        frappe.log_error(price_info_query, "price_info_query")
-        price_info = frappe.db.sql(price_info_query, as_dict=True)
-        total_count = 0
-        if price_info:
-            total_count = price_info[0]["total_count"]
-        page_count = math.ceil(total_count / int(limit))
-        response = [
-            {
-                "records": price_info,
-                "total_count": total_count,
-                "page_count": page_count,
-                "current_page": current_page
-            }
-        ]
+            WHERE rn = 1 {condition}
+            LIMIT %s OFFSET %s
+        """
+
+        price_info = frappe.db.sql(
+            price_info_query,
+            (limit, offset),
+            as_dict=True
+        )
+
+        total_count = price_info[0]["total_count"] if price_info else 0
+        page_count = math.ceil(total_count / limit) if limit else 0
+
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Price list has been successfully fetched"
-        frappe.local.response['data'] = response
+        frappe.local.response['data'] = [{
+            "records": price_info,
+            "total_count": total_count,
+            "page_count": page_count,
+            "current_page": current_page
+        }]
+
     except Exception as err:
         get_exception(err)
-
-# price_info_query = f"""
-#     WITH RankedData AS (
-#         SELECT 
-#             ip.item_code AS sku, 
-#             ip.item_code AS product_name, 
-#             pcp.product_category, 
-#             pcp.rate,
-#             ROW_NUMBER() OVER (
-#                 PARTITION BY ip.item_code, pcp.product_category 
-#                 ORDER BY pcp.creation DESC
-#             ) AS rn
-#         FROM `tabProduct Category Price` AS pcp
-#         JOIN `tabItem Price` AS ip ON ip.name = pcp.parent
-#     )
-#     SELECT sku, product_name, product_category, rate
-#     FROM RankedData
-#     WHERE rn = 1
-#     GROUP BY product_name, product_category;
-#         """
