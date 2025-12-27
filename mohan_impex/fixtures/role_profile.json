@@ -478,7 +478,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
-  "modified": "2025-11-06 12:04:32.717865",
+  "modified": "2025-12-22 15:52:52.755835",
   "name": "Sr. Logistics Executive",
   "role_full_name": null,
   "role_profile": "Sr. Logistics Executive",
@@ -500,6 +500,12 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Sr. Logistics Executive"
+   },
+   {
+    "parent": "Sr. Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "System Manager"
    }
   ]
  },
@@ -596,6 +602,30 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Sr. Warehouse Executive-Sales"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-08-14 12:59:17.865811",
+  "name": "Supplier",
+  "role_full_name": null,
+  "role_profile": "Supplier",
+  "roles": [
+   {
+    "parent": "Supplier",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Supplier"
+   },
+   {
+    "parent": "Supplier",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
    }
   ]
  }

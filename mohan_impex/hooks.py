@@ -8,7 +8,7 @@ app_license = "mit"
 
 role_list = ("SE", "ASM", "TSM", "NSM", "ZSM", "RSM", "CP",
              "Sr. Warehouse Executive-Sales","Warehouse Executive-Ld/Unld","Warehouse Executive-Sales",
-             "MIS Logistics Executive","Sr. Logistics Executive","BILLING EXECUTIVE","Logistics Executive")
+             "MIS Logistics Executive","Sr. Logistics Executive","BILLING EXECUTIVE","Logistics Executive","Supplier")
 
 fixtures = [
     "Client Script",
@@ -33,10 +33,10 @@ doctype_js ={
     "Request for Quotation": "public/js/request_for_quotation.js",
     "Additional Salary": "public/js/additional_salary.js",
     "Request for Quotation" : "public/js/rfq.js",
-    # "Pre-Unloading Check": "public/js/pre_unloading_check.js",
     "Increment Letter":"public/js/increment_letter.js",
     "Sales Order": "public/js/floating_notifications.js",
     "Purchase Receipt": "public/js/GRN1.js",
+    "Delivery Note": "public/js/delivery_note.js",
     "Purchase Order": "public/js/ASN.js",
     "Serial and Batch Bundle": "public/js/shelf_life.js",
 }

@@ -807,13 +807,13 @@
   "doctype": "Workflow",
   "document_type": "Delivery Note",
   "is_active": 1,
-  "modified": "2025-11-06 11:52:02.220866",
+  "modified": "2025-12-10 12:43:35.625573",
   "name": "Delivery Note",
   "override_status": 0,
   "send_email_alert": 0,
   "states": [
    {
-    "allow_edit": "BILLING EXECUTIVE",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -829,7 +829,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "BILLING EXECUTIVE",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -849,7 +849,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "BILLING EXECUTIVE",
+    "allowed": "All",
     "condition": null,
     "next_state": "Generate Sales Invoice",
     "parent": "Delivery Note",

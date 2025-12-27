@@ -1,7 +1,7 @@
 [
  {
   "charts": [],
-  "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}},{\"id\":\"TZLLsfGe6c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contact Number\",\"col\":3}}]",
+  "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}},{\"id\":\"TZLLsfGe6c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contact Number\",\"col\":3}},{\"id\":\"jwu4etcfjJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Gross Profit Report\",\"col\":3}}]",
   "custom_blocks": [],
   "docstatus": 0,
   "doctype": "Workspace",
@@ -301,7 +301,7 @@
     "type": "Link"
    }
   ],
-  "modified": "2025-11-13 18:40:11.145997",
+  "modified": "2025-12-17 14:28:26.398224",
   "module": "",
   "name": "Mohan Impex",
   "number_cards": [],
@@ -321,10 +321,33 @@
     "parentfield": "roles",
     "parenttype": "Workspace",
     "role": "Ground Team"
+   },
+   {
+    "parent": "Mohan Impex",
+    "parentfield": "roles",
+    "parenttype": "Workspace",
+    "role": "Sales User"
    }
   ],
   "sequence_id": 2.0,
   "shortcuts": [
+   {
+    "color": "Grey",
+    "doc_view": "List",
+    "format": null,
+    "icon": null,
+    "kanban_board": null,
+    "label": "Gross Profit Report",
+    "link_to": "Gross Profit-MISL",
+    "parent": "Mohan Impex",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "report_ref_doctype": "Sales Invoice",
+    "restrict_to_domain": null,
+    "stats_filter": null,
+    "type": "Report",
+    "url": null
+   },
    {
     "color": "Green",
     "doc_view": "List",
