@@ -52,3 +52,64 @@ def dn_invoice(party_name=None, payment_type=None):
 			})
 
 	return result
+
+
+# @frappe.whitelist()
+# def is_dn_invoice_create():
+#     invoices = frappe.db.get_all(
+#         "Purchase Invoice",
+#         fields=["name", "supplier"],
+#         filters={
+#             "payment_against": ["in", ["Purchase Receipt", "Delivery Note"]]
+#         }
+#     )
+
+#     result = []
+
+#     for inv in invoices:
+#         doc = frappe.get_doc("Purchase Invoice", inv.name)
+
+#         links_data = []
+#         for row in doc.links:
+#             links_data.append({
+#                 "document_type": row.document_type,
+#                 "link_name": row.link_name,
+#                 "amount": row.amount
+#             })
+
+#         result.append({
+#             "name": doc.name,
+#             "supplier": doc.supplier,
+#             "payment_against": doc.payment_against,
+#             "links": links_data
+#         })
+
+#     return result
+
+
+import frappe
+
+@frappe.whitelist()
+def is_link_name_exists(link_name: str):
+    link_name = (link_name or "").strip()
+    if not link_name:
+        return {"exists": False, "message": "link_name is required"}
+
+    row = frappe.db.sql(
+        """
+        SELECT lnk.name AS link_row, lnk.parent AS purchase_invoice
+        FROM `tabPayment Doc Type` lnk
+        INNER JOIN `tabPurchase Invoice` pi ON pi.name = lnk.parent
+        WHERE lnk.link_name = %(link_name)s
+          AND pi.docstatus != 2
+        LIMIT 1
+        """,
+        {"link_name": link_name},
+        as_dict=True
+    )
+
+    return {
+        "exists": bool(row),
+        "purchase_invoice": row[0]["purchase_invoice"] if row else None,
+        "link_row": row[0]["link_row"] if row else None
+    }
