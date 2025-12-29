@@ -3,6 +3,15 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-11-11 17:16:27.438810",
+  "name": "Approval Pending",
+  "style": "Danger",
+  "workflow_state_name": "Approval Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-06-19 17:45:19.485086",
   "name": "Approval Required from Logistics Team",
   "style": "Warning",
