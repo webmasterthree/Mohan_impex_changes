@@ -6718,5 +6718,6725 @@
   "parentfield": "roles",
   "parenttype": "Mode of Travel",
   "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.764216",
+  "name": "nof54l1pcr",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.914097",
+  "name": "noh50tbtaj",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.068747",
+  "name": "noig2dtt2q",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.209593",
+  "name": "nokltk5ijc",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.353899",
+  "name": "nol9botupg",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.498374",
+  "name": "nomogr0ncl",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.642129",
+  "name": "noo8v64ljq",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.064608",
+  "name": "nosa2mrbno",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.766347",
+  "name": "nofkccdmi4",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.914421",
+  "name": "noh92osavl",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.069114",
+  "name": "noicja1at1",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.209896",
+  "name": "nokss4qvlo",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.354222",
+  "name": "nol1du8luq",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.498678",
+  "name": "nomf83gm5s",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.642436",
+  "name": "noobf7fgpr",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.064914",
+  "name": "nosj8jin2v",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.766653",
+  "name": "nofba6n1gb",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.914719",
+  "name": "nohsge6ttt",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.069413",
+  "name": "noin79f0cc",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.210221",
+  "name": "noko8i7d84",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.354520",
+  "name": "nol7kbljk9",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.498970",
+  "name": "nomccu9lbu",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.642733",
+  "name": "noolclfmdk",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.065239",
+  "name": "nos34mt00u",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.766947",
+  "name": "nofoha0u38",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.915010",
+  "name": "nohrnc44qt",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.069704",
+  "name": "noitfkoa6j",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.210519",
+  "name": "nokvv0he3a",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.354810",
+  "name": "nolp2eb0va",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.499297",
+  "name": "nom2v96qs1",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.643025",
+  "name": "noovmg60t4",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.065538",
+  "name": "nosfmf6540",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.767246",
+  "name": "nof283sjnd",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.915326",
+  "name": "noh1r9rhbn",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.069993",
+  "name": "noinipu1qe",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.210822",
+  "name": "nokpkccdp9",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.355124",
+  "name": "nolgs1euf1",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.499585",
+  "name": "nomvtmscts",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.643402",
+  "name": "nooilcppo0",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.065827",
+  "name": "nosbk3bhc2",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.767539",
+  "name": "nofs5p875k",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.915614",
+  "name": "noh3km2lo9",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.070302",
+  "name": "noieu591ps",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.211142",
+  "name": "noklogi3lr",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.355412",
+  "name": "noldm92jnq",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.499871",
+  "name": "nom4ufc0th",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.643717",
+  "name": "noolu3pg1k",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.066156",
+  "name": "nos3qq9401",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.767829",
+  "name": "nofccfr51a",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.918724",
+  "name": "noh1f3cqnf",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.070588",
+  "name": "noivl6i5r5",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.211430",
+  "name": "nok9no3q73",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.355699",
+  "name": "nol6p87tbu",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.500159",
+  "name": "nomdo0sulo",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.644014",
+  "name": "noo5mnuoam",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.066455",
+  "name": "nosq7opuv2",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.768147",
+  "name": "nofaujsi4p",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.919023",
+  "name": "nohs9hfp5i",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.070871",
+  "name": "noin9uh6db",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.211730",
+  "name": "nokmavn2s0",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.355982",
+  "name": "nol9ho8vht",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.500446",
+  "name": "noml1fh2rc",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.644327",
+  "name": "noogguhp5t",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.066744",
+  "name": "nosngdinc2",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.772139",
+  "name": "nofsg000ne",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.919370",
+  "name": "noh42h00hv",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.071173",
+  "name": "noibut6jmn",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.212015",
+  "name": "nok0s4oce2",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.356314",
+  "name": "nolc9tjtbs",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.500730",
+  "name": "nomv333pkm",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.644615",
+  "name": "noob3lk8i1",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.067030",
+  "name": "nosrvs1or5",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.772444",
+  "name": "nofnhjcg9t",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.919984",
+  "name": "nohtvt5vda",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.071460",
+  "name": "noivp287bq",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.212341",
+  "name": "nokpj6oeeq",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.356612",
+  "name": "nolra5s70k",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.501012",
+  "name": "nomck9dpm3",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.644902",
+  "name": "nooo8ar520",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.067348",
+  "name": "nosru6suh9",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.772734",
+  "name": "nofkv5is0h",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.920406",
+  "name": "nohdb63j96",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.071745",
+  "name": "noi3a0fm6k",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.212623",
+  "name": "nokjjutfr2",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.356900",
+  "name": "nol6nqqlvj",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.501328",
+  "name": "nomvdatvgj",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.645205",
+  "name": "nootqhs4lc",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.067635",
+  "name": "nosk3dnaue",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.773021",
+  "name": "nof7qdms02",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.920809",
+  "name": "noh05tg3na",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.072027",
+  "name": "noig2qvijm",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.212902",
+  "name": "nok0r6tlqs",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.357210",
+  "name": "nol7i3komr",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.501612",
+  "name": "nomc79unr4",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.645493",
+  "name": "noo9rmfq7r",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.067923",
+  "name": "nos5h6glb5",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.773338",
+  "name": "nofnuv9f2s",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.921169",
+  "name": "nohahvr02b",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.072345",
+  "name": "noie00rveg",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.213206",
+  "name": "nokhpfrtt2",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.357498",
+  "name": "nolcphbshj",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.501892",
+  "name": "nomdp1frgt",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.645777",
+  "name": "noojhiv4nk",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.068230",
+  "name": "nosn7phree",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.773626",
+  "name": "nof3uc37iv",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.921561",
+  "name": "nohaiq1h3u",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.072628",
+  "name": "noieltmnhk",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.213490",
+  "name": "nokgg089id",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.357783",
+  "name": "nolbkmk8h6",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.502196",
+  "name": "noml1f57jl",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.646062",
+  "name": "nooaa3lrub",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.068510",
+  "name": "nosqelhg2o",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.773911",
+  "name": "nofv7oqdb1",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.921939",
+  "name": "noh5fvsq9h",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.072909",
+  "name": "noi0ufigu7",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.213771",
+  "name": "nokui4shtm",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.358087",
+  "name": "nolbhdnevh",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.502477",
+  "name": "nom1ne5389",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.646379",
+  "name": "noors7g4go",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.068791",
+  "name": "nosig5abbq",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.774220",
+  "name": "nofn5abps8",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.922258",
+  "name": "noh29dhv7g",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.073211",
+  "name": "noin3lalrl",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.214064",
+  "name": "nok12painl",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.358379",
+  "name": "nol0cppjrb",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.502756",
+  "name": "nomr2enh06",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.646667",
+  "name": "noofekkfu7",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.069097",
+  "name": "nosa54re5e",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.774506",
+  "name": "nofhikvjfm",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.922548",
+  "name": "nohaemi5jh",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.073495",
+  "name": "noi6914sns",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.214373",
+  "name": "nokcu5seo3",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.358663",
+  "name": "nolhl1dr31",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.503037",
+  "name": "nom2hso35e",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.646963",
+  "name": "noor0gvc8u",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.069391",
+  "name": "nosfjscmga",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.774790",
+  "name": "nof6d2u8d7",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.922833",
+  "name": "nohjchr04n",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.073777",
+  "name": "noigdq9m27",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.214655",
+  "name": "nokl3fs5jp",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.358950",
+  "name": "nolqofntvd",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.503344",
+  "name": "nom15jgp4l",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.647276",
+  "name": "noojeidi71",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.069676",
+  "name": "nosr4dp123",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.775094",
+  "name": "nofo2s3ou5",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.923140",
+  "name": "nohd9of82k",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.074057",
+  "name": "noibmjev6n",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.214939",
+  "name": "nok59hv6sg",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.359253",
+  "name": "nolasks17q",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.503633",
+  "name": "nomldqea34",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.647560",
+  "name": "noop5prvgs",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.069961",
+  "name": "nossffats9",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.775384",
+  "name": "nof9gjd18k",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.923435",
+  "name": "nohil948pl",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.074366",
+  "name": "noi0geckkh",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.215239",
+  "name": "nok2h2209k",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.359537",
+  "name": "nolketnnrj",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.503911",
+  "name": "nommd69vt4",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.647844",
+  "name": "noojso8mk8",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.070256",
+  "name": "nospat5d07",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.775670",
+  "name": "nofu07g87m",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.923723",
+  "name": "nohqprha0n",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.074648",
+  "name": "noidcc76n9",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.215521",
+  "name": "nokni9i6v0",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.359821",
+  "name": "nolvo845sk",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.504221",
+  "name": "nomf8q2prs",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.648146",
+  "name": "nookngs71j",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.070543",
+  "name": "nosge7k68l",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.775953",
+  "name": "nofagg1ap4",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.924014",
+  "name": "noh8l5v4o9",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.074929",
+  "name": "noi219ajht",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.215811",
+  "name": "nokulqvoun",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.360126",
+  "name": "nol2kkcbc9",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.504523",
+  "name": "nomhsge36g",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.648432",
+  "name": "nooraiq20a",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.070826",
+  "name": "nosqagjq40",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.776245",
+  "name": "nofr13dvpk",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.924329",
+  "name": "nohmi1km4m",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.075229",
+  "name": "noi5qbtk72",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.216116",
+  "name": "nokfa1hcdj",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.360409",
+  "name": "noldquea2a",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.504815",
+  "name": "nom8bg2iid",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.648716",
+  "name": "noofcf566j",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.071130",
+  "name": "nossqqqe3p",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.776529",
+  "name": "nofkufq8gj",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.924623",
+  "name": "nohf97617t",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.075510",
+  "name": "noipu2v87v",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.216399",
+  "name": "nokr0hr855",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.360693",
+  "name": "nolmaf6bdh",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.505118",
+  "name": "nom6n6pjfs",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.649001",
+  "name": "noopd5pe9b",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.071413",
+  "name": "noskkmt13g",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.776813",
+  "name": "nofcud54u8",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.924908",
+  "name": "nohp8q8ca1",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.075790",
+  "name": "nointdn81s",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.216690",
+  "name": "nokmdu4jcc",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.360975",
+  "name": "noli6t5rvd",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.505402",
+  "name": "nom4ioa146",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.649315",
+  "name": "nooulvbpsl",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.071694",
+  "name": "nos655hhgt",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.777122",
+  "name": "nofd3ihkqe",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.925214",
+  "name": "nohjp5002p",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.076093",
+  "name": "noi95jesqj",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.216969",
+  "name": "nok7fmaa9p",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.361281",
+  "name": "nol5pmtl7l",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.505688",
+  "name": "nomeeeq1hj",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.649604",
+  "name": "noob5jrpd4",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.071977",
+  "name": "nosjq3htu0",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.777410",
+  "name": "nofccv7gfa",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.925506",
+  "name": "noht7m7o00",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.076379",
+  "name": "noi1nv32i5",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.217270",
+  "name": "nokoev9k02",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.361561",
+  "name": "nolmbtkip3",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.505969",
+  "name": "nomqr89l4n",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.649887",
+  "name": "noo4krf9od",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.072283",
+  "name": "nospq9mvo7",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.777697",
+  "name": "nof74jgn9j",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.925815",
+  "name": "nohlli8pr5",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.076660",
+  "name": "noi93p34a3",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.217552",
+  "name": "nokuh9n8i1",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.361843",
+  "name": "noldimgatm",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.506286",
+  "name": "nomr2sd197",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.650188",
+  "name": "noopujuii8",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.072568",
+  "name": "nosoic4afa",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.777981",
+  "name": "nofit7vsg6",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.926125",
+  "name": "nohpmg611v",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.076939",
+  "name": "noih5nqjde",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.217833",
+  "name": "nokrr24t62",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.362144",
+  "name": "nolmcbb4l1",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.506589",
+  "name": "nomfjqsnq7",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.650474",
+  "name": "noofmln2fn",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.072850",
+  "name": "nosi37mfme",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.778315",
+  "name": "nofjgu841f",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.926415",
+  "name": "nohtdlkv5l",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.077239",
+  "name": "noivtn5qg5",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.218137",
+  "name": "nok17dlt1p",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.362429",
+  "name": "nol751mo1c",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.506871",
+  "name": "nom9g4ksum",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.650759",
+  "name": "noopsvjcj6",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.073150",
+  "name": "nosvngcimn",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.778612",
+  "name": "nofitqdb8e",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.926712",
+  "name": "nohi6pgkmo",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.077521",
+  "name": "noiquhqjt0",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.218422",
+  "name": "nokhp9ab7e",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.362711",
+  "name": "nol7hjmsrd",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.507156",
+  "name": "nom151rplg",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.651042",
+  "name": "nooea7b2db",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.073434",
+  "name": "nos28t36cv",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.778899",
+  "name": "nofqi33aeq",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.927003",
+  "name": "noh6n9ssog",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.077800",
+  "name": "nois82u21c",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.218705",
+  "name": "nokmgk6lie",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.363000",
+  "name": "noltk4vcaq",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.507436",
+  "name": "nom790mg97",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.651359",
+  "name": "noofopc9mg",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.073718",
+  "name": "noscbjeo0a",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.779210",
+  "name": "nof0ddas35",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.930408",
+  "name": "nohjlv8aug",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.078105",
+  "name": "noi2klbju0",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.218987",
+  "name": "noklfnk0hi",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.363310",
+  "name": "nolrt4sl13",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.507755",
+  "name": "nompccm4tk",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.651645",
+  "name": "nooed43ip7",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.074002",
+  "name": "nospl10q37",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.779495",
+  "name": "nof8g2pn9e",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.930703",
+  "name": "noh4pelbe0",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.078387",
+  "name": "noikn2rp44",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.219297",
+  "name": "nokrab2qt7",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.363593",
+  "name": "nolcns8cgc",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.508037",
+  "name": "nomvaamcat",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.651926",
+  "name": "noosp1il3s",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.074314",
+  "name": "nos4ji1l9f",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.779780",
+  "name": "nof7t1f9si",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.933538",
+  "name": "nohqtneko4",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.078669",
+  "name": "noif36mgf4",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.219582",
+  "name": "nok1ks3o2v",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.363876",
+  "name": "noldqvej4j",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.508346",
+  "name": "nom34c50um",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.652231",
+  "name": "noo9leagr3",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.074598",
+  "name": "nosaslienp",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.780085",
+  "name": "nof47qc5tf",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.933832",
+  "name": "noh57rp0u0",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.078948",
+  "name": "noiaht9vlp",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.222930",
+  "name": "nok2pjfdtu",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.364178",
+  "name": "nols428160",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.508624",
+  "name": "noml4lij90",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.652509",
+  "name": "nooqlq5tt2",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.074879",
+  "name": "nos2rk3jdn",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.780379",
+  "name": "nof8tr4ubu",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.934140",
+  "name": "nohs222ngh",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.079241",
+  "name": "noick6qud5",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.223239",
+  "name": "nokri91mgu",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.364462",
+  "name": "nolmkucaje",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.508903",
+  "name": "nomoc2o67s",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.652788",
+  "name": "noob2jp3tk",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.075178",
+  "name": "nosupekpti",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.780659",
+  "name": "nof9mli6m1",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.934430",
+  "name": "noh8kfpe72",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.079523",
+  "name": "noibla6sd0",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.223522",
+  "name": "nokuaekqro",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.364743",
+  "name": "nolih9u1d3",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.509203",
+  "name": "nomrnnvgc0",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.653064",
+  "name": "noovklaoeh",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.075461",
+  "name": "nos1dkjk0f",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.780939",
+  "name": "nofel61h8b",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.934717",
+  "name": "noh1vfj3mj",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.079804",
+  "name": "noi57bdr4v",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.223802",
+  "name": "nokpjbco3i",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.365025",
+  "name": "nolh39h14d",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.509486",
+  "name": "nom1bg3ci3",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.653372",
+  "name": "noopdk84fu",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.075741",
+  "name": "nosr8rklcg",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.781246",
+  "name": "nof4klo7me",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.935011",
+  "name": "noha0pkocd",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.080106",
+  "name": "noiejrpcr3",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.224107",
+  "name": "nokgm1c3h7",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.365339",
+  "name": "nolcbnbgp9",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.509769",
+  "name": "nomv5uad66",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.653653",
+  "name": "noo8e247v1",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.076033",
+  "name": "nosi0382mv",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.781532",
+  "name": "nofvsnhlj8",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.935327",
+  "name": "nohhp2193g",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.080387",
+  "name": "noiuchdml1",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.224392",
+  "name": "nokf1qsb4a",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.365625",
+  "name": "noll0qj7o0",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.510050",
+  "name": "nom3b7helv",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.653945",
+  "name": "noom5m40qs",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.076342",
+  "name": "nos5blq18j",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.781822",
+  "name": "nofmcoabj5",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.935627",
+  "name": "nohbc9c5g6",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.080694",
+  "name": "noi7e7126m",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.224674",
+  "name": "noktjc54jn",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.365909",
+  "name": "nol3a0tjbd",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.510359",
+  "name": "nomvdasjdl",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.654240",
+  "name": "noom6gjd08",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.076624",
+  "name": "nosl3kpjgb",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.782127",
+  "name": "nofs6v73c6",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.935912",
+  "name": "noh0d5uugn",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.080977",
+  "name": "noikn7sekq",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.224962",
+  "name": "nokfvs2i0l",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.366213",
+  "name": "nol0g2jjtv",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.510644",
+  "name": "nomjej9po7",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.654520",
+  "name": "noo8o97eju",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.076906",
+  "name": "nosnq2e3vn",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.782415",
+  "name": "nof2oe9cl1",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.936220",
+  "name": "nohqn2dgj0",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.081274",
+  "name": "noiea0s279",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.225256",
+  "name": "nokd8hmihi",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.369455",
+  "name": "nol77oan70",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.510926",
+  "name": "nom2qjc41r",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.654802",
+  "name": "nooh5jk1ut",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.077219",
+  "name": "nosa2fk1tu",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.782701",
+  "name": "nofmcehof6",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.936508",
+  "name": "nohn2hp6f7",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.081550",
+  "name": "noifr64cn6",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.225537",
+  "name": "nokqc7rmek",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.369748",
+  "name": "noldo0uusv",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.511231",
+  "name": "nomv41t5ej",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.655106",
+  "name": "noo3a04dfj",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.077499",
+  "name": "nossokhmml",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.782987",
+  "name": "noftjg3o1n",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.936792",
+  "name": "nohphguvr0",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.081826",
+  "name": "noij9jaktg",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.225819",
+  "name": "nokeau5v5n",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.370031",
+  "name": "nol3g63k82",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.511513",
+  "name": "nom4f8ma6k",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.655390",
+  "name": "noos3tgo5n",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.077782",
+  "name": "nos6nu2nc1",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.783296",
+  "name": "nofl85og0i",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.937103",
+  "name": "nohadcoa0a",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.082163",
+  "name": "noi9kpdmc8",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.226123",
+  "name": "nok7rhioio",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.370348",
+  "name": "noler30m81",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.511803",
+  "name": "nomgfmtm9q",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.655671",
+  "name": "noomjdebmf",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.078065",
+  "name": "nos3s24kn5",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.783581",
+  "name": "nofi191bo0",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.937393",
+  "name": "nohmg5a4pb",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.082464",
+  "name": "noi25jrh7p",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.226405",
+  "name": "nokea638md",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.370632",
+  "name": "nolaenpj4k",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.512106",
+  "name": "nomkcp38oa",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.655953",
+  "name": "nooc9flbqb",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.078374",
+  "name": "nosotkqc3d",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.783864",
+  "name": "nofdimoll2",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.937680",
+  "name": "noht3n8j80",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.082749",
+  "name": "noighlmm9o",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.226686",
+  "name": "nok50197ec",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.370918",
+  "name": "noln8jq0fd",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.512390",
+  "name": "nomrtf4c25",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.656243",
+  "name": "noo6ibgobr",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.078657",
+  "name": "nosmm73hs9",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.784155",
+  "name": "nof2jdsqe4",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.937969",
+  "name": "noh7qsp9sm",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.083031",
+  "name": "noikapa4s4",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.226966",
+  "name": "nokb1ob7kt",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.371225",
+  "name": "nol4n8umob",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.512691",
+  "name": "nomiadan8e",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.656531",
+  "name": "noo71aubud",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.078939",
+  "name": "nos2tsdl7r",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.784444",
+  "name": "nofs30qf7s",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.938272",
+  "name": "noh2v4apfh",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.083339",
+  "name": "noilqrnk4q",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.227263",
+  "name": "nok39epj9g",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.371512",
+  "name": "nolf18c6pg",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.512981",
+  "name": "nomp5blgl2",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.659974",
+  "name": "noort23ped",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.079247",
+  "name": "nosctc1lco",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.784732",
+  "name": "nofl5sjjqe",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.938560",
+  "name": "nohavqklor",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.083624",
+  "name": "noiufos9pg",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.227543",
+  "name": "nokarton4b",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.371793",
+  "name": "nol5nio3g5",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.516489",
+  "name": "nom1acjb8k",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.660302",
+  "name": "noou5tdpqo",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.079534",
+  "name": "nos17jgaug",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.785019",
+  "name": "nofg4op78b",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.938844",
+  "name": "nohvbjcn2l",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.083907",
+  "name": "noim0vnbbi",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.227822",
+  "name": "nokifm0dpr",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.372099",
+  "name": "nol53fml9t",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.516778",
+  "name": "nom6fmt3tq",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.660598",
+  "name": "noo5hbcsu1",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.079818",
+  "name": "nosetg3ghl",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.785333",
+  "name": "nofcsdhfgg",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.939147",
+  "name": "nohp3348u0",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.084210",
+  "name": "noijmukpg4",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.228126",
+  "name": "nokkv3n35c",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.372386",
+  "name": "nolcg90jpr",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.517060",
+  "name": "nomd0e82hl",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.660880",
+  "name": "noo36a0qfe",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.080121",
+  "name": "nosg64tj3q",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.785618",
+  "name": "nofrvjpmh9",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.939435",
+  "name": "nohtga451u",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.084485",
+  "name": "noi6lt53gf",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.228410",
+  "name": "nokjem02ge",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.372684",
+  "name": "nol0cceb2i",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.517370",
+  "name": "nomb5vjsrd",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.661177",
+  "name": "noou241873",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.080404",
+  "name": "nospnsivmt",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.785903",
+  "name": "nof9dtlbod",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.939727",
+  "name": "nohftkqlsf",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.084763",
+  "name": "noiq5tk9uk",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.228689",
+  "name": "nok4720bh9",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.372966",
+  "name": "nol167l8d6",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.517653",
+  "name": "nom2n5b5g5",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.661463",
+  "name": "noo5lspbj2",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.080687",
+  "name": "nos8neqo1h",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.786211",
+  "name": "nofjvm2lr9",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.940012",
+  "name": "nohdlk1uo0",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.085042",
+  "name": "noi87u24m5",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.228968",
+  "name": "nok7lalarl",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.373268",
+  "name": "nolto87oga",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.517936",
+  "name": "nomla2qukr",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.661748",
+  "name": "nooogp1k88",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.080966",
+  "name": "nosslonc4e",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.786496",
+  "name": "nofie8lsbk",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.940323",
+  "name": "nohuugme6h",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.085360",
+  "name": "noia1n4ubf",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.229264",
+  "name": "noks4p11p0",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.373552",
+  "name": "nolfoujqu9",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.518236",
+  "name": "nom8msdp3l",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.662029",
+  "name": "nooa46lum8",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.081266",
+  "name": "nosmfr2fud",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.786780",
+  "name": "nofgka38em",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.940610",
+  "name": "nohad2h1of",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.085642",
+  "name": "noi9ielebt",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.229543",
+  "name": "nok0dt0otf",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.373836",
+  "name": "nolohsedl2",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.518521",
+  "name": "nomku22l3r",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.662340",
+  "name": "noo7g2u6ga",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.081548",
+  "name": "nosvtv9hqq",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.787085",
+  "name": "nofch4v5b5",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.940892",
+  "name": "nohqi7q7ap",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.085925",
+  "name": "noi8glmdr4",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.229823",
+  "name": "noktugerkb",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.374137",
+  "name": "nol3f0ihbn",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.518802",
+  "name": "noma56vdg2",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.662622",
+  "name": "noos3f2p1i",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.081838",
+  "name": "nosds2qo18",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.787390",
+  "name": "nof769h3lg",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.941197",
+  "name": "noh3bascsn",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.086244",
+  "name": "noi8sphqk2",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.230127",
+  "name": "noku7v9gja",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.374422",
+  "name": "nol0t7vv16",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.519110",
+  "name": "nomnj5tu1k",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.662905",
+  "name": "noo88btb9f",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.082140",
+  "name": "nosi9c209g",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.787675",
+  "name": "nofv16h3f5",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.944236",
+  "name": "noh3nkffq2",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.086529",
+  "name": "noiam6d22g",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.230407",
+  "name": "nok4lcu0ft",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.374704",
+  "name": "nolu7b53gl",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.519405",
+  "name": "noma49i7oq",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.663207",
+  "name": "nootpntv4k",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.082418",
+  "name": "nosrdrlhkq",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.787960",
+  "name": "noflj7ctig",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.944572",
+  "name": "nohd2ok877",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.086809",
+  "name": "noida91pho",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.230686",
+  "name": "nokbouocj4",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.374985",
+  "name": "nolgk4lrqq",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.519686",
+  "name": "nom8s837pr",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.663491",
+  "name": "noopikvfg3",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.082744",
+  "name": "noseulr69u",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.788254",
+  "name": "nofr51obn8",
+  "parent": "Bike",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:36.944918",
+  "name": "nohomie1fd",
+  "parent": "Taxi",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.087113",
+  "name": "noik99oh8o",
+  "parent": "Auto/Toto",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.230964",
+  "name": "nokcbm4pl5",
+  "parent": "Bus",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.375295",
+  "name": "nol24e5cep",
+  "parent": "Train",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.519968",
+  "name": "nom593sbgl",
+  "parent": "Metro",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:37.663773",
+  "name": "nooc35s74h",
+  "parent": "Flight",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.083024",
+  "name": "noshgf079f",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.083328",
+  "name": "nosb6nkkph",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.083612",
+  "name": "nosmcue348",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.083892",
+  "name": "nos2o1obdv",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.084193",
+  "name": "nostu9drmt",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.084476",
+  "name": "noskptt345",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.084755",
+  "name": "nos4d2gi21",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.085035",
+  "name": "nosdk8t0o2",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.085347",
+  "name": "nostl77nk5",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.085627",
+  "name": "nosc9b6pia",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.085909",
+  "name": "nosbeu4eo0",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.086211",
+  "name": "nos9ipg41v",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.086496",
+  "name": "nosij0vkqc",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.086777",
+  "name": "nosu20659q",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.087059",
+  "name": "noslbv261d",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.087380",
+  "name": "nosf6pufot",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.087661",
+  "name": "noso6f1mfj",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.087942",
+  "name": "nosucdb1if",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.088242",
+  "name": "nostr43gnl",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.088524",
+  "name": "nosm7i2psv",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.088806",
+  "name": "noso0l8rsq",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.089110",
+  "name": "nosedbob9a",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.089400",
+  "name": "nosm50adm0",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.089682",
+  "name": "nosa59dhr6",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.089966",
+  "name": "nos2929b39",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.090265",
+  "name": "nosdf3d9re",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.090547",
+  "name": "nosv8l8jos",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.093594",
+  "name": "nos9c3fp28",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.093885",
+  "name": "nosjrm139k",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.094185",
+  "name": "nosnup05jp",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.094469",
+  "name": "nos5qig0v6",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.094753",
+  "name": "nospquvdf3",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.095033",
+  "name": "nosge5uat5",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.095340",
+  "name": "nos0j5rr72",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.095622",
+  "name": "nosn69frco",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.095904",
+  "name": "nosbm8u24v",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.096203",
+  "name": "nospa594if",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.096486",
+  "name": "noscqv5jvk",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.096771",
+  "name": "nos8208qcd",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.097050",
+  "name": "nos4fkms5v",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.097377",
+  "name": "nos0gvdfh7",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.097658",
+  "name": "nosr65ths2",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.097940",
+  "name": "nosdslga99",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.098239",
+  "name": "nos4ekuume",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.098525",
+  "name": "nos7og11qk",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.098803",
+  "name": "nos6henbr1",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.099102",
+  "name": "nos1hm6j4e",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.099386",
+  "name": "nosanibauk",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.099666",
+  "name": "nosj21kud7",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.099945",
+  "name": "nosuc32mea",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.100239",
+  "name": "nosack2oqm",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.100521",
+  "name": "nos21tkumh",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.100803",
+  "name": "nostu59ovd",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.101107",
+  "name": "nosdvvotf8",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.101392",
+  "name": "nos9ei5odv",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.101673",
+  "name": "nosl78rf8f",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.101954",
+  "name": "nos02t0qr0",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.102242",
+  "name": "nos3d2hsig",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.102522",
+  "name": "nosopjr96g",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.102802",
+  "name": "nos7koan06",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.103106",
+  "name": "nos9n3jfg2",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.103389",
+  "name": "nosu9cjspr",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.103672",
+  "name": "nos1pmfv8q",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.103950",
+  "name": "nosknnd9d1",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.104240",
+  "name": "nosaskh445",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.104522",
+  "name": "nosp4h1eup",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.104801",
+  "name": "nosdigl396",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.105104",
+  "name": "nossn9km6o",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.105422",
+  "name": "nossh2sb1b",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.105708",
+  "name": "nosicq9gj8",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.105989",
+  "name": "nospnu3bc4",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.106298",
+  "name": "nos9ioon7t",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.106580",
+  "name": "nose904crv",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.106863",
+  "name": "nospt9rm51",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.107150",
+  "name": "nosds3giv3",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.107466",
+  "name": "nos1scd06e",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.107753",
+  "name": "noso6jdb6h",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.108033",
+  "name": "nosc68lg60",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.108338",
+  "name": "nosvb35rtl",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.108658",
+  "name": "noseemdcm3",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.108948",
+  "name": "nos6mcn5hh",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.109245",
+  "name": "nosjiuml86",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.109541",
+  "name": "nosjictsik",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.109827",
+  "name": "nosqefuds4",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.110132",
+  "name": "nos68l00lp",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.110422",
+  "name": "nosffsdihv",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.110715",
+  "name": "nos7ejjtu2",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.111010",
+  "name": "nosf6ljnvt",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.111320",
+  "name": "nos9pbemft",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.111606",
+  "name": "nosukstus4",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.111894",
+  "name": "nosa967lrn",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.112197",
+  "name": "nosnmk0kcq",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.112484",
+  "name": "nosger11q5",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.112769",
+  "name": "nosm34p1j2",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.113051",
+  "name": "nos1knvmpf",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.113363",
+  "name": "nos2p89csr",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.113650",
+  "name": "nosejkvkdp",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.113950",
+  "name": "nosnomgno5",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.114243",
+  "name": "noslaei49s",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.114529",
+  "name": "nosk6vbq0t",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.114814",
+  "name": "nosl33gf78",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.115118",
+  "name": "nos5me6cc4",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.115402",
+  "name": "nos60unrvl",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.115686",
+  "name": "nos0cfr89r",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.115965",
+  "name": "nos16q0kci",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.116266",
+  "name": "nosr8d3gie",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.116550",
+  "name": "nosd11b6s1",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.116832",
+  "name": "nosv0enrrn",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.117134",
+  "name": "nos1a48ra7",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.117417",
+  "name": "nos0gj233u",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.117698",
+  "name": "nosjbl2ahe",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.117982",
+  "name": "nosrr3tnai",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.118291",
+  "name": "nos0i26hb1",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.118574",
+  "name": "noslb24otj",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.118855",
+  "name": "nossktle1p",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.119154",
+  "name": "noslq7qp6a",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.119436",
+  "name": "nosf885s5m",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.119721",
+  "name": "nos0rhdab7",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.120002",
+  "name": "nos14mtmta",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.120308",
+  "name": "nos6kdmdce",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.120594",
+  "name": "nos18go9uf",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.120876",
+  "name": "nosfv6na5q",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.121174",
+  "name": "noshebu2nl",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.121453",
+  "name": "nosd0clhj2",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.121756",
+  "name": "nos1kkhup4",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.122045",
+  "name": "nosatkcjve",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.122357",
+  "name": "nosps56fvh",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.122644",
+  "name": "nos5a8kdvb",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.122929",
+  "name": "nos4oag7f2",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.123236",
+  "name": "nos0dg0cak",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.123523",
+  "name": "nosjehfdti",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.123808",
+  "name": "nos2hbotim",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.124118",
+  "name": "nos8n5on4i",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.124401",
+  "name": "nosijk54nh",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.124680",
+  "name": "nosctov0fp",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.124960",
+  "name": "noshkfmk95",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.125256",
+  "name": "nos5bhc049",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.125542",
+  "name": "nosel9s4si",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.125827",
+  "name": "nos534o5ir",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.126133",
+  "name": "nos01kqq2h",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.126422",
+  "name": "nospkgl2q9",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.126707",
+  "name": "nospmr648c",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.126990",
+  "name": "noshpia3d0",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.131158",
+  "name": "nosiggov8u",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.131469",
+  "name": "nos2j29ft8",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.131755",
+  "name": "noskqc8erf",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.132039",
+  "name": "nosd9cu3fb",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.132353",
+  "name": "nos8fp2ra1",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.132635",
+  "name": "nosohe81il",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.141125",
+  "name": "nos97a4rm6",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.141418",
+  "name": "nos5ua41f4",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.141705",
+  "name": "nosl7nf16u",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.141989",
+  "name": "nosg6cgsn3",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.142297",
+  "name": "nos495v3r6",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.142584",
+  "name": "nosuhl00ml",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ASM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.142868",
+  "name": "nos33i9o10",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "TSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.143160",
+  "name": "nosk405gae",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "NSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.143448",
+  "name": "nosrqeqjoi",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "ZSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.143734",
+  "name": "nos3rakcm1",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "RSM"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.144017",
+  "name": "nositki65d",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SE"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Item",
+  "modified": "2025-12-28 19:50:38.144331",
+  "name": "nosdl45lcf",
+  "parent": "Others",
+  "parentfield": "roles",
+  "parenttype": "Mode of Travel",
+  "role": "SM"
  }
 ]
