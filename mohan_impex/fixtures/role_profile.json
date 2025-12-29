@@ -32,6 +32,186 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-11-06 10:51:41.572425",
+  "name": "Logistics Executive",
+  "role_full_name": null,
+  "role_profile": "Logistics Executive",
+  "roles": [
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Logistics Executive"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-12-22 15:52:52.755835",
+  "name": "Sr. Logistics Executive",
+  "role_full_name": null,
+  "role_profile": "Sr. Logistics Executive",
+  "roles": [
+   {
+    "parent": "Sr. Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "Sr. Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Logistics Executive"
+   },
+   {
+    "parent": "Sr. Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sr. Logistics Executive"
+   },
+   {
+    "parent": "Sr. Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "System Manager"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-11-06 12:27:40.655874",
+  "name": "MIS Logistics Executive",
+  "role_full_name": null,
+  "role_profile": "MIS Logistics Executive",
+  "roles": [
+   {
+    "parent": "MIS Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "MIS Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "MIS Logistics Executive"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-11-06 15:22:28.380110",
+  "name": "Warehouse Executive-Sales",
+  "role_full_name": null,
+  "role_profile": "Warehouse Executive-Sales",
+  "roles": [
+   {
+    "parent": "Warehouse Executive-Sales",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "Warehouse Executive-Sales",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Warehouse Executive-Sales"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-11-06 15:21:40.039168",
+  "name": "Warehouse Executive-Ld/Unld",
+  "role_full_name": null,
+  "role_profile": "Warehouse Executive-Ld/Unld",
+  "roles": [
+   {
+    "parent": "Warehouse Executive-Ld/Unld",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "Warehouse Executive-Ld/Unld",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Warehouse Executive-Ld/Unld"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-11-06 18:47:44.341678",
+  "name": "Sr. Warehouse Executive-Sales",
+  "role_full_name": null,
+  "role_profile": "Sr. Warehouse Executive-Sales",
+  "roles": [
+   {
+    "parent": "Sr. Warehouse Executive-Sales",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "Sr. Warehouse Executive-Sales",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sr. Warehouse Executive-Sales"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-08-14 12:59:17.865811",
+  "name": "Supplier",
+  "role_full_name": null,
+  "role_profile": "Supplier",
+  "roles": [
+   {
+    "parent": "Supplier",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Supplier"
+   },
+   {
+    "parent": "Supplier",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
   "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
   "modified": "2025-09-29 09:14:16.601877",
@@ -446,186 +626,6 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Sales Master Manager"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "has_toggle_filter": 0,
-  "is_multiple_area_management": 0,
-  "modified": "2025-11-06 10:51:41.572425",
-  "name": "Logistics Executive",
-  "role_full_name": null,
-  "role_profile": "Logistics Executive",
-  "roles": [
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Logistics Executive"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "has_toggle_filter": 0,
-  "is_multiple_area_management": 0,
-  "modified": "2025-12-22 15:52:52.755835",
-  "name": "Sr. Logistics Executive",
-  "role_full_name": null,
-  "role_profile": "Sr. Logistics Executive",
-  "roles": [
-   {
-    "parent": "Sr. Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
-   },
-   {
-    "parent": "Sr. Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Logistics Executive"
-   },
-   {
-    "parent": "Sr. Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sr. Logistics Executive"
-   },
-   {
-    "parent": "Sr. Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "System Manager"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "has_toggle_filter": 0,
-  "is_multiple_area_management": 0,
-  "modified": "2025-11-06 12:27:40.655874",
-  "name": "MIS Logistics Executive",
-  "role_full_name": null,
-  "role_profile": "MIS Logistics Executive",
-  "roles": [
-   {
-    "parent": "MIS Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
-   },
-   {
-    "parent": "MIS Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "MIS Logistics Executive"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "has_toggle_filter": 0,
-  "is_multiple_area_management": 0,
-  "modified": "2025-11-06 15:22:28.380110",
-  "name": "Warehouse Executive-Sales",
-  "role_full_name": null,
-  "role_profile": "Warehouse Executive-Sales",
-  "roles": [
-   {
-    "parent": "Warehouse Executive-Sales",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
-   },
-   {
-    "parent": "Warehouse Executive-Sales",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Warehouse Executive-Sales"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "has_toggle_filter": 0,
-  "is_multiple_area_management": 0,
-  "modified": "2025-11-06 15:21:40.039168",
-  "name": "Warehouse Executive-Ld/Unld",
-  "role_full_name": null,
-  "role_profile": "Warehouse Executive-Ld/Unld",
-  "roles": [
-   {
-    "parent": "Warehouse Executive-Ld/Unld",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
-   },
-   {
-    "parent": "Warehouse Executive-Ld/Unld",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Warehouse Executive-Ld/Unld"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "has_toggle_filter": 0,
-  "is_multiple_area_management": 0,
-  "modified": "2025-11-06 18:47:44.341678",
-  "name": "Sr. Warehouse Executive-Sales",
-  "role_full_name": null,
-  "role_profile": "Sr. Warehouse Executive-Sales",
-  "roles": [
-   {
-    "parent": "Sr. Warehouse Executive-Sales",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
-   },
-   {
-    "parent": "Sr. Warehouse Executive-Sales",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sr. Warehouse Executive-Sales"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "has_toggle_filter": 0,
-  "is_multiple_area_management": 0,
-  "modified": "2025-08-14 12:59:17.865811",
-  "name": "Supplier",
-  "role_full_name": null,
-  "role_profile": "Supplier",
-  "roles": [
-   {
-    "parent": "Supplier",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Supplier"
-   },
-   {
-    "parent": "Supplier",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
    }
   ]
  }

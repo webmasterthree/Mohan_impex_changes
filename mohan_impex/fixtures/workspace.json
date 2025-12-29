@@ -1,7 +1,7 @@
 [
  {
   "charts": [],
-  "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}},{\"id\":\"TZLLsfGe6c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contact Number\",\"col\":3}},{\"id\":\"jwu4etcfjJ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Gross Profit Report\",\"col\":3}}]",
+  "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}},{\"id\":\"TZLLsfGe6c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contact Number\",\"col\":3}}]",
   "custom_blocks": [],
   "docstatus": 0,
   "doctype": "Workspace",
@@ -29,6 +29,24 @@
     "parenttype": "Workspace",
     "report_ref_doctype": null,
     "type": "Card Break"
+   },
+   {
+    "dependencies": null,
+    "description": null,
+    "hidden": 0,
+    "icon": null,
+    "is_query_report": 0,
+    "label": "Pre-Unloading Check",
+    "link_count": 0,
+    "link_to": "Pre-Unloading Check",
+    "link_type": "DocType",
+    "onboard": 0,
+    "only_for": null,
+    "parent": "Mohan Impex",
+    "parentfield": "links",
+    "parenttype": "Workspace",
+    "report_ref_doctype": null,
+    "type": "Link"
    },
    {
     "dependencies": null,
@@ -301,7 +319,7 @@
     "type": "Link"
    }
   ],
-  "modified": "2025-12-17 14:28:26.398224",
+  "modified": "2025-07-01 14:36:40.135113",
   "module": "",
   "name": "Mohan Impex",
   "number_cards": [],
@@ -309,45 +327,9 @@
   "public": 1,
   "quick_lists": [],
   "restrict_to_domain": null,
-  "roles": [
-   {
-    "parent": "Mohan Impex",
-    "parentfield": "roles",
-    "parenttype": "Workspace",
-    "role": "Administrator"
-   },
-   {
-    "parent": "Mohan Impex",
-    "parentfield": "roles",
-    "parenttype": "Workspace",
-    "role": "Ground Team"
-   },
-   {
-    "parent": "Mohan Impex",
-    "parentfield": "roles",
-    "parenttype": "Workspace",
-    "role": "Sales User"
-   }
-  ],
-  "sequence_id": 2.0,
+  "roles": [],
+  "sequence_id": 1.0,
   "shortcuts": [
-   {
-    "color": "Grey",
-    "doc_view": "List",
-    "format": null,
-    "icon": null,
-    "kanban_board": null,
-    "label": "Gross Profit Report",
-    "link_to": "Gross Profit-MISL",
-    "parent": "Mohan Impex",
-    "parentfield": "shortcuts",
-    "parenttype": "Workspace",
-    "report_ref_doctype": "Sales Invoice",
-    "restrict_to_domain": null,
-    "stats_filter": null,
-    "type": "Report",
-    "url": null
-   },
    {
     "color": "Green",
     "doc_view": "List",
