@@ -9,6 +9,7 @@ from mohan_impex.api import get_signed_token, get_role_filter, get_address_text,
 from mohan_impex.mohan_impex.comment import get_comments
 from mohan_impex.api.auth import has_cp
 
+
 @frappe.whitelist()
 def cvm_list():
     try:
@@ -17,70 +18,102 @@ def cvm_list():
         is_self = frappe.form_dict.get("is_self")
         other_employee = frappe.form_dict.get("employee")
         current_page = frappe.form_dict.get("current_page")
+
         if not tab:
             frappe.local.response['http_status_code'] = 404
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "Please give the list tab"
             return
+
         if not limit or not current_page:
             frappe.local.response['http_status_code'] = 404
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "Either limit or current page is missing"
             return
+
         current_page = int(current_page)
         limit = int(limit)
         offset = limit * (current_page - 1)
-        pagination = "limit %s offset %s"%(limit, offset)
-        tab_filter = 'workflow_state = "%s"'%(tab)
-        if tab != "Draft": #Submitted
+        pagination = "limit %s offset %s" % (limit, offset)
+
+        tab_filter = 'workflow_state = "%s"' % (tab)
+        if tab != "Draft":  # Submitted
             tab_filter = "workflow_state != 'Draft'"
-        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "role_profile"], as_dict=True)
+
+        emp = frappe.get_value(
+            "Employee",
+            {"user_id": frappe.session.user},
+            ["name", "area", "role_profile"],
+            as_dict=True
+        )
+
         role_filter = get_role_filter(emp, is_self, other_employee)
         is_self_filter = get_self_filter_status()
+
+        # ✅ Added cvm.is_dl in select (already required for response too)
         if has_cp():
-            fields = "cvm.name, shop_name, cl.contact, location, customer_level, kyc_status, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count"
+            fields = "cvm.name, shop_name, cl.contact, location, customer_level, cvm.is_dl, kyc_status, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count"
         else:
-            fields = "cvm.name, shop_name, cl.contact, location, kyc_status, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count"
+            fields = "cvm.name, shop_name, cvm.is_dl, cl.contact, location, kyc_status, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count"
+
         query = """
             select {fields}
             from `tabCustomer Visit Management` as cvm
             JOIN `tabContact List` as cl on cl.parent = cvm.name
             where {tab_filter} and {role_filter}
         """.format(fields=fields, tab_filter=tab_filter, role_filter=role_filter)
+
         order_and_group_by = " group by cvm.name order by cvm.creation desc "
+
+        # ✅ Added is_dl filter mapped to cvm.is_dl
         filter_checks = {
             "customer_type": "customer_type",
             "visit_type": "customer_level",
             "kyc_status": "kyc_status",
-            "has_trial_plan": "has_trial_plan"
+            "has_trial_plan": "has_trial_plan",
+            "is_dl": "cvm.is_dl"
         }
-        or_filters = []
+
         if frappe.form_dict.get("kyc_status") and has_cp():
             frappe.form_dict["visit_type"] = "Primary"
+
         if frappe.form_dict.get("search_text"):
-            or_filters = """AND (shop_name LIKE "%{search_text}%" or cl.contact LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
-            query += or_filters
+            query += """ AND (shop_name LIKE "%{search_text}%" or cl.contact LIKE "%{search_text}%") """.format(
+                search_text=frappe.form_dict.get("search_text")
+            )
+
         and_filters = []
-        for key, value in filter_checks.items():
-            if frappe.form_dict.get(key):
-                and_filters.append("""{0} = "{1}" """.format(value, frappe.form_dict[key]))
+        for key, fieldname in filter_checks.items():
+            # ✅ IMPORTANT: allows is_dl=0 to work too
+            if key in frappe.form_dict and frappe.form_dict.get(key) not in ("", None):
+                and_filters.append("""{0} = "{1}" """.format(fieldname, frappe.form_dict.get(key)))
+
         and_filters = " AND ".join(and_filters)
         query += """ AND ({0})""".format(and_filters) if and_filters else ""
+
         query += order_and_group_by
         query += pagination
+
         cvm_info = frappe.db.sql(query, as_dict=True)
+
         for cvm in cvm_info:
             image_url = frappe.get_value("File", {"attached_to_name": cvm['name']}, "file_url")
             if image_url:
                 image_url = get_signed_token(image_url)
+
             cvm["location"] = get_address_text(cvm["location"]) if cvm["location"] else ""
             cvm["form_url"] = f"{frappe.utils.get_url()}/api/method/mohan_impex.api.cvm.cvm_form?name={cvm['name']}"
             cvm["image_url"] = image_url
-            # cvm_list.append(cvm)
+
+            # ✅ ensure always 0/1
+            cvm["is_dl"] = int(cvm.get("is_dl") or 0)
+
         total_count = 0
         if cvm_info:
             total_count = cvm_info[0]["total_count"]
+
         page_count = math.ceil(total_count / int(limit))
+
         response = [
             {
                 "records": cvm_info,
@@ -91,11 +124,14 @@ def cvm_list():
                 "create": has_create_perm("Customer Visit Management")
             }
         ]
+
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Visit history list has been successfully fetched"
         frappe.local.response['data'] = response
+
     except Exception as err:
         get_exception(err)
+
 
 @frappe.whitelist()
 def cvm_form():
@@ -205,7 +241,6 @@ def create_cvm():
                 "area": get_session_employee_area(),
                 "customer_consumption_info": product_consump_info,
                 "is_dl": cvm_data.is_dl,
-                "is_dp": cvm_data.is_dp,
             }
             if has_cp_app:
                 unv_cus_dict.update({

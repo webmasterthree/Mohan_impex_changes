@@ -3,15 +3,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-11-11 17:16:27.438810",
-  "name": "Approval Pending",
-  "style": "Danger",
-  "workflow_state_name": "Approval Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-06-19 17:45:19.485086",
   "name": "Approval Required from Logistics Team",
   "style": "Warning",
@@ -416,15 +407,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-02-19 21:28:00.068954",
-  "name": "Draft",
-  "style": "",
-  "workflow_state_name": "Draft"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "ok-sign",
   "modified": "2024-12-25 19:18:52.878440",
   "name": "Approved",
@@ -439,5 +421,14 @@
   "name": "KYC Pending",
   "style": "",
   "workflow_state_name": "KYC Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-02-19 21:28:00.068954",
+  "name": "Draft",
+  "style": "",
+  "workflow_state_name": "Draft"
  }
 ]
