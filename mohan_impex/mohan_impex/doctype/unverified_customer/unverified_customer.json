@@ -9,6 +9,7 @@
   "naming_series",
   "customer",
   "customer_name",
+  "is_dl",
   "shop",
   "shop_name",
   "contact",
@@ -173,11 +174,17 @@
    "label": "City",
    "options": "City",
    "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_dl",
+   "fieldtype": "Check",
+   "label": "Is DL"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-02 11:59:20.640637",
+ "modified": "2025-12-31 12:41:53.293083",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Unverified Customer",

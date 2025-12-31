@@ -9,7 +9,6 @@
   "naming_series",
   "customer_type",
   "is_dl",
-  "is_dp",
   "verific_type",
   "unv_customer",
   "unv_customer_name",
@@ -442,12 +441,6 @@
    "fieldname": "is_dl",
    "fieldtype": "Check",
    "label": "Is DL"
-  },
-  {
-   "default": "0",
-   "fieldname": "is_dp",
-   "fieldtype": "Check",
-   "label": "Is DP"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -458,7 +451,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2025-12-31 10:49:19.565947",
+ "modified": "2025-12-31 12:40:47.719386",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",
