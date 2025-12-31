@@ -203,7 +203,9 @@ def create_cvm():
                 "pincode": cvm_data.pincode,
                 "created_by_emp": get_session_employee(),
                 "area": get_session_employee_area(),
-                "customer_consumption_info": product_consump_info
+                "customer_consumption_info": product_consump_info,
+                "is_dl": cvm_data.is_dl,
+                "is_dp": cvm_data.is_dp,
             }
             if has_cp_app:
                 unv_cus_dict.update({
