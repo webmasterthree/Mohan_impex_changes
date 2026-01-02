@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestRejectionRemarks(FrappeTestCase):
+class TestJustification(FrappeTestCase):
 	pass

@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class RejectionRemarks(Document):
+class Justification(Document):
 	pass
