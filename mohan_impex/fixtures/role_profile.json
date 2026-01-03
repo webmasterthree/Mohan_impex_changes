@@ -628,5 +628,41 @@
     "role": "Sales Master Manager"
    }
   ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-07-11 17:56:05.320947",
+  "name": "Purchase Executive",
+  "role_full_name": null,
+  "role_profile": "Purchase Executive",
+  "roles": [
+   {
+    "parent": "Purchase Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase Executive"
+   },
+   {
+    "parent": "Purchase Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "Purchase Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Work From Home Approver"
+   },
+   {
+    "parent": "Purchase Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Leave Approver"
+   }
+  ]
  }
 ]
