@@ -4,6 +4,7 @@ from mohan_impex.mohan_impex.utils import get_session_employee_area, get_session
 import math
 from mohan_impex.mohan_impex.comment import get_comments
 from mohan_impex.api import get_role_filter, get_self_filter_status, get_exception, get_workflow_statuses, has_create_perm, convert_to_12_hour
+from mohan_impex.api.auth import has_cp
 
 @frappe.whitelist()
 def trial_list():
@@ -98,7 +99,7 @@ def trial_form():
         trial_doc = frappe.get_doc("Trial Plan", trial_name)
         trial_doc = trial_doc.as_dict()
         fields_to_remove = ["owner", "creation", "modified", "modified_by", "docstatus", "idx", "amended_from", "parent", "parenttype", "parentfield", "area"]
-        child_doc = ["trial_item_table", "product_trial_table", "item_trial_table"]
+        child_doc = ["trial_plan_table", "contact"]
         trial_doc = {
             key: value for key, value in trial_doc.items() if key not in fields_to_remove
         }
@@ -110,14 +111,14 @@ def trial_form():
                 ]
         grouped = {}
         for item in trial_doc.get("trial_plan_table"):
-            product = item["product"]
-            if product in grouped:
-                grouped[product].append(item)
+            segment = item["segment"]
+            if segment in grouped:
+                grouped[segment].append(item)
             else:
-                grouped[product] = [item]
+                grouped[segment] = [item]
         if trial_doc.get("time"):
             trial_doc["time"] = convert_to_12_hour(trial_doc["time"])
-        trial_doc["trial_plan_table"] = [{"product": product, "items": items} for product, items in grouped.items()]
+        trial_doc["trial_plan_table"] = [{"segment": segment, "items": items} for segment, items in grouped.items()]
         activities = get_comments("Trial Plan", trial_doc["name"])
         trial_doc["activities"] = activities
         trial_doc["tsm_info"] = frappe.get_value("Employee", {"name": trial_doc["assigned_to_emp"]}, ["employee_name as name", "cell_number as mobile", "company_email as email"], as_dict=True) or {}

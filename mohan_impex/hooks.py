@@ -11,7 +11,7 @@ role_list = ("SE", "ASM", "TSM", "NSM", "ZSM", "RSM", "CP",
              "MIS Logistics Executive","Sr. Logistics Executive","BILLING EXECUTIVE","Logistics Executive","Supplier","Purchase Executive")
 
 fixtures = [
-    "Client Script",
+    {"dt": "Client Script", "filters": [["module", "=", "Mohan Impex"]]},
     {"dt": "Custom DocPerm", "filters": [["role", "in", role_list]]},
     {"dt": "Property Setter", "filters": [["doc_type", "in", ("Customer", "Notification Log")], ["property", "in", "options"]]},
     {"dt": "Role", "filters": [["name", "in", role_list]]},
@@ -23,7 +23,9 @@ fixtures = [
     "Workflow State",
     "Workflow Action Master",
     "Print Format",
-    "Server Script"
+    "Server Script",
+    "Mode of Travel",
+    "Role Item",
 ]
 
 doctype_js ={
@@ -94,8 +96,13 @@ doc_events = {
     },
     "Salary Slip": {
         "before_submit": "mohan_impex.salary_slip.before_submit"
+    },
+    "Secondary Sales Order": {
+        "on_submit": "mohan_impex.api.cp_api.on_submit",
+        "validate": "mohan_impex.item_tax_template.validate"
     }
 }
+
 
 # Whitelist API methods for external use
 api_methods = [
@@ -104,7 +111,8 @@ api_methods = [
 
 override_doctype_class = {
     "Transport RFQ": "mohan_impex.Sales.transport_rfq.TransportRFQ",
-    "Quality Inspection": "mohan_impex.override.quality_inspection.QualityInspection"
+    "Quality Inspection": "mohan_impex.override.quality_inspection.QualityInspection",
+    "Item Price": "mohan_impex.override.item_price.CustomItemPrice"
 }
  
 # Apps

@@ -2,36 +2,35 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:product_name",
- "creation": "2025-02-19 20:18:46.341337",
+ "autoname": "field:mode_of_travel",
+ "creation": "2025-10-29 12:41:01.711605",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "product_name",
-  "base_components"
+  "mode_of_travel",
+  "roles"
  ],
  "fields": [
   {
-   "fieldname": "product_name",
+   "fieldname": "mode_of_travel",
    "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Product Name",
-   "reqd": 1,
+   "label": "Mode of Travel",
    "unique": 1
   },
   {
-   "fieldname": "base_components",
-   "fieldtype": "Table",
-   "label": "Base Components",
-   "options": "Base Components"
+   "fieldname": "roles",
+   "fieldtype": "Table MultiSelect",
+   "label": "Roles",
+   "options": "Role Item"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-17 23:21:34.374616",
+ "modified": "2025-10-29 18:31:25.297245",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
- "name": "Product",
+ "name": "Mode of Travel",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -48,6 +47,8 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

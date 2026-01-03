@@ -49,13 +49,13 @@ class TrialPlan(Document):
 
 def create_trial_target(trial_plan_doc):
     for item in trial_plan_doc.trial_plan_table:
-        if item.item_code and item.product and item.name and not item.trial_target:
-            existing_trial_target = frappe.db.get_value("Trial Target", {"product": item.product, "item_code": item.item_code, "trial_plan": trial_plan_doc.name, "trial_plan_row": item.name})
+        if item.item_code and item.segment and item.name and not item.trial_target:
+            existing_trial_target = frappe.db.get_value("Trial Target", {"product": item.segment, "item_code": item.item_code, "trial_plan": trial_plan_doc.name, "trial_plan_row": item.name})
             if existing_trial_target:
                 frappe.delete_doc("Trial Target", existing_trial_target, ignore_permissions=True, force=True)
             trial_target = frappe.new_doc("Trial Target")
             trial_target.update({
-                "product": item.product,
+                "segment": item.segment,
                 "item_code": item.item_code,
                 "trial_plan": trial_plan_doc.name,
                 "trial_plan_row": item.name

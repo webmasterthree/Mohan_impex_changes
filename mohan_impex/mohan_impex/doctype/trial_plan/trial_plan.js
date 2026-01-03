@@ -24,10 +24,6 @@ frappe.ui.form.on("Trial Plan", {
       frm.set_value("assigned_to_emp", frm.doc.created_by_emp)
     }
   },
-  customer_level(frm){
-    frm.set_value("customer", "")
-    frm.set_value("unv_customer", "")
-  },
   verific_type(frm){
     frm.set_value("customer", "")
     frm.set_value("unv_customer", "")
@@ -49,7 +45,6 @@ frappe.ui.form.on("Trial Plan", {
     }
     else{
       frm.set_value("shop", "");
-      frm.set_value("channel_partner", "");
       frm.set_value("contact", []);
       frm.set_value("location", "");
     }
@@ -60,7 +55,6 @@ frappe.ui.form.on("Trial Plan", {
     }
     else{
       frm.set_value("shop", "");
-      frm.set_value("channel_partner", "");
       frm.set_value("contact", []);
       frm.set_value("location", "");
     }
@@ -76,9 +70,7 @@ frappe.ui.form.on("Trial Plan", {
 });
 
 cur_frm.set_query("customer", function (frm) {
-  var filter_dict = {
-    customer_level: cur_frm.doc.customer_level,
-  }
+  var filter_dict = {}
   if (cur_frm.doc.channel_partner){
     filter_dict.custom_channel_partner = cur_frm.doc.channel_partner
   }
@@ -88,9 +80,7 @@ cur_frm.set_query("customer", function (frm) {
 });
 
 cur_frm.set_query("unv_customer", function (frm) {
-  var filter_dict = {
-    customer_level: cur_frm.doc.customer_level,
-  }
+  var filter_dict = {}
   if (cur_frm.doc.channel_partner){
     filter_dict.channel_partner = cur_frm.doc.channel_partner
   }
@@ -141,7 +131,7 @@ cur_frm.set_query("item_code", "trial_plan_table", function (frm, cdt, cdn) {
   var row = locals[cdt][cdn];
   var product_items = []
   var args = {
-    "product" : row.product
+    "segment" : row.segment
   }
   console.log("r.message")
   frappe.call({

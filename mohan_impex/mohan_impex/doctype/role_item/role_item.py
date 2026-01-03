@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class DocItem(Document):
+class RoleItem(Document):
 	pass

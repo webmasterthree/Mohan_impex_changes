@@ -4,14 +4,22 @@ from datetime import datetime, timedelta
 from erpnext.accounts.party import get_dashboard_info
 from mohan_impex.api.sales_order import get_role_filter
 from mohan_impex.api import get_exception, get_self_filter_status
+from mohan_impex.api.auth import has_cp
 
 @frappe.whitelist()
 def my_customer_list():
     try:
+        tab = frappe.form_dict.get("tab")
         limit = frappe.form_dict.get("limit")
         current_page = frappe.form_dict.get("current_page")
         is_self = frappe.form_dict.get("is_self")
         other_employee = frappe.form_dict.get("employee")
+
+        if has_cp() and not tab:
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Please give the list tab"
+            return
         if not limit or not current_page:
             frappe.local.response['http_status_code'] = 404
             frappe.local.response['status'] = False
@@ -21,7 +29,7 @@ def my_customer_list():
         limit = int(limit)
         offset = limit * (current_page - 1)
         pagination = "limit %s offset %s"%(limit, offset)
-        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
+        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area", "user_id"], as_dict=True)
         role_filter = get_role_filter(emp, is_self, other_employee)
         is_self_filter = get_self_filter_status()
         si_join = ""
@@ -45,15 +53,23 @@ def my_customer_list():
             select cu.name, cu.customer_name, custom_shop_name as custom_shop, mobile_no as contact, customer_primary_address as location, workflow_state, created_by_emp, created_by_name, COUNT(*) OVER() AS total_count
             from `tabCustomer` as cu
             left join `tabDynamic Link` as dl on dl.link_name=cu.name
+            left join `tabCustomer Consumption Info` as cci on cci.parent=cu.name
             {si_join}
-            where {billing_query} {role_filter} and disabled=0 and customer_level="Primary" and kyc_status="Completed"
+            where {billing_query} {role_filter} and disabled=0 and kyc_status="Completed"
         """.format(si_join=si_join, billing_query=billing_query, role_filter=role_filter)
         group_by = " group by cu.name order by cu.creation desc "
         filter_checks = {
+            "city": "city",
             "district": "district",
             "state": "state",
             "business_type": "business_type",
         }
+        if frappe.form_dict.get("category_type"):
+            query += """ AND cci.category_type = "{category_type}" """.format(category_type=frappe.form_dict.get("category_type"))
+        if frappe.form_dict.get("segment"):
+            query += """ AND cci.segment = "{segment}" """.format(segment=frappe.form_dict.get("segment"))
+        if tab:
+            query += f""" AND cu.customer_level = "{tab}" """
         if frappe.form_dict.get("search_text"):
             or_filters = """AND (cu.name LIKE "%{search_text}%" or cu.customer_name LIKE "%{search_text}%" or (dl.parent LIKE "%{search_text}%" and dl.parenttype="Contact Number")) """.format(search_text=frappe.form_dict.get("search_text"))
             query += or_filters
@@ -65,6 +81,7 @@ def my_customer_list():
         query += """ AND ({0})""".format(and_filters) if and_filters else ""
         query += group_by
         query += pagination
+        frappe.log_error(query, "Query")
         customer_info = frappe.db.sql(query, as_dict=True)
         for customer in customer_info:
             customer["location"] = frappe.get_value("Address", {"name": customer["location"]}, ["name","address_title", "address_line1", "address_line2", "city", "state", "pincode"], as_dict=True) if customer["location"] else ""
@@ -88,6 +105,8 @@ def my_customer_list():
     except Exception as err:
         get_exception(err)
 
+
+
 @frappe.whitelist()
 def my_customer_form():
     customer_name = frappe.form_dict.get("name")
@@ -102,22 +121,63 @@ def my_customer_form():
             frappe.local.response['status'] = False
             frappe.local.response['message'] = "Please give valid Customer ID"
             return
-        cus_doc = frappe.get_value("Customer", {"name": customer_name}, ["name", "customer_name", "custom_shop_name as shop_name", "customer_primary_address", "mobile_no"], as_dict=True)
-        location = frappe.get_value("Address", {"name": cus_doc["customer_primary_address"]}, ["name","address_title", "address_line1", "address_line2", "city", "state", "pincode"], as_dict=True)
+        fields = ["name", "customer_name", "customer_type as company_type", "email_id", "custom_shop_name as shop_name", "customer_primary_address", "mobile_no", "business_type", "pan", "gstin", "proposed_credit"]
+        if has_cp():
+            fields.append("is_dl")
+            fields.append("customer_level")
+            fields.append("custom_channel_partner")
+            fields.append("cp_name")
+        cus_doc = frappe.get_value("Customer", {"name": customer_name}, fields, as_dict=True)
+        # location = frappe.get_all("Address", {"name": cus_doc["customer_primary_address"]}, ["name","address_title", "address_line1", "address_line2", "city", "state", "pincode"], as_dict=True)
+        billing_address_list = []
+        shipping_address_list = []
+        query = """
+            select a.name, a.address_type, a.address_title, a.address_line1, a.address_line2, a.city, a.district, a.state, a.pincode
+            from `tabDynamic Link` dl
+            inner join `tabAddress` a on dl.parent = a.name
+            where dl.link_name = "{customer_name}" and dl.link_doctype = "Customer" and dl.parenttype = "Address"
+        """.format(customer_name=customer_name)
+        dynamic_link_list = frappe.db.sql(query, as_dict=True)
+        if has_cp():
+            if cus_doc.get("customer_level") == "Primary":
+                cus_doc["customer_type"] = "DL" if cus_doc.get("is_dl") else "DP"
+                cus_doc.pop("is_dl")
+                get_default_customer_info(cus_doc, customer_name)
+            elif cus_doc.get("customer_level") == "Secondary":
+                cus_doc.pop("company_type")
+                cus_doc.pop("email_id")
+                cus_doc.pop("gstin")
+                cus_doc.pop("business_type")
+                cus_doc.pop("pan")
+                cus_doc.pop("proposed_credit")
+        else:
+            get_default_customer_info(cus_doc, customer_name)
+        for dl in dynamic_link_list:
+            if dl["address_type"] == "Billing":
+                billing_address_list.append(dl)
+            elif dl["address_type"] == "Shipping":
+                shipping_address_list.append(dl)
+        cus_doc["billing_address_list"] = billing_address_list
+        cus_doc["shipping_address_list"] = shipping_address_list
         cus_doc.pop("customer_primary_address")
-        cus_doc["location"] = location
-        cus_doc["contact"] = cus_doc.mobile_no or ""
-        outstanding_amt = 0
-        dash_info = get_dashboard_info("Customer", customer_name)
-        if dash_info:
-            outstanding_amt = dash_info[0].get("total_unpaid") or 0
-        cus_doc["outstanding_amt"] = abs(outstanding_amt)
-        cus_doc["last_billing_rate"] = frappe.get_value("Sales Invoice", {"customer": customer_name}, "grand_total") or 0
+        # cus_doc["location"] = location
+        cus_doc["consumption_info"] = get_customer_segment_info(cus_doc["name"])
+        cus_doc["change_requests"] = get_change_request(cus_doc["name"])
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "KYC form has been successfully fetched"
         frappe.local.response['data'] = [cus_doc]
     except Exception as err:
         get_exception(err)
+
+def get_default_customer_info(cus_doc, customer_name):
+    outstanding_amt = 0
+    dash_info = get_dashboard_info("Customer", customer_name)
+    if dash_info:
+        outstanding_amt = dash_info[0].get("total_unpaid") or 0
+    cus_doc["contact"] = cus_doc.mobile_no or ""
+    cus_doc["credit_days"], cus_doc["credit_limit"] = get_credit_days_and_limit(cus_doc["name"])
+    cus_doc["outstanding_amt"] = abs(outstanding_amt)
+    cus_doc["last_billing_rate"] = frappe.get_value("Sales Invoice", {"customer": customer_name}, "grand_total") or 0
 
 @frappe.whitelist()
 def my_customer_ledger():
@@ -188,3 +248,37 @@ def my_customer_ledger():
         frappe.local.response['data'] = response
     except Exception as err:
         get_exception(err)
+
+@frappe.whitelist()
+def add_change_request(customer_id, requested_content):
+    try:
+        customer_doc = frappe.get_doc("Customer", customer_id)
+        row = customer_doc.append("change_request", {
+            "requested_content": requested_content
+        })
+        customer_doc.save()
+        frappe.local.response['status'] = True
+        frappe.local.response['message'] = "Change Request has been successfully created"
+    except Exception as err:
+        # get_exception(err)
+        frappe.local.response['status'] = False
+        frappe.local.response['message'] = f"{err}"
+
+@frappe.whitelist()
+def get_change_request(customer_id):
+    change_request = frappe.db.get_all("Change Request", {"parent": customer_id, "parenttype": "Customer", "parentfield": "change_request"}, ["requested_content", "status"])
+    return change_request
+
+def get_customer_segment_info(customer_id):
+    consumption_info = frappe.db.get_all("Customer Consumption Info", {"parent": customer_id, "parenttype": "Customer", "parentfield": "customer_consumption_info"}, ["segment", "product_name", "category_type", "consumption_qty", "uom"])
+    return consumption_info
+
+def get_credit_days_and_limit(customer_id):
+    company = frappe.defaults.get_defaults().get("company")
+    credit_limit_doc = frappe.db.get_value("Customer Credit Limit", {"company": company, "parent": customer_id}, ["credit_days", "credit_limit"])
+    if credit_limit_doc:
+        credit_days, credit_limit = credit_limit_doc
+    else:
+        credit_days = 0
+        credit_limit = 0
+    return credit_days, credit_limit

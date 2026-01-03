@@ -38,3 +38,5 @@ def has_transporter_role(user=None):
     role_names = [r["role"] for r in roles]
 
     return "MI Transporter" in role_names
+
+

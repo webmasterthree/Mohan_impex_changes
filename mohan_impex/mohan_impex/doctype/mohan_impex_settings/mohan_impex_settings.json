@@ -10,7 +10,9 @@
   "default_profile_image",
   "section_break_grqv",
   "dashboard_banners",
-  "roles_and_reports_to"
+  "roles_and_reports_to",
+  "section_break_lpvg",
+  "default_warehouse"
  ],
  "fields": [
   {
@@ -46,12 +48,23 @@
    "fieldtype": "Attach Image",
    "label": "Default Profile Image",
    "reqd": 1
+  },
+  {
+   "fieldname": "section_break_lpvg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "default_warehouse",
+   "fieldtype": "Link",
+   "label": "Default Warehouse",
+   "link_filters": "[[\"Warehouse\",\"is_group\",\"=\",1]]",
+   "options": "Warehouse"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-05-18 11:11:42.514403",
+ "modified": "2026-01-02 15:39:37.895839",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Mohan Impex Settings",
@@ -68,6 +81,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

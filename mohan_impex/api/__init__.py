@@ -14,6 +14,9 @@ from datetime import datetime
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account
 from frappe.model.workflow import get_transitions
+from mohan_impex.api.auth import has_cp
+from erpnext.stock.get_item_details import get_item_details as erp_get_item_details
+from frappe.utils import strip_html
 
 @frappe.whitelist()
 def dashboard():
@@ -241,6 +244,7 @@ def get_item_templates():
         select item_code, item_name, item_category
         from `tabItem`
         where has_variants = 1
+        AND is_sales_item = 1
     """
     if frappe.form_dict.get("search_text"):
         query += """ AND (item_name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
@@ -249,34 +253,61 @@ def get_item_templates():
     frappe.local.response['message'] = "Items fetched successfully"
     frappe.local.response['data'] = item_templates
 
+
+import frappe
+
 @frappe.whitelist()
-def get_item_variants():
+def get_item_variants(limit:int=20, customer="", warehouse="", delivery_term=""):
     query = """
-        select i.item_code, i.item_name, i.item_category, cd.competitor, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
+        select i.item_code, i.item_name, i.item_category, cd.competitor,
+               IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
         from `tabItem` as i
         left join `tabCompetitor Detail` as cd on cd.parent = i.name
         where has_variants = 0
     """
-    # query = """
-    #     SELECT i.item_code, i.item_name, i.item_category, c.name AS competitor, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
-    #     FROM `tabItem` AS i
-    #     LEFT JOIN `tabCompetitor Item` AS ci ON i.name = ci.item_code
-    #     LEFT JOIN `tabCompetitor` AS c ON c.name = ci.parent
-    #     WHERE i.has_variants = 0
-    # """
+
     if frappe.form_dict.get("item_template"):
         query += """ AND variant_of="{0}" """.format(frappe.form_dict.get("item_template"))
     if frappe.form_dict.get("item_category"):
         query += """ AND item_category="{0}" """.format(frappe.form_dict.get("item_category"))
     if frappe.form_dict.get("search_text"):
-        query += """ AND (item_name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
+        query += """ AND (item_name LIKE "%{search_text}%") """.format(
+            search_text=frappe.form_dict.get("search_text")
+        )
+
+    query += f" limit {limit}"
     item_variants = frappe.db.sql(query, as_dict=True)
-    consol_item_variants = competitor_consolidate(item_variants)
+
+    # existing logic (kept as-is)
+    if customer:
+        consol_item_variants = competitor_consolidate(item_variants, customer, warehouse, delivery_term)
+    else:
+        consol_item_variants = competitor_consolidate(item_variants)
+
+    # ✅ Add item_tax_template + gst_rate using SAME FILE function (no import)
+    tax_cache = {}
+    for row in consol_item_variants:
+        item_code = row.get("item_code")
+        if not item_code:
+            row["item_tax_template"] = ""
+            row["gst_rate"] = 0
+            continue
+
+        if item_code not in tax_cache:
+            tax_cache[item_code] = get_item_tax_and_gst_rate(item_code) or {}
+
+        row["item_tax_template"] = tax_cache[item_code].get("item_tax_template") or ""
+        row["gst_rate"] = tax_cache[item_code].get("gst_rate") or 0
+
     frappe.local.response['status'] = True
     frappe.local.response['message'] = "Items fetched successfully"
     frappe.local.response['data'] = consol_item_variants
 
-def competitor_consolidate(item_list):
+
+
+
+
+def competitor_consolidate(item_list, customer="", warehouse="", delivery_term=""):
     result = {}
     for item in item_list:
         key = (item["item_code"], item["item_name"], item["item_category"])
@@ -290,8 +321,55 @@ def competitor_consolidate(item_list):
             }
         if item.get("competitor"):
             result[key]["competitors"].append(item["competitor"])
+        if customer:
+            item_details = get_item_details(item["item_code"], item["uom"], customer, warehouse, delivery_term)
+
+            for key_1, value in item_details.items():
+                result[key][key_1] = value
+            # if item_details:
+            #     result[key]["price"] = item_details[0].get("price") or 0.0
+            # else:
+            #     result[key]["price"] = 0.0
     consol_items = list(result.values())
     return consol_items
+
+@frappe.whitelist()
+def get_item_details(item_code, uom, customer, warehouse="", delivery_term=""):
+    company = frappe.db.get_single_value("Global Defaults", "default_company")
+    qty = float(1)
+    price_list = frappe.db.get_single_value("Selling Settings", "selling_price_list")
+
+    frappe.set_user("Administrator")
+    args = frappe._dict({
+        "item_code": item_code,
+        "customer": customer,
+        "uom": uom,
+        "warehouse": warehouse,
+        "company": company,
+        "price_list": price_list,
+        "currency": "INR",
+        "transaction_type": "selling",
+        "doctype": "Sales Order",
+        "items": [{"item_code": item_code, "qty": qty, "uom": uom}],
+        "qty": qty
+    })
+    frappe.errprint(args)
+    doc = frappe.new_doc("Sales Order")
+    doc.custom_delivery_term = delivery_term
+
+    item_details = erp_get_item_details(args, doc=doc, for_validate=True)
+    frappe.errprint(item_details)
+    pricing_rules_applied = json.loads(item_details.get("pricing_rules") or "[]")
+
+    item_details = {
+        "rate": item_details.get("price_list_rate"),
+        "discount_percentage": item_details.get("discount_percentage"),
+        "discount_amount": item_details.get("discount_amount"),
+        "net_rate": item_details.get("net_rate"),
+        "pricing_rules_applied": pricing_rules_applied,
+        "free_items": item_details.get("free_item_data") or []
+    }
+    return item_details
 
 @frappe.whitelist()
 def get_competitor_items():
@@ -319,13 +397,43 @@ def get_items():
         from `tabItem` as i
         join `tabBase Components` as bc on bc.item_code = i.item_code
     """
-    if frappe.form_dict.get("product"):
-        query += """ and bc.parent = "{0}" """.format(frappe.form_dict.get("product"))
+    if frappe.form_dict.get("segment"):
+        query += """ and bc.parent = "{0}" """.format(frappe.form_dict.get("segment"))
     if frappe.form_dict.get("item_category"):
         query += """ and i.item_category = "{0}" """.format(frappe.form_dict.get("item_category"))
     items = frappe.db.sql(query, as_dict=True)
+    for item in items:
+        competitors = frappe.get_all("Competitor Detail", {"parent": item["item_code"]}, ["competitor"], pluck="competitor")
+        item["competitors"] = competitors
+
+    item_categories = list(set([item["item_category"] for item in items]))
+    response = {
+        "items": items,
+        "available_item_categories": item_categories
+    }
     frappe.local.response['status'] = True
     frappe.local.response['message'] = "Items fetched successfully"
+    frappe.local.response['data'] = response
+
+@frappe.whitelist()
+def get_segments(search_text=""):
+    segments = frappe.get_all("Segment", {"segment_name": ["like", "%{0}%".format(search_text)]}, ["name", "segment_name", "base_product", "base_product_uom as uom"], order_by="name")
+    frappe.local.response['status'] = True
+    frappe.local.response['message'] = "Segments fetched successfully"
+    frappe.local.response['data'] = segments
+
+@frappe.whitelist()
+def get_base_products():
+    query = """
+        select bp.product_name, bp.uom
+        from `tabSegment` as s
+        join `tabBase Product` as bp on bp.parent = s.name
+    """
+    if frappe.form_dict.get("segment"):
+        query += """ and bp.parent = "{0}" """.format(frappe.form_dict.get("segment"))
+    items = frappe.db.sql(query, as_dict=True)
+    frappe.local.response['status'] = True
+    frappe.local.response['message'] = "Base Products fetched successfully"
     frappe.local.response['data'] = items
 
 @frappe.whitelist()
@@ -356,10 +464,11 @@ def get_customer_list(search_text=""):
     filters = {}
     if search_text:
         filters.update({"search_text": search_text})
-    if frappe.form_dict.get("channel_partner"):
-        filters.update({"channel_partner": frappe.form_dict.get("channel_partner")})
-    if frappe.form_dict.get("customer_level"):
-        filters.update({"customer_level": frappe.form_dict.get("customer_level")})
+    if has_cp():
+        if frappe.form_dict.get("channel_partner"):
+            filters.update({"channel_partner": frappe.form_dict.get("channel_partner")})
+        if frappe.form_dict.get("customer_level"):
+            filters.update({"customer_level": frappe.form_dict.get("customer_level")})
     if frappe.form_dict.get("show_area_records"):
         filters.update({"show_area_records": frappe.form_dict.get("show_area_records")})
     if frappe.form_dict.get("verification_type"):
@@ -377,27 +486,57 @@ def get_customer_list(search_text=""):
 @frappe.whitelist()
 def get_customer_info(role_filter=None, customer_level="", channel_partner="", kyc_status="", search_text=""):
     if not role_filter:
-        emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
+        emp = frappe.get_value(
+            "Employee",
+            {"user_id": frappe.session.user},
+            ["name", "area"],
+            as_dict=True
+        )
         role_filter = get_territory_role_filter(emp)
+
+    # ✅ ONLY change: added cu.is_dl
+    fields = [
+        "cu.name as name",
+        "cu.customer_name",
+        "cu.custom_shop as shop",
+        "cu.custom_shop_name as shop_name",
+        "ct.name as contact",
+        "cu.customer_level",
+        "cu.kyc_status",
+        "cu.is_dl"          # ✅ ADDED
+    ]
+
+    if has_cp():
+        fields.extend([
+            "cu.custom_channel_partner as channel_partner",
+            "cu.cp_name"
+        ])
+
     query = """
-        SELECT cu.name as name, cu.customer_name, cu.custom_shop as shop, cu.custom_shop_name as shop_name, ct.name as contact, cu.customer_level, cu.custom_channel_partner as channel_partner, cu.cp_name, cu.kyc_status
+        SELECT {fields}
         FROM `tabCustomer` AS cu
-        LEFT JOIN `tabDynamic Link` as dl on dl.link_name = cu.name
-        LEFT JOIN `tabContact Number` AS ct on ct.name = dl.parent
-        WHERE {role_filter} and cu.is_dl = 0
-    """.format(role_filter=role_filter)
+        LEFT JOIN `tabDynamic Link` AS dl ON dl.link_name = cu.name
+        LEFT JOIN `tabContact Number` AS ct ON ct.name = dl.parent
+        WHERE {role_filter}
+    """.format(fields=",".join(fields), role_filter=role_filter)
+
     if search_text:
-        # or cu.custom_shop LIKE "%{search_text}%"
-        search_cond = """ AND (cu.customer_name LIKE "%{search_text}%" or ct.name LIKE "%{search_text}%") """.format(search_text=search_text)
-        query += search_cond
+        query += """
+            AND (cu.customer_name LIKE "%{0}%" OR ct.name LIKE "%{0}%")
+        """.format(search_text)
+
     if customer_level:
         query += """ AND cu.customer_level = "{0}" """.format(customer_level)
+
     if channel_partner:
         query += """ AND cu.custom_channel_partner = "{0}" """.format(channel_partner)
+
     if kyc_status:
         query += """ AND cu.kyc_status = "{0}" """.format(kyc_status)
+
     customers = frappe.db.sql(query, as_dict=True)
-    result={}
+
+    result = {}
     for entry in customers:
         key = entry["name"]
         if key not in result:
@@ -405,18 +544,22 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
                 "name": entry["name"],
                 "customer_name": entry["customer_name"],
                 "verific_type": "Verified",
-                "customer_level": entry["customer_level"],
                 "shop": entry["shop"],
                 "shop_name": entry["shop_name"],
-                "channel_partner": entry["channel_partner"],
-                "cp_name": entry["cp_name"],
                 "kyc_status": entry["kyc_status"],
+                "is_dl": entry["is_dl"],   # ✅ PRINTED
                 "contact": []
             }
+            if has_cp():
+                result[key]["customer_level"] = entry["customer_level"]
+                result[key]["channel_partner"] = entry["channel_partner"]
+                result[key]["cp_name"] = entry["cp_name"]
+
         if entry["contact"]:
             result[key]["contact"].append(entry["contact"])
-    customer_info = list(result.values())
-    return customer_info
+
+    return list(result.values())
+
 
 @frappe.whitelist()
 def unv_customer_list(role_filter=None, customer_level="", channel_partner="", kyc_status="", search_text=""):
@@ -425,12 +568,15 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", k
             customer_level = "Primary"
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
         role_filter = get_role_filter(emp)
+        fields = ["unv.name", "customer_name", "shop", "shop_name", "contact", "kyc_status"]
+        if has_cp():
+            fields.extend(["customer_level", "channel_partner", "cp_name"])
         query = """
-            select unv.name, customer_name, customer_level, shop, shop_name, contact, channel_partner, cp_name, kyc_status
+            select {fields}
             from `tabUnverified Customer` as unv
             LEFT JOIN `tabContact List` as cl on cl.parent = unv.name
             WHERE kyc_status = "Pending" and {role_filter}
-        """.format(role_filter=role_filter)
+        """.format(fields=", ".join(fields), role_filter=role_filter)
         if frappe.form_dict.get("search_text"):
             # or unv.shop_name LIKE "%{search_text}%"
             or_filters = """ AND (unv.customer_name LIKE "%{search_text}%" or cl.contact LIKE "%{search_text}%") """.format(search_text=search_text)
@@ -448,13 +594,15 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", k
                     "name": entry["name"],
                     "customer_name": entry["customer_name"],
                     "verific_type": "Unverified",
-                    "customer_level": entry["customer_level"],
                     "shop": entry["shop"],
                     "shop_name": entry["shop_name"],
-                    "channel_partner": entry["channel_partner"],
                     "kyc_status": entry["kyc_status"],
                     "contact": []
                 }
+                if has_cp():
+                    result[key]["customer_level"] = entry["customer_level"]
+                    result[key]["channel_partner"] = entry["channel_partner"]
+
             if entry["contact"]:
                 result[key]["contact"].append(entry["contact"])
         unv_customer_list = list(result.values())
@@ -464,7 +612,7 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", k
         frappe.local.response['message'] = "Unverified Customer list fetched successfully"
         frappe.local.response['data'] = unv_customer_list
     except Exception as err:
-        get_exception(err)
+        get_exception(err, "UNVERIFIED CUSTOMER LIST ERROR")
 
 SECRET_KEY = frappe.local.conf.get("jwt_secret")
 def get_signed_token(file_path, access_token=""):
@@ -521,58 +669,113 @@ def protected_file(token):
         frappe.log_error(f"File Access Error: {str(e)}")
         return "Invalid Token", 400
 
+
 @frappe.whitelist()
 def is_within_range(origin, destination):
     try:
+        origin_and_dest = {
+            "origin": origin,
+            "destination": destination
+        }
+
+        # Fetch API key
         api_key = frappe.get_single("Google Settings").api_key
         if not api_key:
-            frappe.local.response['http_status_code'] = 404
-            frappe.local.response['status'] = False
-            frappe.local.response['message'] = "NO API_KEY found in Google Settings"
+            get_exception(message="NO API_KEY found in Google Settings")
             return
-        origin_list = [x.strip() for x in origin.split(",") if x]
-        if not (len(origin_list) == 2 and all([isinstance(float(x), float) for x in origin_list])):
-            frappe.local.response['http_status_code'] = 404
-            frappe.local.response['status'] = False
-            frappe.local.response['message'] = "Origin is not a valid float or not separated by comma"
+
+        # Validate origin
+        try:
+            origin_list = [float(x.strip()) for x in origin.split(",")]
+            if len(origin_list) != 2:
+                raise ValueError
+        except Exception:
+            get_exception(
+                message="Origin is not valid. Format should be: lat,lng",
+                data=origin_and_dest
+            )
             return
-        
-        destination_list = [x.strip() for x in destination.split(",")]
-        if not (len(destination_list) == 2 and all([isinstance(float(x), float) for x in destination_list])):
-            frappe.local.response['http_status_code'] = 404
-            frappe.local.response['status'] = False
-            frappe.local.response['message'] = "Destination is not a valid values or not separated by comma"
+
+        # Validate destination
+        try:
+            destination_list = [float(x.strip()) for x in destination.split(",")]
+            if len(destination_list) != 2:
+                raise ValueError
+        except Exception:
+            get_exception(
+                message="Destination is not valid. Format should be: lat,lng",
+                data=origin_and_dest
+            )
             return
-        allowed_distance = frappe.get_single("Mohan Impex Settings").allowed_distance
-        url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={origin}&destinations={destination}&key={api_key}"
-        response = requests.get(url).json()
-        
-        if response["status"] == "OK":
-            if not response["rows"][0]["elements"][0]["status"] == "OK":
-                frappe.local.response['http_status_code'] = 404
-                frappe.local.response['status'] = False
-                frappe.local.response['message'] = "No Address found for the given Orgin or Destination"
-                return
-            distance_meters = response["rows"][0]["elements"][0]["distance"]["value"]  # Distance in meters
-            valid_distance = distance_meters <= allowed_distance
-            response = {
-                "valid": valid_distance, 
-                "distance": distance_meters,
-            }
-            message = "You are within the range to submit the visit" if valid_distance else f"You are {int(allowed_distance)} meters away from the origin to submit the visit"
-            response.update({"message": message})
-            frappe.local.response['status'] = True
-            frappe.local.response['message'] = "Validation of distance for the range has been done"
-            frappe.local.response['data'] = response
+
+        # Allowed distance (meters)
+        allowed_distance = int(
+            frappe.get_single("Mohan Impex Settings").allowed_distance or 0
+        )
+
+        # Call Google Distance Matrix API
+        url = (
+            "https://maps.googleapis.com/maps/api/distancematrix/json"
+            f"?origins={origin}&destinations={destination}&key={api_key}"
+        )
+
+        api_response = requests.get(url).json()
+
+        if api_response.get("status") != "OK":
+            get_exception(message="Issue with LOCATION or API_KEY", data=api_response)
             return
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = "Issue with LOCATION or API_KEY"
-        frappe.local.response['data'] = response
+
+        element = api_response["rows"][0]["elements"][0]
+        if element.get("status") != "OK":
+            get_exception(message="No address found for given origin or destination")
+            return
+
+        # Distance in meters
+        distance_meters = element["distance"]["value"]
+
+        valid_distance = distance_meters <= allowed_distance
+
+        if valid_distance:
+            message = (
+                f"You are within the allowed range"
+            )
+        else:
+            extra_distance = distance_meters - allowed_distance
+            message = (
+                f"You are {extra_distance} meters away from the origin to submit the visit"
+            )
+
+        frappe.local.response["status"] = True
+        frappe.local.response["message"] = "Validation of distance for the range has been done"
+        frappe.local.response["data"] = {
+            "valid": valid_distance,
+            "distance": distance_meters,
+            "allowed_distance": allowed_distance,
+            "message": message
+        }
+
     except Exception as err:
-        frappe.local.response['http_status_code'] = 404
-        frappe.local.response['status'] = False
-        frappe.local.response['message'] = f"{err}"
+        get_exception(
+            message="Unexpected error while validating location",
+            data={
+                "error": str(err),
+                "origin": origin,
+                "destination": destination
+            }
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def get_role_filter(emp, is_self=None, employee=None):
     territory_list = set(frappe.get_all("User Permission", {"allow": "Territory", "user": emp.get("user_id")}, ["for_value as area"], pluck="area"))
@@ -618,6 +821,29 @@ def get_sales_invoice_items(sales_invoice):
     frappe.local.response['message'] = "Sales Invoice Items has been fetched successfully"
     frappe.local.response['data'] = si_items
 
+@frappe.whitelist()
+def get_sales_orders(customer):
+    query = """
+        SELECT so.name, transaction_date as date
+        FROM `tabSales Order` so
+        JOIN `tabCustomer Visit Management` cv ON so.customer_visit = cv.name
+        WHERE so.customer = %s
+    """
+    params = (customer,)
+    # Print final query with params
+    # frappe.errprint(frappe.db.mogrify(query, params))
+    sales_orders = frappe.db.sql(query, params, as_dict=1)
+    frappe.local.response['status'] = True
+    frappe.local.response['message'] = "Sales Order list has been fetched successfully"
+    frappe.local.response['data'] = sales_orders
+
+@frappe.whitelist()
+def get_sales_order_items(sales_order):
+    so_items = frappe.get_all("Sales Order Item", {"parent": sales_order}, ["item_code", "item_name", "qty", "amount"])
+    frappe.local.response['status'] = True
+    frappe.local.response['message'] = "Sales Order Items has been fetched successfully"
+    frappe.local.response['data'] = so_items
+
 def get_address_text(address_name):
     addr_doc = frappe.get_doc("Address", address_name)
     address_text = ""
@@ -647,17 +873,16 @@ def get_employee_list(area, role_profile=None):
         frappe.local.response['data'] = employee_list
     except Exception as err:
         get_exception(err)
-    
-def get_exception(err):
+
+def get_exception(err="Error", message="", data={}):
     frappe.local.response['http_status_code'] = 404
     frappe.local.response['status'] = False
-    if len(frappe.local.message_log) > 0:
-        err = frappe.local.message_log[0].get("message") or err
-    soup = BeautifulSoup(err, "html.parser")
-    for br in soup.find_all("br"):
-        br.replace_with(". ")
-    err = soup.get_text()
-    frappe.local.response['message'] = frappe.local.response.get('message') or f"{err}"
+    frappe.log_error(title=message or "API Error", message=frappe.get_traceback())
+    if data:
+        frappe.log_error(title=f"{message} Data" or "API Error Data", message=data)
+    frappe.local.response['message'] = message or frappe.local.response.get('message') or strip_html(str(err)).replace("\n", " ")
+    # frappe.errprint(frappe.local.response)
+    return
 
 def get_workflow_statuses(doctype, doc_name, role):
     doc = frappe.get_doc(doctype, doc_name)
@@ -753,15 +978,19 @@ def send_notification(doc, method):
 
 @frappe.whitelist()
 def send_push_notification(for_user, device_token, title, body, data=None):
-    service_account_path = 'mohan-impex-erp-551f3-1f9a5f51dd38.json'
-
-    project_id = 'mohan-impex-erp-551f3'
+    settings = frappe.get_single("MI Push Notification Settings")
+    if settings.enabled == 0:
+        return
+    service_account_json = settings.service_account_json
+    project_id = settings.project_id
 
     SCOPES = ['https://www.googleapis.com/auth/firebase.messaging']
 
     # Authenticate and get access token
-    credentials = service_account.Credentials.from_service_account_file(
-        service_account_path, scopes=SCOPES)
+    service_account_info = json.loads(service_account_json)
+    credentials = service_account.Credentials.from_service_account_info(
+        service_account_info, scopes=SCOPES
+    )
     credentials.refresh(Request())
     access_token = credentials.token
 
@@ -833,3 +1062,80 @@ def convert_to_12_hour(db_time):
         time_str = time_str.split(".")[0]
     time_obj = datetime.strptime(time_str, "%H:%M:%S")
     return time_obj.strftime("%I:%M:%S %p")
+
+@frappe.whitelist()
+def get_modes_of_travel(user: str | None = None):
+    user = user or frappe.session.user
+    roles = frappe.get_roles(user)
+
+    if not roles:
+        return []
+    parents = frappe.get_all(
+        "Role Item",
+        filters={
+            "parenttype": "Mode of Travel",
+            "parentfield": "roles",
+            "role": ["in", roles],
+        },
+        pluck="parent",
+        distinct=True,
+    )
+    # keep a stable order
+    if not parents:
+        return []
+
+    all_modes = set(parents)
+    # Optional: ensure only existing Mode of Travel names are returned (and sorted)
+    existing = frappe.get_all("Mode of Travel", filters={"name": ["in", list(all_modes)]}, pluck="name")
+    frappe.local.response["status"] = True
+    frappe.local.response["message"] = "Mode of Travel list has been fetched successfully"
+    frappe.local.response["data"] = sorted(existing)
+    
+    
+    
+    
+@frappe.whitelist()
+def get_item_tax_and_gst_rate(item_code):
+    """
+    Fetch item_tax_template from Item Tax child table
+    and gst_rate from Item Tax Template
+    """
+
+    if not item_code:
+        frappe.local.response["http_status_code"] = 400
+        frappe.local.response["status"] = False
+        frappe.local.response["message"] = "item_code is required"
+        return
+
+    # Check if Item exists
+    if not frappe.db.exists("Item", item_code):
+        frappe.local.response["http_status_code"] = 404
+        frappe.local.response["status"] = False
+        frappe.local.response["message"] = f"Item {item_code} not found"
+        return
+
+    # Fetch item_tax_template from Item Tax (child table)
+    item_tax_template = frappe.db.get_value(
+        "Item Tax",
+        {
+            "parent": item_code,
+            "parenttype": "Item",
+            "parentfield": "taxes"
+        },
+        "item_tax_template"
+    )
+
+    gst_rate = None
+    if item_tax_template:
+        gst_rate = frappe.db.get_value(
+            "Item Tax Template",
+            item_tax_template,
+            "gst_rate"
+        )
+
+    return {
+        "status": True,
+        "item_code": item_code,
+        "item_tax_template": item_tax_template or "",
+        "gst_rate": gst_rate or 0
+    }
