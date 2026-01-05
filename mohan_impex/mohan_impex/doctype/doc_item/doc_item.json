@@ -6,19 +6,21 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "section_break_plpb"
+  "upload_document"
  ],
  "fields": [
   {
-   "fieldname": "section_break_plpb",
-   "fieldtype": "Section Break"
+   "fieldname": "upload_document",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Upload Document"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-01-03 17:41:58.012126",
+ "modified": "2026-01-05 16:24:56.286244",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Doc Item",
