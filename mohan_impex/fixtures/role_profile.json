@@ -4,6 +4,48 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
+  "modified": "2026-01-05 17:27:05.923202",
+  "name": "Quality Control",
+  "role_full_name": null,
+  "role_profile": "Quality Control",
+  "roles": [
+   {
+    "parent": "Quality Control",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Quality Control"
+   },
+   {
+    "parent": "Quality Control",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "Quality Control",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Quality Control",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Quality Control",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Factory Manager"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
   "modified": "2025-11-15 17:32:16.551431",
   "name": "BILLING EXECUTIVE",
   "role_full_name": null,
