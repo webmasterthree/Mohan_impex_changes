@@ -1,7 +1,7 @@
 [
  {
   "charts": [],
-  "content": "[{\"id\":\"-wPco-62qL\",\"type\":\"card\",\"data\":{\"card_name\":\"Quality Control\",\"col\":4}},{\"id\":\"u39PrJmfbS\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":9}}]",
+  "content": "[{\"id\":\"-wPco-62qL\",\"type\":\"card\",\"data\":{\"card_name\":\"Quality Control\",\"col\":4}},{\"id\":\"u39PrJmfbS\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":9}},{\"id\":\"fVdG6wVofv\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Bom\",\"col\":3}},{\"id\":\"-idM71leRm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Bom\",\"col\":3}}]",
   "custom_blocks": [],
   "docstatus": 0,
   "doctype": "Workspace",
@@ -19,7 +19,7 @@
     "icon": null,
     "is_query_report": 0,
     "label": "Quality Control",
-    "link_count": 5,
+    "link_count": 6,
     "link_to": null,
     "link_type": "DocType",
     "onboard": 0,
@@ -39,6 +39,24 @@
     "label": "Workstation",
     "link_count": 0,
     "link_to": "Workstation",
+    "link_type": "DocType",
+    "onboard": 0,
+    "only_for": null,
+    "parent": "Quality Control",
+    "parentfield": "links",
+    "parenttype": "Workspace",
+    "report_ref_doctype": null,
+    "type": "Link"
+   },
+   {
+    "dependencies": null,
+    "description": null,
+    "hidden": 0,
+    "icon": null,
+    "is_query_report": 0,
+    "label": "Operation",
+    "link_count": 0,
+    "link_to": "Operation",
     "link_type": "DocType",
     "onboard": 0,
     "only_for": null,
@@ -121,7 +139,7 @@
     "type": "Link"
    }
   ],
-  "modified": "2026-01-05 14:48:57.491504",
+  "modified": "2026-01-06 11:44:57.976756",
   "module": null,
   "name": "Quality Control",
   "number_cards": [],
@@ -139,6 +157,23 @@
   ],
   "sequence_id": 44.0,
   "shortcuts": [
+   {
+    "color": "Green",
+    "doc_view": "List",
+    "format": "{} Active BOM List",
+    "icon": null,
+    "kanban_board": null,
+    "label": "Bom",
+    "link_to": "BOM",
+    "parent": "Quality Control",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "report_ref_doctype": null,
+    "restrict_to_domain": null,
+    "stats_filter": "[[\"BOM\",\"is_active\",\"=\",1,false]]",
+    "type": "DocType",
+    "url": null
+   },
    {
     "color": "Red",
     "doc_view": "List",

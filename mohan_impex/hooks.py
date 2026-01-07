@@ -8,7 +8,7 @@ app_license = "mit"
 
 role_list = ("SE", "ASM", "TSM", "NSM", "ZSM", "RSM", "CP",
              "Sr. Warehouse Executive-Sales","Warehouse Executive-Ld/Unld","Warehouse Executive-Sales",
-             "MIS Logistics Executive","Sr. Logistics Executive","BILLING EXECUTIVE","Logistics Executive","Supplier","Purchase Executive","Quality Control")
+             "MIS Logistics Executive","Sr. Logistics Executive","BILLING EXECUTIVE","Logistics Executive","Supplier","Purchase Executive","Quality Control","General Ledger Accountant")
 
 fixtures = [
     {"dt": "Client Script", "filters": [["module", "=", "Mohan Impex"]]},

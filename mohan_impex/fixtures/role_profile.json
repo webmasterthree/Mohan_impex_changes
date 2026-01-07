@@ -706,5 +706,77 @@
     "role": "Leave Approver"
    }
   ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2026-01-06 16:02:49.612375",
+  "name": "General Ledger Accountant",
+  "role_full_name": null,
+  "role_profile": "General Ledger Accountant",
+  "roles": [
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "General Ledger Accountant"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Leave Approver"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Work From Home Approver"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock User"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Customer"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Account Executive"
+   }
+  ]
  }
 ]
