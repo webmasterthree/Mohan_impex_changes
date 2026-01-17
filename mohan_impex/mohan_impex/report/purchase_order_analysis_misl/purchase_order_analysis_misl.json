@@ -1,0 +1,76 @@
+{
+ "add_total_row": 1,
+ "add_translate_data": 0,
+ "columns": [],
+ "creation": "2026-01-08 15:35:38.359855",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2026-01-08 17:52:26.346757",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Purchase Order Analysis-MISL",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Purchase Order",
+ "report_name": "Purchase Order Analysis-MISL",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Purchase User"
+  },
+  {
+   "role": "Purchase Manager"
+  },
+  {
+   "role": "Stock User"
+  },
+  {
+   "role": "SCM Manager"
+  },
+  {
+   "role": "Billing"
+  },
+  {
+   "role": "Supplier"
+  },
+  {
+   "role": "Purchase Executive"
+  },
+  {
+   "role": "Ground Team"
+  },
+  {
+   "role": "Billing Team"
+  },
+  {
+   "role": "General Ledger Accountant"
+  },
+  {
+   "role": "Logistics Executive"
+  },
+  {
+   "role": "MIS Logistics Executive"
+  },
+  {
+   "role": "Warehouse Executive-Sales"
+  },
+  {
+   "role": "BILLING EXECUTIVE"
+  },
+  {
+   "role": "Inventory Manager"
+  },
+  {
+   "role": "Warehouse Executive-Ld/Unld"
+  },
+  {
+   "role": "Factory Operation"
+  }
+ ],
+ "timeout": 0
+}

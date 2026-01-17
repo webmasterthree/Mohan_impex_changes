@@ -76,7 +76,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
-  "modified": "2025-11-06 10:51:41.572425",
+  "modified": "2026-01-07 17:37:59.043174",
   "name": "Logistics Executive",
   "role_full_name": null,
   "role_profile": "Logistics Executive",
@@ -92,6 +92,78 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Employee"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "ASM"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "NSM"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "ZSM"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "TSM"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "SE"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "OPERATION INCHARGE"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sr. Warehouse Executive-Sales"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sr. Logistics Executive"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "BILLING EXECUTIVE"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Executive"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "System Manager"
+   },
+   {
+    "parent": "Logistics Executive",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "MI Transporter"
    }
   ]
  },
@@ -712,7 +784,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
-  "modified": "2026-01-06 16:02:49.612375",
+  "modified": "2026-01-16 13:51:03.288569",
   "name": "General Ledger Accountant",
   "role_full_name": null,
   "role_profile": "General Ledger Accountant",
@@ -776,6 +848,12 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Account Executive"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Manager"
    }
   ]
  }
