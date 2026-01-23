@@ -40,9 +40,9 @@ doctype_js ={
     "Purchase Receipt": "public/js/GRN1.js",
     "Delivery Note": "public/js/delivery_note.js",
     "Purchase Order": "public/js/ASN.js",
+    "Shift Type": "public/js/shift_type.js",
     "Serial and Batch Bundle": "public/js/shelf_life.js",
 }
-
 
 doc_events = {
     "Sales Order": {
@@ -63,11 +63,12 @@ doc_events = {
     "Request for Quotation": {
         "on_submit": "mohan_impex.rfq.send_rfq_email"
     },
-    "Employee Checkin": {
-        "before_save": "mohan_impex.leave_deduction.before_save_employee_checkin",
-        "before_save": "mohan_impex.leave_deduction_out.before_save_employee_checkin"
-
-    },
+    # "Employee Checkin": {
+    #     "before_save": [
+    #         "mohan_impex.leave_deduction.before_save_employee_checkin",
+    #         "mohan_impex.leave_deduction_out.before_save_employee_checkin"
+    #     ]
+    # },
     "Transport RFQ": {
         "on_submit": "mohan_impex.Sales.Assign_Transporter.on_submit"
     },
@@ -264,6 +265,12 @@ scheduler_events = {
         ],
         "0 10 25 * *":[
             "mohan_impex.birthday_leave.send_birthday_notification"
+        ],
+        "0 1 * * *":[
+            "mohan_impex.leave_deduction.auto_employee_checkin_day_shift"
+        ],
+        "0 13 * * *":[
+            "mohan_impex.leave_deduction.auto_employee_checkin_night_shift"
         ]
     }
 }
