@@ -98,7 +98,7 @@ doc_events = {
     },
     "Salary Slip": {
         "before_submit": "mohan_impex.salary_slip.before_submit",
-        "before_submit": "mohan_impex.salary_slip.validate",
+        "before_submit": "mohan_impex.salary_slip.before_submit",
     },
     "Secondary Sales Order": {
         "validate": "mohan_impex.item_tax_template.validate"
