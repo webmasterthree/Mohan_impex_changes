@@ -42,6 +42,7 @@ doctype_js ={
     "Purchase Order": "public/js/ASN.js",
     "Shift Type": "public/js/shift_type.js",
     "Serial and Batch Bundle": "public/js/shelf_life.js",
+    "Gratuity": "public/js/gratuity.js",
 }
 
 doc_events = {
@@ -96,7 +97,8 @@ doc_events = {
         "before_submit": "mohan_impex.mohan_impex.stock_entry.inspection_validation"
     },
     "Salary Slip": {
-        "before_submit": "mohan_impex.salary_slip.before_submit"
+        "before_submit": "mohan_impex.salary_slip.before_submit",
+        "before_submit": "mohan_impex.salary_slip.before_submit",
     },
     "Secondary Sales Order": {
         "validate": "mohan_impex.item_tax_template.validate"

@@ -12,7 +12,9 @@
   "dashboard_banners",
   "roles_and_reports_to",
   "section_break_lpvg",
-  "default_warehouse"
+  "default_warehouse",
+  "bonus_percentage",
+  "bonus_eligible_days"
  ],
  "fields": [
   {
@@ -59,12 +61,22 @@
    "label": "Default Warehouse",
    "link_filters": "[[\"Warehouse\",\"is_group\",\"=\",1]]",
    "options": "Warehouse"
+  },
+  {
+   "fieldname": "bonus_percentage",
+   "fieldtype": "Percent",
+   "label": "Bonus Percentage%"
+  },
+  {
+   "fieldname": "bonus_eligible_days",
+   "fieldtype": "Int",
+   "label": "Bonus Eligible Days"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-01-02 15:39:37.895839",
+ "modified": "2026-01-24 13:44:38.732060",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Mohan Impex Settings",
