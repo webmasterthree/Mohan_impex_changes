@@ -22,11 +22,8 @@ frappe.ui.form.on('Gratuity', {
 
                     // Set value in field
                     frm.set_value("current_work_experience", considered_years);
-
-                    console.log("Exact Years:", diff_years.toFixed(2));
-                    console.log("Considered Years:", considered_years);
+                    
                 } else {
-                    console.log("No DOJ found");
                     frm.set_value("current_work_experience", 0);
                 }
             });
