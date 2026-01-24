@@ -68,7 +68,7 @@ def before_submit(doc, method):
 
 
 @frappe.whitelist()
-def before_submit(doc, method):
+def validate(doc, method):
     create_fiscal_year(doc)
 
 
@@ -133,3 +133,15 @@ def create_fiscal_year(doc):
     crt_bonus.amount = bonus_amount
     crt_bonus.insert()
     crt_bonus.submit()
+
+
+
+def on_trash(doc, method):
+    slip_month = getdate(doc.start_date).month
+    if slip_month != 10: 
+        return
+    frappe.db.delete("Additional Salary", {
+        "employee": doc.employee,
+        "payroll_date": ["between", [doc.start_date, doc.end_date]],
+        # "salary_slip": doc.name   # agar tumne link field rakha ho
+    })
