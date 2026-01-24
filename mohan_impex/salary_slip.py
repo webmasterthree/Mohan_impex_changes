@@ -68,7 +68,7 @@ def before_submit(doc, method):
 
 
 @frappe.whitelist()
-def validate(doc, method):
+def before_submit(doc, method):
     create_fiscal_year(doc)
 
 
