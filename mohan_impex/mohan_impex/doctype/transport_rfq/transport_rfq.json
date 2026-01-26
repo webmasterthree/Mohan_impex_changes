@@ -50,7 +50,8 @@
    "fieldname": "vehicle_type",
    "fieldtype": "Select",
    "label": "Vehicle Type",
-   "options": "Truck\nTrailer\nContainer"
+   "options": "\nTruck\nTrailer\nContainer\nFTL\nPTL",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_zhmj",
@@ -128,8 +129,13 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2026-01-09 11:49:18.105355",
+ "links": [
+  {
+   "link_doctype": "RFQ Quotation",
+   "link_fieldname": "transport"
+  }
+ ],
+ "modified": "2026-01-24 10:29:14.882611",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transport RFQ",

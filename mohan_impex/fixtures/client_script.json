@@ -2,6 +2,17 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Transport RFQ",
+  "enabled": 1,
+  "modified": "2026-01-23 15:24:18.611723",
+  "module": "Mohan Impex",
+  "name": "Transport RFQ Amount",
+  "script": "frappe.ui.form.on('Transporters', {\n    quoted_amount: calculate_actual_cost,\n    slab: calculate_actual_cost\n});\n\nfunction calculate_actual_cost(frm, cdt, cdn) {\n    let row = locals[cdt][cdn];\n    let total_weight = flt(frm.doc.total_weightin_kg) || 0;\n    let quoted = flt(row.quoted_amount);\n    let actual_cost = 0;\n\n    if (row.slab === \"Per KG\") {\n        actual_cost = quoted * total_weight;\n    } else if (row.slab === \"Per Ton\") {\n        actual_cost = (quoted * total_weight) / 1000;\n    } else if (row.slab === \"Total Frieght\") {\n        actual_cost = quoted;\n    }\n\n    frappe.model.set_value(cdt, cdn, 'actual_cost', actual_cost);\n}\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Supplier Quotation",
   "enabled": 1,
   "modified": "2025-11-24 16:11:40.876589",
@@ -26,10 +37,10 @@
   "doctype": "Client Script",
   "dt": "Purchase Invoice",
   "enabled": 1,
-  "modified": "2026-01-05 12:58:00.161912",
+  "modified": "2026-01-23 13:15:23.856955",
   "module": "Mohan Impex",
   "name": "Payment Ledger",
-  "script": "frappe.ui.form.on(\"Payment Doc Type\", {\n\tlinks_add(frm, cdt, cdn) {\n\t\t// always sync document_type from parent\n\t\tfrappe.model.set_value(\n\t\t\tcdt,\n\t\t\tcdn,\n\t\t\t\"document_type\",\n\t\t\tfrm.doc.payment_against || \"\"\n\t\t);\n\n\t\tconst party_name = (frm.doc.supplier || \"\").trim();\n\t\tconst payment_type = (frm.doc.service_payment_type || \"\").trim();\n\n\t\t// required inputs\n\t\tif (!party_name || !payment_type) {\n\t\t\tfrappe.msgprint(\"Please select Supplier and Service Payment Type first.\");\n\t\t\treturn;\n\t\t}\n\n\t\t// decide API by payment_against\n\t\tlet method = null;\n\n\t\tif (frm.doc.payment_against === \"Purchase Receipt\") {\n\t\t\tmethod = \"mohan_impex.pr_invoice.pr_invoice\";\n\t\t} else if (frm.doc.payment_against === \"Delivery Note\") {\n\t\t\tmethod = \"mohan_impex.dn_invoice.dn_invoice\";\n\t\t} else {\n\t\t\t// for other values, do nothing\n\t\t\treturn;\n\t\t}\n\n\t\tfrappe.call({\n\t\t\tmethod: method,\n\t\t\targs: {\n\t\t\t\tparty_name: party_name,\n\t\t\t\tpayment_type: payment_type\n\t\t\t},\n\t\t\tcallback: function (r) {\n\t\t\t\tconst data = r.message || [];\n\n\t\t\t\tif (!Array.isArray(data) || data.length === 0) {\n\t\t\t\t\tfrappe.msgprint(\n\t\t\t\t\t\t`No records found for ${frm.doc.payment_against} / ${party_name} / ${payment_type}.`\n\t\t\t\t\t);\n\t\t\t\t\treturn;\n\t\t\t\t}\n\n\t\t\t\t// fill current + auto-add remaining rows\n\t\t\t\tdata.forEach((d, i) => {\n\t\t\t\t\tlet target_row = (i === 0)\n\t\t\t\t\t\t? locals[cdt][cdn]\n\t\t\t\t\t\t: frm.add_child(\"links\");\n\n\t\t\t\t\ttarget_row.document_type = frm.doc.payment_against;\n\t\t\t\t\ttarget_row.link_name = d.name;             // DN or PR name\n\t\t\t\t\ttarget_row.amount = flt(d.amount || 0);    // amount from API\n\n\t\t\t\t\t// ✅ new fields from API (as per your server output keys)\n\t\t\t\t\ttarget_row.date = d.date || null;                 // posting_date mapped as date\n\t\t\t\t\ttarget_row.rate = flt(d.rate || 0);              // labour: custom_labour_rate, else: amount\n\t\t\t\t\ttarget_row.party_name = d.party_name || \"\";      // PR: supplier_name, DN: customer_name\n\t\t\t\t});\n\n\t\t\t\tfrm.refresh_field(\"links\");\n\t\t\t}\n\t\t});\n\t}\n});\n",
+  "script": "frappe.ui.form.on(\"Payment Doc Type\", {\n\tlinks_add(frm, cdt, cdn) {\n\t\t// always sync document_type from parent\n\t\tfrappe.model.set_value(\n\t\t\tcdt,\n\t\t\tcdn,\n\t\t\t\"document_type\",\n\t\t\tfrm.doc.payment_against || \"\"\n\t\t);\n\n\t\tconst party_name = (frm.doc.supplier || \"\").trim();\n\t\tconst payment_type = (frm.doc.service_payment_type || \"\").trim();\n\n\t\tconst start_date = frm.doc.start_date || null;\n\t\tconst end_date = frm.doc.end_date || null;\n\n\t\tif (!party_name || !payment_type) {\n\t\t\tfrappe.msgprint(\"Please select Supplier and Service Payment Type first.\");\n\t\t\treturn;\n\t\t}\n\n\t\tif ((start_date && !end_date) || (!start_date && end_date)) {\n\t\t\tfrappe.msgprint(\"Please select both Start Date and End Date.\");\n\t\t\treturn;\n\t\t}\n\n\t\tlet method = null;\n\t\tif (frm.doc.payment_against === \"Purchase Receipt\") {\n\t\t\tmethod = \"mohan_impex.pr_invoice.pr_invoice\";\n\t\t} else if (frm.doc.payment_against === \"Delivery Note\") {\n\t\t\tmethod = \"mohan_impex.dn_invoice.dn_invoice\";\n\t\t} else {\n\t\t\treturn;\n\t\t}\n\n\t\tfrappe.call({\n\t\t\tmethod,\n\t\t\targs: {\n\t\t\t\tparty_name,\n\t\t\t\tpayment_type,\n\t\t\t\tfrom_date: start_date,\n\t\t\t\tto_date: end_date,\n\t\t\t},\n\t\t\tcallback: function (r) {\n\t\t\t\tconst data = r.message || [];\n\n\t\t\t\tif (!Array.isArray(data) || data.length === 0) {\n\t\t\t\t\tfrappe.msgprint(\n\t\t\t\t\t\t`No records found for ${frm.doc.payment_against} / ${party_name} / ${payment_type}.`\n\t\t\t\t\t);\n\t\t\t\t\treturn;\n\t\t\t\t}\n\n\t\t\t\tdata.forEach((d, i) => {\n\t\t\t\t\tlet target_row = (i === 0)\n\t\t\t\t\t\t? locals[cdt][cdn]\n\t\t\t\t\t\t: frm.add_child(\"links\");\n\n\t\t\t\t\ttarget_row.document_type = frm.doc.payment_against;\n\t\t\t\t\ttarget_row.link_name = d.name;          // DN/PR name\n\n\t\t\t\t\t// numeric fields: let Frappe handle type coercion\n\t\t\t\t\ttarget_row.amount = d.amount ?? 0;\n\t\t\t\t\ttarget_row.rate = d.rate ?? 0;\n\t\t\t\t\ttarget_row.total_qty = d.total_qty ?? 0;\n\n\t\t\t\t\t// other fields\n\t\t\t\t\ttarget_row.date = d.date || null;       // posting_date\n\t\t\t\t\ttarget_row.party_name = d.party_name || \"\";\n\t\t\t\t});\n\n\t\t\t\tfrm.refresh_field(\"links\");\n\t\t\t}\n\t\t});\n\t}\n});\n",
   "view": "Form"
  },
  {
@@ -334,10 +345,10 @@
   "doctype": "Client Script",
   "dt": "Purchase Invoice",
   "enabled": 0,
-  "modified": "2024-12-27 11:24:45.610129",
+  "modified": "2026-01-23 13:47:12.643809",
   "module": "Mohan Impex",
   "name": "Brand Name for PI",
-  "script": "frappe.ui.form.on('Purchase Invoice Item', {\n    item_code: function (frm, cdt, cdn) {\n        const row = locals[cdt][cdn];\n\n        if (!row.item_code) {\n            // Clear the brand field if no item_code is selected\n            frappe.model.set_value(cdt, cdn, 'custom_select_brand', '');\n            return;\n        }\n\n        // Fetch item details based on item_code\n        frappe.call({\n            method: 'frappe.client.get',\n            args: {\n                doctype: 'Item',\n                name: row.item_code,\n            },\n            callback: function (response) {\n                if (response.message) {\n                    const itemData = response.message;\n\n                    // Determine brand options\n                    let brandOptions = '';\n                    if (itemData.custom_select_brand && Array.isArray(itemData.custom_select_brand)) {\n                        brandOptions = itemData.custom_select_brand\n                            .map(obj => obj.brand_item)\n                            .join('\\n');\n                    } else if (itemData.brand_name) {\n                        brandOptions = itemData.brand_name;\n                    }\n\n                    // Update the brand field options or handle no brand options\n                    if (brandOptions) {\n                        // Update the options for the brand field in the grid row\n                        frm.fields_dict.items.grid.update_docfield_property('custom_select_brand', 'options', brandOptions);\n\n                        // Clear the brand value to allow re-selection\n                        frappe.model.set_value(cdt, cdn, 'custom_select_brand', '');\n                    } else {\n                        frappe.msgprint({\n                            title: __('No Brand Options'),\n                            message: __('No brand options available for the selected Item Code.'),\n                            indicator: 'orange',\n                        });\n                        frappe.model.set_value(cdt, cdn, 'custom_select_brand', '');\n                    }\n                } else {\n                    frappe.msgprint({\n                        title: __('Item Not Found'),\n                        message: __('Item details not found for the given Item Code.'),\n                        indicator: 'red',\n                    });\n                    frappe.model.set_value(cdt, cdn, 'custom_select_brand', '');\n                }\n            },\n            error: function () {\n                frappe.msgprint({\n                    title: __('Error'),\n                    message: __('Unable to fetch Item details. Please try again later.'),\n                    indicator: 'red',\n                });\n                frappe.model.set_value(cdt, cdn, 'custom_select_brand', '');\n            },\n        });\n    },\n});\n\n",
+  "script": "frappe.ui.form.on(\"Purchase Invoice\", {\n\trefresh(frm) {\n\t\tcalculate_total_quantity(frm);\n\t},\n\tlinks_add(frm) {\n\t\tcalculate_total_quantity(frm);\n\t},\n\tlinks_remove(frm) {\n\t\tcalculate_total_quantity(frm);\n\t},\n});\n\n// IMPORTANT: replace this with your actual child table DocType name\nfrappe.ui.form.on(\"Payment Doc Type\", {\n\ttotal_qty(frm, cdt, cdn) {\n\t\tcalculate_total_quantity(frm);\n\t},\n});\n\nfunction calculate_total_quantity(frm) {\n\tlet total = 0;\n\n\t(frm.doc.links || []).forEach((row) => {\n\t\ttotal += flt(row.total_qty);\n\t});\n\n\tfrm.set_value(\"total_quantity\", total);\n\tfrm.refresh_field(\"total_quantity\");\n}\n",
   "view": "Form"
  },
  {
@@ -455,7 +466,7 @@
   "doctype": "Client Script",
   "dt": "Transport RFQ",
   "enabled": 1,
-  "modified": "2025-05-26 17:52:29.915999",
+  "modified": "2026-01-24 16:56:00.678484",
   "module": "Mohan Impex",
   "name": "Transport RFQ Form",
   "script": "frappe.ui.form.on('Transport RFQ', {\n    onload: function(frm) {\n        frappe.call({\n            method: \"mohan_impex.user_roles.transporter_user\",\n            callback: function(r) {\n                if (r.message) {\n                    // Check if the row already exists\n                    let existing_rows = frm.doc.transporter_details.filter(row => row.transporter === r.message);\n\n                    if (existing_rows.length === 1 && frm.doc.transporter_details.length === 1) {\n                        // Don't touch the form if it's already set up properly\n                        return;\n                    }\n\n                    // Replace with only the matching row (or add it if missing)\n                    frm.clear_table(\"transporter_details\");\n\n                    let row = frm.add_child(\"transporter_details\");\n\n                    if (existing_rows.length) {\n                        Object.assign(row, existing_rows[0]); // copy data if already exists\n                    } else {\n                        row.transporter = r.message; // set if new\n                    }\n\n                    frm.refresh_field(\"transporter_details\");\n                }\n            }\n        });\n    }\n});\n\n",
@@ -850,8 +861,8 @@
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "Delivery Note",
-  "enabled": 1,
-  "modified": "2025-09-07 15:27:49.645239",
+  "enabled": 0,
+  "modified": "2026-01-24 16:31:58.473624",
   "module": "Mohan Impex",
   "name": "Delivery Note",
   "script": "frappe.ui.form.on(\"Delivery Note\", {\n    refresh(frm) {\n        set_item_code_filter(frm);\n    },\n});\n\nfunction set_item_code_filter(frm) {\n    frm.fields_dict[\"items\"].grid.get_field(\"item_code\").get_query = function(doc, cdt, cdn) {\n        let row = locals[cdt][cdn];\n        return {\n            filters: [\n                [\"has_variants\", \"=\", 0],\n                [\"is_sales_item\", \"=\", 1],\n                [\"variant_of\", \"=\", row.item_template]\n            ]\n        };\n    };\n}\n",
@@ -943,6 +954,17 @@
   "module": "Mohan Impex",
   "name": "NEW RP",
   "script": "frappe.ui.form.on('Purchase Receipt', {\n    refresh: function(frm) {\n        frm.fields_dict[\"items\"].grid.get_field(\"item_code\").get_query = function (doc, cdt, cdn) {\n            let row = locals[cdt][cdn];\n            return {\n                filters: [\n                    [\"has_variants\", \"=\", 0],\n                    [\"is_sales_item\", \"=\", 1],\n                    [\"variant_of\", \"=\", row.item_template]\n                ]\n            };\n        };\n    },\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Purchase Invoice",
+  "enabled": 1,
+  "modified": "2026-01-23 13:57:43.709350",
+  "module": "Mohan Impex",
+  "name": "Sum of Amount",
+  "script": "frappe.ui.form.on(\"Purchase Invoice\", {\n\trefresh(frm) {\n\t\tcalculate_totals(frm);\n\t},\n\tlinks_add(frm) {\n\t\tcalculate_totals(frm);\n\t},\n\tlinks_remove(frm) {\n\t\tcalculate_totals(frm);\n\t},\n});\n\nfrappe.ui.form.on(\"Payment Doc Type\", {\n\ttotal_qty(frm, cdt, cdn) {\n\t\tcalculate_totals(frm);\n\t},\n\tamount(frm, cdt, cdn) {\n\t\tcalculate_totals(frm);\n\t},\n});\n\nfunction calculate_totals(frm) {\n\tlet total_qty_sum = 0;\n\tlet total_amount_sum = 0;\n\n\t(frm.doc.links || []).forEach((row) => {\n\t\ttotal_qty_sum += flt(row.total_qty);\n\t\ttotal_amount_sum += flt(row.amount);\n\t});\n\n\tfrm.set_value(\"total_quantity\", total_qty_sum);\n\tfrm.set_value(\"total_amount\", total_amount_sum);\n\n\tfrm.refresh_field(\"total_quantity\");\n\tfrm.refresh_field(\"total_amount\");\n}\n",
   "view": "Form"
  }
 ]

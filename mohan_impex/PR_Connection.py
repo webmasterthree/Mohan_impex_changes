@@ -27,3 +27,38 @@ def get_linked_purchase_order(purchase_receipt):
     except Exception as e:
         frappe.log_error(f"Error fetching linked PO: {str(e)}", "Purchase API Error")
         return {"status": "error", "message": str(e)}
+
+
+
+
+# pick list connection
+@frappe.whitelist()
+def get_linked_pick_list(delivery_note):
+    try:
+        purchase_order = frappe.db.get_value(
+            "Delivery Note Item",
+            {"parent": delivery_note},
+            "pick_list"
+        )
+
+        if not pick_list:
+            return None
+
+        po_doc = frappe.get_doc("Pick List", pick_list)
+
+        return {
+            "name": po_doc.name,
+            "custom_transporter_name": po_doc.custom_transporter_name,
+            "custom_driver": po_doc.custom_driver,
+            "custom_driver_name": po_doc.custom_driver_name,
+            "custom_vehicle_number": po_doc.custom_vehicle_number,
+            "custom_transport_charges": po_doc.custom_transport_charges,
+            "custom_expected_delivery": po_doc.custom_expected_delivery,
+            "custom_remarks": po_doc.custom_remarks,
+            "custom_contact_number":po_doc.custom_contact_number
+            
+        }
+
+    except Exception as e:
+        frappe.log_error(f"Error fetching linked PO: {str(e)}", "Purchase API Error")
+        return {"status": "error", "message": str(e)}

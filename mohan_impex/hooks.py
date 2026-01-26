@@ -41,6 +41,9 @@ doctype_js ={
     "Delivery Note": "public/js/delivery_note.js",
     "Purchase Order": "public/js/ASN.js",
     "Serial and Batch Bundle": "public/js/shelf_life.js",
+    "Transport RFQ":"public/js/trans_rfq.js",
+    "Delivery Note":"public/js/dn.js",
+
 }
 
 
@@ -68,8 +71,8 @@ doc_events = {
         "before_save": "mohan_impex.leave_deduction_out.before_save_employee_checkin"
 
     },
-    "Transport RFQ": {
-        "on_submit": "mohan_impex.Sales.Assign_Transporter.on_submit"
+    "RFQ Quotation": {
+        "on_submit": "mohan_impex.linked_pick.on_submit"
     },
     "Leave Application": {
         "validate": "mohan_impex.leave_test.validate_leave_application",
