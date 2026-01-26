@@ -40,12 +40,12 @@ doctype_js ={
     "Purchase Receipt": "public/js/GRN1.js",
     "Delivery Note": "public/js/delivery_note.js",
     "Purchase Order": "public/js/ASN.js",
+    "Shift Type": "public/js/shift_type.js",
     "Serial and Batch Bundle": "public/js/shelf_life.js",
     "Transport RFQ":"public/js/trans_rfq.js",
     "Delivery Note":"public/js/dn.js",
-
+    "Gratuity": "public/js/gratuity.js",
 }
-
 
 doc_events = {
     "Sales Order": {
@@ -73,6 +73,14 @@ doc_events = {
     },
     "RFQ Quotation": {
         "on_submit": "mohan_impex.linked_pick.on_submit"
+    # "Employee Checkin": {
+    #     "before_save": [
+    #         "mohan_impex.leave_deduction.before_save_employee_checkin",
+    #         "mohan_impex.leave_deduction_out.before_save_employee_checkin"
+    #     ]
+    # },
+    "Transport RFQ": {
+        "on_submit": "mohan_impex.Sales.Assign_Transporter.on_submit"
     },
     "Leave Application": {
         "validate": "mohan_impex.leave_test.validate_leave_application",
@@ -98,7 +106,9 @@ doc_events = {
         "before_submit": "mohan_impex.mohan_impex.stock_entry.inspection_validation"
     },
     "Salary Slip": {
-        "before_submit": "mohan_impex.salary_slip.before_submit"
+        "before_submit": "mohan_impex.salary_slip.before_submit",
+        "validate": "mohan_impex.salary_slip.validate",
+        "on_trash": "mohan_impex.salary_slip.on_trash"
     },
     "Secondary Sales Order": {
         "validate": "mohan_impex.item_tax_template.validate"
@@ -267,6 +277,12 @@ scheduler_events = {
         ],
         "0 10 25 * *":[
             "mohan_impex.birthday_leave.send_birthday_notification"
+        ],
+        "0 1 * * *":[
+            "mohan_impex.leave_deduction.auto_employee_checkin_day_shift"
+        ],
+        "0 13 * * *":[
+            "mohan_impex.leave_deduction.auto_employee_checkin_night_shift"
         ]
     }
 }
