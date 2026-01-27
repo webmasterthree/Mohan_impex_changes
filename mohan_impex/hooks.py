@@ -74,12 +74,14 @@ doc_events = {
     },
     "RFQ Quotation": {
         "on_submit": "mohan_impex.linked_pick.on_submit"
+    },
     # "Employee Checkin": {
     #     "before_save": [
     #         "mohan_impex.leave_deduction.before_save_employee_checkin",
     #         "mohan_impex.leave_deduction_out.before_save_employee_checkin"
     #     ]
     # },
+    
     "Transport RFQ": {
         "on_submit": "mohan_impex.Sales.Assign_Transporter.on_submit"
     },
@@ -115,8 +117,6 @@ doc_events = {
         "validate": "mohan_impex.item_tax_template.validate"
     }
 }
-
-
 
 # Whitelist API methods for external use
 api_methods = [
