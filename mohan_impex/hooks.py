@@ -45,6 +45,7 @@ doctype_js ={
     "Transport RFQ":"public/js/trans_rfq.js",
     "Delivery Note":"public/js/dn.js",
     "Gratuity": "public/js/gratuity.js",
+    "Full and Final Statement": "public/js/full_and_final_statement.js",
 }
 
 doc_events = {
@@ -114,6 +115,7 @@ doc_events = {
         "validate": "mohan_impex.item_tax_template.validate"
     }
 }
+
 
 
 # Whitelist API methods for external use
