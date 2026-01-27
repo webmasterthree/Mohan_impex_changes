@@ -43,6 +43,7 @@ doctype_js ={
     "Shift Type": "public/js/shift_type.js",
     "Serial and Batch Bundle": "public/js/shelf_life.js",
     "Gratuity": "public/js/gratuity.js",
+    "Full and Final Statement": "public/js/full_and_final_statement.js",
 }
 
 doc_events = {
@@ -103,8 +104,12 @@ doc_events = {
     },
     "Secondary Sales Order": {
         "validate": "mohan_impex.item_tax_template.validate"
+    },
+    "Full and Final Statement": {
+        "validate": "mohan_impex.full_and_final_statement.validate"
     }
 }
+
 
 
 # Whitelist API methods for external use
