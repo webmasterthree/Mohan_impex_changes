@@ -1,11 +1,5 @@
 import frappe
 
-def validate(doc,method):
-    slry_holding = slry_holding = frappe.db.sql("""SELECT employee, number_of_withholding_cycles, from_date, to_date FROM `tabSalary Withholding`WHERE employee = %s""", (doc.employee,), as_dict=True)
-    ffs_outstanding_statement = frappe.db.sql("""SELECT reference_document FROM `tabFull and Final Outstanding Statement` WHERE parent = %s AND reference_document_type = 'Salary Slip' """, (doc.name,), as_dict=True)
-    print("------------------------------------------------",ffs_outstanding_statement)
-
-
 @frappe.whitelist()
 def get_account_and_amount(ref_doctype, ref_document, company):
 	if not ref_doctype or not ref_document:
