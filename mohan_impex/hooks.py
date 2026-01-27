@@ -104,9 +104,6 @@ doc_events = {
     },
     "Secondary Sales Order": {
         "validate": "mohan_impex.item_tax_template.validate"
-    },
-    "Full and Final Statement": {
-        "validate": "mohan_impex.full_and_final_statement.validate"
     }
 }
 
