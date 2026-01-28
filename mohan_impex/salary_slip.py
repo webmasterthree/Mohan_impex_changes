@@ -69,7 +69,10 @@ def before_submit(doc, method):
 
 @frappe.whitelist()
 def validate(doc, method):
+    calculate_working_holiday(doc)
     create_fiscal_year(doc)
+
+
 
 
 def create_fiscal_year(doc):
@@ -145,3 +148,38 @@ def on_trash(doc, method):
         "payroll_date": ["between", [doc.start_date, doc.end_date]],
         # "salary_slip": doc.name   # agar tumne link field rakha ho
     })
+
+
+
+def calculate_working_holiday(doc):
+    """
+    Count holidays between start_date & end_date
+    where employee is marked Present
+    """
+
+    result = frappe.db.sql("""
+        SELECT COUNT(DISTINCT a.attendance_date)
+        FROM `tabAttendance` a
+        INNER JOIN `tabShift Assignment` sa
+            ON sa.employee = a.employee
+            AND sa.status = 'Active'
+        INNER JOIN `tabShift Type` st
+            ON st.name = sa.shift_type
+        INNER JOIN `tabHoliday List` hl
+            ON hl.name = st.holiday_list
+        INNER JOIN `tabHoliday` h
+            ON h.parent = hl.name
+            AND h.holiday_date = a.attendance_date
+        WHERE
+            a.employee = %s
+            AND a.docstatus = 1
+            AND a.status = 'Present'
+            AND a.attendance_date BETWEEN %s AND %s
+    """, (
+        doc.employee,
+        doc.start_date,
+        doc.end_date
+    ))
+
+    value = result[0][0] if result else 0
+    doc.custom_working_holiday = value
