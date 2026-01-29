@@ -69,6 +69,7 @@ def before_submit(doc, method):
 
 @frappe.whitelist()
 def validate(doc, method):
+    ot_calculate(doc)
     calculate_working_holiday(doc)
     create_fiscal_year(doc)
 
@@ -183,3 +184,38 @@ def calculate_working_holiday(doc):
 
     value = result[0][0] if result else 0
     doc.custom_working_holiday = value
+
+
+def ot_calculate(doc):
+    data = frappe.db.get_value(
+        "Overtime",
+        {
+            "employee": doc.employee,
+            "from_date": doc.start_date,
+            "to_date": doc.end_date
+        },
+        "total_hours_amount"
+    )
+    if data:
+        ot_comp = frappe.db.get_single_value('Mohan Impex Settings', 'overtime_component')
+        exists = frappe.db.exists(
+            "Additional Salary",
+            {
+                "employee": doc.employee,
+                "salary_component": ot_comp,
+                "payroll_date": doc.end_date,
+                "docstatus": ["!=", 2]   # not cancelled
+            }
+        )
+
+        if exists:
+            return
+
+        # create a new document
+        crt_bonus = frappe.new_doc('Additional Salary')
+        crt_bonus.employee = doc.employee
+        crt_bonus.payroll_date = doc.end_date
+        crt_bonus.salary_component = ot_comp
+        crt_bonus.amount = data
+        crt_bonus.insert()
+        crt_bonus.submit()
