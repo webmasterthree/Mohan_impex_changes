@@ -39,9 +39,7 @@ function calculate_total_overtime(frm) {
     let ot_total_hours = 0;
     
     $.each(frm.doc.overtime_table || [], function(i, row) {
-        if(row.overtime_status == "Approved"){
             ot_total_hours += flt(row.overtime_hours);
-        } 
     });
     
     frm.set_value('total_overtime_hours', ot_total_hours);
