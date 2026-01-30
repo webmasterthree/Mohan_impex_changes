@@ -88,9 +88,6 @@ doc_events = {
     },
     "Stock Entry": {
         "before_submit": "mohan_impex.mohan_impex.stock_entry.inspection_validation"
-    },
-    "Salary Slip": {
-        "before_submit": "mohan_impex.salary_slip.before_submit"
     }
 }
 
@@ -254,8 +251,11 @@ scheduler_events = {
         ],
         "0 10 25 * *":[
             "mohan_impex.birthday_leave.send_birthday_notification"
-        ]
-    }
+        ],
+    },
+    "hourly_long":[
+        "mohan_impex.auto_attendance.process_auto_attendance_for_all_shifts"
+    ]
 }
 
 

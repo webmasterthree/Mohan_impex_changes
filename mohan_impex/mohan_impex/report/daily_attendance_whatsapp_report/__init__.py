@@ -35,6 +35,7 @@ def get_approved_leave_applications(from_date=None, to_date=None):
             FROM `tabLeave Application` la
             LEFT JOIN `tabEmployee` emp ON la.employee = emp.name
             WHERE la.status = 'Approved'
+            AND la.docstatus = 1
             {from_date_filter}
             {to_date_filter}
             ORDER BY la.from_date ASC
@@ -54,6 +55,7 @@ def get_approved_leave_applications(from_date=None, to_date=None):
             FROM `tabWork From Home` wfh
             LEFT JOIN `tabEmployee` emp ON wfh.employee = emp.name
             WHERE wfh.status = 'Approved'
+            AND wfh.docstatus = 1
             {from_date_filter}
             {to_date_filter}
             ORDER BY wfh.from_date ASC

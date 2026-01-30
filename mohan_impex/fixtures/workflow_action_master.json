@@ -2,6 +2,13 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
+  "modified": "2025-09-15 12:52:47.056772",
+  "name": "Cancel",
+  "workflow_action_name": "Cancel"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
   "modified": "2025-08-21 11:27:54.486736",
   "name": "ASN Still Pending : Raise ASN",
   "workflow_action_name": "ASN Still Pending : Raise ASN"

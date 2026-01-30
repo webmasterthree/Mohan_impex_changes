@@ -530,17 +530,6 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
-  "dt": "Employee",
-  "enabled": 1,
-  "modified": "2024-12-27 18:06:25.392543",
-  "module": "Mohan Impex",
-  "name": "Total Number in MI",
-  "script": "frappe.ui.form.on('Employee', {\n\trefresh(frm) {\n\t\t// Ensure that we set the value if the 'date_of_joining' is already set when the form lo\n\t},\n\tbefore_save(frm){\n\t    if (frm.doc.date_of_joining) {\n\t\t\tupdate_years_months_days(frm);\n\t\t}\n\t},\n\t// This will trigger whenever 'date_of_joining' field is changed\n\tdate_of_joining: function (frm) {\n\t\t// When the date_of_joining is changed, recalculate years, months, and days\n\t\tif (frm.doc.date_of_joining) {\n\t\t\tupdate_years_months_days(frm);\n\t\t}\n\t}\n});\nfunction update_years_months_days(frm) {\n\tconst joining_date = frm.doc.date_of_joining;\n\tconst current_date = frappe.datetime.nowdate();\n\t// Calculate the difference in days\n\tconst total_days_diff = frappe.datetime.get_diff(current_date, joining_date);\n\t// Calculate the number of full years\n\tconst years = Math.floor(total_days_diff / 365);\n\t// Calculate the remaining days after extracting years\n\tconst remaining_days_after_years = total_days_diff - years * 365;\n\t// Calculate the number of full months\n\tconst months = Math.floor(remaining_days_after_years / 30); // Approximate months (30 days p\n\t// Calculate the remaining days after extracting months\n\tconst remaining_days = remaining_days_after_years - months * 30; // Approximate remaining da\n\t// Format the result as \"X years Y months Z days\"\n\tlet years_and_months_days = `${years} years`;\n\tif (months > 0) {\n\t\tyears_and_months_days += ` ${months} months`;\n\t}\n\tif (remaining_days > 0) {\n\t\tyears_and_months_days += ` ${remaining_days} days`;\n\t}\n\t// Set the value in the custom field\n\tfrm.set_value('custom__total_number_of_year_in_mi', years_and_months_days);\n}\n\n",
-  "view": "Form"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
   "dt": "Quotation",
   "enabled": 1,
   "modified": "2025-04-18 13:56:40.438600",
@@ -735,5 +724,16 @@
   "name": "NEW RP",
   "script": "frappe.ui.form.on('Purchase Receipt', {\n    refresh: function(frm) {\n        frm.fields_dict[\"items\"].grid.get_field(\"item_code\").get_query = function (doc, cdt, cdn) {\n            let row = locals[cdt][cdn];\n            return {\n                filters: [\n                    [\"has_variants\", \"=\", 0],\n                    [\"is_sales_item\", \"=\", 1],\n                    [\"variant_of\", \"=\", row.item_template]\n                ]\n            };\n        };\n    },\n});\n",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Employee",
+  "enabled": 1,
+  "modified": "2025-11-25 12:27:55.406332",
+  "module": "Mohan Impex",
+  "name": "Update Total Number in MI",
+  "script": "frappe.listview_settings['Employee'] = {\n    refresh: function(listview) {\n        listview.page.add_menu_item(__('Update Years of Service'), function() {\n            frappe.call({\n                method: \"mohan_impex.total_number_of_year_in_mi.update_employee_tenure\",\n                args: {},\n                callback: function(r) {\n                    frappe.msgprint(\"Employee Years of Service updated.\");\n                }\n            });\n        });\n    }\n};\n",
+  "view": "List"
  }
 ]
