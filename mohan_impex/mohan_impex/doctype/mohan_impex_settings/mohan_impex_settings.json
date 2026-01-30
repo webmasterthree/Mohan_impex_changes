@@ -14,7 +14,13 @@
   "section_break_lpvg",
   "default_warehouse",
   "bonus_percentage",
-  "bonus_eligible_days"
+  "column_break_fsuh",
+  "bonus_eligible_days",
+  "working_holiday_component",
+  "overtime_section",
+  "overtime_component",
+  "column_break_nzjt",
+  "overtime_prhrs_rate"
  ],
  "fields": [
   {
@@ -71,12 +77,42 @@
    "fieldname": "bonus_eligible_days",
    "fieldtype": "Int",
    "label": "Bonus Eligible Days"
+  },
+  {
+   "fieldname": "working_holiday_component",
+   "fieldtype": "Link",
+   "label": "Working Holiday Component",
+   "options": "Salary Component"
+  },
+  {
+   "fieldname": "column_break_fsuh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "overtime_section",
+   "fieldtype": "Section Break",
+   "label": "Overtime"
+  },
+  {
+   "fieldname": "overtime_component",
+   "fieldtype": "Link",
+   "label": "Overtime Component",
+   "options": "Salary Component"
+  },
+  {
+   "fieldname": "column_break_nzjt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "overtime_prhrs_rate",
+   "fieldtype": "Currency",
+   "label": "Overtime pr/hrs Rate"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-01-24 13:44:38.732060",
+ "modified": "2026-01-29 13:32:04.636733",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Mohan Impex Settings",

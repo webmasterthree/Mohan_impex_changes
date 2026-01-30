@@ -154,12 +154,12 @@ from hrms.hr.doctype.leave_application.leave_application import get_leave_balanc
 
 def get_employee_late_checkins(employee):
     """ 
-    Count late check-ins in current month (IN late or OUT early). 
-    Max 1 penalty per day.
+    Count late check-ins in current month
+    EACH late IN or early OUT is counted separately
     """
     today = get_datetime().date()
     first_day = today.replace(day=1)
-    
+
     checkins = frappe.db.get_all(
         "Employee Checkin",
         filters={
@@ -168,40 +168,35 @@ def get_employee_late_checkins(employee):
         },
         fields=["log_type", "shift_start", "shift_end", "time"]
     )
-    
-    late_days = set()  # to ensure max 1 penalty per day
-    
+
+    late_count = 0  # 🔥 event-wise counter
+
     for chk in checkins:
         if not chk.get("time"):
             continue
-            
+
         checkin_time = get_datetime(chk["time"])
-        checkin_date = checkin_time.date()
-        
-        # Skip if already counted
-        if checkin_date in late_days:
-            continue
-        
+
         # 🔹 Late IN
         if chk.get("log_type") == "IN" and chk.get("shift_start"):
             shift_start = get_datetime(chk["shift_start"])
             if checkin_time > (shift_start + timedelta(minutes=16)):
-                late_days.add(checkin_date)
-                continue
-        
+                late_count += 1
+
         # 🔹 Early OUT
-        if chk.get("log_type") == "OUT":
+        elif chk.get("log_type") == "OUT":
             if chk.get("shift_end"):
                 shift_end = get_datetime(chk["shift_end"])
             elif chk.get("shift_start"):
                 shift_end = get_datetime(chk["shift_start"]) + timedelta(hours=9)
             else:
-                continue  # cannot calculate
-                
+                continue
+
             if checkin_time < (shift_end - timedelta(minutes=16)):
-                late_days.add(checkin_date)
-    
-    return len(late_days)
+                late_count += 1
+
+    return late_count
+
 
 
 def get_leave_balances(employee):

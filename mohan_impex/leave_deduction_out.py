@@ -121,3 +121,93 @@
 #     except Exception as e:
 #         frappe.logger().error(f"Error creating leave application for {employee}: {str(e)}")
 #         return "Failed to create Leave Application. Please check logs."
+
+
+
+import frappe
+from frappe.utils import (
+    getdate, get_first_day, get_last_day,
+    time_diff_in_hours, get_datetime
+)
+from datetime import datetime, time
+
+def after_insert(doc, method):
+    emp = frappe.get_doc("Employee",doc.employee)
+    if emp.custom_allow_overtime:
+        # Only run on OUT
+        if doc.log_type != "OUT":
+            return
+
+        attendance_date = getdate(doc.time)
+
+        start_datetime = datetime.combine(attendance_date, time.min)
+        end_datetime = datetime.combine(attendance_date, time.max)
+
+        # Get IN record of same day
+        in_time = frappe.db.get_value(
+            "Employee Checkin",
+            {
+                "employee": doc.employee,
+                "log_type": "IN",
+                "time": ["between", [start_datetime, end_datetime]],
+            },
+            "time",
+            order_by="time asc"
+        )
+
+        if not in_time:
+            return
+
+        actual_hours = time_diff_in_hours(doc.time, in_time)
+
+        # Get Shift Type
+        if not doc.shift:
+            return
+
+        shift = frappe.get_doc("Shift Type", doc.shift)
+        shift_hours = time_diff_in_hours(shift.end_time, shift.start_time)
+
+        if actual_hours <= shift_hours:
+            return
+
+        overtime_hours = actual_hours - shift_hours
+
+        # Month range
+        from_date = get_first_day(attendance_date)
+        to_date = get_last_day(attendance_date)
+
+        # Get or create Overtime doc
+        overtime_name = frappe.db.get_value(
+            "Overtime",
+            {
+                "employee": doc.employee,
+                "from_date": from_date,
+                "to_date": to_date,
+            }
+        )
+
+        if overtime_name:
+            overtime = frappe.get_doc("Overtime", overtime_name)
+        else:
+            overtime = frappe.new_doc("Overtime")
+            overtime.employee = doc.employee
+            overtime.from_date = from_date
+            overtime.to_date = to_date
+
+        # Check if date already exists in child table
+        for row in overtime.overtime_table:
+            if row.attendance_date == attendance_date:
+                row.overtime_hours = overtime_hours
+                break
+        else:
+            overtime.append("overtime_table", {
+                "attendance_date": attendance_date,
+                "overtime_hours": overtime_hours
+            })
+
+        # Update total overtime
+        overtime.total_overtime_hours = sum(
+            d.overtime_hours for d in overtime.overtime_table
+        )
+
+        overtime.save(ignore_permissions=True)
