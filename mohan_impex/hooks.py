@@ -73,7 +73,10 @@ doc_events = {
 
     },
     "RFQ Quotation": {
-        "on_submit": "mohan_impex.linked_pick.on_submit"
+        "on_submit": [
+            "mohan_impex.linked_pick.update_transport_rfq_title_on_submit",
+            "mohan_impex.linked_pick.reject_other_quotations_on_submit",
+        ]
     },
     # "Employee Checkin": {
     #     "before_save": [
@@ -82,9 +85,7 @@ doc_events = {
     #     ]
     # },
     
-    "Transport RFQ": {
-        "on_submit": "mohan_impex.Sales.Assign_Transporter.on_submit"
-    },
+    
     "Leave Application": {
         "validate": "mohan_impex.leave_test.validate_leave_application",
         "before_save": "mohan_impex.leave_test.on_leave_application_before_save"
@@ -124,7 +125,6 @@ api_methods = [
 ]
 
 override_doctype_class = {
-    "Transport RFQ": "mohan_impex.Sales.transport_rfq.TransportRFQ",
     "Quality Inspection": "mohan_impex.override.quality_inspection.QualityInspection",
     "Item Price": "mohan_impex.override.item_price.CustomItemPrice"
 }

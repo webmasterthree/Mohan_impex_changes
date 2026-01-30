@@ -40,6 +40,7 @@
    "fetch_from": "transporter.supplier_name",
    "fieldname": "transporter_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Transporter Name"
   },
   {
@@ -98,7 +99,7 @@
    "fieldname": "driver",
    "fieldtype": "Link",
    "label": "Driver",
-   "link_filters": "[]",
+   "mandatory_depends_on": "// eval: doc.workflow_state == \"Transporter Assigned\"\n",
    "options": "Driver"
   },
   {
@@ -108,6 +109,7 @@
    "label": "Driver Name"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "phone_number",
    "fieldtype": "Data",
    "label": "Phone Number"
@@ -120,7 +122,9 @@
   {
    "fieldname": "quoted_amount",
    "fieldtype": "Data",
-   "label": "Quoted Amount"
+   "in_list_view": 1,
+   "label": "Quoted Amount",
+   "reqd": 1
   },
   {
    "fieldname": "expected_delivery",
@@ -139,7 +143,8 @@
   {
    "fieldname": "pick_list",
    "fieldtype": "Data",
-   "label": "Pick List"
+   "label": "Pick List",
+   "read_only": 1
   },
   {
    "fieldname": "amended_from",
@@ -156,7 +161,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-24 17:15:34.389827",
+ "modified": "2026-01-28 23:16:11.728916",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "RFQ Quotation",

@@ -439,5 +439,14 @@
   "name": "Draft",
   "style": "",
   "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-01-28 15:14:44.520516",
+  "name": "Assign Transporter",
+  "style": "",
+  "workflow_state_name": "Assign Transporter"
  }
 ]

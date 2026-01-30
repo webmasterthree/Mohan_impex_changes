@@ -57,3 +57,16 @@ def transporter_name(user_email=None):
             "name": transporter
         }
     )
+
+@frappe.whitelist()
+def is_created(transport=None, user_email=None):
+	user_email = user_email or frappe.session.user
+
+	res = transporter_name(user_email) or []
+	transporter = res[0]["name"] if res else None
+
+	if not transporter:
+		return False
+
+	filters = {"transporter": transporter, "transport": transport} if transport else {"transporter": transporter}
+	return bool(frappe.db.exists("RFQ Quotation", filters))

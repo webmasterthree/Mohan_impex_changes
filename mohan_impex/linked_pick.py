@@ -1,5 +1,4 @@
 import frappe
-
 @frappe.whitelist()
 def get_linked_pick_list(delivery_note: str):
     """
@@ -46,21 +45,119 @@ def get_linked_pick_list(delivery_note: str):
 
 
 
+# import frappe
+# from frappe import _
+# from mohan_impex.transporter import quotation_receive_status, mark_rejected
 
-def on_submit(doc, method):
-	if not doc.pick_list:
-		return
+# def on_submit(doc, method=None):
 
-	# Update Pick List using parent fields from RFQ Quotation
-	frappe.db.set_value("Pick List", doc.pick_list, {
-		"custom_transporter_name": doc.transporter,
-		"custom_driver": doc.driver,
-		"custom_driver_name": doc.driver_name,
-		"custom_contact_number": doc.phone_number,
-		"custom_vehicle_number": doc.vehicle_number,
-		"custom_transport_charges": doc.quoted_amount,
-		"custom_expected_delivery": doc.expected_delivery,
-		"custom_remarks": doc.remarks,
-	})
+# 	if doc.get("workflow_state") == "Assign Transporter":
+# 		if doc.get("pick_list"):
+# 			frappe.db.set_value(
+# 				"Pick List",
+# 				doc.pick_list,
+# 				{
+# 					"custom_transporter_name": doc.get("transporter"),
+# 					"custom_driver": doc.get("driver"),
+# 					"custom_driver_name": doc.get("driver_name"),
+# 					"custom_contact_number": doc.get("phone_number"),
+# 					"custom_vehicle_number": doc.get("vehicle_number"),
+# 					"custom_transport_charges": doc.get("quoted_amount"),
+# 					"custom_expected_delivery": doc.get("expected_delivery"),
+# 					"custom_remarks": doc.get("remarks"),
+# 				},
+# 				update_modified=True,
+# 			)
+# 			frappe.msgprint(_("Pick List {0} updated.").format(doc.pick_list))
+# 		else:
+# 			frappe.msgprint(_("Pick List not found; not updated."))
 
-	frappe.msgprint(f"Updated Pick List {doc.pick_list} with transporter details.")
+# 	transport_rfq = doc.get("transport")
+# 	if not transport_rfq:
+# 		frappe.msgprint(_("Transport RFQ link not found; title not updated."))
+# 		return
+
+# 	rejected_names = mark_rejected(transport_rfq) or []
+# 	for name in rejected_names:
+# 		if name != doc.name:
+# 			frappe.db.set_value(
+# 				"RFQ Quotation",
+# 				name,
+# 				"workflow_state",
+# 				"Rejected",
+# 				update_modified=True
+# 			)
+
+# 	try:
+# 		status_res = quotation_receive_status(transport_rfq) or {}
+# 		status = status_res.get("status")
+# 	except Exception:
+# 		frappe.log_error(frappe.get_traceback(), "Transport RFQ Status Fetch Error")
+# 		frappe.msgprint(_("Transport RFQ title not updated (status fetch failed)."))
+# 		return
+
+# 	if not status:
+# 		frappe.msgprint(_("Transport RFQ title not updated (receive status not found)."))
+# 		return
+
+# 	try:
+# 		frappe.db.set_value(
+# 			"Transport RFQ",
+# 			transport_rfq,
+# 			"title",
+# 			status,
+# 			update_modified=True
+# 		)
+# 	except Exception:
+# 		frappe.log_error(frappe.get_traceback(), "Transport RFQ Title Update Error")
+# 		frappe.msgprint(_("Transport RFQ title not updated (db update failed)."))
+
+import frappe
+from mohan_impex.transporter import quotation_receive_status, mark_rejected
+
+
+def update_transport_rfq_title_on_submit(doc, method=None):
+    transport_rfq = doc.get("transport")
+    if not transport_rfq:
+        return
+
+    try:
+        status_res = quotation_receive_status(transport_rfq) or {}
+        status = status_res.get("status")
+    except Exception:
+        frappe.log_error(frappe.get_traceback(), "Transport RFQ Status Fetch Error")
+        return
+
+    if not status:
+        return
+
+    try:
+        frappe.db.set_value(
+            "Transport RFQ",
+            transport_rfq,
+            "title",
+            status,
+            update_modified=True
+        )
+    except Exception:
+        frappe.log_error(frappe.get_traceback(), "Transport RFQ Title Update Error")
+
+
+def reject_other_quotations_on_submit(doc, method=None):
+    transport_rfq = doc.get("transport")
+    if not transport_rfq:
+        return
+
+    rejected_names = mark_rejected(transport_rfq) or []
+    for name in rejected_names:
+        if name != doc.name:
+            frappe.db.set_value(
+                "RFQ Quotation",
+                name,
+                "workflow_state",
+                "Rejected",
+                update_modified=True
+            )
+
+
+

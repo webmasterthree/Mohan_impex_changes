@@ -11,15 +11,13 @@
   "column_break_zhmj",
   "to_location",
   "vehicle_type",
+  "title",
   "section_break_gemh",
   "transporters",
   "section_break_titp",
   "locations",
   "total_weightin_kg",
-  "add_transporter_details_section",
-  "transporter_details",
   "section_break_eabp",
-  "status",
   "amended_from"
  ],
  "fields": [
@@ -62,13 +60,6 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Open\nQuotation Received\nClosed",
-   "permlevel": 2
-  },
-  {
    "fieldname": "section_break_titp",
    "fieldtype": "Section Break"
   },
@@ -82,7 +73,6 @@
    "fieldname": "pick_list",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "in_standard_filter": 1,
    "label": "Pick List",
    "options": "Pick List"
   },
@@ -96,17 +86,6 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
-  },
-  {
-   "fieldname": "add_transporter_details_section",
-   "fieldtype": "Section Break"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "transporter_details",
-   "fieldtype": "Table",
-   "label": "Transporter Details",
-   "options": "Transporter Details"
   },
   {
    "bold": 1,
@@ -124,6 +103,15 @@
    "fieldtype": "Table",
    "label": "Transporters",
    "options": "Transporters"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "title",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "RFQ Status",
+   "options": "Open\nPartially Received\nFully Received\nCompleted"
   }
  ],
  "grid_page_length": 50,
@@ -135,7 +123,7 @@
    "link_fieldname": "transport"
   }
  ],
- "modified": "2026-01-24 10:29:14.882611",
+ "modified": "2026-01-28 18:49:52.956099",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transport RFQ",
@@ -169,5 +157,22 @@
  "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [
+  {
+   "color": "Orange",
+   "title": "Open"
+  },
+  {
+   "color": "Yellow",
+   "title": "Partially Received"
+  },
+  {
+   "color": "Blue",
+   "title": "Fully Received"
+  },
+  {
+   "color": "Green",
+   "title": "Completed"
+  }
+ ]
 }

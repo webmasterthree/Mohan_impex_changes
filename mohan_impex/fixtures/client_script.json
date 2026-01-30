@@ -2,17 +2,6 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
-  "dt": "Transport RFQ",
-  "enabled": 1,
-  "modified": "2026-01-23 15:24:18.611723",
-  "module": "Mohan Impex",
-  "name": "Transport RFQ Amount",
-  "script": "frappe.ui.form.on('Transporters', {\n    quoted_amount: calculate_actual_cost,\n    slab: calculate_actual_cost\n});\n\nfunction calculate_actual_cost(frm, cdt, cdn) {\n    let row = locals[cdt][cdn];\n    let total_weight = flt(frm.doc.total_weightin_kg) || 0;\n    let quoted = flt(row.quoted_amount);\n    let actual_cost = 0;\n\n    if (row.slab === \"Per KG\") {\n        actual_cost = quoted * total_weight;\n    } else if (row.slab === \"Per Ton\") {\n        actual_cost = (quoted * total_weight) / 1000;\n    } else if (row.slab === \"Total Frieght\") {\n        actual_cost = quoted;\n    }\n\n    frappe.model.set_value(cdt, cdn, 'actual_cost', actual_cost);\n}\n",
-  "view": "Form"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
   "dt": "Supplier Quotation",
   "enabled": 1,
   "modified": "2025-11-24 16:11:40.876589",
@@ -459,17 +448,6 @@
   "module": "Mohan Impex",
   "name": "POS Invoice",
   "script": "frappe.ui.form.on('POS Invoice', {\n\trefresh(frm) {\n\t\t// your code here\n\t},\n\tonload(frm) {\n        if (!frm.is_new() || frm.doc.company) return;\n        frappe.db.get_list('Employee', {\n            filters: { user_id: frappe.session.user },\n            fields: ['company'],\n            limit: 1\n        }).then(r => {\n            if (r.length) frm.set_value('company', r[0].company);\n        });\n    }\n})",
-  "view": "Form"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
-  "dt": "Transport RFQ",
-  "enabled": 1,
-  "modified": "2026-01-24 16:56:00.678484",
-  "module": "Mohan Impex",
-  "name": "Transport RFQ Form",
-  "script": "frappe.ui.form.on('Transport RFQ', {\n    onload: function(frm) {\n        frappe.call({\n            method: \"mohan_impex.user_roles.transporter_user\",\n            callback: function(r) {\n                if (r.message) {\n                    // Check if the row already exists\n                    let existing_rows = frm.doc.transporter_details.filter(row => row.transporter === r.message);\n\n                    if (existing_rows.length === 1 && frm.doc.transporter_details.length === 1) {\n                        // Don't touch the form if it's already set up properly\n                        return;\n                    }\n\n                    // Replace with only the matching row (or add it if missing)\n                    frm.clear_table(\"transporter_details\");\n\n                    let row = frm.add_child(\"transporter_details\");\n\n                    if (existing_rows.length) {\n                        Object.assign(row, existing_rows[0]); // copy data if already exists\n                    } else {\n                        row.transporter = r.message; // set if new\n                    }\n\n                    frm.refresh_field(\"transporter_details\");\n                }\n            }\n        });\n    }\n});\n\n",
   "view": "Form"
  },
  {
