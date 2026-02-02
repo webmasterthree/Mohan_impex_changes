@@ -110,6 +110,7 @@
   },
   {
    "allow_on_submit": 1,
+   "fetch_from": "driver.cell_number",
    "fieldname": "phone_number",
    "fieldtype": "Data",
    "label": "Phone Number"
@@ -161,7 +162,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-28 23:16:11.728916",
+ "modified": "2026-02-02 15:35:35.786190",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "RFQ Quotation",

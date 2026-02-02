@@ -8,9 +8,15 @@
  "field_order": [
   "reason",
   "applicable_modules_section",
-  "debit_note",
+  "selling_column",
   "credit_note",
-  "supplier_quotation"
+  "hold_so",
+  "close_so",
+  "column_break_apsy",
+  "supplier_quotation",
+  "debit_note",
+  "hold_po",
+  "close_po"
  ],
  "fields": [
   {
@@ -47,12 +53,46 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Supplier Quotation"
+  },
+  {
+   "default": "0",
+   "fieldname": "hold_so",
+   "fieldtype": "Check",
+   "label": "Hold SO"
+  },
+  {
+   "default": "0",
+   "fieldname": "close_so",
+   "fieldtype": "Check",
+   "label": "Close SO"
+  },
+  {
+   "default": "0",
+   "fieldname": "hold_po",
+   "fieldtype": "Check",
+   "label": "Hold PO"
+  },
+  {
+   "default": "0",
+   "fieldname": "close_po",
+   "fieldtype": "Check",
+   "label": "Close PO"
+  },
+  {
+   "fieldname": "selling_column",
+   "fieldtype": "Column Break",
+   "label": "Selling"
+  },
+  {
+   "fieldname": "column_break_apsy",
+   "fieldtype": "Column Break",
+   "label": "Buying"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-01-02 12:01:21.177473",
+ "modified": "2026-01-31 14:04:13.907612",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Justification",

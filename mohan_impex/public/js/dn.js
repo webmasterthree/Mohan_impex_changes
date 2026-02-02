@@ -44,8 +44,10 @@
 frappe.ui.form.on("Delivery Note", {
 	refresh(frm) {
 		set_item_code_filter(frm);
-		sync_from_pick_list(frm); // ✅ same event (refresh) for both
 	},
+	after_save(frm){
+		sync_from_pick_list(frm); // ✅ same event (refresh) for both
+	}
 });
 
 function set_item_code_filter(frm) {
