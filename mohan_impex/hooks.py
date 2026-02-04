@@ -18,6 +18,11 @@ fixtures = [
     {"dt": "Role Profile", "filters": [["name", "in", role_list]]},
     {"dt": "Designation", "filters": [["name", "in", role_list]]},
     {"dt": "Module Profile", "filters": [["name", "in", ("Mohan Impex")]]},
+    {"doctype": "Custom Field",
+        "filters": {
+            "module": ["in", ["Mohan Impex"]]
+            }
+    },
     {"dt": "Workspace", "filters": [["name", "in", ("Mohan Impex","Quality Control")]]},
     "Workflow",
     "Workflow State",
@@ -46,6 +51,7 @@ doctype_js ={
     "Delivery Note":"public/js/dn.js",
     "Gratuity": "public/js/gratuity.js",
     "Full and Final Statement": "public/js/full_and_final_statement.js",
+    "Batch": "public/js/batch.js",
 }
 
 doc_events = {
@@ -93,6 +99,9 @@ doc_events = {
     },
     "Competitor": {
         "before_save": "mohan_impex.mohan_impex.competitor.add_others_in_competitor_item"
+    },
+    "Purchase Receipt": {
+        "validate": "mohan_impex.purchase_receipt.validate"
     },
     # "ToDo": {
     #     "after_insert": "mohan_impex.api.add_notification_from_assignment"
