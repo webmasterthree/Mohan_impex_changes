@@ -79,6 +79,11 @@ frappe.ui.form.on('Purchase Receipt', {
     miscellaneous_expenses_remove(frm, cdt, cdn) {
         update_total_misc_amount(frm);
     },
+    // refresh(frm){
+    //     frm.add_custom_button("Check Expired Batches", function () {
+    //         calculate_accept_reject(frm);
+    //     });
+    // }
 });
 
 frappe.ui.form.on('Purchase Receipt Item', {
@@ -379,4 +384,161 @@ function transporter_payment_entry(frm) {
         row.rate = frm.doc.transport_charges || 0;
         frappe.set_route('Form', 'Purchase Invoice', pi.name);
     });
+}
+
+
+
+
+
+
+
+
+
+
+async function calculate_accept_reject(frm) {
+
+    const today = frappe.datetime.get_today();
+    let dialog_data = [];
+
+    for (let item of frm.doc.items) {
+
+        if (!item.serial_and_batch_bundle) {
+            continue;
+        }
+
+        let accepted_qty = 0;
+        let rejected_qty = 0;
+
+        // 1️⃣ Get Serial and Batch Bundle
+        let sbb = await frappe.db.get_doc(
+            "Serial and Batch Bundle",
+            item.serial_and_batch_bundle
+        );
+
+        // 2️⃣ Loop child table
+        for (let entry of sbb.entries) {
+
+            if (!entry.batch_no || !entry.qty) continue;
+
+            // 3️⃣ Get Batch expiry date
+            let batch = await frappe.db.get_value(
+                "Batch",
+                entry.batch_no,
+                "expiry_date"
+            );
+
+            let expiry_date = batch.message.expiry_date;
+
+            // 4️⃣ Expiry logic
+            if (expiry_date && expiry_date < today) {
+                rejected_qty += entry.qty;
+            } else {
+                accepted_qty += entry.qty;
+            }
+        }
+
+        // 5️⃣ Push item-wise result
+        dialog_data.push({
+            item_code: item.item_code,
+            item_name: item.name, // row name for reference
+            accepted_qty: accepted_qty,
+            rejected_qty: rejected_qty
+        });
+    }
+
+    open_result_dialog(dialog_data, frm);
+}
+
+function open_result_dialog(data, frm) {
+
+    let d = new frappe.ui.Dialog({
+        title: "Accepted / Rejected Qty (Expiry Based)",
+        size: "large",
+        fields: [
+            {
+                fieldname: "items",
+                fieldtype: "Table",
+                label: "Item Summary",
+                cannot_add_rows: true,
+                in_place_edit: false,
+                fields: [
+                    {
+                        fieldname: "item_code",
+                        fieldtype: "Data",
+                        label: "Item",
+                        in_list_view: 1,
+                        read_only: 1
+                    },
+                    {
+                        fieldname: "accepted_qty",
+                        fieldtype: "Float",
+                        label: "Accepted Qty",
+                        in_list_view: 1,
+                        read_only: 1
+                    },
+                    {
+                        fieldname: "rejected_qty",
+                        fieldtype: "Float",
+                        label: "Rejected Qty",
+                        in_list_view: 1,
+                        read_only: 1
+                    }
+                ]
+            }
+        ],
+        primary_action_label: "Split Rejected Batches",
+        primary_action: async function() {
+            d.hide();
+            
+            frappe.show_alert({
+                message: __("Processing..."),
+                indicator: "blue"
+            });
+
+            try {
+                // Call Python backend to split bundles
+                let result = await frappe.call({
+                    method: "mohan_impex.purchase_receipt.split_rejected_batches",
+                    args: {
+                        pr_name: frm.doc.name
+                    }
+                });
+
+                if (result.message) {
+                    // Update the form with new rejected bundles
+                    for (let item_name in result.message) {
+                        let item_row = frm.doc.items.find(i => i.name === item_name);
+                        if (item_row) {
+                            frappe.model.set_value(
+                                item_row.doctype,
+                                item_row.name,
+                                "rejected_serial_and_batch_bundle",
+                                result.message[item_name]
+                            );
+                        }
+                    }
+
+                    frm.refresh_field("items");
+                    
+                    frappe.show_alert({
+                        message: __("Rejected batches split successfully!"),
+                        indicator: "green"
+                    });
+                }
+
+            } catch (error) {
+                frappe.msgprint({
+                    title: __("Error"),
+                    message: error.message || __("Failed to split batches"),
+                    indicator: "red"
+                });
+            }
+        }
+    });
+
+    d.show();
+
+    // 🔥 Correct binding
+    d.fields_dict.items.df.data = data;
+    d.fields_dict.items.grid.refresh();
 }
