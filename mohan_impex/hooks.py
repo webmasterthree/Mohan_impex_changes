@@ -50,8 +50,10 @@ doctype_js ={
     "Transport RFQ":"public/js/trans_rfq.js",
     "Delivery Note":"public/js/dn.js",
     "Gratuity": "public/js/gratuity.js",
+    "Salary Structure": "public/js/salary_structure.js",
     "Full and Final Statement": "public/js/full_and_final_statement.js",
     "Batch": "public/js/batch.js",
+    "Leave Encashment": "public/js/leave_encashment.js",
 }
 
 doc_events = {
@@ -69,6 +71,9 @@ doc_events = {
     },
     "Issue": {
         "after_insert": "mohan_impex.mohan_impex.complaint.updated_workflow_state"
+    },
+    "Leave Encashment": {
+        "validate": "mohan_impex.leave_encashment.validate"
     },
     "Request for Quotation": {
         "on_submit": "mohan_impex.rfq.send_rfq_email"
@@ -128,6 +133,12 @@ doc_events = {
         "validate": "mohan_impex.item_tax_template.validate"
     }
 }
+
+
+app_include_js = [
+    "/assets/mohan_impex/js/utils.js"  # Load this FIRST
+]
+
 
 # Whitelist API methods for external use
 api_methods = [
