@@ -1,7 +1,7 @@
 [
  {
   "charts": [],
-  "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}},{\"id\":\"TZLLsfGe6c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contact Number\",\"col\":3}}]",
+  "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}},{\"id\":\"TZLLsfGe6c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contact Number\",\"col\":3}},{\"id\":\"FyGOicSRsi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Mohan Impex Settings\",\"col\":3}},{\"id\":\"JY6tiaMYbQ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Digital Marketing Collateral\",\"col\":3}}]",
   "custom_blocks": [],
   "docstatus": 0,
   "doctype": "Workspace",
@@ -319,6 +319,38 @@
   ],
   "sequence_id": 1.0,
   "shortcuts": [
+   {
+    "color": "Grey",
+    "doc_view": "List",
+    "format": null,
+    "icon": null,
+    "kanban_board": null,
+    "label": "Mohan Impex Settings",
+    "link_to": "Mohan Impex Settings",
+    "parent": "Mohan Impex",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "restrict_to_domain": null,
+    "stats_filter": null,
+    "type": "DocType",
+    "url": null
+   },
+   {
+    "color": "Grey",
+    "doc_view": "List",
+    "format": null,
+    "icon": null,
+    "kanban_board": null,
+    "label": "Digital Marketing Collateral",
+    "link_to": "Digital Marketing Collateral",
+    "parent": "Mohan Impex",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "restrict_to_domain": null,
+    "stats_filter": "[]",
+    "type": "DocType",
+    "url": null
+   },
    {
     "color": "Green",
     "doc_view": "List",

@@ -1671,7 +1671,7 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
-   "creation": "2025-04-17 14:45:20.809909",
+   "creation": "2025-08-23 16:39:09.864150",
    "default_value": null,
    "doc_type": "Purchase Receipt Item",
    "docstatus": 0,
@@ -1687,7 +1687,7 @@
    "property": "columns",
    "property_type": "Int",
    "row_name": null,
-   "value": "2"
+   "value": "1"
   },
   {
    "_assign": null,

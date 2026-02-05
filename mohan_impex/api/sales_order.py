@@ -159,9 +159,44 @@ import frappe
 
 @frappe.whitelist()
 def so_form():
+<<<<<<< HEAD
 	try:
 		so_name = (frappe.form_dict.get("name") or "").strip()
 		req_doctype = (frappe.form_dict.get("doctype") or "").strip()
+=======
+    try:
+        so_name = frappe.form_dict.get("name")
+        if not so_name:
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Please give Sales Order ID"
+            return
+        if not frappe.db.exists("Sales Order", so_name):
+            frappe.local.response['http_status_code'] = 404
+            frappe.local.response['status'] = False
+            frappe.local.response['message'] = "Please give valid Sales Order ID"
+            return
+        so_doc = frappe.get_doc("Sales Order", so_name)
+        so_dict = {
+            "name": so_doc.name,
+            "doctype": so_doc.doctype,
+            "customer_level": so_doc.customer_level,
+            "customer": so_doc.customer,
+            "customer_name": so_doc.customer_name,
+            "shop": so_doc.shop,
+            "shop_name": so_doc.shop_name,
+            "delivery_date": so_doc.delivery_date,
+            "channel_partner": so_doc.custom_channel_partner,
+            "cp_name": so_doc.cp_name,
+            "deal_type": so_doc.custom_deal_type,
+            "location": so_doc.customer_address.rsplit('-', 1)[0] if so_doc.customer_address else "",
+            "contact": so_doc.contact_number or "",
+            "remarks": so_doc.remarks,
+            "workflow_state": so_doc.workflow_state,
+            "cust_edit_needed": so_doc.cust_edit_needed
+        }
+        items_by_template = {}
+>>>>>>> origin/dev_hamaza
 
 		if not so_name:
 			frappe.local.response["http_status_code"] = 404
@@ -377,6 +412,7 @@ from frappe import _
 
 @frappe.whitelist()
 def create_so():
+<<<<<<< HEAD
 	try:
 		frappe.db.begin()
 
@@ -502,6 +538,67 @@ def create_so():
 		frappe.local.response["http_status_code"] = 400
 
 
+=======
+    try:
+        frappe.db.begin()
+        response = {}
+        so_data = frappe.form_dict
+        so_dict = {
+            "customer_level": so_data.get("customer_level"),
+            "custom_channel_partner": so_data.get("channel_partner") or "",
+            "cp_name": so_data.get("cp_name") or "",
+            "customer": so_data.get("customer"),
+            "customer_name": so_data.get("customer_name"),
+            "custom_deal_type": so_data.get("deal_type"),
+            "shop": so_data.get("shop"),
+            "shop_name": so_data.get("shop_name"),
+            "contact_number": so_data.get("contact"),
+            "delivery_date": so_data.get("delivery_date"),
+            "remarks": so_data.get("remarks"),
+            "cust_edit_needed": so_data.get("cust_edit_needed"),
+            "created_by_emp": get_session_employee(),
+            "territory": get_session_employee_area()
+        }
+        if so_data.get("channel_partner"):
+            so_dict.update({"company": so_data.get("channel_partner")})
+        items = []
+        for item in so_data.get("items"):
+            rate = get_item_category_price(item.get("item_code"), item.get("item_category"))
+            item_dict = {
+                "item_template": item.get("item_template"),
+                "item_code": item.get("item_code"),
+                "item_name": item.get("item_name"),
+                "qty": item.get("qty"),
+                "rate": rate
+            }
+            items.append(item_dict)
+        if so_data.get("contact"):
+            if not frappe.db.exists("Contact Number", so_data.get("contact")):
+                create_contact_number(so_data.get("contact"), "Customer", so_data.get("customer"))
+        so_dict.update({"items": items})
+        if so_data.get("isupdate"):
+            doc = frappe.get_doc("Sales Order", so_data.get("so_id"))
+            doc.update(so_dict)
+            doc.save()
+        else:
+            so_dict.update({"doctype": "Sales Order"})
+            doc = frappe.get_doc(so_dict)
+            doc.insert()
+        message = "Sales Order form has been successfully created as Draft"
+        if so_data.action == "Submit":
+            apply_workflow(doc, "Submit")
+            message = "Sales Order form has been successfully submitted"
+        response.update({
+            "so_id": doc.name
+        })
+        frappe.local.response['status'] = True
+        frappe.local.response['message'] = message
+        frappe.local.response['data'] = [response]
+        frappe.db.commit()
+    except Exception as err:
+        frappe.db.rollback()
+        get_exception(err)
+>>>>>>> origin/dev_hamaza
 
 def get_role_filter(emp, is_self=None, employee=None):
     from frappe.utils.nestedset import get_descendants_of

@@ -672,6 +672,7 @@ def protected_file(token):
 
 @frappe.whitelist()
 def is_within_range(origin, destination):
+    frappe.log_error("LOCATION PARAMS", frappe.form_dict)
     try:
         origin_and_dest = {
             "origin": origin,

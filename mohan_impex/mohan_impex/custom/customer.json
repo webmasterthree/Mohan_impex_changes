@@ -89,7 +89,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 12,
+=======
+   "idx": 11,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -139,6 +143,7 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+<<<<<<< HEAD
    "creation": "2025-11-02 11:27:05.520134",
    "default": null,
    "depends_on": null,
@@ -267,6 +272,8 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+=======
+>>>>>>> origin/dev_hamaza
    "creation": "2025-08-24 22:36:24.087689",
    "default": null,
    "depends_on": null,
@@ -281,7 +288,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 10,
+=======
+   "idx": 15,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -473,7 +484,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 36,
+=======
+   "idx": 33,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -587,6 +602,73 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+<<<<<<< HEAD
+=======
+   "creation": "2024-12-31 15:26:28.869724",
+   "default": null,
+   "depends_on": null,
+   "description": null,
+   "docstatus": 0,
+   "dt": "Customer",
+   "fetch_from": null,
+   "fetch_if_empty": 0,
+   "fieldname": "custom_asm",
+   "fieldtype": "Link",
+   "hidden": 0,
+   "hide_border": 0,
+   "hide_days": 0,
+   "hide_seconds": 0,
+   "idx": 55,
+   "ignore_user_permissions": 0,
+   "ignore_xss_filter": 0,
+   "in_global_search": 0,
+   "in_list_view": 0,
+   "in_preview": 0,
+   "in_standard_filter": 0,
+   "insert_after": "custom_section_break_adqgz",
+   "is_system_generated": 0,
+   "is_virtual": 0,
+   "label": "ASM",
+   "length": 0,
+   "link_filters": null,
+   "mandatory_depends_on": null,
+   "modified": "2024-12-31 15:26:28.869724",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Customer-custom_asm",
+   "no_copy": 0,
+   "non_negative": 0,
+   "options": "ASM",
+   "owner": "Administrator",
+   "permlevel": 0,
+   "placeholder": null,
+   "precision": "",
+   "print_hide": 0,
+   "print_hide_if_no_value": 0,
+   "print_width": null,
+   "read_only": 0,
+   "read_only_depends_on": null,
+   "report_hide": 0,
+   "reqd": 0,
+   "search_index": 0,
+   "show_dashboard": 0,
+   "sort_options": 0,
+   "translatable": 0,
+   "unique": 0,
+   "width": null
+  },
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "allow_in_quick_entry": 0,
+   "allow_on_submit": 0,
+   "bold": 0,
+   "collapsible": 0,
+   "collapsible_depends_on": null,
+   "columns": 0,
+>>>>>>> origin/dev_hamaza
    "creation": "2025-03-23 18:13:35.256780",
    "default": null,
    "depends_on": "eval:doc.customer_level === \"Secondary\"",
@@ -601,7 +683,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 9,
+=======
+   "idx": 14,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -665,7 +751,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 114,
+=======
+   "idx": 56,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -793,7 +883,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 92,
+=======
+   "idx": 91,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -843,6 +937,77 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+   "creation": "2025-01-07 12:18:58.829316",
+   "default": null,
+   "depends_on": null,
+   "description": null,
+   "docstatus": 0,
+   "dt": "Customer",
+   "fetch_from": null,
+   "fetch_if_empty": 0,
+   "fieldname": "custom_gstin__uin",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "hide_border": 0,
+   "hide_days": 0,
+   "hide_seconds": 0,
+<<<<<<< HEAD
+   "idx": 87,
+=======
+   "idx": 10,
+>>>>>>> origin/dev_hamaza
+   "ignore_user_permissions": 0,
+   "ignore_xss_filter": 0,
+   "in_global_search": 0,
+   "in_list_view": 0,
+   "in_preview": 0,
+   "in_standard_filter": 0,
+   "insert_after": "custom_column_break_myxkm",
+   "is_system_generated": 0,
+   "is_virtual": 0,
+   "label": "GSTIN / UIN",
+   "length": 0,
+   "link_filters": null,
+   "mandatory_depends_on": null,
+   "modified": "2025-01-07 12:18:58.829316",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Customer-custom_gstin__uin",
+   "no_copy": 0,
+   "non_negative": 0,
+   "options": null,
+   "owner": "Administrator",
+   "permlevel": 0,
+   "placeholder": null,
+   "precision": "",
+   "print_hide": 0,
+   "print_hide_if_no_value": 0,
+   "print_width": null,
+   "read_only": 0,
+   "read_only_depends_on": null,
+   "report_hide": 0,
+   "reqd": 0,
+   "search_index": 0,
+   "show_dashboard": 0,
+   "sort_options": 0,
+   "translatable": 1,
+   "unique": 0,
+   "width": null
+  },
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "allow_in_quick_entry": 0,
+   "allow_on_submit": 0,
+   "bold": 0,
+   "collapsible": 0,
+   "collapsible_depends_on": null,
+   "columns": 0,
+<<<<<<< HEAD
+   "creation": "2025-01-07 12:18:28.691434",
+=======
    "creation": "2025-01-07 12:18:58.829316",
    "default": null,
    "depends_on": null,
@@ -971,6 +1136,143 @@
    "collapsible": 0,
    "collapsible_depends_on": null,
    "columns": 0,
+   "creation": "2024-12-31 15:27:14.228672",
+>>>>>>> origin/dev_hamaza
+   "default": null,
+   "depends_on": null,
+   "description": null,
+   "docstatus": 0,
+   "dt": "Customer",
+   "fetch_from": null,
+   "fetch_if_empty": 0,
+   "fieldname": "custom_pan",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "hide_border": 0,
+   "hide_days": 0,
+   "hide_seconds": 0,
+<<<<<<< HEAD
+   "idx": 85,
+=======
+   "idx": 57,
+>>>>>>> origin/dev_hamaza
+   "ignore_user_permissions": 0,
+   "ignore_xss_filter": 0,
+   "in_global_search": 0,
+   "in_list_view": 0,
+   "in_preview": 0,
+   "in_standard_filter": 0,
+   "insert_after": "custom_section_break_kfws6",
+   "is_system_generated": 0,
+   "is_virtual": 0,
+   "label": "PAN",
+   "length": 0,
+   "link_filters": null,
+   "mandatory_depends_on": null,
+   "modified": "2025-01-07 12:18:28.691434",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Customer-custom_pan",
+   "no_copy": 0,
+   "non_negative": 0,
+   "options": null,
+   "owner": "Administrator",
+   "permlevel": 0,
+   "placeholder": null,
+   "precision": "",
+   "print_hide": 0,
+   "print_hide_if_no_value": 0,
+   "print_width": null,
+   "read_only": 0,
+   "read_only_depends_on": null,
+   "report_hide": 0,
+   "reqd": 0,
+   "search_index": 0,
+   "show_dashboard": 0,
+   "sort_options": 0,
+   "translatable": 1,
+   "unique": 0,
+   "width": null
+  },
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "allow_in_quick_entry": 0,
+   "allow_on_submit": 0,
+   "bold": 0,
+   "collapsible": 0,
+   "collapsible_depends_on": null,
+   "columns": 0,
+   "creation": "2025-01-07 12:18:28.007192",
+   "default": null,
+   "depends_on": null,
+   "description": null,
+   "docstatus": 0,
+   "dt": "Customer",
+   "fetch_from": null,
+   "fetch_if_empty": 0,
+   "fieldname": "custom_section_break_kfws6",
+   "fieldtype": "Section Break",
+   "hidden": 0,
+   "hide_border": 0,
+   "hide_days": 0,
+   "hide_seconds": 0,
+<<<<<<< HEAD
+   "idx": 84,
+=======
+   "idx": 54,
+>>>>>>> origin/dev_hamaza
+   "ignore_user_permissions": 0,
+   "ignore_xss_filter": 0,
+   "in_global_search": 0,
+   "in_list_view": 0,
+   "in_preview": 0,
+   "in_standard_filter": 0,
+   "insert_after": "tax_withholding_category",
+   "is_system_generated": 0,
+   "is_virtual": 0,
+   "label": null,
+   "length": 0,
+   "link_filters": null,
+   "mandatory_depends_on": null,
+   "modified": "2025-01-07 12:18:28.007192",
+   "modified_by": "Administrator",
+   "module": null,
+   "name": "Customer-custom_section_break_kfws6",
+   "no_copy": 0,
+   "non_negative": 0,
+   "options": null,
+   "owner": "Administrator",
+   "permlevel": 0,
+   "placeholder": null,
+   "precision": "",
+   "print_hide": 0,
+   "print_hide_if_no_value": 0,
+   "print_width": null,
+   "read_only": 0,
+   "read_only_depends_on": null,
+   "report_hide": 0,
+   "reqd": 0,
+   "search_index": 0,
+   "show_dashboard": 0,
+   "sort_options": 0,
+   "translatable": 0,
+   "unique": 0,
+   "width": null
+  },
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "allow_in_quick_entry": 0,
+   "allow_on_submit": 0,
+   "bold": 0,
+   "collapsible": 0,
+   "collapsible_depends_on": null,
+   "columns": 0,
    "creation": "2025-01-07 12:18:28.007192",
    "default": null,
    "depends_on": null,
@@ -1049,7 +1351,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 13,
+=======
+   "idx": 12,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -1113,7 +1419,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 14,
+=======
+   "idx": 13,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -1305,7 +1615,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 38,
+=======
+   "idx": 35,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -1625,7 +1939,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 24,
+=======
+   "idx": 25,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -1689,7 +2007,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 23,
+=======
+   "idx": 24,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -1881,7 +2203,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 16,
+=======
+   "idx": 17,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -1945,6 +2271,7 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 35,
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
@@ -2009,6 +2336,8 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+=======
+>>>>>>> origin/dev_hamaza
    "idx": 32,
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
@@ -2073,7 +2402,11 @@
    "hide_border": 0,
    "hide_days": 0,
    "hide_seconds": 0,
+<<<<<<< HEAD
    "idx": 37,
+=======
+   "idx": 34,
+>>>>>>> origin/dev_hamaza
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
@@ -2446,9 +2779,15 @@
    "is_child_table": 0,
    "link_doctype": "Party Specific Item",
    "link_fieldname": "party",
+<<<<<<< HEAD
    "modified": "2025-11-27 10:58:54.980752",
    "modified_by": "Administrator",
    "name": "jv5ka1j3vt",
+=======
+   "modified": "2025-06-15 15:10:35.972304",
+   "modified_by": "Administrator",
+   "name": "pnb9bc66d6",
+>>>>>>> origin/dev_hamaza
    "owner": "Administrator",
    "parent": "Customer",
    "parent_doctype": null,
@@ -2517,7 +2856,11 @@
    "field_name": "customer_details",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.596150",
+=======
+   "modified": "2025-08-24 18:48:18.877902",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-customer_details-label",
@@ -2540,7 +2883,11 @@
    "field_name": "customer_group",
    "idx": 0,
    "is_system_generated": 1,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.605857",
+=======
+   "modified": "2025-08-24 18:48:18.897950",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-customer_group-in_list_view",
@@ -2563,7 +2910,11 @@
    "field_name": "customer_name",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.615800",
+=======
+   "modified": "2025-08-24 18:48:18.919190",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-customer_name-fetch_from",
@@ -2586,7 +2937,11 @@
    "field_name": "customer_name",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.625520",
+=======
+   "modified": "2025-08-24 18:48:18.943664",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-customer_name-fetch_if_empty",
@@ -2609,7 +2964,11 @@
    "field_name": "customer_name",
    "idx": 0,
    "is_system_generated": 1,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.635199",
+=======
+   "modified": "2025-08-24 18:48:18.967782",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-customer_name-in_list_view",
@@ -2632,7 +2991,11 @@
    "field_name": "customer_primary_address",
    "idx": 0,
    "is_system_generated": 1,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.644797",
+=======
+   "modified": "2025-08-24 18:48:18.989931",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-customer_primary_address-in_list_view",
@@ -2647,6 +3010,7 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
+<<<<<<< HEAD
    "creation": "2025-09-26 11:19:47.477815",
    "default_value": null,
    "doc_type": "Customer",
@@ -2694,6 +3058,9 @@
    "_liked_by": null,
    "_user_tags": null,
    "creation": "2026-01-22 16:45:19.536125",
+=======
+   "creation": "2025-08-24 22:36:23.667281",
+>>>>>>> origin/dev_hamaza
    "default_value": null,
    "doc_type": "Customer",
    "docstatus": 0,
@@ -2701,7 +3068,11 @@
    "field_name": null,
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2026-01-22 16:45:19.536125",
+=======
+   "modified": "2025-08-24 22:36:23.667281",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-main-field_order",
@@ -2709,7 +3080,11 @@
    "property": "field_order",
    "property_type": "Data",
    "row_name": null,
+<<<<<<< HEAD
    "value": "[\"basic_info\", \"naming_series\", \"salutation\", \"unv_customer\", \"customer_name\", \"customer_type\", \"customer_level\", \"is_dl\", \"custom_channel_partner\", \"cp_name\", \"customer_group\", \"business_type\", \"custom_shop\", \"custom_shop_name\", \"column_break0\", \"request_date\", \"gender\", \"lead_name\", \"opportunity_name\", \"prospect_name\", \"account_manager\", \"image\", \"kyc_status\", \"kyc_complete_date\", \"city\", \"district\", \"state\", \"cust_edit_needed\", \"created_by_emp\", \"created_by_name\", \"territory\", \"section_break_cba2b\", \"customer_consumption_info\", \"change_request\", \"section_break_6mnsm\", \"cust_decl\", \"section_break_u87e0\", \"customer_license\", \"defaults_tab\", \"default_currency\", \"default_bank_account\", \"column_break_14\", \"default_price_list\", \"internal_customer_section\", \"is_internal_customer\", \"represents_company\", \"column_break_70\", \"companies\", \"more_info\", \"market_segment\", \"industry\", \"customer_pos_id\", \"website\", \"language\", \"column_break_45\", \"customer_details\", \"attachment_info\", \"dashboard_tab\", \"contact_and_address_tab\", \"address_contacts\", \"address_html\", \"column_break1\", \"contact_html\", \"primary_address_and_contact_detail\", \"column_break_26\", \"customer_primary_address\", \"primary_address\", \"column_break_nwor\", \"customer_primary_contact\", \"mobile_no\", \"email_id\", \"workflow_state\", \"tax_tab\", \"tax_details_section\", \"gstin\", \"pan\", \"tax_details_column_break\", \"gst_category\", \"taxation_section\", \"tax_id\", \"column_break_21\", \"tax_category\", \"tax_withholding_category\", \"custom_section_break_kfws6\", \"custom_pan\", \"custom_column_break_myxkm\", \"custom_gstin__uin\", \"accounting_tab\", \"credit_limit_section\", \"payment_terms\", \"proposed_credit\", \"custom_credit_days\", \"credit_limits\", \"default_receivable_accounts\", \"accounts\", \"loyalty_points_tab\", \"loyalty_program\", \"column_break_54\", \"loyalty_program_tier\", \"sales_team_tab\", \"sales_team\", \"sales_team_section\", \"default_sales_partner\", \"column_break_66\", \"default_commission_rate\", \"settings_tab\", \"so_required\", \"dn_required\", \"column_break_53\", \"is_frozen\", \"disabled\", \"portal_users_tab\", \"portal_users\", \"custom_column_break_gcajz\"]"
+=======
+   "value": "[\"basic_info\", \"naming_series\", \"salutation\", \"unv_customer\", \"customer_name\", \"customer_type\", \"customer_level\", \"is_dl\", \"customer_group\", \"custom_customer_category\", \"business_type\", \"custom_shop\", \"custom_shop_name\", \"custom_channel_partner\", \"cp_name\", \"column_break0\", \"request_date\", \"gender\", \"lead_name\", \"opportunity_name\", \"prospect_name\", \"account_manager\", \"image\", \"kyc_status\", \"kyc_complete_date\", \"district\", \"state\", \"cust_edit_needed\", \"created_by_emp\", \"created_by_name\", \"territory\", \"section_break_6mnsm\", \"cust_decl\", \"section_break_u87e0\", \"customer_license\", \"defaults_tab\", \"default_currency\", \"default_bank_account\", \"column_break_14\", \"default_price_list\", \"internal_customer_section\", \"is_internal_customer\", \"represents_company\", \"column_break_70\", \"companies\", \"more_info\", \"market_segment\", \"industry\", \"customer_pos_id\", \"website\", \"language\", \"column_break_45\", \"customer_details\", \"custom_section_break_adqgz\", \"custom_asm\", \"custom_column_break_gcajz\", \"custom_sales_division\", \"dashboard_tab\", \"contact_and_address_tab\", \"address_contacts\", \"address_html\", \"column_break1\", \"contact_html\", \"primary_address_and_contact_detail\", \"column_break_26\", \"customer_primary_address\", \"primary_address\", \"column_break_nwor\", \"customer_primary_contact\", \"mobile_no\", \"email_id\", \"workflow_state\", \"tax_tab\", \"tax_details_section\", \"gstin\", \"pan\", \"tax_details_column_break\", \"gst_category\", \"taxation_section\", \"tax_id\", \"column_break_21\", \"tax_category\", \"tax_withholding_category\", \"custom_section_break_kfws6\", \"custom_pan\", \"custom_column_break_myxkm\", \"custom_gstin__uin\", \"accounting_tab\", \"credit_limit_section\", \"payment_terms\", \"custom_credit_days\", \"credit_limits\", \"default_receivable_accounts\", \"accounts\", \"loyalty_points_tab\", \"loyalty_program\", \"column_break_54\", \"loyalty_program_tier\", \"sales_team_tab\", \"sales_team\", \"sales_team_section\", \"default_sales_partner\", \"column_break_66\", \"default_commission_rate\", \"settings_tab\", \"so_required\", \"dn_required\", \"column_break_53\", \"is_frozen\", \"disabled\", \"portal_users_tab\", \"portal_users\"]"
+>>>>>>> origin/dev_hamaza
   },
   {
    "_assign": null,
@@ -2724,7 +3099,11 @@
    "field_name": null,
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.664444",
+=======
+   "modified": "2025-08-24 18:48:19.035508",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-main-show_preview_popup",
@@ -2747,7 +3126,11 @@
    "field_name": null,
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.674036",
+=======
+   "modified": "2025-08-24 18:48:19.059203",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-main-show_title_field_in_link",
@@ -2770,7 +3153,11 @@
    "field_name": "naming_series",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.683670",
+=======
+   "modified": "2025-08-24 18:48:19.083553",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-naming_series-default",
@@ -2793,7 +3180,11 @@
    "field_name": "naming_series",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.693440",
+=======
+   "modified": "2025-08-24 18:48:19.106103",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-naming_series-hidden",
@@ -2816,7 +3207,11 @@
    "field_name": "naming_series",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.703149",
+=======
+   "modified": "2025-08-24 18:48:19.131263",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-naming_series-options",
@@ -2839,7 +3234,11 @@
    "field_name": "naming_series",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.713015",
+=======
+   "modified": "2025-08-24 18:48:19.157186",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-naming_series-reqd",
@@ -2977,7 +3376,11 @@
    "field_name": "territory",
    "idx": 0,
    "is_system_generated": 1,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.742529",
+=======
+   "modified": "2025-08-24 18:48:19.181398",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-territory-in_list_view",
@@ -3000,7 +3403,11 @@
    "field_name": "territory",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.752236",
+=======
+   "modified": "2025-08-24 18:48:19.205906",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-territory-label",
@@ -3023,7 +3430,11 @@
    "field_name": "territory",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2026-01-22 13:25:44.761895",
+=======
+   "modified": "2025-08-24 18:48:19.231413",
+>>>>>>> origin/dev_hamaza
    "modified_by": "Administrator",
    "module": null,
    "name": "Customer-territory-reqd",
