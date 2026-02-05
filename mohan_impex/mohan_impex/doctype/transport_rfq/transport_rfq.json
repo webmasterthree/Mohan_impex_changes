@@ -132,7 +132,7 @@
    "link_fieldname": "transport"
   }
  ],
- "modified": "2026-02-02 10:58:21.947579",
+ "modified": "2026-02-03 17:06:17.522679",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transport RFQ",
@@ -148,18 +148,6 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Billing",
    "share": 1,
    "write": 1
   }

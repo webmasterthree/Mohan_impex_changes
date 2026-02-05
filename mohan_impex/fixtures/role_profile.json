@@ -4,7 +4,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
-  "modified": "2026-01-05 17:27:05.923202",
+  "modified": "2026-02-04 19:16:18.055684",
   "name": "Quality Control",
   "role_full_name": null,
   "role_profile": "Quality Control",
@@ -25,19 +25,19 @@
     "parent": "Quality Control",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Manufacturing Manager"
+    "role": "Factory Inventory"
    },
    {
     "parent": "Quality Control",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Manufacturing User"
+    "role": "Factory Operation"
    },
    {
     "parent": "Quality Control",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Factory Manager"
+    "role": "Product Application"
    }
   ]
  },
@@ -61,169 +61,13 @@
     "parent": "BILLING EXECUTIVE",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "BILLING EXECUTIVE"
+    "role": "Billing Team"
    },
    {
     "parent": "BILLING EXECUTIVE",
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Ground Team"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "has_toggle_filter": 0,
-  "is_multiple_area_management": 0,
-  "modified": "2026-01-07 17:37:59.043174",
-  "name": "Logistics Executive",
-  "role_full_name": null,
-  "role_profile": "Logistics Executive",
-  "roles": [
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Logistics Executive"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "ASM"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "NSM"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "ZSM"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "TSM"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "SE"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "OPERATION INCHARGE"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sr. Warehouse Executive-Sales"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sr. Logistics Executive"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "BILLING EXECUTIVE"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Executive"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "System Manager"
-   },
-   {
-    "parent": "Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "MI Transporter"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "has_toggle_filter": 0,
-  "is_multiple_area_management": 0,
-  "modified": "2025-12-22 15:52:52.755835",
-  "name": "Sr. Logistics Executive",
-  "role_full_name": null,
-  "role_profile": "Sr. Logistics Executive",
-  "roles": [
-   {
-    "parent": "Sr. Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
-   },
-   {
-    "parent": "Sr. Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Logistics Executive"
-   },
-   {
-    "parent": "Sr. Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sr. Logistics Executive"
-   },
-   {
-    "parent": "Sr. Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "System Manager"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "has_toggle_filter": 0,
-  "is_multiple_area_management": 0,
-  "modified": "2025-11-06 12:27:40.655874",
-  "name": "MIS Logistics Executive",
-  "role_full_name": null,
-  "role_profile": "MIS Logistics Executive",
-  "roles": [
-   {
-    "parent": "MIS Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
-   },
-   {
-    "parent": "MIS Logistics Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "MIS Logistics Executive"
    }
   ]
  },
@@ -242,12 +86,6 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Employee"
-   },
-   {
-    "parent": "Warehouse Executive-Sales",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Warehouse Executive-Sales"
    }
   ]
  },
@@ -266,12 +104,6 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Employee"
-   },
-   {
-    "parent": "Warehouse Executive-Ld/Unld",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Warehouse Executive-Ld/Unld"
    }
   ]
  },
@@ -290,12 +122,6 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Employee"
-   },
-   {
-    "parent": "Sr. Warehouse Executive-Sales",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sr. Warehouse Executive-Sales"
    }
   ]
  },
@@ -328,7 +154,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
-  "modified": "2025-09-29 09:14:16.601877",
+  "modified": "2026-02-05 12:57:40.557464",
   "name": "ZSM",
   "role_full_name": null,
   "role_profile": "ZSM",
@@ -349,18 +175,6 @@
     "parent": "ZSM",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Sales User"
-   },
-   {
-    "parent": "ZSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Master Manager"
-   },
-   {
-    "parent": "ZSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
     "role": "Sales Manager"
    },
    {
@@ -374,12 +188,6 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Support Team"
-   },
-   {
-    "parent": "ZSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Item Manager"
    },
    {
     "parent": "ZSM",
@@ -487,12 +295,6 @@
     "parent": "RSM",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Sales Master Manager"
-   },
-   {
-    "parent": "RSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
     "role": "Sales Manager"
    },
    {
@@ -526,7 +328,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 1,
   "is_multiple_area_management": 1,
-  "modified": "2026-01-22 16:36:12.976420",
+  "modified": "2026-02-05 12:57:09.117203",
   "name": "ASM",
   "role_full_name": null,
   "role_profile": "ASM",
@@ -553,43 +355,7 @@
     "parent": "ASM",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Item Manager"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Manager"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Master Manager"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
     "role": "SE"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales User"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Stock User"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Support Team"
    },
    {
     "parent": "ASM",
@@ -602,6 +368,12 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "SE web user"
+   },
+   {
+    "parent": "ASM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Manager"
    }
   ]
  },
@@ -610,7 +382,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
-  "modified": "2025-09-29 09:14:20.167454",
+  "modified": "2026-02-05 12:57:58.243822",
   "name": "NSM",
   "role_full_name": null,
   "role_profile": "NSM",
@@ -649,18 +421,6 @@
     "parent": "NSM",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Sales Master Manager"
-   },
-   {
-    "parent": "NSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales User"
-   },
-   {
-    "parent": "NSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
     "role": "Stock User"
    },
    {
@@ -688,7 +448,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
-  "modified": "2026-01-21 15:37:45.448040",
+  "modified": "2026-02-04 19:08:04.710618",
   "name": "SE",
   "role_full_name": null,
   "role_profile": "SE",
@@ -697,31 +457,7 @@
     "parent": "SE",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Sales User"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Manager"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Item Manager"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
     "role": "Customer"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Stock User"
    },
    {
     "parent": "SE",
@@ -733,19 +469,7 @@
     "parent": "SE",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Support Team"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
     "role": "Employee"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Master Manager"
    },
    {
     "parent": "SE",
@@ -760,49 +484,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
-  "modified": "2026-01-20 18:15:26.916587",
-  "name": "Purchase Executive",
-  "role_full_name": null,
-  "role_profile": "Purchase Executive",
-  "roles": [
-   {
-    "parent": "Purchase Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Purchase Executive"
-   },
-   {
-    "parent": "Purchase Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
-   },
-   {
-    "parent": "Purchase Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Work From Home Approver"
-   },
-   {
-    "parent": "Purchase Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Leave Approver"
-   },
-   {
-    "parent": "Purchase Executive",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Logistics Executive"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "has_toggle_filter": 0,
-  "is_multiple_area_management": 0,
-  "modified": "2026-01-28 12:39:31.238153",
+  "modified": "2026-02-03 17:42:25.416915",
   "name": "General Ledger Accountant",
   "role_full_name": null,
   "role_profile": "General Ledger Accountant",
@@ -865,12 +547,6 @@
     "parent": "General Ledger Accountant",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Account Executive"
-   },
-   {
-    "parent": "General Ledger Accountant",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
     "role": "Sales Manager"
    },
    {
@@ -883,7 +559,13 @@
     "parent": "General Ledger Accountant",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "ZSM"
+    "role": "ASM"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "NSM"
    },
    {
     "parent": "General Ledger Accountant",
@@ -895,19 +577,19 @@
     "parent": "General Ledger Accountant",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "SE"
+    "role": "ZSM"
    },
    {
     "parent": "General Ledger Accountant",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "ASM"
+    "role": "RSM"
    },
    {
     "parent": "General Ledger Accountant",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "NSM"
+    "role": "Billing Approver"
    }
   ]
  }
