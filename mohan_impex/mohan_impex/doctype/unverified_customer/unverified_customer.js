@@ -33,6 +33,7 @@ function set_session_employee(frm){
     frappe.model.with_doctype('Customer', function() {
       let cu = frappe.model.get_new_doc('Customer');
       cu.unv_customer = frm.doc.name
+      cu.customer_consumption_info = frm.doc.customer_consumption_info
       frappe.set_route('Form', 'Customer', cu.name);
     })
   }

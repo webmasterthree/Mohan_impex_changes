@@ -1,0 +1,46 @@
+{
+ "add_total_row": 1,
+ "add_translate_data": 0,
+ "columns": [],
+ "creation": "2026-01-30 16:26:43.971827",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2026-01-30 16:26:43.971827",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Sales Order Analysis-Pending Items",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Sales Order",
+ "report_name": "Sales Order Analysis-Pending Items",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Sales User"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Maintenance User"
+  },
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Stock User"
+  },
+  {
+   "role": "Inventory Manager"
+  },
+  {
+   "role": "Sr. Logistics Executive"
+  }
+ ],
+ "timeout": 0
+}

@@ -10,7 +10,17 @@
   "default_profile_image",
   "section_break_grqv",
   "dashboard_banners",
-  "roles_and_reports_to"
+  "roles_and_reports_to",
+  "section_break_lpvg",
+  "default_warehouse",
+  "bonus_percentage",
+  "column_break_fsuh",
+  "bonus_eligible_days",
+  "working_holiday_component",
+  "overtime_section",
+  "overtime_component",
+  "column_break_nzjt",
+  "overtime_prhrs_rate"
  ],
  "fields": [
   {
@@ -46,12 +56,63 @@
    "fieldtype": "Attach Image",
    "label": "Default Profile Image",
    "reqd": 1
+  },
+  {
+   "fieldname": "section_break_lpvg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "default_warehouse",
+   "fieldtype": "Link",
+   "label": "Default Warehouse",
+   "link_filters": "[[\"Warehouse\",\"is_group\",\"=\",1]]",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "bonus_percentage",
+   "fieldtype": "Percent",
+   "label": "Bonus Percentage%"
+  },
+  {
+   "fieldname": "bonus_eligible_days",
+   "fieldtype": "Int",
+   "label": "Bonus Eligible Days"
+  },
+  {
+   "fieldname": "working_holiday_component",
+   "fieldtype": "Link",
+   "label": "Working Holiday Component",
+   "options": "Salary Component"
+  },
+  {
+   "fieldname": "column_break_fsuh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "overtime_section",
+   "fieldtype": "Section Break",
+   "label": "Overtime"
+  },
+  {
+   "fieldname": "overtime_component",
+   "fieldtype": "Link",
+   "label": "Overtime Component",
+   "options": "Salary Component"
+  },
+  {
+   "fieldname": "column_break_nzjt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "overtime_prhrs_rate",
+   "fieldtype": "Currency",
+   "label": "Overtime pr/hrs Rate"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-05-18 11:11:42.514403",
+ "modified": "2026-01-29 13:32:04.636733",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Mohan Impex Settings",
@@ -68,6 +129,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

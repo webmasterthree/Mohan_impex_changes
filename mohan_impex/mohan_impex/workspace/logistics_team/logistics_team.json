@@ -1,0 +1,192 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"8hoqvPegcB\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics Executive</span>\",\"col\":12}},{\"id\":\"Pcb2eD9_-W\",\"type\":\"card\",\"data\":{\"card_name\":\"Logistics Executive\",\"col\":4}},{\"id\":\"BgkUZiRahx\",\"type\":\"card\",\"data\":{\"card_name\":\"MISL Report\",\"col\":4}},{\"id\":\"E_HzApmYkt\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"Nb2Mmqm2g3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order\",\"col\":3}},{\"id\":\"RmLY7rjddk\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Pick List\",\"col\":3}},{\"id\":\"dwANKuNL9o\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Delivery Note\",\"col\":3}},{\"id\":\"XqmNJtNGb5\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"AFGkRDFJP2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Purchase Order\",\"col\":4}},{\"id\":\"JfycTE6BVE\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item Price\",\"col\":3}},{\"id\":\"a62r5RqkCt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item Price\",\"col\":3}}]",
+ "creation": "2025-11-06 10:54:31.390274",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "notification-with-indicator",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Logistics Team",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Logistics Executive",
+   "link_count": 5,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Order",
+   "link_count": 0,
+   "link_to": "Sales Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Pick List",
+   "link_count": 0,
+   "link_to": "Pick List",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Delivery Note",
+   "link_count": 0,
+   "link_to": "Delivery Note",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Purchase Order",
+   "link_count": 0,
+   "link_to": "Purchase Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Stock Report",
+   "link_count": 0,
+   "link_to": "Stock Ledger",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "MISL Report",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Gross Profit",
+   "link_count": 0,
+   "link_to": "Gross Profit",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Gross and Net Profit Report",
+   "link_count": 0,
+   "link_to": "Gross and Net Profit Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item-wise Price List Rate",
+   "link_count": 0,
+   "link_to": "Item-wise Price List Rate",
+   "link_type": "Report",
+   "onboard": 0,
+   "report_ref_doctype": "Item Price",
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item Price",
+   "link_count": 0,
+   "link_to": "Item Price",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-02-04 19:35:16.838951",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Logistics Team",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "Home",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Logistics Kolkata"
+  },
+  {
+   "role": "MIS Logistics HO"
+  }
+ ],
+ "sequence_id": 9.0,
+ "shortcuts": [
+  {
+   "color": "Yellow",
+   "doc_view": "List",
+   "format": "{} Pending",
+   "label": "Sales Order",
+   "link_to": "Sales Order",
+   "stats_filter": "[[\"Sales Order\",\"workflow_state\",\"=\",\"Pending\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Yellow",
+   "doc_view": "List",
+   "format": "{} Approval Pending",
+   "label": "Pick List",
+   "link_to": "Pick List",
+   "stats_filter": "[[\"Pick List\",\"workflow_state\",\"=\",\"Approval Required from Logistics Team\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Yellow",
+   "doc_view": "List",
+   "format": "{} Approval Pending",
+   "label": "Delivery Note",
+   "link_to": "Delivery Note",
+   "stats_filter": "[[\"Delivery Note\",\"workflow_state\",\"=\",\"Billing Team Approval Pending\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Yellow",
+   "doc_view": "List",
+   "format": "{} Pending From Supplier",
+   "label": "Purchase Order",
+   "link_to": "Purchase Order",
+   "stats_filter": "[[\"Purchase Order\",\"custom_acceptance_status\",\"=\",\"Pending\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "format": "Buying",
+   "label": "Item Price",
+   "link_to": "Item Price",
+   "stats_filter": "[[\"Item Price\",\"price_list\",\"=\",\"Standard Buying\",false]]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Logistics Team"
+}

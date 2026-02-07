@@ -1,6 +1,6 @@
 import frappe
 from mohan_impex.mohan_impex.comment import workflow_status_update
-from mohan_impex.mohan_impex.api import get_exception
+from mohan_impex.api import get_exception
 
 @frappe.whitelist()
 def get_trial_template(item_code):

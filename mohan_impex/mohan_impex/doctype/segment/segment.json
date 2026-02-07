@@ -1,0 +1,83 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "field:segment_name",
+ "creation": "2025-02-19 20:18:46.341337",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "segment_name",
+  "base_components",
+  "section_break_mjtk",
+  "base_product",
+  "base_product_uom",
+  "base_products"
+ ],
+ "fields": [
+  {
+   "fieldname": "base_components",
+   "fieldtype": "Table",
+   "label": "Base Components",
+   "options": "Base Components"
+  },
+  {
+   "fieldname": "segment_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Segment Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "depends_on": "base_product",
+   "fieldname": "base_products",
+   "fieldtype": "Table",
+   "label": "Base Product",
+   "options": "Base Product"
+  },
+  {
+   "fieldname": "base_product",
+   "fieldtype": "Data",
+   "label": "Base Product",
+   "mandatory_depends_on": "base_product"
+  },
+  {
+   "fieldname": "section_break_mjtk",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "base_product_uom",
+   "fieldtype": "Link",
+   "label": "Base Product UOM",
+   "options": "UOM"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-12-14 20:52:30.986321",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Segment",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

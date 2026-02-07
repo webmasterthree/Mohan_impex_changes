@@ -1,0 +1,66 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Bike",
+  "modified": "2025-11-15 14:18:47.095445",
+  "name": "Bike",
+  "roles": []
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Taxi",
+  "modified": "2025-11-15 15:02:03.194365",
+  "name": "Taxi",
+  "roles": []
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Auto/Toto",
+  "modified": "2025-11-15 15:02:14.366717",
+  "name": "Auto/Toto",
+  "roles": []
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Bus",
+  "modified": "2025-11-15 15:02:23.749534",
+  "name": "Bus",
+  "roles": []
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Train",
+  "modified": "2025-11-15 15:02:31.648726",
+  "name": "Train",
+  "roles": []
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Metro",
+  "modified": "2025-11-15 15:02:38.638224",
+  "name": "Metro",
+  "roles": []
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Flight",
+  "modified": "2025-11-15 15:02:48.513029",
+  "name": "Flight",
+  "roles": []
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Mode of Travel",
+  "mode_of_travel": "Others",
+  "modified": "2025-10-29 18:31:53.618163",
+  "name": "Others",
+  "roles": []
+ }
+]

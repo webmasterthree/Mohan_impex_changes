@@ -2,7 +2,6 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:district",
  "creation": "2025-02-21 23:42:45.017275",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -17,8 +16,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "District",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "fieldname": "state",
@@ -30,13 +28,13 @@
    "reqd": 1
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-04 12:10:47.134417",
+ "modified": "2025-11-01 18:09:21.278613",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "District",
- "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -52,7 +50,10 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
+ "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "district"
 }

@@ -2,9 +2,159 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2026-02-04 19:16:18.055684",
+  "name": "Quality Control",
+  "role_full_name": null,
+  "role_profile": "Quality Control",
+  "roles": [
+   {
+    "parent": "Quality Control",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Quality Control"
+   },
+   {
+    "parent": "Quality Control",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "Quality Control",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Factory Inventory"
+   },
+   {
+    "parent": "Quality Control",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Factory Operation"
+   },
+   {
+    "parent": "Quality Control",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Product Application"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-11-15 17:32:16.551431",
+  "name": "BILLING EXECUTIVE",
+  "role_full_name": null,
+  "role_profile": "BILLING EXECUTIVE",
+  "roles": [
+   {
+    "parent": "BILLING EXECUTIVE",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "BILLING EXECUTIVE",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Billing Team"
+   },
+   {
+    "parent": "BILLING EXECUTIVE",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Ground Team"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-11-06 15:22:28.380110",
+  "name": "Warehouse Executive-Sales",
+  "role_full_name": null,
+  "role_profile": "Warehouse Executive-Sales",
+  "roles": [
+   {
+    "parent": "Warehouse Executive-Sales",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-11-06 15:21:40.039168",
+  "name": "Warehouse Executive-Ld/Unld",
+  "role_full_name": null,
+  "role_profile": "Warehouse Executive-Ld/Unld",
+  "roles": [
+   {
+    "parent": "Warehouse Executive-Ld/Unld",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-11-06 18:47:44.341678",
+  "name": "Sr. Warehouse Executive-Sales",
+  "role_full_name": null,
+  "role_profile": "Sr. Warehouse Executive-Sales",
+  "roles": [
+   {
+    "parent": "Sr. Warehouse Executive-Sales",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2025-08-14 12:59:17.865811",
+  "name": "Supplier",
+  "role_full_name": null,
+  "role_profile": "Supplier",
+  "roles": [
+   {
+    "parent": "Supplier",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Supplier"
+   },
+   {
+    "parent": "Supplier",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
   "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
-  "modified": "2025-08-05 21:19:09.655661",
+  "modified": "2026-02-05 17:24:10.348761",
   "name": "ZSM",
   "role_full_name": null,
   "role_profile": "ZSM",
@@ -20,18 +170,6 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Employee"
-   },
-   {
-    "parent": "ZSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales User"
-   },
-   {
-    "parent": "ZSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Master Manager"
    },
    {
     "parent": "ZSM",
@@ -55,7 +193,7 @@
     "parent": "ZSM",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Item Manager"
+    "role": "Leave Approver"
    },
    {
     "parent": "ZSM",
@@ -118,7 +256,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
-  "modified": "2025-06-27 08:31:40.053369",
+  "modified": "2025-09-29 09:14:31.891661",
   "name": "TSM",
   "role_full_name": null,
   "role_profile": "TSM",
@@ -136,7 +274,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
-  "modified": "2025-08-05 21:19:58.280682",
+  "modified": "2025-09-29 09:14:28.384966",
   "name": "RSM",
   "role_full_name": null,
   "role_profile": "RSM",
@@ -158,12 +296,6 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Sales User"
-   },
-   {
-    "parent": "RSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Master Manager"
    },
    {
     "parent": "RSM",
@@ -201,8 +333,62 @@
   "docstatus": 0,
   "doctype": "Role Profile",
   "has_toggle_filter": 1,
+  "is_multiple_area_management": 1,
+  "modified": "2026-02-05 12:57:09.117203",
+  "name": "ASM",
+  "role_full_name": null,
+  "role_profile": "ASM",
+  "roles": [
+   {
+    "parent": "ASM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "ASM"
+   },
+   {
+    "parent": "ASM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "ASM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Customer"
+   },
+   {
+    "parent": "ASM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "SE"
+   },
+   {
+    "parent": "ASM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Leave Approver"
+   },
+   {
+    "parent": "ASM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "SE web user"
+   },
+   {
+    "parent": "ASM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Manager"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
-  "modified": "2025-08-18 10:24:57.833093",
+  "modified": "2026-02-05 12:57:58.243822",
   "name": "NSM",
   "role_full_name": null,
   "role_profile": "NSM",
@@ -241,18 +427,6 @@
     "parent": "NSM",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Sales Master Manager"
-   },
-   {
-    "parent": "NSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales User"
-   },
-   {
-    "parent": "NSM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
     "role": "Stock User"
    },
    {
@@ -278,87 +452,9 @@
  {
   "docstatus": 0,
   "doctype": "Role Profile",
-  "has_toggle_filter": 1,
-  "is_multiple_area_management": 0,
-  "modified": "2025-06-29 09:42:38.529572",
-  "name": "ASM",
-  "role_full_name": null,
-  "role_profile": "ASM",
-  "roles": [
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "ASM"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Customer"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Item Manager"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Manager"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Master Manager"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "SE"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales User"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Stock User"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Support Team"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Leave Approver"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
   "has_toggle_filter": 0,
   "is_multiple_area_management": 0,
-  "modified": "2025-06-14 16:00:53.070968",
+  "modified": "2026-02-04 19:08:04.710618",
   "name": "SE",
   "role_full_name": null,
   "role_profile": "SE",
@@ -367,31 +463,7 @@
     "parent": "SE",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Sales User"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Manager"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Item Manager"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
     "role": "Customer"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Stock User"
    },
    {
     "parent": "SE",
@@ -403,19 +475,127 @@
     "parent": "SE",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Support Team"
-   },
-   {
-    "parent": "SE",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
     "role": "Employee"
    },
    {
     "parent": "SE",
     "parentfield": "roles",
     "parenttype": "Role Profile",
-    "role": "Sales Master Manager"
+    "role": "SE web user"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "has_toggle_filter": 0,
+  "is_multiple_area_management": 0,
+  "modified": "2026-02-03 17:42:25.416915",
+  "name": "General Ledger Accountant",
+  "role_full_name": null,
+  "role_profile": "General Ledger Accountant",
+  "roles": [
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "General Ledger Accountant"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Leave Approver"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Work From Home Approver"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock User"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Customer"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "System Manager"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "ASM"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "NSM"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "TSM"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "ZSM"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "RSM"
+   },
+   {
+    "parent": "General Ledger Accountant",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Billing Approver"
    }
   ]
  }

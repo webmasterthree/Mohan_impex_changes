@@ -2,28 +2,48 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:state",
  "creation": "2025-02-01 18:07:52.232572",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "state"
+  "state",
+  "code",
+  "column_break_kteo",
+  "country"
  ],
  "fields": [
   {
    "fieldname": "state",
    "fieldtype": "Data",
    "label": "State",
-   "unique": 1
+   "reqd": 1
+  },
+  {
+   "fieldname": "code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Code",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_kteo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country",
+   "reqd": 1
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-01 18:12:32.551153",
+ "modified": "2025-11-01 17:32:27.354167",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "State",
- "naming_rule": "By fieldname",
  "nsm_parent_field": "parent_state",
  "owner": "Administrator",
  "permissions": [
@@ -40,7 +60,10 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
+ "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "state"
 }

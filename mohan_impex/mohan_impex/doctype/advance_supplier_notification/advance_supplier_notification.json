@@ -1,10 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2025-03-08 16:19:43.459531",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "section_break_auqb",
+  "naming_series",
+  "section_break_ysiq",
   "purchase_order",
   "column_break_jpto",
   "supplier",
@@ -16,6 +20,7 @@
   "transportation_details_column",
   "transporter_name",
   "vehiclecontainer_number",
+  "lr_no",
   "expected_arrival_date",
   "column_break_pfvt",
   "invoice_copy",
@@ -32,7 +37,6 @@
   "column_break_tojm",
   "total_qty",
   "section_break_ntcc",
-  "asn_status",
   "purchase_receipt",
   "amended_from"
  ],
@@ -41,7 +45,8 @@
    "fetch_from": "purchase_order.supplier",
    "fieldname": "supplier",
    "fieldtype": "Data",
-   "label": "Supplier"
+   "label": "Supplier",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_jpto",
@@ -52,7 +57,8 @@
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Purchase Order",
-   "options": "Purchase Order"
+   "options": "Purchase Order",
+   "read_only": 1
   },
   {
    "fieldname": "section_break_pbix",
@@ -116,18 +122,13 @@
   },
   {
    "fieldname": "other_supporting_documents",
-   "fieldtype": "Attach",
-   "label": "Other Supporting Documents"
+   "fieldtype": "Table",
+   "label": "Other Supporting Documents",
+   "options": "Doc Item"
   },
   {
    "fieldname": "section_break_ntcc",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "asn_status",
-   "fieldtype": "Select",
-   "label": "ASN Status",
-   "options": "Pending\nIn Transit\nReceived"
   },
   {
    "fieldname": "section_break_jqaj",
@@ -197,6 +198,30 @@
   {
    "fieldname": "column_break_tojm",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "lr_no",
+   "fieldtype": "Data",
+   "label": "LR No."
+  },
+  {
+   "fieldname": "section_break_auqb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Series",
+   "no_copy": 1,
+   "options": "ASN-.####.-.FY",
+   "print_hide": 1,
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "section_break_ysiq",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -211,10 +236,11 @@
    "link_fieldname": "custom_asn_no"
   }
  ],
- "modified": "2025-08-23 16:13:51.479753",
+ "modified": "2025-12-03 11:38:53.036431",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Advance Supplier Notification",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -230,6 +256,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

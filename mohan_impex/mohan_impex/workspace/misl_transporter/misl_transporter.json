@@ -1,0 +1,63 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"OCYHB5sqQ7\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">MISL Transporter</span>\",\"col\":12}},{\"id\":\"xHM0hsNlzY\",\"type\":\"card\",\"data\":{\"card_name\":\"Transporter\",\"col\":4}}]",
+ "creation": "2026-02-04 10:32:50.509602",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "message",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "MISL Transporter",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Transporter",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Transport RFQ",
+   "link_count": 0,
+   "link_to": "Transport RFQ",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "RFQ Quotation",
+   "link_count": 0,
+   "link_to": "RFQ Quotation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-02-04 10:36:55.659909",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "MISL Transporter",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "Home",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "MI Transporter"
+  }
+ ],
+ "sequence_id": 52.0,
+ "shortcuts": [],
+ "title": "MISL Transporter"
+}

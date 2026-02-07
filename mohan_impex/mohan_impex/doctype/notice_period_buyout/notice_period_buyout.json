@@ -1,0 +1,187 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "NPB-.YYYY.-.EMP.-.####",
+ "creation": "2026-01-26 11:46:29.324640",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "employee_details_section",
+  "employee",
+  "date_of_joining",
+  "column_break_awhj",
+  "resignation_letter_date",
+  "relieving_date",
+  "salary_withholding_details_section",
+  "salary_withholding",
+  "from_date",
+  "column_break_coiz",
+  "number_of_withholding_cycles",
+  "to_date",
+  "leave_encashment_section",
+  "leave_encashment",
+  "encashment_days",
+  "encashment_amount",
+  "section_break_blam",
+  "notice_period_buyout_table",
+  "base",
+  "amount",
+  "payables_receivables"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "employee.date_of_joining",
+   "fieldname": "date_of_joining",
+   "fieldtype": "Date",
+   "label": "Date of Joining",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.resignation_letter_date",
+   "fieldname": "resignation_letter_date",
+   "fieldtype": "Date",
+   "label": "Resignation Letter Date",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.relieving_date",
+   "fieldname": "relieving_date",
+   "fieldtype": "Date",
+   "label": "Relieving Date",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "salary_withholding.number_of_withholding_cycles",
+   "fieldname": "number_of_withholding_cycles",
+   "fieldtype": "Int",
+   "label": "Number of Withholding Cycles",
+   "read_only": 1
+  },
+  {
+   "fieldname": "salary_withholding",
+   "fieldtype": "Link",
+   "label": "Salary Withholding",
+   "options": "Salary Withholding"
+  },
+  {
+   "fieldname": "employee_details_section",
+   "fieldtype": "Section Break",
+   "label": "Employee Details"
+  },
+  {
+   "fieldname": "column_break_awhj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "salary_withholding_details_section",
+   "fieldtype": "Section Break",
+   "label": "Salary Withholding Details"
+  },
+  {
+   "fetch_from": "salary_withholding.from_date",
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_coiz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "salary_withholding.to_date",
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_blam",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "notice_period_buyout_table",
+   "fieldtype": "Table",
+   "label": "Notice Period Buyout Table",
+   "options": "Notice Period Buyout Table"
+  },
+  {
+   "fieldname": "base",
+   "fieldtype": "Currency",
+   "label": "Base",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Buyout Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "leave_encashment_section",
+   "fieldtype": "Section Break",
+   "label": "Leave Encashment"
+  },
+  {
+   "fieldname": "leave_encashment",
+   "fieldtype": "Link",
+   "label": "Leave Encashment",
+   "options": "Leave Encashment"
+  },
+  {
+   "fetch_from": "leave_encashment.encashment_days",
+   "fieldname": "encashment_days",
+   "fieldtype": "Float",
+   "label": "Encashment Days",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "leave_encashment.encashment_amount",
+   "fieldname": "encashment_amount",
+   "fieldtype": "Currency",
+   "label": "Encashment Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payables_receivables",
+   "fieldtype": "Select",
+   "label": "Payables/Receivables",
+   "options": "\nPayables\nReceivables",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-01-27 12:19:14.547956",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Notice Period Buyout",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

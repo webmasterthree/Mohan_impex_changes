@@ -1,0 +1,198 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-01-23 17:01:11.438895",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "transporter",
+  "transporter_name",
+  "vehicle_type",
+  "driver",
+  "driver_name",
+  "column_break_wklg",
+  "phone_number",
+  "vehicle_number",
+  "quoted_amount",
+  "expected_delivery",
+  "remarks",
+  "section_break_gkgt",
+  "from_location",
+  "column_break_bbud",
+  "to_location",
+  "section_break_culz",
+  "locations",
+  "section_break_zcjn",
+  "total_weightin_kg",
+  "transport",
+  "pick_list",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "transporter",
+   "fieldtype": "Link",
+   "label": "Transporter",
+   "link_filters": "[[\"Supplier\",\"is_transporter\",\"=\",1]]",
+   "options": "Supplier"
+  },
+  {
+   "fetch_from": "transporter.supplier_name",
+   "fieldname": "transporter_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Transporter Name"
+  },
+  {
+   "fieldname": "from_location",
+   "fieldtype": "Small Text",
+   "label": "From Location"
+  },
+  {
+   "fieldname": "to_location",
+   "fieldtype": "Small Text",
+   "label": "To Location"
+  },
+  {
+   "fieldname": "vehicle_type",
+   "fieldtype": "Select",
+   "label": "Vehicle Type",
+   "options": "\nTruck\nTrailer\nContainer\nFTL\nPTL"
+  },
+  {
+   "fieldname": "section_break_culz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_gkgt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_bbud",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_zcjn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_weightin_kg",
+   "fieldtype": "Float",
+   "label": "Total Weight(In KG)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "transport",
+   "fieldtype": "Link",
+   "label": "Transport RFQ",
+   "options": "Transport RFQ",
+   "read_only": 1
+  },
+  {
+   "fieldname": "locations",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Transport RFQ Item",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "label": "Driver",
+   "mandatory_depends_on": "// eval: doc.workflow_state == \"Transporter Assigned\"\n",
+   "options": "Driver"
+  },
+  {
+   "allow_on_submit": 1,
+   "fetch_from": "driver.full_name",
+   "fieldname": "driver_name",
+   "fieldtype": "Small Text",
+   "label": "Driver Name"
+  },
+  {
+   "allow_on_submit": 1,
+   "fetch_from": "driver.cell_number",
+   "fieldname": "phone_number",
+   "fieldtype": "Data",
+   "label": "Phone Number"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "vehicle_number",
+   "fieldtype": "Data",
+   "label": "Vehicle Number"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "quoted_amount",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Quoted Amount",
+   "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "expected_delivery",
+   "fieldtype": "Date",
+   "label": "Expected Delivery"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "column_break_wklg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pick_list",
+   "fieldtype": "Data",
+   "label": "Pick List",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "RFQ Quotation",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-02-06 16:52:32.633381",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "RFQ Quotation",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

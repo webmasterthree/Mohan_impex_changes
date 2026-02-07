@@ -1,0 +1,32 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "condition": "doc.custom_proof_of_delivery_status == \"Uploaded\"",
+ "creation": "2025-10-27 21:34:38.050200",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Sales Invoice",
+ "enabled": 1,
+ "event": "Submit",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "<p>The Proof of Delivery (POD) for Sales Invoice {{ doc.name }} has been uploaded.\nConsignment Note: {{ doc.custom<em>consignment<em>note_no }}</p>\n",
+ "message_type": "Markdown",
+ "modified": "2025-10-27 21:35:31.392311",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "POD Upload",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_document_field": "owner",
+   "receiver_by_role": "Accounts Manager"
+  }
+ ],
+ "send_system_notification": 1,
+ "send_to_all_assignees": 0,
+ "sender": "Mohan_Impex",
+ "sender_email": "webmasterthree.edubild@gmail.com",
+ "subject": "POD Uploaded for Sales Invoice {{ doc.name }}"
+}

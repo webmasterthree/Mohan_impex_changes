@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "format:{message}",
- "creation": "2025-08-13 11:40:10.533668",
+ "creation": "2025-09-14 12:46:49.668949",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -15,9 +15,10 @@
    "label": "Message"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-13 11:42:48.384349",
+ "modified": "2025-09-14 12:46:49.668949",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Notice Period Message",
@@ -37,6 +38,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",

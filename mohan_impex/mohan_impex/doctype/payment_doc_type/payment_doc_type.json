@@ -1,0 +1,88 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-26 18:44:59.910158",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "document_type",
+  "link_name",
+  "rate",
+  "amount",
+  "party_name",
+  "date",
+  "total_qty"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "document_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Document Type",
+   "link_filters": "[[\"DocType\",\"name\",\"in\",[\"Delivery Note\",\"Purchase Receipt\"]]]",
+   "options": "DocType",
+   "read_only": 1
+  },
+  {
+   "columns": 2,
+   "fieldname": "link_name",
+   "fieldtype": "Dynamic Link",
+   "in_list_view": 1,
+   "label": "Link Name",
+   "options": "document_type",
+   "read_only": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "read_only": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "rate",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Rate"
+  },
+  {
+   "columns": 2,
+   "fieldname": "party_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Party Name"
+  },
+  {
+   "columns": 1,
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date"
+  },
+  {
+   "columns": 1,
+   "fieldname": "total_qty",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Total Qty"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-01-23 14:01:08.691932",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Payment Doc Type",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

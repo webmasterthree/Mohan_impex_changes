@@ -1,7 +1,7 @@
 {
  "charts": [],
- "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}}]",
- "creation": "2025-06-22 11:02:37.212236",
+ "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}},{\"id\":\"TZLLsfGe6c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contact Number\",\"col\":3}}]",
+ "creation": "2026-01-23 12:51:16.583940",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -21,16 +21,6 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Pre-Unloading Check",
-   "link_count": 0,
-   "link_to": "Pre-Unloading Check",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
   },
   {
    "hidden": 0,
@@ -85,8 +75,18 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Bank Transaction",
+   "link_count": 0,
+   "link_to": "Bank Transaction",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Account Executive - Banking",
-   "link_count": 5,
+   "link_count": 8,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -150,9 +150,29 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer Visit Management",
+   "link_count": 0,
+   "link_to": "Customer Visit Management",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer",
+   "link_count": 0,
+   "link_to": "Customer",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2025-06-27 08:07:20.492089",
+ "modified": "2026-02-04 10:30:31.031164",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Mohan Impex",
@@ -161,8 +181,22 @@
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
- "roles": [],
+ "roles": [
+  {
+   "role": "Administrator"
+  }
+ ],
  "sequence_id": 1.0,
- "shortcuts": [],
+ "shortcuts": [
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "format": "{}",
+   "label": "Contact Number",
+   "link_to": "Contact Number",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
  "title": "Mohan Impex"
 }

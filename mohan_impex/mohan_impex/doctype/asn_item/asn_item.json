@@ -21,9 +21,10 @@
   {
    "allow_on_submit": 1,
    "fieldname": "qty",
-   "fieldtype": "Int",
+   "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Qty"
+   "label": "Qty",
+   "precision": "2"
   },
   {
    "fieldname": "column_break_ujsz",
@@ -33,12 +34,13 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-06-19 14:38:24.977968",
+ "modified": "2026-02-02 16:24:02.642321",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "ASN Item",
  "owner": "Administrator",
  "permissions": [],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

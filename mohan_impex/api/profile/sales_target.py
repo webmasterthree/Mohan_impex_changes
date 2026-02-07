@@ -48,20 +48,45 @@ def get_sales_target_by_sales_invoice(sales_person, fiscal_year, month, year):
     currency = frappe.get_value("Company", frappe.defaults.get_user_default("Company"), "default_currency")
     currency_symbol = frappe.get_value("Currency", currency, "symbol")
 
+    # query = """
+    #     select sii.item_code, sii.item_group, sum(sii.stock_qty) as qty, sum(sii.amount) as amount, td.target_type, round(td.target_qty*(mdp.percentage_allocation/100)) as target_volume, td.target_amount
+    #     from `tabSales Invoice` as si
+    #     left join `tabSales Team` as st on st.parent = si.name
+    #     left join `tabSales Invoice Item` as sii on sii.parent = si.name
+    #     left join `tabTarget Detail` as td on td.item_group = sii.item_group
+    #     left join `tabMonthly Distribution Percentage` as mdp on mdp.parent = td.distribution_id and mdp.month = "%s"
+    #     where 
+    #         st.sales_person = "%s" 
+    #         and td.fiscal_year = "%s"
+    #         and MONTHNAME(si.posting_date) = "%s"
+    #         and si.docstatus != 2
+    #     group by sii.item_code, sii.item_group
+    # """%(month, sales_person, fiscal_year, month)
     query = """
-        select sii.item_code, sii.item_group, sum(sii.stock_qty) as qty, sum(sii.amount) as amount, td.target_type, round(td.target_qty*(mdp.percentage_allocation/100)) as target_volume, td.target_amount
-        from `tabSales Invoice` as si
-        left join `tabSales Team` as st on st.parent = si.name
-        left join `tabSales Invoice Item` as sii on sii.parent = si.name
-        left join `tabTarget Detail` as td on td.item_group = sii.item_group
-        left join `tabMonthly Distribution Percentage` as mdp on mdp.parent = td.distribution_id and mdp.month = "%s"
-        where 
-            st.sales_person = "%s" 
-            and td.fiscal_year = "%s"
-            and MONTHNAME(si.posting_date) = "%s"
-            and si.docstatus != 2
-        group by sii.item_code, sii.item_group
-    """%(month, sales_person, fiscal_year, month)
+        SELECT 
+            sii.item_code,
+            td.item_group,
+            COALESCE(SUM(sii.stock_qty), 0) AS qty,
+            COALESCE(SUM(sii.amount), 0) AS amount,
+            td.target_type,
+            ROUND(td.target_qty * (mdp.percentage_allocation / 100)) AS target_volume,
+            td.target_amount
+        FROM `tabTarget Detail` AS td
+        LEFT JOIN `tabMonthly Distribution Percentage` AS mdp 
+            ON mdp.parent = td.distribution_id 
+        AND mdp.month = "%s"
+        LEFT JOIN `tabSales Invoice Item` AS sii 
+            ON sii.item_group = td.item_group
+        LEFT JOIN `tabSales Invoice` AS si 
+            ON si.name = sii.parent
+        AND MONTHNAME(si.posting_date) = "%s"
+        AND si.docstatus != 2
+        LEFT JOIN `tabSales Team` AS st 
+            ON st.parent = si.name
+        AND st.sales_person = "%s"
+        WHERE td.fiscal_year = "%s"
+        GROUP BY sii.item_code, td.item_group
+    """ % (month, month, sales_person, fiscal_year)
     sales_targets = frappe.db.sql(query, as_dict=True)
     item_group_targets = {}
     for target in sales_targets:
@@ -80,7 +105,8 @@ def get_sales_target_by_sales_invoice(sales_person, fiscal_year, month, year):
     for k, v in item_group_targets.items():
         item_group_targets[k] = {
             "item_group": k,
-            "items": v,
+            # "items": v,
+            "items": [] if len(v) == 1 and v[0].get("item_code") is None else v,
             "total_qty": convert_to_uom(sum(item["qty"] for item in v), uom),
             "total_amount": shorten_amount(sum(item["amount"] for item in v), currency_symbol),
             "target_type": v[0]["target_type"],
