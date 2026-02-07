@@ -74,5 +74,24 @@
   "reference_doctype": "Sales Invoice",
   "script": "for item in doc.items:\n    if item.delivery_note:\n        # Set custom invoice status\n        frappe.db.set_value(\"Delivery Note\", item.delivery_note, \"invoice_status\", \"Invoiced\")\n\n        # Also set workflow_state if not already set\n        frappe.db.set_value(\"Delivery Note\", item.delivery_note, \"workflow_state\", \"Sales Invoice Generated\")\n\n# for item in doc.items:\n#     if item.delivery_note:\n#         frappe.db.set_value(\"Delivery Note\", item.delivery_note, \"invoice_status\", \"Invoiced\")\n",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "After Save",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2026-02-07 17:05:26.512987",
+  "module": "Mohan Impex",
+  "name": "Sales Inv",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Sales Invoice",
+  "script": "for item in doc.advances:\n    if item.reference_type == \"Payment Entry\" and item.reference_name:\n        pe = frappe.db.get_value(\n            \"Payment Entry\",\n            item.reference_name,\n            [\"reference_no\", \"reference_date\"],\n            as_dict=True\n        ) or {}\n\n        item.chequereference_no = (pe.get(\"reference_no\") or \"\").strip()\n        item.chequereference_date = pe.get(\"reference_date\") or None\n\n    else:\n        item.chequereference_no = \"\"\n        item.chequereference_date = None\n",
+  "script_type": "DocType Event"
  }
 ]

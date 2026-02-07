@@ -187,5 +187,26 @@
   "modified": "2024-12-25 19:18:52.896202",
   "name": "Approve",
   "workflow_action_name": "Approve"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-02-07 13:32:44.799709",
+  "name": "Open",
+  "workflow_action_name": "Open"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-02-07 13:33:01.749675",
+  "name": "Re-Open",
+  "workflow_action_name": "Re-Open"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2026-02-07 13:33:11.289659",
+  "name": "Cancel",
+  "workflow_action_name": "Cancel"
  }
 ]
