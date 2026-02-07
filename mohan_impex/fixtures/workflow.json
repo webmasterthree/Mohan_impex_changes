@@ -2258,7 +2258,7 @@
     "parentfield": "states",
     "parenttype": "Workflow",
     "send_email": 0,
-    "state": "Transporter Assigned",
+    "state": "Awaiting Final Assignment",
     "update_field": "status",
     "update_value": "Quotation Received",
     "workflow_builder_id": null
@@ -2296,7 +2296,7 @@
     "allow_self_approval": 1,
     "allowed": "Sales Executive",
     "condition": null,
-    "next_state": "Transporter Assigned",
+    "next_state": "Awaiting Final Assignment",
     "parent": "Transport RFQ Flow",
     "parentfield": "transitions",
     "parenttype": "Workflow",
@@ -3965,7 +3965,7 @@
   "doctype": "Workflow",
   "document_type": "RFQ Quotation",
   "is_active": 1,
-  "modified": "2026-01-28 19:05:31.401047",
+  "modified": "2026-02-06 18:51:30.374291",
   "name": "RFQ Quotation",
   "override_status": 0,
   "send_email_alert": 0,
@@ -3987,7 +3987,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "All",
+    "allow_edit": "Logistics Kolkata",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -4003,7 +4003,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "System Manager",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -4013,7 +4013,7 @@
     "parentfield": "states",
     "parenttype": "Workflow",
     "send_email": 1,
-    "state": "Transporter Assigned",
+    "state": "Awaiting Final Assignment",
     "update_field": null,
     "update_value": null,
     "workflow_builder_id": null
@@ -4052,9 +4052,9 @@
    {
     "action": "Assign",
     "allow_self_approval": 1,
-    "allowed": "System Manager",
+    "allowed": "Logistics Kolkata",
     "condition": null,
-    "next_state": "Transporter Assigned",
+    "next_state": "Awaiting Final Assignment",
     "parent": "RFQ Quotation",
     "parentfield": "transitions",
     "parenttype": "Workflow",
@@ -4065,7 +4065,7 @@
    {
     "action": "Reject",
     "allow_self_approval": 1,
-    "allowed": "System Manager",
+    "allowed": "Logistics Kolkata",
     "condition": null,
     "next_state": "Rejected",
     "parent": "RFQ Quotation",

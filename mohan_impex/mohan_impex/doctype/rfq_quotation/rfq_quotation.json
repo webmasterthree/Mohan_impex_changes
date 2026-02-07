@@ -96,6 +96,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "driver",
    "fieldtype": "Link",
    "label": "Driver",
@@ -103,6 +104,7 @@
    "options": "Driver"
   },
   {
+   "allow_on_submit": 1,
    "fetch_from": "driver.full_name",
    "fieldname": "driver_name",
    "fieldtype": "Small Text",
@@ -116,11 +118,13 @@
    "label": "Phone Number"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "vehicle_number",
    "fieldtype": "Data",
    "label": "Vehicle Number"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "quoted_amount",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -128,11 +132,13 @@
    "reqd": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "expected_delivery",
    "fieldtype": "Date",
    "label": "Expected Delivery"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "remarks",
    "fieldtype": "Small Text",
    "label": "Remarks"
@@ -162,7 +168,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-02 15:35:35.786190",
+ "modified": "2026-02-06 16:52:32.633381",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "RFQ Quotation",

@@ -154,7 +154,7 @@
   "doctype": "Role Profile",
   "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
-  "modified": "2026-02-05 12:57:40.557464",
+  "modified": "2026-02-05 17:24:10.348761",
   "name": "ZSM",
   "role_full_name": null,
   "role_profile": "ZSM",
@@ -188,6 +188,12 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Support Team"
+   },
+   {
+    "parent": "ZSM",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Leave Approver"
    },
    {
     "parent": "ZSM",
@@ -327,7 +333,6 @@
   "docstatus": 0,
   "doctype": "Role Profile",
   "has_toggle_filter": 1,
-<<<<<<< HEAD
   "is_multiple_area_management": 1,
   "modified": "2026-02-05 12:57:09.117203",
   "name": "ASM",
@@ -384,10 +389,6 @@
   "has_toggle_filter": 1,
   "is_multiple_area_management": 0,
   "modified": "2026-02-05 12:57:58.243822",
-=======
-  "is_multiple_area_management": 0,
-  "modified": "2025-08-18 10:24:57.833093",
->>>>>>> origin/dev_hamaza
   "name": "NSM",
   "role_full_name": null,
   "role_profile": "NSM",
@@ -445,84 +446,6 @@
     "parentfield": "roles",
     "parenttype": "Role Profile",
     "role": "Work From Home Approver"
-   }
-  ]
- },
- {
-  "docstatus": 0,
-  "doctype": "Role Profile",
-  "has_toggle_filter": 1,
-  "is_multiple_area_management": 0,
-  "modified": "2025-06-29 09:42:38.529572",
-  "name": "ASM",
-  "role_full_name": null,
-  "role_profile": "ASM",
-  "roles": [
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "ASM"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Employee"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Customer"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Item Manager"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Manager"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales Master Manager"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "SE"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Sales User"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Stock User"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Support Team"
-   },
-   {
-    "parent": "ASM",
-    "parentfield": "roles",
-    "parenttype": "Role Profile",
-    "role": "Leave Approver"
    }
   ]
  },

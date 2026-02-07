@@ -15,14 +15,10 @@ fixtures = [
     {"dt": "Custom DocPerm", "filters": [["role", "in", role_list]]},
     {"dt": "Property Setter", "filters": [["doc_type", "in", ("Customer", "Notification Log")], ["property", "in", "options"]]},
     {"dt": "Role", "filters": [["name", "in", role_list]]},
-    {"dt": "Role Profile", "filters": [["name", "in", role_list]]},
+    # {"dt": "Role Profile", "filters": [["name", "in", role_list]]},
     {"dt": "Designation", "filters": [["name", "in", role_list]]},
     {"dt": "Module Profile", "filters": [["name", "in", ("Mohan Impex")]]},
-    {"doctype": "Custom Field",
-        "filters": {
-            "module": ["in", ["Mohan Impex"]]
-            }
-    },
+    {"dt": "Custom Field", "filters": [["module", "=", "Mohan Impex"]]},
     {"dt": "Workspace", "filters": [["name", "in", ("Mohan Impex","Quality Control")]]},
     "Workflow",
     "Workflow State",
@@ -87,7 +83,6 @@ doc_events = {
     "RFQ Quotation": {
         "on_submit": [
             "mohan_impex.linked_pick.update_transport_rfq_title_on_submit",
-            "mohan_impex.linked_pick.reject_other_quotations_on_submit",
         ]
     },
     # "Employee Checkin": {

@@ -113,7 +113,6 @@ def get_linked_pick_list(delivery_note: str):
 # 		frappe.msgprint(_("Transport RFQ title not updated (db update failed)."))
 
 import frappe
-from mohan_impex.transporter import quotation_receive_status, mark_rejected
 
 
 def update_transport_rfq_title_on_submit(doc, method=None):
@@ -142,22 +141,149 @@ def update_transport_rfq_title_on_submit(doc, method=None):
     except Exception:
         frappe.log_error(frappe.get_traceback(), "Transport RFQ Title Update Error")
 
+# from mohan_impex.transporter import quotation_receive_status, mark_rejected
+# def reject_other_quotations_on_submit(doc, method=None):
+#     transport_rfq = doc.get("transport")
+#     if not transport_rfq:
+#         return
 
-def reject_other_quotations_on_submit(doc, method=None):
+#     rejected_names = mark_rejected(transport_rfq) or []
+#     for name in rejected_names:
+#         if name != doc.name:
+#             frappe.db.set_value(
+#                 "RFQ Quotation",
+#                 name,
+#                 "workflow_state",
+#                 "Rejected",
+#                 update_modified=True
+#             )
+
+
+
+# import frappe
+# from mohan_impex.transporter import quotation_receive_status, mark_rejected
+
+
+# @frappe.whitelist()
+# def assign_transporter_actions(rfq_quotation_name):
+#     if not rfq_quotation_name:
+#         frappe.throw("RFQ Quotation name is required")
+
+#     doc = frappe.get_doc("RFQ Quotation", rfq_quotation_name)
+
+#     transport_rfq = doc.get("transport")
+#     if not transport_rfq:
+#         frappe.throw("Transport RFQ not linked")
+
+#     try:
+#         status_res = quotation_receive_status(transport_rfq) or {}
+#         status = status_res.get("status")
+#     except Exception:
+#         frappe.log_error(frappe.get_traceback(), "Transport RFQ Status Fetch Error")
+#         frappe.throw("Failed to fetch Transport RFQ status")
+
+#     if status:
+#         try:
+#             frappe.db.set_value(
+#                 "Transport RFQ",
+#                 transport_rfq,
+#                 "title",
+#                 status,
+#                 update_modified=True
+#             )
+#         except Exception:
+#             frappe.log_error(frappe.get_traceback(), "Transport RFQ Title Update Error")
+#             frappe.throw("Failed to update Transport RFQ title")
+
+#     try:
+#         rejected_names = mark_rejected(transport_rfq) or []
+#     except Exception:
+#         frappe.log_error(frappe.get_traceback(), "Mark Rejected Error")
+#         frappe.throw("Failed to reject other quotations")
+
+#     for name in rejected_names:
+#         if name != doc.name:
+#             frappe.db.set_value(
+#                 "RFQ Quotation",
+#                 name,
+#                 "workflow_state",
+#                 "Rejected",
+#                 update_modified=True
+#             )
+
+#     frappe.db.commit()
+
+#     return {
+#         "transport_rfq": transport_rfq,
+#         "status_applied": status or "",
+#         "rejected_quotations": [n for n in rejected_names if n != doc.name],
+#     }
+
+
+import frappe
+from mohan_impex.transporter import quotation_receive_status, mark_rejected
+
+
+@frappe.whitelist()
+def assign_transporter_actions(rfq_quotation_name):
+    if not rfq_quotation_name:
+        frappe.throw("RFQ Quotation name is required")
+
+    doc = frappe.get_doc("RFQ Quotation", rfq_quotation_name)
+
     transport_rfq = doc.get("transport")
     if not transport_rfq:
-        return
+        frappe.throw("Transport RFQ not linked")
 
-    rejected_names = mark_rejected(transport_rfq) or []
-    for name in rejected_names:
-        if name != doc.name:
+    # 1) Fetch latest status of Transport RFQ
+    try:
+        status_res = quotation_receive_status(transport_rfq) or {}
+        status = status_res.get("status")
+    except Exception:
+        frappe.log_error(frappe.get_traceback(), "Transport RFQ Status Fetch Error")
+        frappe.throw("Failed to fetch Transport RFQ status")
+
+    # 2) Update Transport RFQ title with status
+    if status:
+        try:
             frappe.db.set_value(
-                "RFQ Quotation",
-                name,
-                "workflow_state",
-                "Rejected",
+                "Transport RFQ",
+                transport_rfq,
+                "title",
+                status,
                 update_modified=True
             )
+        except Exception:
+            frappe.log_error(frappe.get_traceback(), "Transport RFQ Title Update Error")
+            frappe.throw("Failed to update Transport RFQ title")
 
+    # 3) Reject other quotations & set selected to Awaiting Final Assignment
+    try:
+        rejected_names = mark_rejected(transport_rfq) or []
+    except Exception:
+        frappe.log_error(frappe.get_traceback(), "Mark Rejected Error")
+        frappe.throw("Failed to reject other quotations")
 
+    # Ensure current doc is always updated even if mark_rejected() doesn't return it
+    all_names = set(rejected_names or [])
+    all_names.add(doc.name)
 
+    for name in all_names:
+        workflow_state = "Awaiting Final Assignment" if name == doc.name else "Rejected"
+        frappe.db.set_value(
+            "RFQ Quotation",
+            name,
+            "workflow_state",
+            workflow_state,
+            update_modified=True
+        )
+
+    frappe.db.commit()
+
+    return {
+        "transport_rfq": transport_rfq,
+        "status_applied": status or "",
+        "rejected_quotations": [n for n in all_names if n != doc.name],
+        "selected_quotation": doc.name,
+        "selected_state": "Awaiting Final Assignment",
+    }
