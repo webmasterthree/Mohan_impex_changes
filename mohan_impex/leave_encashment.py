@@ -15,6 +15,8 @@ def get_formula(emp):
 
 
 
+
+
 def validate(self, event):
     set_encashment_amount(self)
 
@@ -24,19 +26,17 @@ def set_encashment_amount(self):
     if not hasattr(self, "_salary_structure"):
         self.set_salary_structure()
 
-    # 👉 Salary Structure se setting lao
     leave_mode, formula = frappe.db.get_value(
         "Salary Structure",
         self._salary_structure,
         ["custom_leave_encashment", "custom_formula"]
     )
 
-    # -----------------------------------
-    # 👉 Case 1 : Formula Base
-    # -----------------------------------
+    # -----------------------------
+    # 👉 Formula Base Mode
+    # -----------------------------
     if leave_mode == "Formula Base" and formula:
 
-        # Base fetch karo
         base = frappe.get_value(
             "Salary Structure Assignment",
             filters={
@@ -51,17 +51,24 @@ def set_encashment_amount(self):
 
         context = {
             "base": base,
-            "encashment_days": self.encashment_days,
             "days": self.encashment_days,
             "doc": self,
         }
 
-        self.encashment_amount = safe_eval(formula, context)
+        # 👉 Formula calculate
+        per_day_amount = safe_eval(formula, None, context) or 0
+
+        # ✅ Save in custom field
+        self.custom_formula_base_amount = per_day_amount
+
+        # ✅ Final amount
+        self.encashment_amount = per_day_amount * (self.encashment_days or 0)
+
         return
 
-    # -----------------------------------
-    # 👉 Case 2 : Fix Amount (Existing)
-    # -----------------------------------
+    # -----------------------------
+    # 👉 Fixed Mode
+    # -----------------------------
     per_day_encashment = frappe.get_value(
         "Salary Structure Assignment",
         filters={
@@ -72,18 +79,7 @@ def set_encashment_amount(self):
         },
         fieldname="leave_encashment_amount_per_day",
         order_by="from_date desc",
-    )
+    ) or 0
 
-    if not per_day_encashment:
-        per_day_encashment = frappe.db.get_value(
-            "Salary Structure",
-            self._salary_structure,
-            "leave_encashment_amount_per_day",
-        )
-
-    per_day_encashment = per_day_encashment or 0
-
-    self.encashment_amount = (
-        self.encashment_days * per_day_encashment
-        if per_day_encashment > 0 else 0
-    )
+    self.custom_formula_base_amount = per_day_encashment
+    self.encashment_amount = per_day_encashment * (self.encashment_days or 0)
