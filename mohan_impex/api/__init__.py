@@ -393,7 +393,7 @@ def get_competitor_items():
 @frappe.whitelist()
 def get_items():
     query = """
-        select i.item_code, i.item_name, i.item_category, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
+        select DISTINCT i.item_code, i.item_name, i.item_category, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
         from `tabItem` as i
         join `tabBase Components` as bc on bc.item_code = i.item_code
     """

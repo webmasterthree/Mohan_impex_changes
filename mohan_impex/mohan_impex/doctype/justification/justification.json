@@ -12,6 +12,8 @@
   "credit_note",
   "hold_so",
   "close_so",
+  "hold_bo",
+  "close_bo",
   "column_break_apsy",
   "supplier_quotation",
   "debit_note",
@@ -87,13 +89,25 @@
    "fieldname": "column_break_apsy",
    "fieldtype": "Column Break",
    "label": "Buying"
+  },
+  {
+   "default": "0",
+   "fieldname": "hold_bo",
+   "fieldtype": "Check",
+   "label": "Hold BO"
+  },
+  {
+   "default": "0",
+   "fieldname": "close_bo",
+   "fieldtype": "Check",
+   "label": "Close Bo"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-01-31 14:04:13.907612",
- "modified_by": "Administrator",
+ "modified": "2026-02-09 18:46:45.850919",
+ "modified_by": "revasiya.h786@gmail.com",
  "module": "Mohan Impex",
  "name": "Justification",
  "naming_rule": "By fieldname",

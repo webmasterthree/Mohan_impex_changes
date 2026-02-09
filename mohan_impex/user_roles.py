@@ -70,3 +70,5 @@ def is_created(transport=None, user_email=None):
 
 	filters = {"transporter": transporter, "transport": transport} if transport else {"transporter": transporter}
 	return bool(frappe.db.exists("RFQ Quotation", filters))
+
+
