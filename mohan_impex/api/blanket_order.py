@@ -13,6 +13,7 @@ def update_items(blanket_order, items, from_date):
 	if doc.workflow_state != "Open":
 		frappe.throw("Blanket Order must be Open to update items")
 
+	
 	doc.flags.ignore_validate_update_after_submit = True
 
 	existing_rows = {row.name: row for row in doc.items}
@@ -25,6 +26,7 @@ def update_items(blanket_order, items, from_date):
 		doc_row = existing_rows[row_name]
 		item_changed = row.get("item_code") != doc_row.item_code
 
+		
 		if item_changed:
 			doc.append("custom_blanket_order_item_history", {
 				"item_code": doc_row.item_code,
@@ -40,8 +42,9 @@ def update_items(blanket_order, items, from_date):
 			doc_row.item_name = frappe.get_value(
 				"Item", row.get("item_code"), "item_name"
 			)
-			doc_row.ordered_qty = 0
+			# doc_row.ordered_qty = 0
 
+		
 		if not item_changed:
 			if flt(row.get("qty")) < flt(doc_row.ordered_qty):
 				frappe.throw(

@@ -54,11 +54,11 @@
   {
    "fieldname": "replaced_on",
    "fieldtype": "Date",
-   "in_list_view": 1,
    "label": "Replaced On",
    "read_only": 1
   },
   {
+   "columns": 1,
    "fieldname": "replaced_by",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -71,7 +71,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-02-02 16:22:52.162808",
+ "modified": "2026-02-08 14:07:23.663357",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Blanket Order Item History",
