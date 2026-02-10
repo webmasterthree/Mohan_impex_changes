@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letterhead": null,
- "modified": "2026-01-30 16:26:43.971827",
+ "modified": "2026-02-10 14:26:05.692477",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Sales Order Analysis-Pending Items",
@@ -36,10 +36,7 @@
    "role": "Stock User"
   },
   {
-   "role": "Inventory Manager"
-  },
-  {
-   "role": "Sr. Logistics Executive"
+   "role": "Billing Team"
   }
  ],
  "timeout": 0

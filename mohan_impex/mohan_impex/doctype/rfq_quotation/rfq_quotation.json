@@ -8,6 +8,8 @@
   "transporter",
   "transporter_name",
   "vehicle_type",
+  "vehicle_capacity",
+  "mention_vehicle_capacity",
   "driver",
   "driver_name",
   "column_break_wklg",
@@ -22,6 +24,9 @@
   "to_location",
   "section_break_culz",
   "locations",
+  "terms_and_conditions_section",
+  "terms_and_conditions",
+  "accept",
   "section_break_zcjn",
   "total_weightin_kg",
   "transport",
@@ -57,7 +62,7 @@
    "fieldname": "vehicle_type",
    "fieldtype": "Select",
    "label": "Vehicle Type",
-   "options": "\nTruck\nTrailer\nContainer\nFTL\nPTL"
+   "options": "\nTruck\nTrailer\nContainer"
   },
   {
    "fieldname": "section_break_culz",
@@ -162,13 +167,49 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "terms_and_conditions_section",
+   "fieldtype": "Section Break",
+   "label": "Terms and conditions"
+  },
+  {
+   "default": "Assigned vehicle loading area must be neat, clean, dry, and rust-free.\nUpper side and lower side tarpaulin must be available and properly fixed at the time of loading.\nKhalasi is mandatory for loading and unloading at all Pan-India Britannia plants.\nAssigned vehicle documents must be valid as per MVI norms, including RC, Insurance, Pollution Certificate (PUC), and Tax Token.\nAssigned vehicles not meeting the above conditions will be rejected at the loading point without any claim.\nIf transporters fail to place a vehicle fine will be applicable against them and if multiple times it happens again with the same transporter then he will be blacklisted for transporting in this company.",
+   "fieldname": "terms_and_conditions",
+   "fieldtype": "Small Text",
+   "label": "Terms and conditions",
+   "permlevel": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "accept",
+   "fieldtype": "Check",
+   "label": "Accept Terms and conditions"
+  },
+  {
+   "depends_on": "eval:doc.vehicle_type",
+   "fieldname": "vehicle_capacity",
+   "fieldtype": "Link",
+   "label": "Vehicle Capacity",
+   "link_filters": "[[\"Vehicle Capacity\",\"status\",\"=\",\"Active\"]]",
+   "mandatory_depends_on": "eval:doc.vehicle_type",
+   "options": "Vehicle Capacity"
+  },
+  {
+   "depends_on": "eval:doc.vehicle_capacity === \"Others\"",
+   "description": " Vehicle capacity is required when Others is selected",
+   "fieldname": "mention_vehicle_capacity",
+   "fieldtype": "Data",
+   "label": "Mention Vehicle Capacity",
+   "mandatory_depends_on": "eval:doc.vehicle_capacity === \"Others\""
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-06 16:52:32.633381",
+ "modified": "2026-02-10 14:37:52.647037",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "RFQ Quotation",
