@@ -50,17 +50,22 @@ from frappe.utils import getdate, today
 
 
 @frappe.whitelist()
-def split_rejected_batches(pr_name):
+def split_rejected_batches(pr_name, rejected_warehouse=None, workflow_status=None):
     """
     Split rejected batches into a new Serial and Batch Bundle
     and update item qty fields accordingly
+    Also updates workflow status based on button clicked
     """
     
     pr = frappe.get_doc("Purchase Receipt", pr_name)
     
-    # Check if PR is draft
-    if pr.docstatus != 0:
-        frappe.throw("This function only works on Draft Purchase Receipts")
+    # ✅ Validate rejected warehouse
+    if not rejected_warehouse:
+        frappe.throw("Rejected Warehouse is mandatory")
+    
+    # ✅ Validate warehouse exists
+    if not frappe.db.exists("Warehouse", rejected_warehouse):
+        frappe.throw(f"Warehouse {rejected_warehouse} does not exist")
     
     result = {}
     today_date = getdate(today())
@@ -81,7 +86,7 @@ def split_rejected_batches(pr_name):
         accepted_qty_total = 0
         rejected_qty_total = 0
 
-        # 1️⃣ Classify batches
+        # 1️⃣ Classify batches based on expiry
         for entry in old_bundle.entries:
 
             if not entry.batch_no:
@@ -95,7 +100,7 @@ def split_rejected_batches(pr_name):
 
             if expiry and expiry < today_date:
                 rejected_entries.append(entry)
-                rejected_qty_total += entry.qty
+                rejected_qty_total += abs(entry.qty)
             else:
                 accepted_entries.append(entry)
                 accepted_qty_total += entry.qty
@@ -104,12 +109,12 @@ def split_rejected_batches(pr_name):
         if not rejected_entries:
             continue
 
-        # 2️⃣ Create NEW rejected bundle (DRAFT)
+        # 2️⃣ Create NEW rejected bundle
         new_bundle = frappe.new_doc("Serial and Batch Bundle")
         new_bundle.item_code = old_bundle.item_code
         new_bundle.voucher_type = old_bundle.voucher_type
         new_bundle.voucher_no = old_bundle.voucher_no
-        new_bundle.warehouse = old_bundle.warehouse
+        new_bundle.warehouse = rejected_warehouse
         new_bundle.type_of_transaction = old_bundle.type_of_transaction
         new_bundle.company = old_bundle.company
 
@@ -117,13 +122,13 @@ def split_rejected_batches(pr_name):
             new_bundle.append("entries", {
                 "batch_no": e.batch_no,
                 "qty": e.qty,
-                "warehouse": e.warehouse,
+                "warehouse": rejected_warehouse,
                 "incoming_rate": getattr(e, 'incoming_rate', 0)
             })
 
         new_bundle.insert(ignore_permissions=True)
 
-        # 3️⃣ Update OLD bundle (remove rejected, keep accepted)
+        # 3️⃣ Update OLD bundle (remove rejected, keep accepted only)
         old_bundle.entries = []
         
         for e in accepted_entries:
@@ -137,18 +142,26 @@ def split_rejected_batches(pr_name):
         old_bundle.save(ignore_permissions=True)
 
         # 4️⃣ Update item table fields
-        item.qty = accepted_qty_total  # ✅ Set accepted qty
-        item.rejected_qty = rejected_qty_total  # ✅ Set rejected qty
-        item.rejected_serial_and_batch_bundle = new_bundle.name  # ✅ Set rejected bundle
+        item.db_set('qty', accepted_qty_total, update_modified=False)
+        item.db_set('rejected_qty', rejected_qty_total, update_modified=False)
+        item.db_set('rejected_serial_and_batch_bundle', new_bundle.name, update_modified=False)
+        item.db_set('rejected_warehouse', rejected_warehouse, update_modified=False)
 
-        # Store rejected bundle name for response
+        # Store result for response
         result[item.name] = {
             "rejected_bundle": new_bundle.name,
             "accepted_qty": accepted_qty_total,
-            "rejected_qty": rejected_qty_total
+            "rejected_qty": rejected_qty_total,
+            "rejected_warehouse": rejected_warehouse
         }
 
-    pr.save(ignore_permissions=True)
+    # 5️⃣ Update workflow status
+    if workflow_status:
+        # Update workflow_state field
+        pr.db_set('workflow_state', workflow_status, update_modified=False)
+        result['workflow_status'] = workflow_status
+
+    # ✅ Commit changes
     frappe.db.commit()
     
     return result
