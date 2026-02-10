@@ -24,14 +24,17 @@
   "to_location",
   "section_break_culz",
   "locations",
-  "terms_and_conditions_section",
-  "terms_and_conditions",
-  "accept",
   "section_break_zcjn",
   "total_weightin_kg",
   "transport",
   "pick_list",
-  "amended_from"
+  "amended_from",
+  "terms_tab",
+  "terms_and_conditions_section",
+  "terms_and_conditions",
+  "accept",
+  "section_break_cjdm",
+  "payment_terms"
  ],
  "fields": [
   {
@@ -203,13 +206,31 @@
    "fieldtype": "Data",
    "label": "Mention Vehicle Capacity",
    "mandatory_depends_on": "eval:doc.vehicle_capacity === \"Others\""
+  },
+  {
+   "fieldname": "terms_tab",
+   "fieldtype": "Tab Break",
+   "label": "Terms"
+  },
+  {
+   "fieldname": "payment_terms",
+   "fieldtype": "Link",
+   "label": "Payment Terms",
+   "link_filters": "[[\"Payment Terms Template\",\"for_transporter\",\"=\",1]]",
+   "options": "Payment Terms Template"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_cjdm",
+   "fieldtype": "Section Break",
+   "label": "Payment Terms"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-10 14:37:52.647037",
+ "modified": "2026-02-10 16:30:49.695601",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "RFQ Quotation",
