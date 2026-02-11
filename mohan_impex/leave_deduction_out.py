@@ -130,6 +130,7 @@ from frappe.utils import (
     time_diff_in_hours, get_datetime
 )
 from datetime import datetime, time
+import math
 
 def after_insert(doc, method):
     emp = frappe.get_doc("Employee",doc.employee)
@@ -198,11 +199,13 @@ def after_insert(doc, method):
         for row in overtime.overtime_table:
             if row.attendance_date == attendance_date:
                 row.overtime_hours = overtime_hours
+                row.approved_hours = math.floor(overtime_hours)
                 break
         else:
             overtime.append("overtime_table", {
                 "attendance_date": attendance_date,
                 "overtime_hours": overtime_hours
+                "approved_hours": math.floor(overtime_hours)
             })
 
         # Update total overtime

@@ -152,12 +152,6 @@ from hrms.hr.doctype.leave_application.leave_application import get_leave_balanc
 
 
 
-from frappe.utils import get_datetime
-from datetime import datetime, timedelta
-
-
-
-
 def _to_time(val):
    """Convert ERPNext shift time (time or timedelta) -> datetime.time"""
    if isinstance(val, timedelta):
@@ -254,25 +248,50 @@ def get_employee_late_checkins(employee):
 
 
 
-
-
-
 def get_leave_balances(employee):
-   """Get leave balances for employee"""
-   leave_types = ["Casual Leave", "Sick Leave", "Earned Leave"]
-   balances = {}
+    """Get leave balances for employee (excluding 0.5 balances)"""
+    # from erpnext.hr.doctype.leave_application.leave_application import get_leave_balance_on
+    from frappe.utils import nowdate
+    
+    leave_types = ["Casual Leave", "Sick Leave", "Earned Leave"]
+    balances = {}
+    
+    for lt in leave_types:
+        try:
+            balance = get_leave_balance_on(
+                employee=employee,
+                leave_type=lt,
+                date=nowdate()
+            ) or 0
+            
+            # Skip if balance is 0.5 (set to 0)
+            if balance == 0.5:
+                balances[lt] = 0
+            else:
+                balances[lt] = balance
+                
+        except Exception:
+            balances[lt] = 0
+    
+    return balances
+
+
+# def get_leave_balances(employee):
+#    """Get leave balances for employee"""
+#    leave_types = ["Casual Leave", "Sick Leave", "Earned Leave"]
+#    balances = {}
   
-   for lt in leave_types:
-       try:
-           balances[lt] = get_leave_balance_on(
-               employee=employee,
-               leave_type=lt,
-               date=nowdate()
-           ) or 0
-       except Exception:
-           balances[lt] = 0
+#    for lt in leave_types:
+#        try:
+#            balances[lt] = get_leave_balance_on(
+#                employee=employee,
+#                leave_type=lt,
+#                date=nowdate()
+#            ) or 0
+#        except Exception:
+#            balances[lt] = 0
   
-   return balances
+#    return balances
 
 
 
@@ -353,126 +372,230 @@ def get_employees_by_specific_shift(shift_name):
 
 from frappe.utils import nowdate, getdate
 
-
-
-
 def process_employee_leave(employee, context_label, return_result=False):
+    from frappe.utils import add_days
+    
+    result = {
+        "leave_created": False,
+        "skipped": False,
+        "reason": "",
+        "late_count": 0,
+        "leave_type": "",
+        "created_count": 0
+    }
+
+    # -------------------------------------------------
+    # Get late/early events
+    # -------------------------------------------------
+    late_checkins = get_employee_late_checkins(employee)
+    result["late_count"] = late_checkins
+
+    required_leaves = late_checkins // 3
+
+    if required_leaves <= 0:
+        result["skipped"] = True
+        result["reason"] = "Less than 3 late events"
+        return result if return_result else None
+
+    # -------------------------------------------------
+    # MONTH RANGE
+    # -------------------------------------------------
+    today = getdate()
+    first_day = today.replace(day=1)
+
+    # -------------------------------------------------
+    # Count already auto-created leaves THIS MONTH
+    # -------------------------------------------------
+    existing = frappe.db.count(
+        "Leave Application",
+        filters={
+            "employee": employee,
+            "from_date": [">=", first_day],
+            "description": ["like", "Auto Leave Deducted:%"],
+            "docstatus": 1
+        }
+    )
+
+    to_create = required_leaves - existing
+
+    if to_create <= 0:
+        result["skipped"] = True
+        result["reason"] = "Already deducted"
+        return result if return_result else None
+
+    # -------------------------------------------------
+    # Get Leave Balances (excluding 0.5 balances)
+    # -------------------------------------------------
+    balance = get_leave_balances(employee)
+
+    # -------------------------------------------------
+    # CREATE LEAVES ONE BY ONE WITH PRIORITY
+    # -------------------------------------------------
+    leave_priority = ["Casual Leave", "Sick Leave", "Earned Leave", "Leave Without Pay"]
+    leaves_created = 0
+    current_date = today
+
+    try:
+        for i in range(to_create):
+            # Determine which leave type to use based on available balance
+            selected_leave_type = None
+            
+            for lt in leave_priority:
+                if lt == "Leave Without Pay":
+                    # LWP is always available
+                    selected_leave_type = lt
+                    break
+                elif balance.get(lt, 0) >= 1:  # Only consider if balance >= 1 (skip 0.5)
+                    selected_leave_type = lt
+                    break
+            
+            if not selected_leave_type:
+                selected_leave_type = "Leave Without Pay"
+            
+            # Create single day leave
+            leave_doc = frappe.get_doc({
+                "doctype": "Leave Application",
+                "employee": employee,
+                "leave_type": selected_leave_type,
+                "from_date": current_date,
+                "to_date": current_date,
+                "posting_date": today,
+                "description": f"Auto Leave Deducted: {late_checkins} late/early check-ins ({context_label})",
+                "status": "Approved"
+            })
+
+            leave_doc.insert(ignore_permissions=True)
+            leave_doc.submit()
+
+            # Deduct from balance after successful creation
+            if selected_leave_type != "Leave Without Pay":
+                balance[selected_leave_type] -= 1
+            
+            leaves_created += 1
+            current_date = add_days(current_date, 1)  # Next day for next leave
+
+            frappe.logger().info(
+                f"[AUTO LEAVE] {employee} -> Created leave #{i+1} ({selected_leave_type}) on {current_date}"
+            )
+
+        result["leave_created"] = True
+        result["created_count"] = leaves_created
+        result["leave_type"] = "Multiple types"  # Since we may use different types
+
+        frappe.logger().info(
+            f"[AUTO LEAVE] {employee} -> Created {leaves_created} leave(s) successfully"
+        )
+
+    except Exception as e:
+        frappe.logger().error(f"[AUTO LEAVE ERROR] {employee}: {str(e)}")
+        result["skipped"] = True
+        result["reason"] = f"Error: {str(e)}"
+        # If some leaves were created before error, still count them
+        if leaves_created > 0:
+            result["leave_created"] = True
+            result["created_count"] = leaves_created
+
+    return result if return_result else None
 
 
-   result = {
-       "leave_created": False,
-       "skipped": False,
-       "reason": "",
-       "late_count": 0,
-       "leave_type": "",
-       "created_count": 0
-   }
+# def process_employee_leave(employee, context_label, return_result=False):
+#     from frappe.utils import add_days
+    
+#     result = {
+#         "leave_created": False,
+#         "skipped": False,
+#         "reason": "",
+#         "late_count": 0,
+#         "leave_type": "",
+#         "created_count": 0
+#     }
 
+#     # -------------------------------------------------
+#     # Get late/early events
+#     # -------------------------------------------------
+#     late_checkins = get_employee_late_checkins(employee)
+#     result["late_count"] = late_checkins
 
-   # -------------------------------------------------
-   # Get late/early events
-   # -------------------------------------------------
-   late_checkins = get_employee_late_checkins(employee)
-   result["late_count"] = late_checkins
+#     required_leaves = late_checkins // 3
 
+#     if required_leaves <= 0:
+#         result["skipped"] = True
+#         result["reason"] = "Less than 3 late events"
+#         return result if return_result else None
 
-   required_leaves = late_checkins // 3
+#     # -------------------------------------------------
+#     # MONTH RANGE
+#     # -------------------------------------------------
+#     today = getdate()
+#     first_day = today.replace(day=1)
 
+#     # -------------------------------------------------
+#     # Count already auto-created leaves THIS MONTH
+#     # -------------------------------------------------
+#     existing = frappe.db.count(
+#         "Leave Application",
+#         filters={
+#             "employee": employee,
+#             "from_date": [">=", first_day],
+#             "description": ["like", "Auto Leave Deducted:%"],
+#             "docstatus": 1
+#         }
+#     )
 
-   if required_leaves <= 0:
-       result["skipped"] = True
-       result["reason"] = "Less than 3 late events"
-       return result if return_result else None
+#     to_create = required_leaves - existing
 
+#     if to_create <= 0:
+#         result["skipped"] = True
+#         result["reason"] = "Already deducted"
+#         return result if return_result else None
 
-   # -------------------------------------------------
-   # MONTH RANGE
-   # -------------------------------------------------
-   today = getdate()
-   first_day = today.replace(day=1)
+#     # -------------------------------------------------
+#     # Determine Leave Type
+#     # -------------------------------------------------
+#     balance = get_leave_balances(employee)
 
+#     if balance.get("Casual Leave", 0) > 0:
+#         leave_type = "Casual Leave"
+#     elif balance.get("Sick Leave", 0) > 0:
+#         leave_type = "Sick Leave"
+#     elif balance.get("Earned Leave", 0) > 0:
+#         leave_type = "Earned Leave"
+#     else:
+#         leave_type = "Leave Without Pay"
 
-   # -------------------------------------------------
-   # Count already auto-created leaves THIS MONTH
-   # -------------------------------------------------
-   existing = frappe.db.count(
-       "Leave Application",
-       filters={
-           "employee": employee,
-           "from_date": [">=", first_day],
-           "description": ["like", "Auto Leave Deducted:%"],
-           "docstatus": 1
-       }
-   )
+#     result["leave_type"] = leave_type
 
+#     # -------------------------------------------------
+#     # CREATE ONE LEAVE APPLICATION FOR MULTIPLE DAYS
+#     # -------------------------------------------------
+#     try:
+#         leave_doc = frappe.get_doc({
+#             "doctype": "Leave Application",
+#             "employee": employee,
+#             "leave_type": leave_type,
+#             "from_date": today,
+#             "to_date": add_days(today, to_create - 1),  # Multiple days in one application
+#             "posting_date": today,
+#             "description": f"Auto Leave Deducted: {late_checkins} late/early check-ins ({context_label})",
+#             "status": "Approved"
+#         })
 
-   to_create = required_leaves - existing
+#         leave_doc.insert(ignore_permissions=True)
+#         leave_doc.submit()
 
+#         result["leave_created"] = True
+#         result["created_count"] = to_create
 
-   if to_create <= 0:
-       result["skipped"] = True
-       result["reason"] = "Already deducted"
-       return result if return_result else None
+#         frappe.logger().info(
+#             f"[AUTO LEAVE] {employee} -> Created 1 leave application for {to_create} day(s)"
+#         )
 
+#     except Exception as e:
+#         frappe.logger().error(f"[AUTO LEAVE ERROR] {employee}: {str(e)}")
+#         result["skipped"] = True
+#         result["reason"] = f"Error: {str(e)}"
 
-   # -------------------------------------------------
-   # Determine Leave Type
-   # -------------------------------------------------
-   balance = get_leave_balances(employee)
-
-
-   if balance.get("Casual Leave", 0) > 0:
-       leave_type = "Casual Leave"
-   elif balance.get("Sick Leave", 0) > 0:
-       leave_type = "Sick Leave"
-   elif balance.get("Earned Leave", 0) > 0:
-       leave_type = "Earned Leave"
-   else:
-       leave_type = "Leave Without Pay"
-
-
-   result["leave_type"] = leave_type
-
-
-   # -------------------------------------------------
-   # CREATE LEAVES
-   # -------------------------------------------------
-   created = 0
-
-
-   for i in range(to_create):
-
-
-       leave_doc = frappe.get_doc({
-           "doctype": "Leave Application",
-           "employee": employee,
-           "leave_type": leave_type,
-           "from_date": today,
-           "to_date": today,
-           "posting_date": today,
-           "description": f"Auto Leave Deducted: {late_checkins} late/early check-ins ({context_label})",
-           "status": "Approved"
-       })
-
-
-       leave_doc.insert(ignore_permissions=True)
-       leave_doc.submit()
-
-
-       created += 1
-
-
-   result["leave_created"] = created > 0
-   result["created_count"] = created
-
-
-   frappe.logger().info(
-       f"[AUTO LEAVE] {employee} -> Created {created} leave(s)"
-   )
-
-
-   return result if return_result else None
-
+#     return result if return_result else None
 
 
 
@@ -536,63 +659,62 @@ def auto_employee_checkin():
 
 @frappe.whitelist()
 def process_shift_leave_deduction(shift_name):
-   """
-   Manual trigger from Shift Type button
-   Process leave deduction for all employees in specific shift
-   """
-   if not shift_name:
-       frappe.throw("Shift Type name is required")
-  
-   # Get all employees assigned to this shift
-   employees = get_employees_by_specific_shift(shift_name)
-  
-   if not employees:
-       frappe.msgprint(
-           f"No active employees found for shift: {shift_name}",
-           title="No Employees",
-           indicator="orange"
-       )
-       return
-  
-   frappe.logger().info(f"[Manual-Button] Processing {len(employees)} employees for shift: {shift_name}")
-  
-   # Process each employee
-   processed_count = 0
-   leave_created_count = 0
-   details = []
-  
-   for emp in employees:
-       result = process_employee_leave(emp, f"Shift: {shift_name}", return_result=True)
-       processed_count += 1
-      
-       if result.get("leave_created"):
-           leave_created_count += 1
-           details.append(f"✓ {emp}: Leave created ({result['leave_type']}) - {result['late_count']} late days")
-       elif result.get("skipped"):
-           details.append(f"○ {emp}: {result['reason']}")
-  
-   # Show detailed message
-   details_html = "<br>".join(details[:15])  # Show first 15
-   if len(details) > 15:
-       details_html += f"<br><i>... and {len(details) - 15} more</i>"
-  
-   message = f"""
-       <div style="font-size: 14px;">
-           <p><b>Shift:</b> {shift_name}</p>
-           <p><b>Total Employees:</b> {len(employees)}</p>
-           <p><b>Leaves Created:</b> {leave_created_count}</p>
-           <p><b>Skipped:</b> {processed_count - leave_created_count}</p>
-           <hr>
-           <p><b>Details:</b></p>
-           <div style="font-size: 12px; max-height: 300px; overflow-y: auto;">
-               {details_html}
-           </div>
-       </div>
-   """
-  
-   frappe.msgprint(
-       message,
-       title="Leave Deduction Processed",
-       indicator="green" if leave_created_count > 0 else "blue"
-   )
-
+    """
+    Manual trigger from Shift Type button
+    Process leave deduction for all employees in specific shift
+    """
+    if not shift_name:
+        frappe.throw("Shift Type name is required")
+    
+    # Get all employees assigned to this shift
+    employees = get_employees_by_specific_shift(shift_name)
+    
+    if not employees:
+        frappe.msgprint(
+            f"No active employees found for shift: {shift_name}",
+            title="No Employees",
+            indicator="orange"
+        )
+        return
+    
+    frappe.logger().info(f"[Manual-Button] Processing {len(employees)} employees for shift: {shift_name}")
+    
+    # Process each employee
+    processed_count = 0
+    leave_created_count = 0
+    details = []
+    
+    for emp in employees:
+        result = process_employee_leave(emp, f"Shift: {shift_name}", return_result=True)
+        processed_count += 1
+        
+        if result.get("leave_created"):
+            leave_created_count += 1
+            details.append(f"✓ {emp}: Leave created ({result['leave_type']}) - {result['late_count']} late days")
+        elif result.get("skipped"):
+            details.append(f"○ {emp}: {result['reason']}")
+    
+    # Show detailed message
+    details_html = "<br>".join(details[:15])  # Show first 15
+    if len(details) > 15:
+        details_html += f"<br><i>... and {len(details) - 15} more</i>"
+    
+    message = f"""
+        <div style="font-size: 14px;">
+            <p><b>Shift:</b> {shift_name}</p>
+            <p><b>Total Employees:</b> {len(employees)}</p>
+            <p><b>Leaves Created:</b> {leave_created_count}</p>
+            <p><b>Skipped:</b> {processed_count - leave_created_count}</p>
+            <hr>
+            <p><b>Details:</b></p>
+            <div style="font-size: 12px; max-height: 300px; overflow-y: auto;">
+                {details_html}
+            </div>
+        </div>
+    """
+    
+    frappe.msgprint(
+        message,
+        title="Leave Deduction Processed",
+        indicator="green" if leave_created_count > 0 else "blue"
+    )
