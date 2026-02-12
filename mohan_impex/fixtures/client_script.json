@@ -966,5 +966,16 @@
   "name": "RFQ Quotation",
   "script": "frappe.ui.form.on(\"RFQ Quotation\", {\n\trefresh(frm) {\n\t\t// If user is MI Transporter, make transporter field read-only\n\t\tif (frappe.user_roles && frappe.user_roles.includes(\"MI Transporter\")) {\n\t\t\tfrm.set_df_property(\"transporter\", \"read_only\", 1);\n\t\t\tfrm.toggle_enable(\"transporter\", false);\n\t\t} else {\n\t\t\tfrm.set_df_property(\"transporter\", \"read_only\", 0);\n\t\t\tfrm.toggle_enable(\"transporter\", true);\n\t\t}\n\n\t\tset_driver_query(frm);\n\t},\n\n\ttransporter(frm) {\n\t\t// If user is MI Transporter, don't allow changing transporter\n\t\tif (frappe.user_roles && frappe.user_roles.includes(\"MI Transporter\")) {\n\t\t\t// (field is already disabled, this is just extra safety)\n\t\t\treturn;\n\t\t}\n\n\t\t// Clear driver when transporter changes\n\t\tfrm.set_value(\"driver\", null);\n\t\tset_driver_query(frm);\n\t},\n});\n\nfunction set_driver_query(frm) {\n\tfrm.set_query(\"driver\", function () {\n\t\t// If transporter not selected, show EMPTY options\n\t\tif (!frm.doc.transporter) {\n\t\t\treturn {\n\t\t\t\tfilters: {\n\t\t\t\t\tname: [\"=\", \"Driver Not Found\"], \n\t\t\t\t},\n\t\t\t};\n\t\t}\n\n\t\treturn {\n\t\t\tfilters: {\n\t\t\t\ttransporter: frm.doc.transporter,\n\t\t\t},\n\t\t};\n\t});\n}\n",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Full and Final Statement",
+  "enabled": 1,
+  "modified": "2026-02-11 16:32:30.420574",
+  "module": "Mohan Impex",
+  "name": "Full and Final Statement",
+  "script": "frappe.ui.form.on(\"Full and Final Statement\", {\n\trefresh(frm) {\n\t\tfrm.add_custom_button(__(\"Update FNF Period\"), () => {\n\t\t\tfetch_settlement_period_from_api(frm);\n\t\t});\n\t},\n});\n\nfunction fetch_settlement_period_from_api(frm) {\n\tif (!frm.doc.payables || !frm.doc.payables.length) {\n\t\tfrappe.msgprint(__(\"No rows found in Payables.\"));\n\t\treturn;\n\t}\n\n\tfrappe.call({\n\t\tmethod: \"mohan_impex.fnf.settlement_period\",\n\t\tfreeze: true,\n\t\tfreeze_message: __(\"Fetching settlement period...\"),\n\t\tcallback: (r) => {\n\t\t\tconst data = r.message || [];\n\t\t\tif (!data.length) {\n\t\t\t\tfrappe.msgprint(__(\"No data returned from API.\"));\n\t\t\t\treturn;\n\t\t\t}\n\n\t\t\t// Find this current FNF doc in API response\n\t\t\tconst fnf = data.find((x) => x.name === frm.doc.name);\n\t\t\tif (!fnf) {\n\t\t\t\tfrappe.msgprint(__(\"Current document not found in API response.\"));\n\t\t\t\treturn;\n\t\t\t}\n\n\t\t\t// Build a lookup: \"doctype|docname\" -> settlement_period_days\n\t\t\tconst map = {};\n\t\t\t(fnf.payables || []).forEach((p) => {\n\t\t\t\tconst key = `${p.reference_document_type || \"\"}|${p.reference_document || \"\"}`;\n\t\t\t\tmap[key] = p.settlement_period_days || 0;\n\t\t\t});\n\n\t\t\t// Update current child rows\n\t\t\t(frm.doc.payables || []).forEach((row) => {\n\t\t\t\tconst key = `${row.reference_document_type || \"\"}|${row.reference_document || \"\"}`;\n\t\t\t\tconst val = map[key] || 0;\n\n\t\t\t\t// IMPORTANT: fieldname in child table\n\t\t\t\tfrappe.model.set_value(row.doctype, row.name, \"settlement_period\", val);\n\t\t\t});\n\n\t\t\tfrm.refresh_field(\"payables\");\n\t\t\tfrappe.msgprint(__(\"Settlement Period updated successfully.\"));\n\t\t},\n\t});\n}\n",
+  "view": "Form"
  }
 ]

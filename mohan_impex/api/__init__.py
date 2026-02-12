@@ -390,30 +390,71 @@ def get_competitor_items():
     frappe.local.response['message'] = "Competitor Items fetched successfully"
     frappe.local.response['data'] = competitors
 
+# @frappe.whitelist()
+# def get_items():
+#     query = """
+#         select DISTINCT i.item_code, i.item_name, i.item_category, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
+#         from `tabItem` as i
+#         join `tabBase Components` as bc on bc.item_code = i.item_code
+#     """
+#     if frappe.form_dict.get("segment"):
+#         query += """ and bc.parent = "{0}" """.format(frappe.form_dict.get("segment"))
+#     if frappe.form_dict.get("item_category"):
+#         query += """ and i.item_category = "{0}" """.format(frappe.form_dict.get("item_category"))
+#     items = frappe.db.sql(query, as_dict=True)
+#     for item in items:
+#         competitors = frappe.get_all("Competitor Detail", {"parent": item["item_code"]}, ["competitor"], pluck="competitor")
+#         item["competitors"] = competitors
+
+#     item_categories = list(set([item["item_category"] for item in items]))
+#     response = {
+#         "items": items,
+#         "available_item_categories": item_categories
+#     }
+#     frappe.local.response['status'] = True
+#     frappe.local.response['message'] = "Items fetched successfully"
+#     frappe.local.response['data'] = response
+
+
 @frappe.whitelist()
 def get_items():
     query = """
-        select DISTINCT i.item_code, i.item_name, i.item_category, IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, stock_uom) AS uom
+        select DISTINCT
+            i.item_code,
+            i.item_name,
+            i.item_category,
+            IF(i.sales_uom IS NOT NULL AND i.sales_uom != '', i.sales_uom, i.stock_uom) AS uom
         from `tabItem` as i
-        join `tabBase Components` as bc on bc.item_code = i.item_code
+        join `tabBase Components` as bc
+            on bc.item_code = i.item_code
+            and IFNULL(i.disabled, 0) = 0
     """
+
     if frappe.form_dict.get("segment"):
         query += """ and bc.parent = "{0}" """.format(frappe.form_dict.get("segment"))
+
     if frappe.form_dict.get("item_category"):
         query += """ and i.item_category = "{0}" """.format(frappe.form_dict.get("item_category"))
+
     items = frappe.db.sql(query, as_dict=True)
+
     for item in items:
-        competitors = frappe.get_all("Competitor Detail", {"parent": item["item_code"]}, ["competitor"], pluck="competitor")
+        competitors = frappe.get_all(
+            "Competitor Detail",
+            {"parent": item["item_code"]},
+            ["competitor"],
+            pluck="competitor"
+        )
         item["competitors"] = competitors
 
     item_categories = list(set([item["item_category"] for item in items]))
-    response = {
-        "items": items,
-        "available_item_categories": item_categories
-    }
-    frappe.local.response['status'] = True
-    frappe.local.response['message'] = "Items fetched successfully"
-    frappe.local.response['data'] = response
+
+    response = {"items": items, "available_item_categories": item_categories}
+    frappe.local.response["status"] = True
+    frappe.local.response["message"] = "Items fetched successfully"
+    frappe.local.response["data"] = response
+
+
 
 @frappe.whitelist()
 def get_segments(search_text=""):

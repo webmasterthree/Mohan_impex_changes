@@ -45,7 +45,7 @@ doctype_js ={
     "Shift Type": "public/js/shift_type.js",
     "Serial and Batch Bundle": "public/js/shelf_life.js",
     "Transport RFQ":"public/js/trans_rfq.js",
-    "Delivery Note":"public/js/dn.js",
+    # "Delivery Note":"public/js/dn.js",
     "Gratuity": "public/js/gratuity.js",
     "Salary Structure": "public/js/salary_structure.js",
     "Full and Final Statement": "public/js/full_and_final_statement.js",
