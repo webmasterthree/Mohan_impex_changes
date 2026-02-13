@@ -1,5 +1,5 @@
 import frappe
-from frappe.utils import nowdate, get_datetime, now_datetime, get_first_day, get_last_day, today, now
+from frappe.utils import nowdate, get_datetime, now_datetime, get_first_day, get_last_day, today, now, getdate
 from frappe import _
 from datetime import timedelta
 from hrms.hr.doctype.leave_application.leave_application import get_leave_balance_on
