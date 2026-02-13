@@ -75,12 +75,12 @@ doc_events = {
     "Request for Quotation": {
         "on_submit": "mohan_impex.rfq.send_rfq_email"
     },
-    "Employee Checkin": {
-        "validate": "mohan_impex.leave_deduction_out.after_insert"
-        # "before_save": "mohan_impex.leave_deduction.before_save_employee_checkin",
-        # "before_save": "mohan_impex.leave_deduction_out.before_save_employee_checkin"
+    # "Employee Checkin": {
+    #     "validate": "mohan_impex.leave_deduction_out.after_insert"
+    #     # "before_save": "mohan_impex.leave_deduction.before_save_employee_checkin",
+    #     # "before_save": "mohan_impex.leave_deduction_out.before_save_employee_checkin"
 
-    },
+    # },
     "RFQ Quotation": {
         "on_submit": [
             "mohan_impex.linked_pick.update_transport_rfq_title_on_submit",

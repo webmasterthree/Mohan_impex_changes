@@ -176,7 +176,8 @@ def get_so_elapsed_time(data):
 
 
 def prepare_data(data, so_elapsed_time, filters, remarks_map):
-	completed, pending = 0, 0
+	# ✅ Chart totals
+	completed, pending, pre_closed_total = 0, 0, 0
 
 	if filters.get("group_by_so"):
 		sales_order_map = {}
@@ -192,9 +193,10 @@ def prepare_data(data, so_elapsed_time, filters, remarks_map):
 			row["pre_closed_amount"] = 0
 			row["remarks"] = ""
 
-		# sum data for chart (use actual billed/pending, not the closed-only columns)
+		# ✅ sum data for chart (use actual billed/pending + pre-closed)
 		completed += row["billed_amount"]
 		pending += row["pending_amount"]
+		pre_closed_total += row["pre_closed_amount"]
 
 		# prepare data for report view
 		row["qty_to_bill"] = flt(row["qty"]) - flt(row["billed_qty"])
@@ -245,7 +247,7 @@ def prepare_data(data, so_elapsed_time, filters, remarks_map):
 				if not so_row.get("remarks") and row.get("remarks"):
 					so_row["remarks"] = row.get("remarks")
 
-	chart_data = prepare_chart_data(pending, completed)
+	chart_data = prepare_chart_data(pending, completed, pre_closed_total)
 
 	if filters.get("group_by_so"):
 		data = []
@@ -256,11 +258,11 @@ def prepare_data(data, so_elapsed_time, filters, remarks_map):
 	return data, chart_data
 
 
-def prepare_chart_data(pending, completed):
-	labels = [_("Amount to Bill"), _("Billed Amount")]
+def prepare_chart_data(pending, completed, pre_closed_total):
+	labels = [_("Amount to Bill"), _("Billed Amount"), _("PRE-CLOSED AMOUNT")]
 
 	return {
-		"data": {"labels": labels, "datasets": [{"values": [pending, completed]}]},
+		"data": {"labels": labels, "datasets": [{"values": [pending, completed, pre_closed_total]}]},
 		"type": "donut",
 		"height": 300,
 	}

@@ -102,4 +102,17 @@ frappe.query_reports["Sales Order Analysis-MISL"] = {
 		}
 		return value;
 	},
+	onload: function (report) {
+		const btn1 = report.page.add_inner_button(__("Sales Order Analysis"), function () {
+			const filters = report.get_values();
+			frappe.set_route("query-report", "Sales Order Analysis", { company: filters.company });
+		});
+		btn1.removeClass("btn-default").addClass("btn-info");
+
+		const btn2 = report.page.add_inner_button(__("SO Analysis-Pending Items"), function () {
+			const filters = report.get_values();
+			frappe.set_route("query-report", "Sales Order Analysis-Pending Items", { company: filters.company });
+		});
+		btn2.removeClass("btn-default").addClass("btn-success");
+	},
 };

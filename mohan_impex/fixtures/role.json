@@ -32,9 +32,9 @@
   "doctype": "Role",
   "home_page": "",
   "is_custom": 0,
-  "modified": "2025-03-24 13:45:35.049707",
+  "modified": "2026-02-12 16:38:28.392882",
   "name": "Supplier",
-  "restrict_to_domain": null,
+  "restrict_to_domain": "https://erpmi.edubild.com/app/supplier",
   "role_name": "Supplier",
   "two_factor_auth": 0
  },

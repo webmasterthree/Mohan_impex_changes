@@ -59,32 +59,6 @@ frappe.query_reports["Sales Order Analysis-Pending Items"] = {
 			options: "Warehouse",
 		},
 		{
-			fieldname: "status",
-			label: __("Status"),
-			fieldtype: "MultiSelectList",
-			options: ["To Pay", "To Bill", "To Deliver", "To Deliver and Bill", "Completed", "Closed"],
-			width: "80",
-			get_data: function (txt) {
-				let status = [
-					"To Pay",
-					"To Bill",
-					"To Deliver",
-					"To Deliver and Bill",
-					"Completed",
-					"Closed",
-				];
-				let options = [];
-				for (let option of status) {
-					options.push({
-						value: option,
-						label: __(option),
-						description: "",
-					});
-				}
-				return options;
-			},
-		},
-		{
 			fieldname: "group_by_so",
 			label: __("Group by Sales Order"),
 			fieldtype: "Check",
@@ -104,5 +78,19 @@ frappe.query_reports["Sales Order Analysis-Pending Items"] = {
 			value = "<span style='color:red;'>" + value + "</span>";
 		}
 		return value;
+	},
+
+	onload: function (report) {
+		const btn1 = report.page.add_inner_button(__("Sales Order Analysis"), function () {
+			const filters = report.get_values();
+			frappe.set_route("query-report", "Sales Order Analysis", { company: filters.company });
+		});
+		btn1.removeClass("btn-default").addClass("btn-info");
+
+		const btn2 = report.page.add_inner_button(__("Sales Order Analysis-MISL"), function () {
+			const filters = report.get_values();
+			frappe.set_route("query-report", "Sales Order Analysis-MISL", { company: filters.company });
+		});
+		btn2.removeClass("btn-default").addClass("btn-success");
 	},
 };
