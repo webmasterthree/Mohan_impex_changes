@@ -204,7 +204,7 @@ def after_insert(doc, method):
         else:
             overtime.append("overtime_table", {
                 "attendance_date": attendance_date,
-                "overtime_hours": overtime_hours
+                "overtime_hours": overtime_hours,
                 "approved_hours": math.floor(overtime_hours)
             })
 
