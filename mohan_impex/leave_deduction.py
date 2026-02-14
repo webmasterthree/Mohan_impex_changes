@@ -1,5 +1,5 @@
 import frappe
-from frappe.utils import nowdate, get_datetime, now_datetime, get_first_day, get_last_day, today, now
+from frappe.utils import nowdate, get_datetime, now_datetime, get_first_day, get_last_day, today, now,getdate
 from frappe import _
 from datetime import timedelta
 from hrms.hr.doctype.leave_application.leave_application import get_leave_balance_on
@@ -554,6 +554,7 @@ def auto_employee_checkin_day_shift():
     for emp in employees:
        process_employee_leave(emp, start, end)
     update_last_sync_attendance()
+    pending_attendance_status()
 
 
 
@@ -575,6 +576,7 @@ def auto_employee_checkin_night_shift():
        process_employee_leave(emp, "Scheduler-Night")
 
     update_last_sync_attendance()
+    pending_attendance_status()
 
 
 
@@ -604,6 +606,25 @@ def update_last_sync_attendance():
 		doc.save()
 		doc.process_auto_attendance()
 
+
+
+def pending_attendance_status():
+	data = frappe.db.sql(
+		"""
+		SELECT
+			at.name,
+			at.in_time,
+			at.out_time,
+			at.status
+		FROM `tabAttendance` at
+		WHERE at.docstatus = 1
+		""",
+		as_dict=1
+	)
+	for i in data:
+		if i['in_time'] and i['out_time'] is None:
+			if i['status'] == "Half Day":
+				frappe.db.set_value('Attendance', i['name'], 'status', 'Absent')
 
 # ========== MANUAL BUTTON TRIGGER (Shift-wise) ==========
 

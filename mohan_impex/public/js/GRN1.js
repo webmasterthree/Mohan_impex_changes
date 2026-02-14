@@ -584,10 +584,10 @@ async function open_result_dialog(data, frm) {
                 data: data,
                 fields: [
                     { fieldname:"item_code", fieldtype:"Data", label:"Item", in_list_view:1, read_only:1 },
-                    { fieldname:"lt25_qty", fieldtype:"Float", label:"<25%", in_list_view:1, read_only:1 },
-                    { fieldname:"gt25_qty", fieldtype:"Float", label:">25%", in_list_view:1, read_only:1 },
-                    { fieldname:"accepted_qty", fieldtype:"Float", label:"Accepted", in_list_view:1, read_only:1 },
-                    { fieldname:"rejected_qty", fieldtype:"Float", label:"Rejected", in_list_view:1, read_only:1 }
+                    { fieldname:"lt25_qty", fieldtype:"Float", label:"Shelf Life < 25% QTY", in_list_view:1, read_only:1 },
+                    { fieldname:"gt25_qty", fieldtype:"Float", label:"Shelf Life > 25% QTY", in_list_view:1, read_only:1 },
+                    { fieldname:"accepted_qty", fieldtype:"Float", label:"Accepted QTY", in_list_view:1, read_only:1 },
+                    { fieldname:"rejected_qty", fieldtype:"Float", label:"Expiry QTY", in_list_view:1, read_only:1 }
                 ]
             }
         ],
@@ -916,6 +916,7 @@ async function calculate_accept_reject1(frm) {
 
 const today = frappe.datetime.get_today();
 let dialog_data = [];
+let has_rejected_items = false; // ✅ Track if any rejected qty exists
 
 for (let item of frm.doc.items) {
 
@@ -960,7 +961,7 @@ for (let item of frm.doc.items) {
 
         // 5️⃣ Shelf life %
         let remaining = entry.custom_remaining_shelf_life || 0;
-        let percent = (shelf_days * remaining) / 100;
+        let percent = (remaining / shelf_days) * 100;
 
         // 6️⃣ Split accepted qty
         if (percent < 25) {
@@ -970,93 +971,122 @@ for (let item of frm.doc.items) {
         }
     }
 
+    // ✅ Check if this item has rejected qty
+    if (rejected_qty > 0) {
+        has_rejected_items = true;
+    }
+
     // 7️⃣ Push item-wise result
     dialog_data.push({
+        name: item.item_name,
         item_code: item.item_code,
         item_name: item.name,
         lt25_qty: lt25_qty,
         gt25_qty: gt25_qty,
         accepted_qty: accepted_qty,
-        rejected_qty: rejected_qty
+        rejected_qty: rejected_qty,
+        serial_and_batch_bundle : item.serial_and_batch_bundle
     });
 }
 
-open_result_dialog1(dialog_data, frm);
+open_result_dialog1(dialog_data, frm, has_rejected_items); // ✅ Pass flag
 
 }
 
-function open_result_dialog1(data, frm) {
+function open_result_dialog1(data, frm, has_rejected_items) {
+
+// ✅ Conditionally build fields array
+let dialog_fields = [];
+
+// Only show Rejected Warehouse field if there are rejected items
+if (has_rejected_items) {
+    dialog_fields.push({
+        fieldname: "rejected_warehouse",
+        fieldtype: "Link",
+        label: "Rejected Warehouse",
+        options: "Warehouse",
+        reqd: 1,
+        description: "Select warehouse for rejected batches"
+    });
+    dialog_fields.push({
+        fieldname: "section_break",
+        fieldtype: "Section Break"
+    });
+}
+
+// Always show items table
+dialog_fields.push({
+    fieldname: "items",
+    fieldtype: "Table",
+    label: "Item Summary",
+    cannot_add_rows: true,
+    in_place_edit: false,
+    fields: [
+        {
+            fieldname: "name",
+            fieldtype: "Data",
+            label: "Item Name",
+            in_list_view: 1,
+            read_only: 1
+        },
+        {
+            fieldname: "item_code",
+            fieldtype: "Data",
+            label: "Item Code",
+            // in_list_view: 1,
+            read_only: 1
+        },
+        {
+            fieldname: "lt25_qty",
+            fieldtype: "Float",
+            label: "Shelf Life < 25% QTY",
+            in_list_view: 1,
+            read_only: 1
+        },
+        {
+            fieldname: "gt25_qty",
+            fieldtype: "Float",
+            label: "Shelf Life > 25% QTY",
+            in_list_view: 1,
+            read_only: 1
+        },
+        {
+            fieldname: "accepted_qty",
+            fieldtype: "Float",
+            label: "Accepted Total Qty",
+            in_list_view: 1,
+            read_only: 1
+        },
+        {
+            fieldname: "rejected_qty",
+            fieldtype: "Float",
+            label: "Expiry Qty",
+            in_list_view: 1,
+            read_only: 1
+        },
+        {
+            fieldname: "serial_and_batch_bundle",
+            fieldtype: "Link",
+            label: "Serial and Batch Bundle",
+            options: "Serial and Batch Bundle",
+            read_only: 1
+        }
+    ]
+});
 
 let d = new frappe.ui.Dialog({
     title: "Accepted / Rejected Qty (Expiry Based)",
     size: "large",
-    fields: [
-        {
-            fieldname: "rejected_warehouse",
-            fieldtype: "Link",
-            label: "Rejected Warehouse",
-            options: "Warehouse",
-            reqd: 1,
-            description: "Select warehouse for rejected batches"
-        },
-        {
-            fieldname: "section_break",
-            fieldtype: "Section Break"
-        },
-        {
-            fieldname: "items",
-            fieldtype: "Table",
-            label: "Item Summary",
-            cannot_add_rows: true,
-            in_place_edit: false,
-            fields: [
-                {
-                    fieldname: "item_code",
-                    fieldtype: "Data",
-                    label: "Item",
-                    in_list_view: 1,
-                    read_only: 1
-                },
-                {
-                    fieldname: "lt25_qty",
-                    fieldtype: "Float",
-                    label: "Shelf Life < 25% QTY",
-                    in_list_view: 1,
-                    read_only: 1
-                },
-                {
-                    fieldname: "gt25_qty",
-                    fieldtype: "Float",
-                    label: "Shelf Life > 25% QTY",
-                    in_list_view: 1,
-                    read_only: 1
-                },
-                {
-                    fieldname: "accepted_qty",
-                    fieldtype: "Float",
-                    label: "Accepted Total Qty",
-                    in_list_view: 1,
-                    read_only: 1
-                },
-                {
-                    fieldname: "rejected_qty",
-                    fieldtype: "Float",
-                    label: "Rejected Qty",
-                    in_list_view: 1,
-                    read_only: 1
-                }
-            ]
-        }
-    ],
+    fields: dialog_fields, // ✅ Use conditional fields
 
     primary_action_label: "Approve",
     primary_action: async function() {
-        await process_split_batches(d, frm, "Approved");
+        await process_split_batches(d, frm, "Approved", has_rejected_items);
     },
     
     secondary_action_label: "Reject",
     secondary_action: async function() {
-        await process_split_batches(d, frm, "Rejected");
+        await process_split_batches(d, frm, "Rejected", has_rejected_items);
     }
 });
 
@@ -1068,12 +1098,12 @@ d.fields_dict.items.grid.refresh();
 
 }
 
-async function process_split_batches(dialog, frm, workflow_status) {
+async function process_split_batches(dialog, frm, workflow_status, has_rejected_items) {
     
     let values = dialog.get_values();
     
-    // ✅ Validate warehouse selection
-    if (!values.rejected_warehouse) {
+    // ✅ Only validate warehouse if there are rejected items
+    if (has_rejected_items && !values.rejected_warehouse) {
         frappe.msgprint({
             title: __("Required"),
             message: __("Please select Rejected Warehouse"),
@@ -1094,7 +1124,7 @@ async function process_split_batches(dialog, frm, workflow_status) {
             method: "mohan_impex.purchase_receipt.split_rejected_batches",
             args: {
                 pr_name: frm.doc.name,
-                rejected_warehouse: values.rejected_warehouse,
+                rejected_warehouse: values.rejected_warehouse || null, // ✅ Handle undefined
                 workflow_status: workflow_status
             }
         });
