@@ -55,3 +55,26 @@ def settlement_period():
         })
 
     return out
+
+
+
+
+
+@frappe.whitelist()
+def deduction():
+	parent_names = frappe.get_all("Full and Final Statement", pluck="name")
+
+	out = []
+	for parent in parent_names:
+		doc = frappe.get_doc("Full and Final Statement", parent)
+
+		for d in (doc.payables or []):
+			# ✅ Apply filter
+			if d.reference_document_type == "Salary Slip":
+				out.append({
+					"reference_document_type": d.reference_document_type,
+					"reference_document": d.reference_document,
+					"amount": d.amount
+				})
+
+	return out

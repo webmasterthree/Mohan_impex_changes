@@ -4077,7 +4077,7 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
-   "creation": "2026-02-11 14:35:38.098367",
+   "creation": "2026-02-13 18:00:35.847518",
    "default_value": null,
    "doc_type": "Sales Order",
    "docstatus": 0,
@@ -4085,7 +4085,7 @@
    "field_name": "naming_series",
    "idx": 0,
    "is_system_generated": 1,
-   "modified": "2026-02-12 10:59:00.920052",
+   "modified": "2026-02-13 18:00:35.847518",
    "modified_by": "Administrator",
    "module": null,
    "name": "Sales Order-naming_series-default",
@@ -4093,22 +4093,22 @@
    "property": "default",
    "property_type": "Text",
    "row_name": null,
-   "value": "SAL-ORD-.YYYY.-"
+   "value": "SO-DNK-.####.-.FY"
   },
   {
    "_assign": null,
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
-   "creation": "2025-02-08 17:26:00.378510",
+   "creation": "2026-02-13 18:00:35.761474",
    "default_value": null,
    "doc_type": "Sales Order",
    "docstatus": 0,
    "doctype_or_field": "DocField",
    "field_name": "naming_series",
    "idx": 0,
-   "is_system_generated": 0,
-   "modified": "2026-02-12 10:59:17.601533",
+   "is_system_generated": 1,
+   "modified": "2026-02-13 18:00:35.761474",
    "modified_by": "Administrator",
    "module": null,
    "name": "Sales Order-naming_series-options",
@@ -4116,7 +4116,7 @@
    "property": "options",
    "property_type": "Text",
    "row_name": null,
-   "value": "SAL-ORD-.YYYY.-"
+   "value": "SO-DNK-.####.-.FY\nSO-KPS-.####.-.FY\nSO-BB-.####.-.FY\nSO-GWH-.####.-.FY\nSO-PAT-.####.-.FY\nSO-HYD-.####.-.FY\nSO-CHN-.####.-.FY\nSO-DEL-.####.-.FY\nSO-MUM-.####.-.FY\nSO-MFG-.####.-.FY\nSO-EXP-.####.-.FY\nSO-RET-.####.-.FY\nSO-BT-DNK-.####.-.FY\nSO-BT-KPS-.####.-.FY\nSO-BT-BB-.####.-.FY\nSO-BT-GWH-.####.-.FY\nSO-BT-PAT-.####.-.FY\nSO-BT-HYD-.####.-.FY\nSO-BT-CHN-.####.-.FY\nSO-BT-DEL-.####.-.FY\nSO-BT-MUM-.####.-.FY\nSO-BT-MFG-.####.-.FY"
   },
   {
    "_assign": null,
