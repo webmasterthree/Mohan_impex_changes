@@ -1,0 +1,38 @@
+<div style="font-family:'Times New Roman', Times, serif; font-size:14px; line-height:1.6; color:#000; max-width:900px;">
+
+  <p style="margin:0 0 14px 0;">Dear <b>{{doc.supplier}}</b>,</p>
+
+  <p style="margin:0 0 14px 0;">Greetings from <b>{{doc.company}}</b>.</p>
+
+  <p style="margin:0 0 14px 0;">
+    Please find attached our <b>Purchase Order No. {{doc.name}}</b> dated <b>{{doc.transaction_date}}</b>
+    for the supply of the materials as per agreed commercial and technical terms.
+  </p>
+
+  <p style="margin:0 0 10px 0;">
+    We kindly request you to <b>review and confirm acceptance</b> of this purchase order by return
+    email along with the following details:
+  </p>
+
+  <ol style="margin:0 0 18px 22px; padding-left:18px;">
+    <li style="margin:0 0 6px 0;"><b>Product availability status</b></li>
+    <li style="margin:0 0 6px 0;"><b>Expected delivery date / dispatch timeline</b></li>
+    <li style="margin:0 0 6px 0;"><b>Batch details and Certificate of Analysis (COA)</b> for the material to be supplied</li>
+    <li style="margin:0 0 6px 0;">Minimum <b>residual shelf life</b> as per PO requirement</li>
+  </ol>
+
+  <p style="margin:0 0 10px 0; font-weight:700; font-size:18px;">
+    Key Terms &amp; Conditions (Summary):
+  </p>
+
+  <p>{{doc.terms}}</p>
+  <p style="margin:0 0 14px 0;">
+    This purchase order shall be considered <b>legally binding upon your written acceptance</b> or
+    commencement of supply.
+  </p>
+
+  <p style="margin:0;">
+    We look forward to your prompt confirmation and continued cooperation.
+  </p>
+
+</div>

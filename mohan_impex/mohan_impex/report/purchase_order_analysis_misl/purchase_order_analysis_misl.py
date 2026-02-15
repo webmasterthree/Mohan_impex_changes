@@ -2,7 +2,7 @@ import copy
 
 import frappe
 from frappe import _
-from frappe.query_builder.functions import IfNull, Sum
+from frappe.query_builder.functions import IfNull, Sum, Max
 from frappe.utils import date_diff, flt, getdate
 
 
@@ -41,13 +41,24 @@ def get_data(filters):
 	po = frappe.qb.DocType("Purchase Order")
 	po_item = frappe.qb.DocType("Purchase Order Item")
 	pi_item = frappe.qb.DocType("Purchase Invoice Item")
+	pi = frappe.qb.DocType("Purchase Invoice")
 
 	query = (
 		frappe.qb.from_(po)
 		.inner_join(po_item)
 		.on(po_item.parent == po.name)
+
+		# PI Item: linked to PO line
 		.left_join(pi_item)
 		.on((pi_item.po_detail == po_item.name) & (pi_item.docstatus == 1))
+
+		# PI Parent join + condition on PI parent
+		.left_join(pi)
+		.on(
+			(pi.name == pi_item.parent)
+			& (pi.docstatus == 1)  # ✅ condition on Purchase Invoice (parent)
+		)
+
 		.select(
 			po.transaction_date.as_("date"),
 			po_item.schedule_date.as_("required_date"),
@@ -55,24 +66,40 @@ def get_data(filters):
 			po.name.as_("purchase_order"),
 			po.status,
 			po.supplier,
+
 			po_item.item_code,
+			po_item.item_name,
+
 			po_item.qty,
 			po_item.rate,
 			po_item.item_tax_template,
 			po_item.received_qty,
 			(po_item.qty - po_item.received_qty).as_("pending_qty"),
+
+			# billed qty from PI items
 			Sum(IfNull(pi_item.qty, 0)).as_("billed_qty"),
+
 			po_item.base_amount.as_("amount"),
 			(po_item.billed_amt * IfNull(po.conversion_rate, 1)).as_("billed_amount"),
-			(po_item.base_amount - (po_item.billed_amt * IfNull(po.conversion_rate, 1))).as_(
-				"pending_amount"
-			),
+			(po_item.base_amount - (po_item.billed_amt * IfNull(po.conversion_rate, 1))).as_("pending_amount"),
+
 			po.set_warehouse.as_("warehouse"),
 			po.company,
 			po.total_taxes_and_charges,
 			po.grand_total,
 			po.tc_name,
+
 			po_item.name,
+
+			# PI id (one of them due to grouping)
+			pi_item.parent.as_("purchase_invoice"),
+
+			# total outstanding across all linked PI(s) for this PO item
+			# Sum(IfNull(pi.outstanding_amount, 0)).as_("pi_outstanding_amount"),
+   			pi.outstanding_amount.as_("pi_outstanding_amount"),
+
+			# bill_date is Date type → with groupby must aggregate
+			Max(pi.bill_date).as_("pi_bill_date"),
 		)
 		.where((po.status.notin(("Stopped", "On Hold"))) & (po.docstatus == 1))
 		.groupby(po_item.name)
@@ -167,9 +194,9 @@ def prepare_data(data, filters):
 		# qty to bill
 		row["qty_to_bill"] = flt(row.get("qty")) - flt(row.get("billed_qty"))
 
-		# Dynamic GST computation (for non-grouped view; harmless to compute always)
+		# GST computation (per row amount)
 		base_amount = flt(row.get("amount"))
-		gst_rate = flt(row.get("gst_rate"))  # percent e.g. 12.0
+		gst_rate = flt(row.get("gst_rate"))  # percent
 		row["gst_amount"] = base_amount * (gst_rate / 100.0)
 		row["amount_with_gst"] = base_amount + row["gst_amount"]
 
@@ -190,7 +217,7 @@ def prepare_data(data, filters):
 				else:
 					po_row["required_date"] = existing_date or new_date
 
-				# sum numeric columns (do NOT show GST cols when grouped, but safe to keep computed)
+				# sum numeric columns
 				fields = [
 					"qty",
 					"received_qty",
@@ -201,6 +228,7 @@ def prepare_data(data, filters):
 					"received_qty_amount",
 					"billed_amount",
 					"pending_amount",
+					"pi_outstanding_amount",
 				]
 				for field in fields:
 					po_row[field] = flt(row.get(field)) + flt(po_row.get(field))
@@ -237,6 +265,26 @@ def get_columns(filters):
 			"options": "Purchase Order",
 			"width": 160,
 		},
+		{
+			"label": _("Purchase Invoice"),
+			"fieldname": "purchase_invoice",
+			"fieldtype": "Link",
+			"options": "Purchase Invoice",
+			"width": 160,
+		},
+		{
+			"label": _("PI Bill Date"),
+			"fieldname": "pi_bill_date",
+			"fieldtype": "Date",
+			"width": 100,
+		},
+		{
+			"label": _("Outstanding"),
+			"fieldname": "pi_outstanding_amount",
+			"fieldtype": "Currency",
+			"width": 130,
+			"options": "Company:company:default_currency",
+		},
 		{"label": _("Status"), "fieldname": "status", "fieldtype": "Data", "width": 130},
 		{
 			"label": _("Supplier"),
@@ -254,15 +302,14 @@ def get_columns(filters):
 		},
 	]
 
-	# Item Code only when not grouped
+	# Item Name only when not grouped
 	if not is_grouped:
 		columns.append(
 			{
-				"label": _("Item Code"),
-				"fieldname": "item_code",
-				"fieldtype": "Link",
-				"options": "Item",
-				"width": 100,
+				"label": _("Item Name"),
+				"fieldname": "item_name",
+				"fieldtype": "Data",
+				"width": 160,
 			}
 		)
 
@@ -290,41 +337,11 @@ def get_columns(filters):
 
 	columns.extend(
 		[
-			{
-				"label": _("Qty"),
-				"fieldname": "qty",
-				"fieldtype": "Float",
-				"width": 120,
-				"convertible": "qty",
-			},
-			{
-				"label": _("Received Qty"),
-				"fieldname": "received_qty",
-				"fieldtype": "Float",
-				"width": 120,
-				"convertible": "qty",
-			},
-			{
-				"label": _("Pending Qty"),
-				"fieldname": "pending_qty",
-				"fieldtype": "Float",
-				"width": 80,
-				"convertible": "qty",
-			},
-			{
-				"label": _("Billed Qty"),
-				"fieldname": "billed_qty",
-				"fieldtype": "Float",
-				"width": 80,
-				"convertible": "qty",
-			},
-			{
-				"label": _("Qty to Bill"),
-				"fieldname": "qty_to_bill",
-				"fieldtype": "Float",
-				"width": 80,
-				"convertible": "qty",
-			},
+			{"label": _("Qty"), "fieldname": "qty", "fieldtype": "Float", "width": 120, "convertible": "qty"},
+			{"label": _("Received Qty"), "fieldname": "received_qty", "fieldtype": "Float", "width": 120, "convertible": "qty"},
+			{"label": _("Pending Qty"), "fieldname": "pending_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
+			{"label": _("Billed Qty"), "fieldname": "billed_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
+			{"label": _("Qty to Bill"), "fieldname": "qty_to_bill", "fieldtype": "Float", "width": 80, "convertible": "qty"},
 			{
 				"label": _("Amount"),
 				"fieldname": "amount",
@@ -335,25 +352,18 @@ def get_columns(filters):
 			},
 		]
 	)
+
 	if is_grouped:
 		columns.extend(
 			[
-				{
-					"label": _("Total GST Amount"),
-					"fieldname": "total_taxes_and_charges",
-					"fieldtype": "Currency",
-				},
-				{
-					"label": _("Total  Amount (Incl GST)"),
-					"fieldname": "grand_total",
-					"fieldtype": "Currency",
-				},
+				{"label": _("Total GST Amount"), "fieldname": "total_taxes_and_charges", "fieldtype": "Currency"},
+				{"label": _("Total Amount (Incl GST)"), "fieldname": "grand_total", "fieldtype": "Currency"},
 				{
 					"label": _("Delivery Terms"),
 					"fieldname": "tc_name",
 					"fieldtype": "Link",
-					"options":"Terms and Conditions"
-				}
+					"options": "Terms and Conditions",
+				},
 			]
 		)
 
@@ -406,20 +416,8 @@ def get_columns(filters):
 				"options": "Company:company:default_currency",
 				"convertible": "rate",
 			},
-			{
-				"label": _("Warehouse"),
-				"fieldname": "warehouse",
-				"fieldtype": "Link",
-				"options": "Warehouse",
-				"width": 100,
-			},
-			{
-				"label": _("Company"),
-				"fieldname": "company",
-				"fieldtype": "Link",
-				"options": "Company",
-				"width": 100,
-			},
+			{"label": _("Warehouse"), "fieldname": "warehouse", "fieldtype": "Link", "options": "Warehouse", "width": 100},
+			{"label": _("Company"), "fieldname": "company", "fieldtype": "Link", "options": "Company", "width": 100},
 		]
 	)
 

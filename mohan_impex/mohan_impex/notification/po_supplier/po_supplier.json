@@ -1,0 +1,28 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "creation": "2026-02-14 18:50:41.034265",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Purchase Order",
+ "enabled": 1,
+ "event": "Submit",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "<div style=\"font-family:'Times New Roman', Times, serif; font-size:14px; line-height:1.6; color:#000; max-width:900px;\">\n\n  <p style=\"margin:0 0 14px 0;\">Dear <b>{{doc.supplier}}</b>,</p>\n\n  <p style=\"margin:0 0 14px 0;\">Greetings from <b>{{doc.company}}</b>.</p>\n\n  <p style=\"margin:0 0 14px 0;\">\n    Please find attached our <b>Purchase Order No. {{doc.name}}</b> dated <b>{{doc.transaction_date}}</b>\n    for the supply of the materials as per agreed commercial and technical terms.\n  </p>\n\n  <p style=\"margin:0 0 10px 0;\">\n    We kindly request you to <b>review and confirm acceptance</b> of this purchase order by return\n    email along with the following details:\n  </p>\n\n  <ol style=\"margin:0 0 18px 22px; padding-left:18px;\">\n    <li style=\"margin:0 0 6px 0;\"><b>Product availability status</b></li>\n    <li style=\"margin:0 0 6px 0;\"><b>Expected delivery date / dispatch timeline</b></li>\n    <li style=\"margin:0 0 6px 0;\"><b>Batch details and Certificate of Analysis (COA)</b> for the material to be supplied</li>\n    <li style=\"margin:0 0 6px 0;\">Minimum <b>residual shelf life</b> as per PO requirement</li>\n  </ol>\n\n  <p style=\"margin:0 0 10px 0; font-weight:700; font-size:18px;\">\n    Key Terms &amp; Conditions (Summary):\n  </p>\n\n  <p>{{doc.terms}}</p>\n  <p style=\"margin:0 0 14px 0;\">\n    This purchase order shall be considered <b>legally binding upon your written acceptance</b> or\n    commencement of supply.\n  </p>\n\n  <p style=\"margin:0;\">\n    We look forward to your prompt confirmation and continued cooperation.\n  </p>\n\n</div>\n",
+ "message_type": "HTML",
+ "modified": "2026-02-14 19:12:06.600052",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "PO-Supplier",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_document_field": "contact_email"
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "subject": "Dear {{doc.supplier_name}}"
+}
