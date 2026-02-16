@@ -150,5 +150,24 @@
   "reference_doctype": "RFQ Quotation",
   "script": "if not doc.get(\"accept\"):\n    frappe.throw(\n        _(\"By continuing, you must accept the Terms and Conditions.\")\n    )\n",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 1,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "After Save",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2026-02-15 15:02:19.029231",
+  "module": null,
+  "name": "Job Card Form",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Job Card",
+  "script": "# Clear previous assignments\nfrappe.desk.form.assign_to.clear(\n    doctype=doc.doctype,\n    name=doc.name\n)\n\nassigned_users = []\n\n# Loop through multi select employee table\nfor row in doc.employee:   # <-- replace 'employee' with your actual table fieldname if different\n    \n    if row.employee:\n        user_id = frappe.db.get_value(\"Employee\", row.employee, \"user_id\")\n        \n        if user_id:\n            assigned_users.append(user_id)\n\n# Assign to all linked users\nif assigned_users:\n    frappe.desk.form.assign_to.add(\n        {\n            \"assign_to\": assigned_users,\n            \"doctype\": doc.doctype,\n            \"name\": doc.name,\n            \"description\": \"Auto-assigned based on Employees selected\"\n        }\n    )\n",
+  "script_type": "DocType Event"
  }
 ]
