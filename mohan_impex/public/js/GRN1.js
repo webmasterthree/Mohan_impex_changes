@@ -4,7 +4,9 @@ frappe.ui.form.on('Purchase Receipt', {
         update_pre_unloading_status(frm);
         calculate_labour_cost(frm);
     },
-
+    validate: async function(frm) {
+        await check_shelf_and_set(frm);
+    },
     // Recalculate labour cost when related fields are changed
     custom_labour_rate_per_ton: function (frm) {
         calculate_labour_cost(frm);
@@ -93,7 +95,7 @@ frappe.ui.form.on('Purchase Receipt', {
         //     });
         // }
     // },
-    refresh: async function(frm) {
+    refresh:function(frm) {
         if (frappe.session.user == "Administrator") {
             frm.add_custom_button("Check Expired Batches", function() {
                 calculate_accept_reject(frm);
@@ -105,16 +107,6 @@ frappe.ui.form.on('Purchase Receipt', {
             frm.page.set_primary_action('Review', () => {
                 calculate_accept_reject1(frm);
             });
-        }
-        // console.log("Complete button hidden due to shelf issue");
-        let issue = await has_shelf_issue(frm);
-
-        if (issue) {
-            setTimeout(() => {
-            // Replace 'ActionName' with the actual label of the button to hide
-            frm.page.actions.find('[data-label="Complete"]').parent().parent().remove();
-        }, 500);
-            console.log("Complete button hidden due to shelf issue");
         }
     },
     
@@ -131,6 +123,7 @@ frappe.ui.form.on('Purchase Receipt', {
         }
     }
 });
+
 
 frappe.ui.form.on('Purchase Receipt Item', {
     custom_manufacturing_date: function (frm, cdt, cdn) {
@@ -434,17 +427,30 @@ function transporter_payment_entry(frm) {
 
 
 
+async function check_shelf_and_set(frm) {
+
+    let issue = await has_shelf_issue(frm);
+
+    if (issue) {
+        await frm.set_value("custom_rejected_qty", "Yes");
+    } else {
+        await frm.set_value("custom_rejected_qty", "No");
+    }
+}
+
+
 async function has_shelf_issue(frm) {
 
     const today = frappe.datetime.get_today();
 
-    for (let item of frm.doc.items) {
+    for (let item of frm.doc.items || []) {
 
         if (!item.serial_and_batch_bundle) continue;
 
         let rejected_qty = 0;
         let lt25_qty = 0;
 
+        // Get Bundle Doc
         let sbb = await frappe.db.get_doc(
             "Serial and Batch Bundle",
             item.serial_and_batch_bundle
@@ -452,33 +458,32 @@ async function has_shelf_issue(frm) {
 
         let shelf_days = sbb.custom_shelf_life_in_days || 0;
 
-        for (let entry of sbb.entries) {
+        for (let entry of (sbb.entries || [])) {
 
             if (!entry.batch_no || !entry.qty) continue;
 
+            // Get Batch expiry
             let batch = await frappe.db.get_value(
                 "Batch",
                 entry.batch_no,
                 "expiry_date"
             );
 
-            let expiry_date = batch.message.expiry_date;
+            let expiry_date = batch?.message?.expiry_date;
 
-            // Expired → Reject
             if (expiry_date && expiry_date < today) {
                 rejected_qty += entry.qty;
                 continue;
             }
 
             let remaining = entry.custom_remaining_shelf_life || 0;
-            let percent = (shelf_days * remaining) / 100;
+            let percent = shelf_days ? (remaining / shelf_days) * 100 : 0;
 
             if (percent < 25) {
                 lt25_qty += entry.qty;
             }
         }
 
-        // 🚨 Agar issue mila to turant true return
         if (rejected_qty > 0 || lt25_qty > 0) {
             return true;
         }
@@ -486,8 +491,6 @@ async function has_shelf_issue(frm) {
 
     return false;
 }
-
-
 
 
 
@@ -544,6 +547,7 @@ async function calculate_accept_reject(frm) {
 
         dialog_data.push({
             item_code: item.item_code,
+            serial_and_batch_bundle: item.serial_and_batch_bundle,
             lt25_qty,
             gt25_qty,
             accepted_qty,
@@ -584,10 +588,11 @@ async function open_result_dialog(data, frm) {
                 data: data,
                 fields: [
                     { fieldname:"item_code", fieldtype:"Data", label:"Item", in_list_view:1, read_only:1 },
-                    { fieldname:"lt25_qty", fieldtype:"Float", label:"Shelf Life < 25% QTY", in_list_view:1, read_only:1 },
-                    { fieldname:"gt25_qty", fieldtype:"Float", label:"Shelf Life > 25% QTY", in_list_view:1, read_only:1 },
+                    { fieldname:"lt25_qty", fieldtype:"Float", label:"Shelf Life Less Than 25% QTY", in_list_view:1, read_only:1 },
+                    { fieldname:"gt25_qty", fieldtype:"Float", label:"Shelf Life Greater Than 25% QTY", in_list_view:1, read_only:1 },
                     { fieldname:"accepted_qty", fieldtype:"Float", label:"Accepted QTY", in_list_view:1, read_only:1 },
-                    { fieldname:"rejected_qty", fieldtype:"Float", label:"Expiry QTY", in_list_view:1, read_only:1 }
+                    { fieldname:"rejected_qty", fieldtype:"Float", label:"Expiry QTY", in_list_view:1, read_only:1 },
+                    { fieldname: "serial_and_batch_bundle", fieldtype: "Link",label: "Serial and Batch Bundle",options: "Serial and Batch Bundle", in_list_view:1, read_only: 1}
                 ]
             }
         ],
@@ -620,6 +625,10 @@ async function open_result_dialog(data, frm) {
 
     d.show();
     d.fields_dict.items.grid.refresh();
+    $(d.$wrapper).find('.modal-dialog').css({
+    "max-width": "1500px",   // change as needed
+    "width": "100%"
+});
 }
 
 // // ✅ Client Script - YEH IMPORTANT HAI
@@ -1039,14 +1048,14 @@ dialog_fields.push({
         {
             fieldname: "lt25_qty",
             fieldtype: "Float",
-            label: "Shelf Life < 25% QTY",
+            label: "Shelf Life Less Then 25% QTY",
             in_list_view: 1,
             read_only: 1
         },
         {
             fieldname: "gt25_qty",
             fieldtype: "Float",
-            label: "Shelf Life > 25% QTY",
+            label: "Shelf Life Greater Than 25% QTY",
             in_list_view: 1,
             read_only: 1
         },
@@ -1095,6 +1104,10 @@ d.show();
 // Set table data
 d.fields_dict.items.df.data = data;
 d.fields_dict.items.grid.refresh();
+$(d.$wrapper).find('.modal-dialog').css({
+    "max-width": "1500px",   // change as needed
+    "width": "100%"
+})
 
 }
 
@@ -1114,6 +1127,44 @@ async function process_split_batches(dialog, frm, workflow_status, has_rejected_
 
     dialog.hide();
 
+    // ✅ Agar koi rejected qty nahi hai, seedha Approved karo
+    if (!has_rejected_items) {
+        frappe.show_alert({
+            message: __("Processing..."),
+            indicator: "blue"
+        });
+
+        try {
+            await frappe.call({
+                method: "frappe.client.set_value",
+                args: {
+                    doctype: frm.doc.doctype,
+                    name: frm.doc.name,
+                    fieldname: "workflow_state",
+                    value: "Approved"
+                }
+            });
+
+            frappe.show_alert({
+                message: __("Approved successfully!"),
+                indicator: "green"
+            });
+
+            frm.reload_doc();
+
+        } catch (error) {
+            frappe.msgprint({
+                title: __("Error"),
+                message: error.message || __("Failed to update workflow"),
+                indicator: "red"
+            });
+        }
+
+        return; // ✅ Yahan se return, bundle banane wala code skip
+    }
+
+    // ===== Neeche wala code sirf tab chalega jab rejected items hain =====
+
     frappe.show_alert({
         message: __("Processing..."),
         indicator: "blue"
@@ -1124,7 +1175,7 @@ async function process_split_batches(dialog, frm, workflow_status, has_rejected_
             method: "mohan_impex.purchase_receipt.split_rejected_batches",
             args: {
                 pr_name: frm.doc.name,
-                rejected_warehouse: values.rejected_warehouse || null, // ✅ Handle undefined
+                rejected_warehouse: values.rejected_warehouse || null,
                 workflow_status: workflow_status
             }
         });
@@ -1144,7 +1195,6 @@ async function process_split_batches(dialog, frm, workflow_status, has_rejected_
                         result.message[item_name].rejected_bundle
                     );
                     
-                    // Update rejected warehouse
                     frappe.model.set_value(
                         item_row.doctype,
                         item_row.name,
@@ -1154,7 +1204,6 @@ async function process_split_batches(dialog, frm, workflow_status, has_rejected_
                 }
             }
 
-            // ✅ Update workflow status
             if (result.message.workflow_status) {
                 frm.set_value("workflow_state", result.message.workflow_status);
             }
@@ -1168,7 +1217,6 @@ async function process_split_batches(dialog, frm, workflow_status, has_rejected_
                 indicator: workflow_status === "Approved" ? "green" : "orange"
             });
             
-            // Reload form to reflect workflow changes
             frm.reload_doc();
         }
 
