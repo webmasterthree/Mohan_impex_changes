@@ -2,13 +2,13 @@ import copy
 
 import frappe
 from frappe import _
-from frappe.query_builder.functions import IfNull, Sum, Max
+from frappe.query_builder.functions import IfNull, Sum
 from frappe.utils import date_diff, flt, getdate
 
 
 def execute(filters=None):
 	if not filters:
-		return [], []
+		return [], [], None, []
 
 	validate_filters(filters)
 
@@ -54,10 +54,7 @@ def get_data(filters):
 
 		# PI Parent join + condition on PI parent
 		.left_join(pi)
-		.on(
-			(pi.name == pi_item.parent)
-			& (pi.docstatus == 1)  # ✅ condition on Purchase Invoice (parent)
-		)
+		.on((pi.name == pi_item.parent) & (pi.docstatus == 1))
 
 		.select(
 			po.transaction_date.as_("date"),
@@ -76,7 +73,7 @@ def get_data(filters):
 			po_item.received_qty,
 			(po_item.qty - po_item.received_qty).as_("pending_qty"),
 
-			# billed qty from PI items
+			# billed qty per (PO item + PI)
 			Sum(IfNull(pi_item.qty, 0)).as_("billed_qty"),
 
 			po_item.base_amount.as_("amount"),
@@ -91,18 +88,21 @@ def get_data(filters):
 
 			po_item.name,
 
-			# PI id (one of them due to grouping)
+			# Purchase Invoice
 			pi_item.parent.as_("purchase_invoice"),
 
-			# total outstanding across all linked PI(s) for this PO item
-			# Sum(IfNull(pi.outstanding_amount, 0)).as_("pi_outstanding_amount"),
-   			pi.outstanding_amount.as_("pi_outstanding_amount"),
+			# Bill No + Bill Date directly from PI
+			pi.bill_no.as_("bill_no"),
+			pi.bill_date.as_("pi_bill_date"),
 
-			# bill_date is Date type → with groupby must aggregate
-			Max(pi.bill_date).as_("pi_bill_date"),
+			# Outstanding from Purchase Invoice
+			pi.outstanding_amount.as_("pi_outstanding_amount"),
 		)
 		.where((po.status.notin(("Stopped", "On Hold"))) & (po.docstatus == 1))
-		.groupby(po_item.name)
+
+		# IMPORTANT: group by PO Item + PI to allow direct PI fields
+		.groupby(po_item.name, pi_item.parent)
+
 		.orderby(po.transaction_date)
 	)
 
@@ -187,16 +187,13 @@ def prepare_data(data, filters):
 	purchase_order_map = {} if filters.get("group_by_po") else None
 
 	for row in data:
-		# sum data for chart
 		completed += flt(row.get(completed_field))
 		pending += flt(row.get(pending_field))
 
-		# qty to bill
 		row["qty_to_bill"] = flt(row.get("qty")) - flt(row.get("billed_qty"))
 
-		# GST computation (per row amount)
 		base_amount = flt(row.get("amount"))
-		gst_rate = flt(row.get("gst_rate"))  # percent
+		gst_rate = flt(row.get("gst_rate"))
 		row["gst_amount"] = base_amount * (gst_rate / 100.0)
 		row["amount_with_gst"] = base_amount + row["gst_amount"]
 
@@ -204,12 +201,11 @@ def prepare_data(data, filters):
 			po_name = row.get("purchase_order")
 
 			if po_name not in purchase_order_map:
-				row_copy = copy.deepcopy(row)
-				purchase_order_map[po_name] = row_copy
+				purchase_order_map[po_name] = copy.deepcopy(row)
 			else:
 				po_row = purchase_order_map[po_name]
 
-				# required_date = earliest required date (handle None safely)
+				# earliest required date
 				existing_date = po_row.get("required_date")
 				new_date = row.get("required_date")
 				if existing_date and new_date:
@@ -217,8 +213,8 @@ def prepare_data(data, filters):
 				else:
 					po_row["required_date"] = existing_date or new_date
 
-				# sum numeric columns
-				fields = [
+				# ✅ Sum only numeric PO totals (DO NOT sum PI outstanding)
+				fields_to_sum = [
 					"qty",
 					"received_qty",
 					"pending_qty",
@@ -228,10 +224,18 @@ def prepare_data(data, filters):
 					"received_qty_amount",
 					"billed_amount",
 					"pending_amount",
-					"pi_outstanding_amount",
+					"gst_amount",
+					"amount_with_gst",
 				]
-				for field in fields:
+				for field in fields_to_sum:
 					po_row[field] = flt(row.get(field)) + flt(po_row.get(field))
+
+				# ✅ Keep PI Outstanding as-is (first non-empty); no calculation
+				if (
+					(po_row.get("pi_outstanding_amount") is None or po_row.get("pi_outstanding_amount") == "")
+					and row.get("pi_outstanding_amount") is not None
+				):
+					po_row["pi_outstanding_amount"] = flt(row.get("pi_outstanding_amount"))
 
 	chart_data = prepare_chart_data(pending, completed)
 
@@ -244,12 +248,7 @@ def prepare_data(data, filters):
 
 def prepare_chart_data(pending, completed):
 	labels = [_("Amount to Bill"), _("Billed Amount")]
-
-	return {
-		"data": {"labels": labels, "datasets": [{"values": [pending, completed]}]},
-		"type": "donut",
-		"height": 300,
-	}
+	return {"data": {"labels": labels, "datasets": [{"values": [pending, completed]}]}, "type": "donut", "height": 300}
 
 
 def get_columns(filters):
@@ -264,26 +263,6 @@ def get_columns(filters):
 			"fieldtype": "Link",
 			"options": "Purchase Order",
 			"width": 160,
-		},
-		{
-			"label": _("Purchase Invoice"),
-			"fieldname": "purchase_invoice",
-			"fieldtype": "Link",
-			"options": "Purchase Invoice",
-			"width": 160,
-		},
-		{
-			"label": _("PI Bill Date"),
-			"fieldname": "pi_bill_date",
-			"fieldtype": "Date",
-			"width": 100,
-		},
-		{
-			"label": _("Outstanding"),
-			"fieldname": "pi_outstanding_amount",
-			"fieldtype": "Currency",
-			"width": 130,
-			"options": "Company:company:default_currency",
 		},
 		{"label": _("Status"), "fieldname": "status", "fieldtype": "Data", "width": 130},
 		{
@@ -302,41 +281,32 @@ def get_columns(filters):
 		},
 	]
 
-	# Item Name only when not grouped
 	if not is_grouped:
-		columns.append(
-			{
-				"label": _("Item Name"),
-				"fieldname": "item_name",
-				"fieldtype": "Data",
-				"width": 160,
-			}
-		)
+		columns.append({"label": _("Item Name"), "fieldname": "item_name", "fieldtype": "Data", "width": 160})
 
-	# Rate always
-	columns.append(
-		{
-			"label": _("Rate"),
-			"fieldname": "rate",
-			"fieldtype": "Currency",
-			"width": 120,
-			"convertible": "rate",
-		}
-	)
+	columns.append({"label": _("Rate"), "fieldname": "rate", "fieldtype": "Currency", "width": 120, "convertible": "rate"})
 
-	# GST Rate ONLY when not grouped
 	if not is_grouped:
-		columns.append(
-			{
-				"label": _("GST Rate"),
-				"fieldname": "gst_rate",
-				"fieldtype": "Percent",
-				"width": 90,
-			}
-		)
+		columns.append({"label": _("GST Rate"), "fieldname": "gst_rate", "fieldtype": "Percent", "width": 90})
 
 	columns.extend(
 		[
+			{
+				"label": _("Purchase Invoice"),
+				"fieldname": "purchase_invoice",
+				"fieldtype": "Link",
+				"options": "Purchase Invoice",
+				"width": 160,
+			},
+			{"label": _("Supplier Bill No"), "fieldname": "bill_no", "fieldtype": "Data", "width": 140},
+			{"label": _("PI Bill Date"), "fieldname": "pi_bill_date", "fieldtype": "Date", "width": 100},
+			{
+				"label": _("Outstanding"),
+				"fieldname": "pi_outstanding_amount",
+				"fieldtype": "Currency",
+				"width": 130,
+				"options": "Company:company:default_currency",
+			},
 			{"label": _("Qty"), "fieldname": "qty", "fieldtype": "Float", "width": 120, "convertible": "qty"},
 			{"label": _("Received Qty"), "fieldname": "received_qty", "fieldtype": "Float", "width": 120, "convertible": "qty"},
 			{"label": _("Pending Qty"), "fieldname": "pending_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
@@ -367,7 +337,6 @@ def get_columns(filters):
 			]
 		)
 
-	# GST Amount + Amount (Incl GST) ONLY when not grouped
 	if not is_grouped:
 		columns.extend(
 			[

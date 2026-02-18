@@ -259,7 +259,7 @@ def prepare_data(data, so_elapsed_time, filters, remarks_map):
 
 
 def prepare_chart_data(pending, completed, pre_closed_total):
-	labels = [_("Amount to Bill"), _("Billed Amount"), _("PRE-CLOSED AMOUNT")]
+	labels = [_("Amount to Bill"), _("Billed Amount"), _("Pre Closed Amount")]
 
 	return {
 		"data": {"labels": labels, "datasets": [{"values": [pending, completed, pre_closed_total]}]},
