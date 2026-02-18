@@ -3,6 +3,15 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2025-04-04 11:50:41.073881",
+  "name": "Transporter Assigned",
+  "style": "Success",
+  "workflow_state_name": "Transporter Assigned"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-11-11 17:16:27.438810",
   "name": "Approval Pending",
   "style": "Danger",
