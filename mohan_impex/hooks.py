@@ -94,10 +94,10 @@ doc_events = {
     # },
     
     
-    "Leave Application": {
-        "validate": "mohan_impex.leave_test.validate_leave_application",
-        "before_save": "mohan_impex.leave_test.on_leave_application_before_save"
-    },
+    # "Leave Application": {
+    #     "validate": "mohan_impex.leave_test.validate_leave_application",
+    #     "before_save": "mohan_impex.leave_test.on_leave_application_before_save"
+    # },
     "Competitor": {
         "before_save": "mohan_impex.mohan_impex.competitor.add_others_in_competitor_item"
     },

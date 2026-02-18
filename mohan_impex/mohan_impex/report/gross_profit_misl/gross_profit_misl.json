@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letterhead": null,
- "modified": "2026-01-12 17:15:18.589869",
+ "modified": "2026-02-17 16:17:09.362238",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Gross Profit-MISL",
@@ -25,10 +25,10 @@
    "role": "Administrator"
   },
   {
-   "role": "Sales Master Manager"
+   "role": "General Ledger Accountant"
   },
   {
-   "role": "General Ledger Accountant"
+   "role": "MIS"
   }
  ],
  "timeout": 0

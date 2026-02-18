@@ -1,7 +1,7 @@
 {
  "charts": [],
  "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}},{\"id\":\"TZLLsfGe6c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contact Number\",\"col\":3}}]",
- "creation": "2026-01-23 12:51:16.583940",
+ "creation": "2026-02-18 11:40:28.531911",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -172,7 +172,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-02-04 10:30:31.031164",
+ "modified": "2026-02-18 12:35:35.455679",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Mohan Impex",
@@ -184,6 +184,9 @@
  "roles": [
   {
    "role": "Administrator"
+  },
+  {
+   "role": "System Manager"
   }
  ],
  "sequence_id": 1.0,

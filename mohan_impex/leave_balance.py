@@ -1,66 +1,105 @@
 import frappe
-from frappe.utils import today, get_datetime
-from datetime import datetime, timedelta
+from frappe import _
+from frappe.utils import getdate, nowdate
+from dateutil.relativedelta import relativedelta
 
-def monthly_leaves():
-    # Define monthly leave allocations per leave type
-    monthly_leave_config = {
-        "Casual Leave": 0.5,
-        "Earned Leave": 1.5,
-        "Sick Leave": 0.5
-    }
 
-    current_date = get_datetime(today()).date()
-    first_day = current_date.replace(day=1)
-    last_day = (first_day + timedelta(days=32)).replace(day=1)  # first day of next month
+@frappe.whitelist()
+def leave_balance(employee):
+	today = getdate(nowdate())
+	year_start = getdate(f"{today.year}-01-01")
+	year_end = getdate(f"{today.year}-12-31")
 
-    employees = frappe.get_all("Employee", filters={"status": "Active"}, fields=["name"])
+	leave_types = frappe.db.get_all(
+		"Leave Type",
+		fields=["name", "monthly_allocate", "priority", "is_lwp"],
+		order_by="priority asc, name asc",
+	)
 
-    for emp in employees:
-        for leave_type, leave_qty in monthly_leave_config.items():
-            existing_allocation = frappe.db.get_value(
-                "Leave Allocation", 
-                {
-                    "employee": emp.name, 
-                    "leave_type": leave_type,
-                    "from_date": ("<=", first_day),
-                    "to_date": (">", first_day)
-                }, 
-                ["name", "from_date", "to_date", "new_leaves_allocated", "total_leaves_allocated"]
-            )
+	out = []
 
-            if existing_allocation:
-                existing_name, existing_from, existing_to, existing_new_allocated, existing_total_allocated = existing_allocation
+	for lt in leave_types:
+		leave_type = lt.name
+		is_lwp = int(lt.get("is_lwp") or 0)
 
-                if isinstance(existing_from, datetime):
-                    existing_from = existing_from.date()
-                if isinstance(existing_to, datetime):
-                    existing_to = existing_to.date()
+		# Availed (common for all leave types)
+		used_entries = frappe.db.get_all(
+			"Leave Ledger Entry",
+			filters={
+				"employee": employee,
+				"leave_type": leave_type,
+				"transaction_type": "Leave Application",
+				"docstatus": 1,
+				"is_expired": 0,
+			},
+			fields=["leaves"],
+		)
+		availed = abs(sum((e.leaves or 0) for e in used_entries))
 
-                new_new_allocated = float(existing_new_allocated or 0) + leave_qty
-                new_total_allocated = float(existing_total_allocated or 0) + leave_qty
+		# LWP => Unlimited balance
+		if is_lwp == 1:
+			out.append(
+				{
+					"Leave Type": leave_type,
+					"Priority": lt.get("priority"),
+					"Balance": _("Unlimited"),
+				}
+			)
+			continue
 
-                frappe.db.set_value("Leave Allocation", existing_name, "new_leaves_allocated", new_new_allocated)
-                frappe.db.set_value("Leave Allocation", existing_name, "total_leaves_allocated", new_total_allocated)
-                frappe.db.set_value("Leave Allocation", existing_name, "to_date", last_day)
+		# Non-LWP leave types => allocation + accrual logic
+		try:
+			rate = float(lt.get("monthly_allocate") or 0)
+		except Exception:
+			rate = 0.0
 
-                print(f"Updated {emp.name} - {leave_type}: +{leave_qty} leaves, new total: {new_total_allocated}")
-                continue
+		# If no monthly allocation, skip
+		if rate <= 0:
+			continue
 
-            # Create new leave allocation
-            leave_allocation = frappe.get_doc({
-                "doctype": "Leave Allocation",
-                "employee": emp.name,
-                "leave_type": leave_type,
-                "from_date": first_day,
-                "to_date": last_day,
-                "new_leaves_allocated": leave_qty,
-                "total_leaves_allocated": leave_qty,
-                "carry_forward": 1
-            })
-            leave_allocation.insert()
-            leave_allocation.submit()
+		alloc_list = frappe.db.get_all(
+			"Leave Allocation",
+			fields=["unused_leaves", "from_date", "to_date"],
+			filters={
+				"employee": employee,
+				"leave_type": leave_type,
+				"docstatus": 1,
+				"from_date": [">=", year_start],
+				"to_date": ["<=", year_end],
+			},
+			order_by="from_date asc",
+			limit=1,
+		)
 
-            print(f"Leave allocated: {emp.name} - {leave_type}")
+		# show only if allocation exists for this year
+		if not alloc_list:
+			continue
 
-    frappe.msgprint("Monthly Leave Allocation Completed!")
+		alloc = alloc_list[0]
+		alloc_from = getdate(alloc.from_date)
+		alloc_to = getdate(alloc.to_date)
+
+		carry_forward = float(alloc.unused_leaves or 0)
+
+		start = max(year_start, alloc_from)
+		end = min(today, year_end, alloc_to)
+
+		if end < start:
+			months_passed = 0
+		else:
+			delta = relativedelta(end, start)
+			months_passed = delta.years * 12 + delta.months + 1
+
+		accrued_this_year = rate * months_passed
+		eligible = carry_forward + accrued_this_year
+		balance = eligible - availed
+
+		out.append(
+			{
+				"Leave Type": leave_type,
+				"Priority": lt.get("priority"),
+				"Balance": balance,
+			}
+		)
+
+	return frappe._dict(message=out)

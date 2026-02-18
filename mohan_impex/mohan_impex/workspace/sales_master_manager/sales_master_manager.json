@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"ecCavnW75x\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Sales Master Manager</span>\",\"col\":12}},{\"id\":\"t2hhrxLJ2R\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales Manager Master\",\"col\":6}}]",
+ "content": "[{\"id\":\"ecCavnW75x\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Sales Master Manager</span>\",\"col\":12}},{\"id\":\"t2hhrxLJ2R\",\"type\":\"card\",\"data\":{\"card_name\":\"Sales Manager Master\",\"col\":6}},{\"id\":\"UotJSL3Hpf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Territory\",\"col\":3}},{\"id\":\"FNax4NYm4f\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer\",\"col\":3}},{\"id\":\"Cm00CNLntp\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"State\",\"col\":3}},{\"id\":\"_KoBBF2__2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"District\",\"col\":3}},{\"id\":\"HUGUxg29r8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"City\",\"col\":3}},{\"id\":\"YRVK_q1VSa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer Visit Management\",\"col\":3}}]",
  "creation": "2026-01-08 16:53:48.158334",
  "custom_blocks": [],
  "docstatus": 0,
@@ -17,7 +17,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Manager Master",
-   "link_count": 8,
+   "link_count": 10,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -101,9 +101,29 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Gross Profit-MISL",
+   "link_count": 0,
+   "link_to": "Gross Profit-MISL",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Master- Gross Profit",
+   "link_count": 0,
+   "link_to": "Sales Master- Gross Profit",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-02-04 10:29:20.894782",
+ "modified": "2026-02-17 16:35:40.586208",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Sales Master Manager",
@@ -114,10 +134,71 @@
  "quick_lists": [],
  "roles": [
   {
-   "role": "Sales Master Manager"
+   "role": "ASM"
+  },
+  {
+   "role": "MIS"
+  },
+  {
+   "role": "Sales Manager"
   }
  ],
  "sequence_id": 50.0,
- "shortcuts": [],
+ "shortcuts": [
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "format": "{}",
+   "label": "Territory",
+   "link_to": "Territory",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Orange",
+   "doc_view": "List",
+   "format": "{} KYC Pending",
+   "label": "Customer",
+   "link_to": "Customer",
+   "stats_filter": "[[\"Customer\",\"kyc_status\",\"=\",\"Pending\",false]]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "format": "{}",
+   "label": "State",
+   "link_to": "State",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "format": "{} Customer Visit Management",
+   "label": "Customer Visit Management",
+   "link_to": "Customer Visit Management",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "format": "{}",
+   "label": "District",
+   "link_to": "District",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "format": "{}",
+   "label": "City",
+   "link_to": "City",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
  "title": "Sales Master Manager"
 }
