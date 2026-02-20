@@ -60,21 +60,45 @@ def settlement_period():
 
 
 
+import frappe
+from frappe.utils import flt
+
 @frappe.whitelist()
-def deduction():
-	parent_names = frappe.get_all("Full and Final Statement", pluck="name")
+def deduction(name):
+	if not name:
+		return []
+
+	fnf = frappe.get_doc("Full and Final Statement", name)
 
 	out = []
-	for parent in parent_names:
-		doc = frappe.get_doc("Full and Final Statement", parent)
+	for p in (fnf.payables or []):
+		if p.reference_document_type != "Salary Slip" or not p.reference_document:
+			continue
 
-		for d in (doc.payables or []):
-			# ✅ Apply filter
-			if d.reference_document_type == "Salary Slip":
-				out.append({
-					"reference_document_type": d.reference_document_type,
-					"reference_document": d.reference_document,
-					"amount": d.amount
-				})
+		slip_name = p.reference_document
+
+		deduction_rows = frappe.db.get_all(
+			"Salary Detail",
+			filters={
+				"parent": slip_name,
+				"parenttype": "Salary Slip",
+				"parentfield": "deductions",
+			},
+			fields=["salary_component", "amount"],
+			order_by="idx asc",
+		)
+
+		out.append({
+			"fnf": name,
+			"salary_slip": slip_name,
+			"fnf_payable_amount": flt(p.amount),
+			"deductions": [
+				{
+					"salary_component": d.get("salary_component"),
+					"amount": flt(d.get("amount")),
+				}
+				for d in deduction_rows
+			],
+		})
 
 	return out

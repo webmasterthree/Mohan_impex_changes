@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"U5NMrxdD2u\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Customer Care</span>\",\"col\":12}},{\"id\":\"qyDQrFtjOI\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer Visit Management\",\"col\":3}},{\"id\":\"tT63nsm5GS\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Issue\",\"col\":3}}]",
+ "content": "[{\"id\":\"U5NMrxdD2u\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Customer Care</span>\",\"col\":12}},{\"id\":\"qyDQrFtjOI\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer Visit Management\",\"col\":4}},{\"id\":\"tT63nsm5GS\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Issue\",\"col\":4}},{\"id\":\"3KjfB8sO26\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order\",\"col\":4}}]",
  "creation": "2026-01-12 12:57:43.662919",
  "custom_blocks": [],
  "docstatus": 0,
@@ -13,7 +13,7 @@
  "is_hidden": 0,
  "label": "Customer Support Team",
  "links": [],
- "modified": "2026-02-18 12:46:15.979787",
+ "modified": "2026-02-19 11:20:27.859834",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Support Team",
@@ -41,6 +41,15 @@
    "format": "{}",
    "label": "Customer Visit Management",
    "link_to": "Customer Visit Management",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "format": "{}",
+   "label": "Sales Order",
+   "link_to": "Sales Order",
    "stats_filter": "[]",
    "type": "DocType"
   },
