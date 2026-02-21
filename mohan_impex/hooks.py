@@ -36,7 +36,7 @@ doctype_js ={
     "Request for Quotation": "public/js/request_for_quotation.js",
     "Additional Salary": "public/js/additional_salary.js",
     "Request for Quotation" : "public/js/rfq.js",
-    "Blanket Order" : "public/js/blanket_order.js",
+    # "Blanket Order" : "public/js/blanket_order.js",
     "Increment Letter":"public/js/increment_letter.js",
     "Sales Order": "public/js/floating_notifications.js",
     "Purchase Receipt": "public/js/GRN1.js",
