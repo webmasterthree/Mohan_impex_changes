@@ -597,7 +597,7 @@ async function calculate_accept_reject(frm) {
             accepted_qty += entry.qty;
 
             let remaining = entry.custom_remaining_shelf_life || 0;
-            let percent = (shelf_days * remaining) / 100;
+            let percent = shelf_days ? (remaining / shelf_days) * 100 : 0;
 
             if (percent < 25) lt25_qty += entry.qty;
             else gt25_qty += entry.qty;
@@ -698,203 +698,198 @@ async function open_result_dialog(data, frm) {
 
 
 
-
 async function calculate_accept_reject1(frm) {
 
-const today = frappe.datetime.get_today();
-let dialog_data = [];
-let has_rejected_items = false; // ✅ Track if any rejected qty exists
+    const today = frappe.datetime.get_today();
+    let dialog_data = [];
+    let has_rejected_items = false;
 
-for (let item of frm.doc.items) {
+    for (let item of frm.doc.items) {
 
-    if (!item.serial_and_batch_bundle) continue;
+        if (!item.serial_and_batch_bundle) continue;
 
-    let accepted_qty = 0;
-    let rejected_qty = 0;
+        let accepted_qty = 0;
+        let rejected_qty = 0;
+        let lt25_qty = 0;
+        let gt25_qty = 0;
 
-    let lt25_qty = 0;
-    let gt25_qty = 0;
-
-    // 1️⃣ Get Serial and Batch Bundle
-    let sbb = await frappe.db.get_doc(
-        "Serial and Batch Bundle",
-        item.serial_and_batch_bundle
-    );
-
-    let shelf_days = sbb.custom_shelf_life_in_days || 0;
-
-    // 2️⃣ Loop child table
-    for (let entry of sbb.entries) {
-
-        if (!entry.batch_no || !entry.qty) continue;
-
-        // 3️⃣ Get Batch expiry date
-        let batch = await frappe.db.get_value(
-            "Batch",
-            entry.batch_no,
-            "expiry_date"
+        // 1️⃣ Get Serial and Batch Bundle
+        let sbb = await frappe.db.get_doc(
+            "Serial and Batch Bundle",
+            item.serial_and_batch_bundle
         );
 
-        let expiry_date = batch.message.expiry_date;
+        let shelf_days = sbb.custom_shelf_life_in_days || 0;
 
-        // 4️⃣ Expiry logic (Rejected untouched)
-        if (expiry_date && expiry_date < today) {
-            rejected_qty += entry.qty;
-            continue;
+        // 2️⃣ Loop child table
+        for (let entry of sbb.entries) {
+
+            if (!entry.batch_no || !entry.qty) continue;
+
+            // 3️⃣ Get Batch expiry date
+            let batch = await frappe.db.get_value(
+                "Batch",
+                entry.batch_no,
+                "expiry_date"
+            );
+
+            let expiry_date = batch.message.expiry_date;
+
+            // 4️⃣ Expiry logic
+            if (expiry_date && expiry_date < today) {
+                rejected_qty += entry.qty;
+                continue;
+            }
+
+            // ✅ Accepted
+            accepted_qty += entry.qty;
+
+            // 5️⃣ Shelf life %
+            let remaining = entry.custom_remaining_shelf_life || 0;
+            let percent = (remaining / shelf_days) * 100;
+
+            // 6️⃣ Split accepted qty
+            if (percent < 25) {
+                lt25_qty += entry.qty;
+            } else {
+                gt25_qty += entry.qty;
+            }
         }
 
-        // ✅ Accepted
-        accepted_qty += entry.qty;
-
-        // 5️⃣ Shelf life %
-        let remaining = entry.custom_remaining_shelf_life || 0;
-        let percent = (remaining / shelf_days) * 100;
-
-        // 6️⃣ Split accepted qty
-        if (percent < 25) {
-            lt25_qty += entry.qty;
-        } else {
-            gt25_qty += entry.qty;
+        if (rejected_qty > 0) {
+            has_rejected_items = true;
         }
+
+        // 7️⃣ Push item-wise result
+        dialog_data.push({
+            name: item.item_name,
+            item_code: item.item_code,
+            item_name: item.name,
+            lt25_qty: lt25_qty,
+            gt25_qty: gt25_qty,
+            accepted_qty: accepted_qty,
+            rejected_qty: rejected_qty,
+            serial_and_batch_bundle: item.serial_and_batch_bundle
+        });
     }
 
-    // ✅ Check if this item has rejected qty
-    if (rejected_qty > 0) {
-        has_rejected_items = true;
-    }
-
-    // 7️⃣ Push item-wise result
-    dialog_data.push({
-        name: item.item_name,
-        item_code: item.item_code,
-        item_name: item.name,
-        lt25_qty: lt25_qty,
-        gt25_qty: gt25_qty,
-        accepted_qty: accepted_qty,
-        rejected_qty: rejected_qty,
-        serial_and_batch_bundle : item.serial_and_batch_bundle
-    });
+    open_result_dialog1(dialog_data, frm, has_rejected_items);
 }
 
-open_result_dialog1(dialog_data, frm, has_rejected_items); // ✅ Pass flag
-
-}
 
 function open_result_dialog1(data, frm, has_rejected_items) {
 
-// ✅ Conditionally build fields array
-let dialog_fields = [];
+    let dialog_fields = [];
 
-// Only show Rejected Warehouse field if there are rejected items
-if (has_rejected_items) {
-    dialog_fields.push({
-        fieldname: "rejected_warehouse",
-        fieldtype: "Link",
-        label: "Rejected Warehouse",
-        options: "Warehouse",
-        reqd: 1,
-        description: "Select warehouse for rejected batches"
-    });
-    dialog_fields.push({
-        fieldname: "section_break",
-        fieldtype: "Section Break"
-    });
-}
-
-// Always show items table
-dialog_fields.push({
-    fieldname: "items",
-    fieldtype: "Table",
-    label: "Item Summary",
-    cannot_add_rows: true,
-    in_place_edit: false,
-    fields: [
-        {
-            fieldname: "name",
-            fieldtype: "Data",
-            label: "Item Name",
-            in_list_view: 1,
-            read_only: 1
-        },
-        {
-            fieldname: "item_code",
-            fieldtype: "Data",
-            label: "Item Code",
-            // in_list_view: 1,
-            read_only: 1
-        },
-        {
-            fieldname: "lt25_qty",
-            fieldtype: "Float",
-            label: "Shelf Life Less Then 25% QTY",
-            in_list_view: 1,
-            read_only: 1
-        },
-        {
-            fieldname: "gt25_qty",
-            fieldtype: "Float",
-            label: "Shelf Life Greater Than 25% QTY",
-            in_list_view: 1,
-            read_only: 1
-        },
-        {
-            fieldname: "accepted_qty",
-            fieldtype: "Float",
-            label: "Accepted Total Qty",
-            in_list_view: 1,
-            read_only: 1
-        },
-        {
-            fieldname: "rejected_qty",
-            fieldtype: "Float",
-            label: "Expiry Qty",
-            in_list_view: 1,
-            read_only: 1
-        },
-        {
-            fieldname: "serial_and_batch_bundle",
+    // Only show Rejected Warehouse field if there are rejected items
+    if (has_rejected_items) {
+        dialog_fields.push({
+            fieldname: "rejected_warehouse",
             fieldtype: "Link",
-            label: "Serial and Batch Bundle",
-            options: "Serial and Batch Bundle",
-            read_only: 1
-        }
-    ]
-});
-
-let d = new frappe.ui.Dialog({
-    title: "Accepted / Rejected Qty (Expiry Based)",
-    size: "large",
-    fields: dialog_fields, // ✅ Use conditional fields
-
-    primary_action_label: "Approve",
-    primary_action: async function() {
-        await process_split_batches(d, frm, "Approved", has_rejected_items);
-    },
-    
-    secondary_action_label: "Reject",
-    secondary_action: async function() {
-        await process_split_batches(d, frm, "Rejected", has_rejected_items);
+            label: "Rejected Warehouse",
+            options: "Warehouse",
+            reqd: 1,
+            description: "Select warehouse for rejected batches"
+        });
+        dialog_fields.push({
+            fieldname: "section_break",
+            fieldtype: "Section Break"
+        });
     }
-});
 
-d.show();
+    // Always show items table
+    dialog_fields.push({
+        fieldname: "items",
+        fieldtype: "Table",
+        label: "Item Summary",
+        cannot_add_rows: true,
+        in_place_edit: false,
+        fields: [
+            {
+                fieldname: "name",
+                fieldtype: "Data",
+                label: "Item Name",
+                in_list_view: 1,
+                read_only: 1
+            },
+            {
+                fieldname: "item_code",
+                fieldtype: "Data",
+                label: "Item Code",
+                read_only: 1
+            },
+            {
+                fieldname: "lt25_qty",
+                fieldtype: "Float",
+                label: "Shelf Life Less Than 25% QTY",
+                in_list_view: 1,
+                read_only: 1
+            },
+            {
+                fieldname: "gt25_qty",
+                fieldtype: "Float",
+                label: "Shelf Life Greater Than 25% QTY",
+                in_list_view: 1,
+                read_only: 1
+            },
+            {
+                fieldname: "accepted_qty",
+                fieldtype: "Float",
+                label: "Accepted Total Qty",
+                in_list_view: 1,
+                read_only: 1
+            },
+            {
+                fieldname: "rejected_qty",
+                fieldtype: "Float",
+                label: "Expiry Qty",
+                in_list_view: 1,
+                read_only: 1
+            },
+            {
+                fieldname: "serial_and_batch_bundle",
+                fieldtype: "Link",
+                label: "Serial and Batch Bundle",
+                options: "Serial and Batch Bundle",
+                read_only: 1
+            }
+        ]
+    });
 
-// Set table data
-d.fields_dict.items.df.data = data;
-d.fields_dict.items.grid.refresh();
-$(d.$wrapper).find('.modal-dialog').css({
-    "max-width": "1500px",   // change as needed
-    "width": "100%"
-})
+    let d = new frappe.ui.Dialog({
+        title: "Accepted / Rejected Qty (Expiry Based)",
+        size: "large",
+        fields: dialog_fields,
 
+        primary_action_label: "Approve",
+        primary_action: async function () {
+            await process_split_batches(d, frm, "Approved", has_rejected_items);
+        },
+
+        secondary_action_label: "Reject",
+        secondary_action: async function () {
+            await process_split_batches(d, frm, "Rejected", has_rejected_items);
+        }
+    });
+
+    d.show();
+
+    d.fields_dict.items.df.data = data;
+    d.fields_dict.items.grid.refresh();
+
+    $(d.$wrapper).find('.modal-dialog').css({
+        "max-width": "1500px",
+        "width": "100%"
+    });
 }
+
 
 async function process_split_batches(dialog, frm, workflow_status, has_rejected_items) {
-    
+
     let values = dialog.get_values();
-    
-    // ✅ Only validate warehouse if there are rejected items
-    if (has_rejected_items && !values.rejected_warehouse) {
+
+    // ✅ Validate rejected warehouse only when approving with rejected items
+    if (workflow_status === "Approved" && has_rejected_items && !values.rejected_warehouse) {
         frappe.msgprint({
             title: __("Required"),
             message: __("Please select Rejected Warehouse"),
@@ -905,12 +900,46 @@ async function process_split_batches(dialog, frm, workflow_status, has_rejected_
 
     dialog.hide();
 
-    // ✅ Agar koi rejected qty nahi hai, seedha Approved karo
+    // ============================================================
+    // ✅ REJECT BUTTON — Sirf workflow state change, kuch nahi
+    // ============================================================
+    if (workflow_status === "Rejected") {
+        frappe.show_alert({ message: __("Processing..."), indicator: "blue" });
+
+        try {
+            await frappe.call({
+                method: "frappe.client.set_value",
+                args: {
+                    doctype: frm.doc.doctype,
+                    name: frm.doc.name,
+                    fieldname: "workflow_state",
+                    value: "Rejected By Purchase Team"  // ✅ Apna exact workflow state name yahan likho
+                }
+            });
+
+            frappe.show_alert({
+                message: __("Rejected successfully!"),
+                indicator: "orange"
+            });
+
+            frm.reload_doc();
+
+        } catch (error) {
+            frappe.msgprint({
+                title: __("Error"),
+                message: error.message || __("Failed to reject"),
+                indicator: "red"
+            });
+        }
+
+        return; // ✅ Yahan se return — backend split method bilkul nahi chalega
+    }
+
+    // ============================================================
+    // ✅ APPROVE — No rejected items, direct workflow change
+    // ============================================================
     if (!has_rejected_items) {
-        frappe.show_alert({
-            message: __("Processing..."),
-            indicator: "blue"
-        });
+        frappe.show_alert({ message: __("Processing..."), indicator: "blue" });
 
         try {
             await frappe.call({
@@ -938,15 +967,13 @@ async function process_split_batches(dialog, frm, workflow_status, has_rejected_
             });
         }
 
-        return; // ✅ Yahan se return, bundle banane wala code skip
+        return;
     }
 
-    // ===== Neeche wala code sirf tab chalega jab rejected items hain =====
-
-    frappe.show_alert({
-        message: __("Processing..."),
-        indicator: "blue"
-    });
+    // ============================================================
+    // ✅ APPROVE — Has rejected items, backend se bundle split karo
+    // ============================================================
+    frappe.show_alert({ message: __("Processing..."), indicator: "blue" });
 
     try {
         let result = await frappe.call({
@@ -972,7 +999,7 @@ async function process_split_batches(dialog, frm, workflow_status, has_rejected_
                         "rejected_serial_and_batch_bundle",
                         result.message[item_name].rejected_bundle
                     );
-                    
+
                     frappe.model.set_value(
                         item_row.doctype,
                         item_row.name,
@@ -989,12 +1016,10 @@ async function process_split_batches(dialog, frm, workflow_status, has_rejected_
             frm.refresh_field("items");
 
             frappe.show_alert({
-                message: __(workflow_status === "Approved" ? 
-                    "Approved successfully!" : 
-                    "Rejected successfully!"),
-                indicator: workflow_status === "Approved" ? "green" : "orange"
+                message: __("Approved successfully!"),
+                indicator: "green"
             });
-            
+
             frm.reload_doc();
         }
 
