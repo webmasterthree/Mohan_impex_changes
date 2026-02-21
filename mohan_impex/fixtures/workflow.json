@@ -95,7 +95,7 @@
   "doctype": "Workflow",
   "document_type": "Supplier Quotation",
   "is_active": 1,
-  "modified": "2025-11-24 15:03:59.249860",
+  "modified": "2026-02-21 16:13:49.408401",
   "name": "Supplier Quotation",
   "override_status": 0,
   "send_email_alert": 0,
@@ -153,7 +153,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "Supplier",
+    "allowed": "Purchase Executive",
     "condition": null,
     "next_state": "Approved",
     "parent": "Supplier Quotation",
@@ -166,7 +166,7 @@
    {
     "action": "Reject",
     "allow_self_approval": 1,
-    "allowed": "Purchase Team",
+    "allowed": "Purchase Executive",
     "condition": null,
     "next_state": "Rejected",
     "parent": "Supplier Quotation",

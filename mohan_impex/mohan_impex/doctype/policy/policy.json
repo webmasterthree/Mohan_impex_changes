@@ -1,0 +1,88 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{policy_number}-{policy_type}",
+ "creation": "2026-02-21 12:33:13.228289",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "policy_type",
+  "policy_number",
+  "policy_provider",
+  "column_break_qqjm",
+  "start_date",
+  "expiry_date",
+  "expired"
+ ],
+ "fields": [
+  {
+   "fieldname": "policy_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Policy Type",
+   "options": "Policy Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "policy_number",
+   "fieldtype": "Data",
+   "label": "Policy Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "policy_provider",
+   "fieldtype": "Data",
+   "label": "Policy Provider",
+   "reqd": 1
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "expiry_date",
+   "fieldtype": "Date",
+   "label": "Expiry Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_qqjm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "expired",
+   "fieldtype": "Check",
+   "label": "Expired"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-02-21 13:02:06.703794",
+ "modified_by": "Administrator",
+ "module": "Mohan Impex",
+ "name": "Policy",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
