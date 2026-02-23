@@ -145,7 +145,8 @@ api_methods = [
 
 override_doctype_class = {
     "Quality Inspection": "mohan_impex.override.quality_inspection.QualityInspection",
-    "Item Price": "mohan_impex.override.item_price.CustomItemPrice"
+    "Item Price": "mohan_impex.override.item_price.CustomItemPrice",
+    "Work Order": "mohan_impex.override.work_order.CustomWorkOrder"
 }
  
 # Apps
