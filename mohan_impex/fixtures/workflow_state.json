@@ -484,5 +484,23 @@
   "name": "Cancelled",
   "style": "",
   "workflow_state_name": "Cancelled"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-24 15:38:36.123373",
+  "name": "Pending from Accounts",
+  "style": "Danger",
+  "workflow_state_name": "Pending from Accounts"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-24 15:45:44.211389",
+  "name": "Pending from Admin",
+  "style": "Warning",
+  "workflow_state_name": "Pending from Admin"
  }
 ]

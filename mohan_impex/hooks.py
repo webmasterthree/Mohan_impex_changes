@@ -123,7 +123,7 @@ doc_events = {
         "before_submit": "mohan_impex.mohan_impex.stock_entry.inspection_validation"
     },
     "Salary Slip": {
-        "before_submit": "mohan_impex.salary_slip.before_submit",
+        # "before_submit": "mohan_impex.salary_slip.before_submit",
         "validate": "mohan_impex.salary_slip.validate",
         "on_trash": "mohan_impex.salary_slip.on_trash"
     },
