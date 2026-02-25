@@ -22,6 +22,8 @@
   "vehiclecontainer_number",
   "lr_no",
   "expected_arrival_date",
+  "forwarding_type",
+  "vehicle_type",
   "column_break_pfvt",
   "invoice_copy",
   "e_way_bill",
@@ -222,6 +224,20 @@
   {
    "fieldname": "section_break_ysiq",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "forwarding_type",
+   "fieldtype": "Select",
+   "label": "Forwarding Type",
+   "options": "\nFTL\nPTL"
+  },
+  {
+   "depends_on": "eval:doc.forwarding_type",
+   "fieldname": "vehicle_type",
+   "fieldtype": "Select",
+   "label": "Vehicle Type ",
+   "mandatory_depends_on": "eval:doc.forwarding_type",
+   "options": "\nCash Vehicle\nOwn Vehicle\nHired Vehicle"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -236,7 +252,7 @@
    "link_fieldname": "custom_asn_no"
   }
  ],
- "modified": "2025-12-03 11:38:53.036431",
+ "modified": "2026-02-25 15:36:09.503622",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Advance Supplier Notification",

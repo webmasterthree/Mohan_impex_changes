@@ -180,13 +180,13 @@
   "doctype_event": "Before Save",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2026-02-25 03:44:01.872658",
+  "modified": "2026-02-25 12:07:42.324942",
   "module": "Mohan Impex",
   "name": "Salary on 30 days",
   "rate_limit_count": 5,
   "rate_limit_seconds": 86400,
   "reference_doctype": "Salary Slip",
-  "script": "if doc.payment_days and doc.end_date:\n    # 1. Mahine ke asli din (Jan=31, Feb=28)\n    actual_month_days = frappe.utils.getdate(doc.end_date).day\n    \n    # 2. Check: Kya ye Mid-Month Joining ya Exit ka case hai?\n    # ERPNext ke standard fields 'relieving_date' aur 'custom_joining_date' check karein\n    is_mid_month = False\n    if doc.relieving_date or (doc.custom_joining_date and frappe.utils.getdate(doc.custom_joining_date) > frappe.utils.getdate(doc.start_date)):\n        is_mid_month = True\n\n    # 3. LOGIC 1: FULL MONTH (No LOP, No Mid-Month)\n    if doc.payment_days >= actual_month_days:\n        doc.payment_days = 30\n        doc.absent_days = 0\n        \n    # 4. LOGIC 2: MID-MONTH JOINING / EXIT (Aapka Second Logic)\n    elif is_mid_month:\n        # Jitne din kaam kiya (Actual Worked), utne hi payment days rahenge\n        # Feb Example: 20 din worked = 20 payment days\n        doc.payment_days = doc.payment_days\n        doc.absent_days = 30 - doc.payment_days\n\n    # 5. LOGIC 3: REGULAR LOP / ABSENT (Aapka Pehla Logic - 30 Day Scale)\n    else:\n        # Feb Example: 28 total - 18 worked = 10 gap. Result: 30 - 10 = 20 Days.\n        gap_days = actual_month_days - doc.payment_days\n        doc.payment_days = 30 - gap_days\n        doc.absent_days = gap_days\n\n    # 6. Boundary Controls & Calculation Refresh\n    if doc.payment_days > 30: doc.payment_days = 30\n    if doc.payment_days < 0: doc.payment_days = 0\n    \n    doc.flags.ignore_validate_update_after_submit = True\n    doc.calculate_net_pay()",
+  "script": "if doc.payment_days and doc.end_date:\n    actual_month_days = frappe.utils.getdate(doc.end_date).day\n    \n    is_mid_month = False\n    if doc.relieving_date or (doc.custom_joining_date and frappe.utils.getdate(doc.custom_joining_date) > frappe.utils.getdate(doc.start_date)):\n        is_mid_month = True\n\n    if doc.payment_days >= actual_month_days:\n        doc.payment_days = 30\n        doc.absent_days = 0\n        \n    elif is_mid_month:\n        doc.payment_days = doc.payment_days\n        doc.absent_days = 30 - doc.payment_days\n\n    else:\n        gap_days = actual_month_days - doc.payment_days\n        doc.payment_days = 30 - gap_days\n        doc.absent_days = gap_days\n\n    if doc.payment_days > 30: doc.payment_days = 30\n    if doc.payment_days < 0: doc.payment_days = 0\n    \n    doc.flags.ignore_validate_update_after_submit = True\n    doc.calculate_net_pay()",
   "script_type": "DocType Event"
  }
 ]
