@@ -28,13 +28,13 @@
   "doctype_event": "Before Submit",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2026-02-09 11:10:24.014834",
+  "modified": "2026-02-25 18:56:30.519359",
   "module": "Mohan Impex",
   "name": "PI Validation",
   "rate_limit_count": 5,
   "rate_limit_seconds": 86400,
   "reference_doctype": "Purchase Invoice",
-  "script": "if (doc.total_amount or 0) > 0 and (doc.total or 0) != (doc.total_amount or 0):\n    frappe.throw(_(\"Total Amount must be same\"))",
+  "script": "total_amount = frappe.utils.flt(doc.get(\"total_amount\"))\ntotal = frappe.utils.flt(doc.get(\"total\"))\n\nif total_amount > 0 and total != total_amount:\n    frappe.throw(_(\"Total Amount must be same\"))",
   "script_type": "DocType Event"
  },
  {

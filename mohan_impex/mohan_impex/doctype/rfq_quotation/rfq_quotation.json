@@ -18,6 +18,7 @@
   "quoted_amount",
   "expected_delivery",
   "remarks",
+  "rfq_type",
   "section_break_gkgt",
   "from_location",
   "column_break_bbud",
@@ -224,13 +225,20 @@
    "fieldname": "section_break_cjdm",
    "fieldtype": "Section Break",
    "label": "Payment Terms"
+  },
+  {
+   "fieldname": "rfq_type",
+   "fieldtype": "Select",
+   "label": "RFQ Type",
+   "options": "\nSales\nPurchase",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-10 16:30:49.695601",
+ "modified": "2026-02-26 18:00:31.896965",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "RFQ Quotation",

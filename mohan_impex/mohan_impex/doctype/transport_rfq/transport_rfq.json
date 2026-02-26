@@ -7,7 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "pick_list",
+  "rfq_type",
   "transport_date",
   "from_location",
   "column_break_zhmj",
@@ -20,6 +20,8 @@
   "locations",
   "total_weightin_kg",
   "section_break_eabp",
+  "pick_list",
+  "purchase_order",
   "amended_from"
  ],
  "fields": [
@@ -76,7 +78,8 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Pick List",
-   "options": "Pick List"
+   "options": "Pick List",
+   "read_only": 1
   },
   {
    "fieldname": "amended_from",
@@ -122,6 +125,21 @@
    "label": "Series",
    "options": "RFQ-DNK-.####.-.FY\nRFQ-KPS-.####.-.FY\nRFQ-BB-.####.-.FY\nRFQ-GWH-.####.-.FY\nRFQ-PAT-.####.-.FY\nRFQ-HYD-.####.-.FY\nRFQ-CHN-.####.-.FY\nRFQ-DEL-.####.-.FY\nRFQ-MUM-.####.-.FY\nRFQ-MFG-.####.-.FY\nRFQ-EXP-.####.-.FY\nRFQ-RET-.####.-.FY\nRFQ-BT-DNK-.####.-.FY\nRFQ-BT-KPS-.####.-.FY\nRFQ-BT-BB-.####.-.FY\nRFQ-BT-GWH-.####.-.FY\nRFQ-BT-PAT-.####.-.FY\nRFQ-BT-HYD-.####.-.FY\nRFQ-BT-CHN-.####.-.FY\nRFQ-BT-DEL-.####.-.FY\nRFQ-BT-MUM-.####.-.FY\nRFQ-BT-MFG-.####.-.FY",
    "reqd": 1
+  },
+  {
+   "fieldname": "rfq_type",
+   "fieldtype": "Select",
+   "label": "RFQ Type",
+   "options": "\nSales\nPurchase",
+   "read_only": 1
+  },
+  {
+   "fieldname": "purchase_order",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Purchase Order",
+   "options": "Purchase Order",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
@@ -133,7 +151,7 @@
    "link_fieldname": "transport"
   }
  ],
- "modified": "2026-02-10 12:04:20.440873",
+ "modified": "2026-02-26 16:40:47.206147",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transport RFQ",

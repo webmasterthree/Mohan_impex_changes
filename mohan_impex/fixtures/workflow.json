@@ -4459,13 +4459,13 @@
   "doctype": "Workflow",
   "document_type": "Purchase Invoice",
   "is_active": 1,
-  "modified": "2026-02-24 16:31:18.911319",
+  "modified": "2026-02-26 14:57:50.476042",
   "name": "Purchase Invoice",
   "override_status": 0,
   "send_email_alert": 0,
   "states": [
    {
-    "allow_edit": "Billing Approver",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,

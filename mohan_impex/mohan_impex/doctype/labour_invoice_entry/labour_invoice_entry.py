@@ -21,7 +21,7 @@ def create_purchase_invoice(doc):
     pi.posting_date = doc.posting_date
     pi.set_posting_time = 1
     pi.bill_date = today()
-    pi.bill_no.doc.name
+    pi.bill_no = doc.name
 
     for row in doc.labour_details:
         if row.total and row.total > 0:
