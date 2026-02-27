@@ -13,7 +13,13 @@
   "posting_date",
   "company",
   "section_break_mmkb",
-  "labour_details"
+  "labour_details",
+  "labour_summary_section",
+  "total_labour_count",
+  "total_normal_amount",
+  "column_break_rlgf",
+  "total_overtime_amount",
+  "grand_total"
  ],
  "fields": [
   {
@@ -61,14 +67,47 @@
    "fieldtype": "Table",
    "label": "Labour Details",
    "options": "Labour Details"
+  },
+  {
+   "fieldname": "labour_summary_section",
+   "fieldtype": "Section Break",
+   "label": "Labour Summary"
+  },
+  {
+   "fieldname": "total_labour_count",
+   "fieldtype": "Float",
+   "label": "Total Labour Count",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_normal_amount",
+   "fieldtype": "Currency",
+   "label": "Total Normal Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_rlgf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_overtime_amount",
+   "fieldtype": "Currency",
+   "label": "Total Overtime Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-24 21:15:43.929111",
- "modified_by": "Administrator",
+ "modified": "2026-02-27 00:18:09.991747",
+ "modified_by": "revasiya.h786@gmail.com",
  "module": "Mohan Impex",
  "name": "Labour Invoice Entry",
  "naming_rule": "Expression (old style)",

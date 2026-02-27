@@ -18,6 +18,7 @@ def create_purchase_invoice(doc):
     pi = frappe.new_doc("Purchase Invoice")
     pi.supplier = doc.supplier
     pi.company = doc.company
+    pi.branches = "Kolkata"
     pi.posting_date = doc.posting_date
     pi.set_posting_time = 1
     pi.bill_date = today()
@@ -28,7 +29,9 @@ def create_purchase_invoice(doc):
             pi.append("items", {
                 "item_code": get_item_by_gender(row.gender),
                 "qty": 1,
-                "rate": row.total
+                "rate": row.total,
+		"branches":"Kolkata",
+		"expense_account":"Forwarding Charge - MISL"
             })
 
     pi.insert()

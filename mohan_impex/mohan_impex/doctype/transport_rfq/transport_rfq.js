@@ -46,7 +46,8 @@ function create_quotation(frm) {
 				qtn.vehicle_type = frm.doc.vehicle_type;
 				qtn.total_weightin_kg = frm.doc.total_weightin_kg;
 				qtn.pick_list = frm.doc.pick_list;
-
+				qtn.rfq_type = frm.doc.rfq_type;
+				qtn.purchase_order = frm.doc.purchase_order;
 				qtn.locations = [];
 				(frm.doc.locations || []).forEach((row) => {
 					const child = frappe.model.add_child(qtn, null, "locations");

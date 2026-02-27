@@ -29,6 +29,7 @@
   "total_weightin_kg",
   "transport",
   "pick_list",
+  "purchase_order",
   "amended_from",
   "terms_tab",
   "terms_and_conditions_section",
@@ -229,8 +230,15 @@
   {
    "fieldname": "rfq_type",
    "fieldtype": "Select",
+   "in_standard_filter": 1,
    "label": "RFQ Type",
    "options": "\nSales\nPurchase",
+   "read_only": 1
+  },
+  {
+   "fieldname": "purchase_order",
+   "fieldtype": "Data",
+   "label": "Purchase Order",
    "read_only": 1
   }
  ],
@@ -238,7 +246,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-26 18:00:31.896965",
+ "modified": "2026-02-26 18:27:41.949138",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "RFQ Quotation",

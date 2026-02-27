@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letterhead": null,
- "modified": "2026-02-11 13:09:11.147297",
+ "modified": "2026-02-26 18:39:39.134177",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Sales Order Analysis-MISL",
@@ -38,6 +38,15 @@
   },
   {
    "role": "Billing Team"
+  },
+  {
+   "role": "Logistics Branch"
+  },
+  {
+   "role": "Logistics Kolkata"
+  },
+  {
+   "role": "MIS"
   }
  ],
  "timeout": 0
