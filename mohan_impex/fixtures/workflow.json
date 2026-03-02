@@ -4306,13 +4306,13 @@
   "doctype": "Workflow",
   "document_type": "Item",
   "is_active": 1,
-  "modified": "2026-02-24 15:36:40.111947",
+  "modified": "2026-02-27 18:02:12.317598",
   "name": "Item",
   "override_status": 0,
   "send_email_alert": 0,
   "states": [
    {
-    "allow_edit": "Accounting Master",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -4328,7 +4328,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "Management",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -4344,7 +4344,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "Management",
+    "allow_edit": "All",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -4397,7 +4397,7 @@
   "doctype": "Workflow",
   "document_type": "Sales Invoice",
   "is_active": 1,
-  "modified": "2026-02-24 16:23:12.488870",
+  "modified": "2026-02-28 10:57:43.627927",
   "name": "Sales Invoice",
   "override_status": 0,
   "send_email_alert": 0,

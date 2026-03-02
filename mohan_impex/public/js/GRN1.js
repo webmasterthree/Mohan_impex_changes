@@ -352,6 +352,12 @@ function fetch_po_fields_and_set_on_pr(frm) {
 			frm.set_value("assigned_driver", data.custom_driver_name || "");
 			frm.set_value("driver_mobile_number", data.custom_driver_mobile_number || "");
 			frm.set_value("lr_number", data.lr_no || "");
+			frm.set_value("driver", data.driver || "");
+			frm.set_value("transporter", data.transporter || "");
+			frm.set_value("transport_charges",data.transport_charges || "");
+			frm.set_value("remarks",data.remarks || "");
+			frm.set_value("vehicle_no",data.custom_vehiclecontainer_number || "");
+
 		},
 	});
 }

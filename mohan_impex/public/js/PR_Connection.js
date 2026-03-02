@@ -75,7 +75,7 @@ function fetch_linked_po_data(frm) {
 
 function set_po_related_fields(frm, purchase_order) {
     frappe.db.get_value('Purchase Order', purchase_order,
-        ['custom_transporter_name', 'custom_vehiclecontainer_number']
+        ['custom_transporter_name', 'custom_vehiclecontainer_number','driver']
     ).then(({ message }) => {
         if (message) {
             if (message.custom_transporter_name) {
@@ -83,6 +83,9 @@ function set_po_related_fields(frm, purchase_order) {
             }
             if (message.custom_vehiclecontainer_number) {
                 frm.set_value('custom_vehicle_no__container_no', message.custom_vehiclecontainer_number);
+            }
+            if (message.driver) {
+                frm.set_value('driver', message.driver);
             }
         }
     });

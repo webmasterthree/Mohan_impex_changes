@@ -38,10 +38,14 @@ def get_linked_purchase_order(purchase_receipt):
 
         return {
             "name": po_doc.name,
+            "transporter":po_doc.transporter,
             "custom_transporter_name": po_doc.custom_transporter_name,
             "custom_vehiclecontainer_number": po_doc.custom_vehiclecontainer_number,
             "custom_expected_arrival_date_": po_doc.custom_expected_arrival_date_,
             "custom_driver_name": po_doc.custom_driver_name,
+            "driver":po_doc.driver,
+            "transport_charges":po_doc.transport_charges,
+            "remarks":po_doc.remarks,
             "custom_driver_mobile_number": po_doc.custom_driver_mobile_number,
             "lr_no": po_doc.lr_no,
         }

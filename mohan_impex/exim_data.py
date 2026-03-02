@@ -23,7 +23,6 @@ def exim_data(delivery_note: str):
 		"shipping_instructions",
 		"pre_carriage_by",
 		"place_of_precarrier",
-		"total_gr_wt",
 		"marks_and_no",
 	]
 

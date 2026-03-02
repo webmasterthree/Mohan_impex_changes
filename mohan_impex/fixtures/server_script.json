@@ -188,5 +188,24 @@
   "reference_doctype": "Salary Slip",
   "script": "if doc.payment_days and doc.end_date:\n    actual_month_days = frappe.utils.getdate(doc.end_date).day\n    \n    is_mid_month = False\n    if doc.relieving_date or (doc.custom_joining_date and frappe.utils.getdate(doc.custom_joining_date) > frappe.utils.getdate(doc.start_date)):\n        is_mid_month = True\n\n    if doc.payment_days >= actual_month_days:\n        doc.payment_days = 30\n        doc.absent_days = 0\n        \n    elif is_mid_month:\n        doc.payment_days = doc.payment_days\n        doc.absent_days = 30 - doc.payment_days\n\n    else:\n        gap_days = actual_month_days - doc.payment_days\n        doc.payment_days = 30 - gap_days\n        doc.absent_days = gap_days\n\n    if doc.payment_days > 30: doc.payment_days = 30\n    if doc.payment_days < 0: doc.payment_days = 0\n    \n    doc.flags.ignore_validate_update_after_submit = True\n    doc.calculate_net_pay()",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "After Save",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2026-03-02 12:29:59.101031",
+  "module": "Mohan Impex",
+  "name": "Weight in word",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Packing Slip",
+  "script": "gross_words = frappe.call(\n\t\"mohan_impex.amount_in_word.weight_in_words\",\n\tamount=doc.gross_weight or 0\n) or \"\"\n\nnet_words = frappe.call(\n\t\"mohan_impex.amount_in_word.weight_in_words\",\n\tamount=doc.net_weight_pkg or 0\n) or \"\"\n\nupdates = {}\n\nif (doc.get(\"total_gross_weight\") or \"\") != gross_words:\n\tupdates[\"total_gross_weight\"] = gross_words\n\nif (doc.get(\"net_weight\") or \"\") != net_words:\n\tupdates[\"net_weight\"] = net_words\n\nif updates:\n\tfrappe.db.set_value(\"Packing Slip\", doc.name, updates, update_modified=False)",
+  "script_type": "DocType Event"
  }
 ]
