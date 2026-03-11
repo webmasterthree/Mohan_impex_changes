@@ -496,6 +496,166 @@ def material_list():
         get_exception(err)
 
 
+# @frappe.whitelist()
+# def get_customer_list(search_text=""):
+#     emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
+#     area_role_filter = get_role_filter(emp)
+#     territory_role_filter = get_territory_role_filter(emp)
+#     customer_list = []
+#     filters = {}
+#     if search_text:
+#         filters.update({"search_text": search_text})
+#     if has_cp():
+#         if frappe.form_dict.get("channel_partner"):
+#             filters.update({"channel_partner": frappe.form_dict.get("channel_partner")})
+#         if frappe.form_dict.get("customer_level"):
+#             filters.update({"customer_level": frappe.form_dict.get("customer_level")})
+#     if frappe.form_dict.get("show_area_records"):
+#         filters.update({"show_area_records": frappe.form_dict.get("show_area_records")})
+#     if frappe.form_dict.get("verification_type"):
+#         if frappe.form_dict.get("verification_type") == "Verified":
+#             if frappe.form_dict.get("kyc_status"):
+#                 filters.update({"kyc_status": frappe.form_dict.get("kyc_status")})
+#             customer_list.extend(get_customer_info(**filters, role_filter=territory_role_filter))
+#         elif frappe.form_dict.get("verification_type") == "Unverified":
+#             customer_list.extend(unv_customer_list(**filters, role_filter=area_role_filter))
+#     else:
+#         customer_list.extend(get_customer_info(**filters, role_filter=territory_role_filter))
+#         customer_list.extend(unv_customer_list(**filters, role_filter=area_role_filter))
+#     return customer_list
+
+# @frappe.whitelist()
+# def get_customer_info(role_filter=None, customer_level="", channel_partner="", kyc_status="", search_text=""):
+#     if not role_filter:
+#         emp = frappe.get_value(
+#             "Employee",
+#             {"user_id": frappe.session.user},
+#             ["name", "area"],
+#             as_dict=True
+#         )
+#         role_filter = get_territory_role_filter(emp)
+
+#     # ✅ ONLY change: added cu.is_dl
+#     fields = [
+#         "cu.name as name",
+#         "cu.customer_name",
+#         "cu.custom_shop as shop",
+#         "cu.custom_shop_name as shop_name",
+#         "ct.name as contact",
+#         "cu.customer_level",
+#         "cu.kyc_status",
+#         "cu.is_dl"          # ✅ ADDED
+#     ]
+
+#     if has_cp():
+#         fields.extend([
+#             "cu.custom_channel_partner as channel_partner",
+#             "cu.cp_name"
+#         ])
+
+#     query = """
+#         SELECT {fields}
+#         FROM `tabCustomer` AS cu
+#         LEFT JOIN `tabDynamic Link` AS dl ON dl.link_name = cu.name
+#         LEFT JOIN `tabContact Number` AS ct ON ct.name = dl.parent
+#         WHERE {role_filter}
+#     """.format(fields=",".join(fields), role_filter=role_filter)
+
+#     if search_text:
+#         query += """
+#             AND (cu.customer_name LIKE "%{0}%" OR ct.name LIKE "%{0}%")
+#         """.format(search_text)
+
+#     if customer_level:
+#         query += """ AND cu.customer_level = "{0}" """.format(customer_level)
+
+#     if channel_partner:
+#         query += """ AND cu.custom_channel_partner = "{0}" """.format(channel_partner)
+
+#     if kyc_status:
+#         query += """ AND cu.kyc_status = "{0}" """.format(kyc_status)
+
+#     customers = frappe.db.sql(query, as_dict=True)
+
+#     result = {}
+#     for entry in customers:
+#         key = entry["name"]
+#         if key not in result:
+#             result[key] = {
+#                 "name": entry["name"],
+#                 "customer_name": entry["customer_name"],
+#                 "verific_type": "Verified",
+#                 "shop": entry["shop"],
+#                 "shop_name": entry["shop_name"],
+#                 "kyc_status": entry["kyc_status"],
+#                 "is_dl": entry["is_dl"],   # ✅ PRINTED
+#                 "contact": []
+#             }
+#             if has_cp():
+#                 result[key]["customer_level"] = entry["customer_level"]
+#                 result[key]["channel_partner"] = entry["channel_partner"]
+#                 result[key]["cp_name"] = entry["cp_name"]
+
+#         if entry["contact"]:
+#             result[key]["contact"].append(entry["contact"])
+
+#     return list(result.values())
+
+
+# @frappe.whitelist()
+# def unv_customer_list(role_filter=None, customer_level="", channel_partner="", kyc_status="", search_text=""):
+#     try:
+#         if not role_filter:
+#             customer_level = "Primary"
+#         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
+#         role_filter = get_role_filter(emp)
+#         fields = ["unv.name", "customer_name", "shop", "shop_name", "contact", "kyc_status"]
+#         if has_cp():
+#             fields.extend(["customer_level", "channel_partner", "cp_name"])
+#         query = """
+#             select {fields}
+#             from `tabUnverified Customer` as unv
+#             LEFT JOIN `tabContact List` as cl on cl.parent = unv.name
+#             WHERE kyc_status = "Pending" and {role_filter}
+#         """.format(fields=", ".join(fields), role_filter=role_filter)
+#         if frappe.form_dict.get("search_text"):
+#             # or unv.shop_name LIKE "%{search_text}%"
+#             or_filters = """ AND (unv.customer_name LIKE "%{search_text}%" or cl.contact LIKE "%{search_text}%") """.format(search_text=search_text)
+#             query += or_filters
+#         if customer_level:
+#             query += """ AND unv.customer_level = "{0}" """.format(customer_level)
+#         if channel_partner:
+#             query += """ AND unv.channel_partner = "{0}" """.format(channel_partner)
+#         unv_customer_list = frappe.db.sql(query, as_dict=True)
+#         result={}
+#         for entry in unv_customer_list:
+#             key = entry["name"]
+#             if key not in result:
+#                 result[key] = {
+#                     "name": entry["name"],
+#                     "customer_name": entry["customer_name"],
+#                     "verific_type": "Unverified",
+#                     "shop": entry["shop"],
+#                     "shop_name": entry["shop_name"],
+#                     "kyc_status": entry["kyc_status"],
+#                     "contact": []
+#                 }
+#                 if has_cp():
+#                     result[key]["customer_level"] = entry["customer_level"]
+#                     result[key]["channel_partner"] = entry["channel_partner"]
+
+#             if entry["contact"]:
+#                 result[key]["contact"].append(entry["contact"])
+#         unv_customer_list = list(result.values())
+#         if role_filter:
+#             return unv_customer_list
+#         frappe.local.response['status'] = True
+#         frappe.local.response['message'] = "Unverified Customer list fetched successfully"
+#         frappe.local.response['data'] = unv_customer_list
+#     except Exception as err:
+#         get_exception(err, "UNVERIFIED CUSTOMER LIST ERROR")
+
+
 @frappe.whitelist()
 def get_customer_list(search_text=""):
     emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
@@ -503,26 +663,38 @@ def get_customer_list(search_text=""):
     territory_role_filter = get_territory_role_filter(emp)
     customer_list = []
     filters = {}
+
     if search_text:
         filters.update({"search_text": search_text})
+
     if has_cp():
         if frappe.form_dict.get("channel_partner"):
             filters.update({"channel_partner": frappe.form_dict.get("channel_partner")})
         if frappe.form_dict.get("customer_level"):
             filters.update({"customer_level": frappe.form_dict.get("customer_level")})
+
     if frappe.form_dict.get("show_area_records"):
         filters.update({"show_area_records": frappe.form_dict.get("show_area_records")})
+
     if frappe.form_dict.get("verification_type"):
         if frappe.form_dict.get("verification_type") == "Verified":
             if frappe.form_dict.get("kyc_status"):
                 filters.update({"kyc_status": frappe.form_dict.get("kyc_status")})
             customer_list.extend(get_customer_info(**filters, role_filter=territory_role_filter))
+
         elif frappe.form_dict.get("verification_type") == "Unverified":
             customer_list.extend(unv_customer_list(**filters, role_filter=area_role_filter))
     else:
         customer_list.extend(get_customer_info(**filters, role_filter=territory_role_filter))
         customer_list.extend(unv_customer_list(**filters, role_filter=area_role_filter))
+
+    customer_list = sorted(
+        customer_list,
+        key=lambda x: (x.get("customer_name") or "").lower()
+    )
+
     return customer_list
+
 
 @frappe.whitelist()
 def get_customer_info(role_filter=None, customer_level="", channel_partner="", kyc_status="", search_text=""):
@@ -535,7 +707,6 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
         )
         role_filter = get_territory_role_filter(emp)
 
-    # ✅ ONLY change: added cu.is_dl
     fields = [
         "cu.name as name",
         "cu.customer_name",
@@ -544,7 +715,7 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
         "ct.name as contact",
         "cu.customer_level",
         "cu.kyc_status",
-        "cu.is_dl"          # ✅ ADDED
+        "cu.is_dl"
     ]
 
     if has_cp():
@@ -588,7 +759,7 @@ def get_customer_info(role_filter=None, customer_level="", channel_partner="", k
                 "shop": entry["shop"],
                 "shop_name": entry["shop_name"],
                 "kyc_status": entry["kyc_status"],
-                "is_dl": entry["is_dl"],   # ✅ PRINTED
+                "is_dl": entry["is_dl"],
                 "contact": []
             }
             if has_cp():
@@ -607,27 +778,35 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", k
     try:
         if not role_filter:
             customer_level = "Primary"
+
         emp = frappe.get_value("Employee", {"user_id": frappe.session.user}, ["name", "area"], as_dict=True)
         role_filter = get_role_filter(emp)
+
         fields = ["unv.name", "customer_name", "shop", "shop_name", "contact", "kyc_status"]
         if has_cp():
             fields.extend(["customer_level", "channel_partner", "cp_name"])
+
         query = """
             select {fields}
             from `tabUnverified Customer` as unv
             LEFT JOIN `tabContact List` as cl on cl.parent = unv.name
             WHERE kyc_status = "Pending" and {role_filter}
         """.format(fields=", ".join(fields), role_filter=role_filter)
+
         if frappe.form_dict.get("search_text"):
-            # or unv.shop_name LIKE "%{search_text}%"
-            or_filters = """ AND (unv.customer_name LIKE "%{search_text}%" or cl.contact LIKE "%{search_text}%") """.format(search_text=search_text)
-            query += or_filters
+            query += """ AND (unv.customer_name LIKE "%{search_text}%" or cl.contact LIKE "%{search_text}%") """.format(
+                search_text=search_text
+            )
+
         if customer_level:
             query += """ AND unv.customer_level = "{0}" """.format(customer_level)
+
         if channel_partner:
             query += """ AND unv.channel_partner = "{0}" """.format(channel_partner)
+
         unv_customer_list = frappe.db.sql(query, as_dict=True)
-        result={}
+
+        result = {}
         for entry in unv_customer_list:
             key = entry["name"]
             if key not in result:
@@ -646,14 +825,26 @@ def unv_customer_list(role_filter=None, customer_level="", channel_partner="", k
 
             if entry["contact"]:
                 result[key]["contact"].append(entry["contact"])
+
         unv_customer_list = list(result.values())
+
         if role_filter:
             return unv_customer_list
+
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Unverified Customer list fetched successfully"
         frappe.local.response['data'] = unv_customer_list
+
     except Exception as err:
         get_exception(err, "UNVERIFIED CUSTOMER LIST ERROR")
+
+
+
+
+
+
+
+
 
 SECRET_KEY = frappe.local.conf.get("jwt_secret")
 def get_signed_token(file_path, access_token=""):

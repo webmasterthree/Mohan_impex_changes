@@ -82,7 +82,7 @@
    "field_name": "item_code",
    "idx": 0,
    "is_system_generated": 0,
-   "modified": "2026-02-23 18:04:48.164605",
+   "modified": "2026-03-02 16:43:56.704926",
    "modified_by": "Administrator",
    "module": null,
    "name": "Work Order Item-item_code-label",
@@ -105,7 +105,7 @@
    "field_name": "item_name",
    "idx": 0,
    "is_system_generated": 0,
-   "modified": "2026-02-23 18:04:48.175554",
+   "modified": "2026-03-02 16:43:56.715770",
    "modified_by": "Administrator",
    "module": null,
    "name": "Work Order Item-item_name-label",
@@ -120,7 +120,7 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
-   "creation": "2026-01-03 11:22:45.537505",
+   "creation": "2026-03-02 16:37:25.977662",
    "default_value": null,
    "doc_type": "Work Order Item",
    "docstatus": 0,
@@ -128,7 +128,7 @@
    "field_name": null,
    "idx": 0,
    "is_system_generated": 0,
-   "modified": "2026-02-23 18:04:48.186781",
+   "modified": "2026-03-02 16:43:56.727051",
    "modified_by": "Administrator",
    "module": null,
    "name": "Work Order Item-main-field_order",
@@ -136,7 +136,7 @@
    "property": "field_order",
    "property_type": "Data",
    "row_name": null,
-   "value": "[\"item_template\", \"operation\", \"item_code\", \"source_warehouse\", \"column_break_3\", \"item_name\", \"description\", \"allow_alternative_item\", \"include_item_in_manufacturing\", \"qty_section\", \"required_qty\", \"stock_uom\", \"rate\", \"amount\", \"column_break_11\", \"transferred_qty\", \"consumed_qty\", \"returned_qty\", \"available_qty_at_source_warehouse\", \"available_qty_at_wip_warehouse\"]"
+   "value": "[\"item_template\", \"operation\", \"item_code\", \"source_warehouse\", \"column_break_3\", \"item_name\", \"description\", \"allow_alternative_item\", \"include_item_in_manufacturing\", \"qty_section\", \"required_qty\", \"stock_uom\", \"uom\", \"rate\", \"amount\", \"column_break_11\", \"transferred_qty\", \"consumed_qty\", \"returned_qty\", \"available_qty_at_source_warehouse\", \"available_qty_at_wip_warehouse\"]"
   }
  ],
  "sync_on_migrate": 1
