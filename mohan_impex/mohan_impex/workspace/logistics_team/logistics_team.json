@@ -76,7 +76,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "MISL Report",
-   "link_count": 4,
+   "link_count": 6,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -121,9 +121,29 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Stock Balance",
+   "link_count": 0,
+   "link_to": "Stock Balance",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Stock Ledger",
+   "link_count": 0,
+   "link_to": "Stock Ledger",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-02-04 19:35:16.838951",
+ "modified": "2026-03-12 13:21:59.542203",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Logistics Team",
@@ -138,6 +158,9 @@
   },
   {
    "role": "MIS Logistics HO"
+  },
+  {
+   "role": "Logistics Branch"
   }
  ],
  "sequence_id": 9.0,
