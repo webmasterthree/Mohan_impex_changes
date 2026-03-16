@@ -62,32 +62,43 @@ def get_first_day_from_shift(employee):
 
 # ---------- Get late check-in/early-out dates (with duplicates) ----------
 def get_employee_late_checkins_with_dates(employee):
-    """Return two separate lists:
-    - late_in_dates: dates when employee had late IN
-    - early_out_dates: dates when employee had early OUT
     """
-    today_date = get_datetime().date()
-    first_day = get_first_day_from_shift(employee)
+    Month wise late IN / early OUT dates.
+    Returns:
+        {
+            "2026-01": {"late_in": [...], "early_out": [...]},
+            "2026-02": {"late_in": [...], "early_out": [...]},
+        }
+    """
+    today = getdate()
+    shift_name = get_shift_for_date(employee, today)
+    if not shift_name:
+        return {}
+
+    start_date, end_date = get_shift_date_range(shift_name)
 
     checkins = frappe.db.get_all(
         "Employee Checkin",
-        filters={"employee": employee, "time": ["between", [first_day, today_date]]},
+        filters={"employee": employee, "time": ["between", [start_date, end_date]]},
         fields=["log_type", "time"],
         order_by="time asc",
     )
 
-    late_in_dates = []
-    early_out_dates = []
+    month_data = {}
 
     for chk in checkins:
         checkin_time = get_datetime(chk["time"])
         checkin_date = checkin_time.date()
+        month_key = checkin_date.strftime("%Y-%m")  # "2026-01", "2026-02"
 
-        shift_name = get_shift_for_date(employee, checkin_date)
-        if not shift_name:
+        if month_key not in month_data:
+            month_data[month_key] = {"late_in": [], "early_out": []}
+
+        shift_name_day = get_shift_for_date(employee, checkin_date)
+        if not shift_name_day:
             continue
 
-        shift_doc = frappe.get_cached_doc("Shift Type", shift_name)
+        shift_doc = frappe.get_cached_doc("Shift Type", shift_name_day)
         start_time = _to_time(shift_doc.start_time)
         end_time = _to_time(shift_doc.end_time)
         if not start_time or not end_time:
@@ -108,7 +119,7 @@ def get_employee_late_checkins_with_dates(employee):
         # Late IN
         if chk["log_type"] == "IN":
             if checkin_time > shift_start + timedelta(minutes=16):
-                late_in_dates.append(checkin_date)
+                month_data[month_key]["late_in"].append(checkin_date)
                 frappe.logger().debug(
                     f"LATE IN: {employee} on {checkin_date} at {checkin_time.time()}"
                 )
@@ -116,12 +127,73 @@ def get_employee_late_checkins_with_dates(employee):
         # Early OUT
         elif chk["log_type"] == "OUT":
             if checkin_time < shift_end - timedelta(minutes=16):
-                early_out_dates.append(checkin_date)
+                month_data[month_key]["early_out"].append(checkin_date)
                 frappe.logger().debug(
                     f"EARLY OUT: {employee} on {checkin_date} at {checkin_time.time()}"
                 )
 
-    return late_in_dates, early_out_dates
+    return month_data
+# def get_employee_late_checkins_with_dates(employee):
+#     """Return two separate lists:
+#     - late_in_dates: dates when employee had late IN
+#     - early_out_dates: dates when employee had early OUT
+#     """
+#     today_date = get_datetime().date()
+#     first_day = get_first_day_from_shift(employee)
+
+#     checkins = frappe.db.get_all(
+#         "Employee Checkin",
+#         filters={"employee": employee, "time": ["between", [first_day, today_date]]},
+#         fields=["log_type", "time"],
+#         order_by="time asc",
+#     )
+
+#     late_in_dates = []
+#     early_out_dates = []
+
+#     for chk in checkins:
+#         checkin_time = get_datetime(chk["time"])
+#         checkin_date = checkin_time.date()
+
+#         shift_name = get_shift_for_date(employee, checkin_date)
+#         if not shift_name:
+#             continue
+
+#         shift_doc = frappe.get_cached_doc("Shift Type", shift_name)
+#         start_time = _to_time(shift_doc.start_time)
+#         end_time = _to_time(shift_doc.end_time)
+#         if not start_time or not end_time:
+#             continue
+
+#         # Night shift handling
+#         if end_time <= start_time:
+#             if checkin_time.time() < end_time:
+#                 shift_start = datetime.combine(checkin_date - timedelta(days=1), start_time)
+#                 shift_end = datetime.combine(checkin_date, end_time)
+#             else:
+#                 shift_start = datetime.combine(checkin_date, start_time)
+#                 shift_end = datetime.combine(checkin_date + timedelta(days=1), end_time)
+#         else:
+#             shift_start = datetime.combine(checkin_date, start_time)
+#             shift_end = datetime.combine(checkin_date, end_time)
+
+#         # Late IN
+#         if chk["log_type"] == "IN":
+#             if checkin_time > shift_start + timedelta(minutes=16):
+#                 late_in_dates.append(checkin_date)
+#                 frappe.logger().debug(
+#                     f"LATE IN: {employee} on {checkin_date} at {checkin_time.time()}"
+#                 )
+
+#         # Early OUT
+#         elif chk["log_type"] == "OUT":
+#             if checkin_time < shift_end - timedelta(minutes=16):
+#                 early_out_dates.append(checkin_date)
+#                 frappe.logger().debug(
+#                     f"EARLY OUT: {employee} on {checkin_date} at {checkin_time.time()}"
+#                 )
+
+#     return late_in_dates, early_out_dates
 
 
 # ---------- Get next valid working day for leave marking ----------
@@ -340,143 +412,210 @@ def process_employee_leave(employee, context_label, return_result=False):
         "created_count": 0,
     }
 
-    late_in_dates, early_out_dates = get_employee_late_checkins_with_dates(employee)
-    result["late_in_count"] = len(late_in_dates)
-    result["early_out_count"] = len(early_out_dates)
+    # 1) Month wise checkins
+    month_data = get_employee_late_checkins_with_dates(employee)
+
+    if not month_data:
+        result["skipped"] = True
+        result["reason"] = "No checkin data found"
+        return result if return_result else None
+
+    total_late = sum(len(v["late_in"]) for v in month_data.values())
+    total_early = sum(len(v["early_out"]) for v in month_data.values())
+    result["late_in_count"] = total_late
+    result["early_out_count"] = total_early
 
     frappe.logger().info(
-        f"[{context_label}] {employee}: "
-        f"{len(late_in_dates)} late IN: {late_in_dates} | "
-        f"{len(early_out_dates)} early OUT: {early_out_dates}"
+        f"[{context_label}] {employee}: month_data={month_data}"
     )
-
-    if len(late_in_dates) < 3 and len(early_out_dates) < 3:
-        result["skipped"] = True
-        result["reason"] = "Less than 3 late IN and less than 3 early OUT events"
-        return result if return_result else None
 
     today_dt = getdate()
-    first_day = get_first_day_from_shift(employee)
-
-    existing_auto = frappe.db.get_all(
-        "Leave Application",
-        filters={
-            "employee": employee,
-            "from_date": [">=", first_day],
-            "description": ["like", "Auto Leave Deducted%"],
-            "docstatus": 1,
-        },
-        fields=["from_date", "description"],
-    )
-    used_dates = {d.from_date for d in existing_auto}
-
-    target_dates = []
-
-    # --- Late IN ---
-    existing_late_in = frappe.db.count(
-        "Leave Application",
-        filters={
-            "employee": employee,
-            "from_date": [">=", first_day],
-            "description": ["like", "%Basis: Late IN%"],
-            "docstatus": 1,
-        },
-    )
-    already_processed_in = existing_late_in * 3
-    late_in_remaining = late_in_dates[already_processed_in:]
-
-    for i in range(2, len(late_in_remaining), 3):
-        original_date = late_in_remaining[i]
-        candidate = get_next_valid_leave_date(employee, original_date)
-
-        if candidate is None:
-            frappe.logger().warning(
-                f"{employee}: LATE IN leave skip - no valid date in same month for {original_date}"
-            )
-            continue
-
-        attempts = 0
-        while candidate in used_dates and attempts < 60:
-            candidate = get_next_valid_leave_date(employee, add_days(candidate, 1))
-            if candidate is None:
-                break
-            attempts += 1
-
-        if candidate is None or attempts >= 60:
-            frappe.logger().error(
-                f"{employee}: LATE IN could not find unique date from {original_date}"
-            )
-            continue
-
-        target_dates.append((candidate, "Late IN", original_date))
-        used_dates.add(candidate)
-
-    # --- Early OUT ---
-    existing_early_out = frappe.db.count(
-        "Leave Application",
-        filters={
-            "employee": employee,
-            "from_date": [">=", first_day],
-            "description": ["like", "%Basis: Early OUT%"],
-            "docstatus": 1,
-        },
-    )
-    already_processed_out = existing_early_out * 3
-    early_out_remaining = early_out_dates[already_processed_out:]
-
-    for i in range(2, len(early_out_remaining), 3):
-        original_date = early_out_remaining[i]
-        candidate = get_next_valid_leave_date(employee, original_date)
-
-        if candidate is None:
-            frappe.logger().warning(
-                f"{employee}: EARLY OUT leave skip - no valid date in same month for {original_date}"
-            )
-            continue
-
-        attempts = 0
-        while candidate in used_dates and attempts < 60:
-            candidate = get_next_valid_leave_date(employee, add_days(candidate, 1))
-            if candidate is None:
-                break
-            attempts += 1
-
-        if candidate is None or attempts >= 60:
-            frappe.logger().error(
-                f"{employee}: EARLY OUT could not find unique date from {original_date}"
-            )
-            continue
-
-        target_dates.append((candidate, "Early OUT", original_date))
-        used_dates.add(candidate)
-
-    if not target_dates:
-        result["skipped"] = True
-        result["reason"] = "No new leave required"
-        return result if return_result else None
-
-    frappe.logger().info(f"{employee}: target leave dates: {target_dates}")
-
     priority_rows = get_leave_priority_and_balances(employee)
 
     created = 0
     created_leave_types = []
+    all_skipped = True
 
-    try:
+    # 2) Har month alag process karo
+    for month_key, data in sorted(month_data.items()):
+        late_in_dates = data["late_in"]
+        early_out_dates = data["early_out"]
+
+        frappe.logger().info(
+            f"{employee} [{month_key}]: "
+            f"late_in={late_in_dates} | early_out={early_out_dates}"
+        )
+
+        if len(late_in_dates) < 3 and len(early_out_dates) < 3:
+            frappe.logger().info(
+                f"{employee} [{month_key}]: Skip - less than 3 late IN and early OUT"
+            )
+            continue
+
+        all_skipped = False
+
+        # Month start aur end
+        year, month = map(int, month_key.split("-"))
+        month_start = getdate(f"{year}-{month:02d}-01")
+        # Month end (28/29/30/31)
+        import calendar
+        last_day = calendar.monthrange(year, month)[1]
+        month_end = getdate(f"{year}-{month:02d}-{last_day:02d}")
+
+        # Used dates for this month
+        existing_auto = frappe.db.get_all(
+            "Leave Application",
+            filters={
+                "employee": employee,
+                "from_date": [">=", month_start],
+                "from_date": ["<=", month_end],
+                "description": ["like", "Auto Leave Deducted%"],
+                "docstatus": 1,
+            },
+            fields=["from_date"],
+        )
+        used_dates = {d.from_date for d in existing_auto}
+
+        target_dates = []
+
+        # --- Late IN ---
+        existing_late_in = frappe.db.count(
+            "Leave Application",
+            filters={
+                "employee": employee,
+                "from_date": [">=", month_start],
+                "from_date": ["<=", month_end],
+                "description": ["like", "%Late IN%"],
+                "docstatus": 1,
+            },
+        )
+        already_processed_in = existing_late_in * 3
+        late_in_remaining = late_in_dates[already_processed_in:]
+
+        frappe.logger().info(
+            f"{employee} [{month_key}]: existing_late_in={existing_late_in}, "
+            f"already_processed_in={already_processed_in}, "
+            f"late_in_remaining={late_in_remaining}"
+        )
+
+        for i in range(2, len(late_in_remaining), 3):
+            original_date = late_in_remaining[i]
+            candidate = get_next_valid_leave_date(employee, original_date)
+
+            if candidate is None:
+                frappe.logger().warning(
+                    f"{employee}: LATE IN leave skip - no valid date in same month for {original_date}"
+                )
+                continue
+
+            attempts = 0
+            while candidate in used_dates and attempts < 60:
+                next_c = get_next_valid_leave_date(employee, add_days(candidate, 1))
+                # ✅ Month cross check
+                if next_c is None:
+                    candidate = None
+                    break
+                if next_c.month != original_date.month or next_c.year != original_date.year:
+                    candidate = None
+                    break
+                candidate = next_c
+                attempts += 1
+
+            if candidate is None or attempts >= 60:
+                frappe.logger().error(
+                    f"{employee}: LATE IN could not find unique date from {original_date}"
+                )
+                continue
+
+            target_dates.append((candidate, "Late IN", original_date))
+            used_dates.add(candidate)
+
+        # --- Early OUT ---
+        existing_early_out = frappe.db.count(
+            "Leave Application",
+            filters={
+                "employee": employee,
+                "from_date": [">=", month_start],
+                "from_date": ["<=", month_end],
+                "description": ["like", "%Early OUT%"],
+                "docstatus": 1,
+            },
+        )
+        already_processed_out = existing_early_out * 3
+        early_out_remaining = early_out_dates[already_processed_out:]
+
+        frappe.logger().info(
+            f"{employee} [{month_key}]: existing_early_out={existing_early_out}, "
+            f"already_processed_out={already_processed_out}, "
+            f"early_out_remaining={early_out_remaining}"
+        )
+
+        for i in range(2, len(early_out_remaining), 3):
+            original_date = early_out_remaining[i]
+            candidate = get_next_valid_leave_date(employee, original_date)
+
+            if candidate is None:
+                frappe.logger().warning(
+                    f"{employee}: EARLY OUT leave skip - no valid date in same month for {original_date}"
+                )
+                continue
+
+            attempts = 0
+            while candidate in used_dates and attempts < 60:
+                next_c = get_next_valid_leave_date(employee, add_days(candidate, 1))
+                # ✅ Month cross check
+                if next_c is None:
+                    candidate = None
+                    break
+                if next_c.month != original_date.month or next_c.year != original_date.year:
+                    candidate = None
+                    break
+                candidate = next_c
+                attempts += 1
+
+            if candidate is None or attempts >= 60:
+                frappe.logger().error(
+                    f"{employee}: EARLY OUT could not find unique date from {original_date}"
+                )
+                continue
+
+            target_dates.append((candidate, "Early OUT", original_date))
+            used_dates.add(candidate)
+
+        if not target_dates:
+            frappe.logger().info(f"{employee} [{month_key}]: No new leave required")
+            continue
+
+        frappe.logger().info(f"{employee} [{month_key}]: target_dates={target_dates}")
+
+        # 3) Leave create karo
         for leave_date, leave_reason, trigger_date in target_dates:
             selected = pick_leave_type(priority_rows)
+
+            # ✅ Original month save karo
+            original_month = leave_date.month
+            original_year = leave_date.year
 
             candidate = leave_date
             tries = 0
             while tries < 60 and not is_leave_date_eligible(employee, selected, candidate):
-                candidate = get_next_valid_leave_date(employee, add_days(candidate, 1))
-                if candidate is None:
+                next_candidate = get_next_valid_leave_date(employee, add_days(candidate, 1))
+
+                # ✅ Month cross check
+                if next_candidate is None:
+                    candidate = None
                     break
+                if next_candidate.month != original_month or next_candidate.year != original_year:
+                    candidate = None
+                    break
+
+                candidate = next_candidate
                 tries += 1
 
             if candidate is None or tries >= 60:
                 frappe.logger().error(
-                    f"{employee}: No eligible date found for {selected} from {leave_date} ({leave_reason})"
+                    f"{employee}: No eligible date found for {selected} "
+                    f"from {leave_date} ({leave_reason})"
                 )
                 continue
 
@@ -488,54 +627,263 @@ def process_employee_leave(employee, context_label, return_result=False):
                 f"Context: {context_label}"
             )
 
-            doc = frappe.get_doc(
-                {
-                    "doctype": "Leave Application",
-                    "employee": employee,
-                    "leave_type": selected,
-                    "from_date": candidate,
-                    "to_date": candidate,
-                    "posting_date": today_dt,
-                    "description": description,
-                    "status": "Approved",
-                }
-            )
-            doc.insert(ignore_permissions=True)
-            doc.submit()
+            try:
+                doc = frappe.get_doc(
+                    {
+                        "doctype": "Leave Application",
+                        "employee": employee,
+                        "leave_type": selected,
+                        "from_date": candidate,
+                        "to_date": candidate,
+                        "posting_date": today_dt,
+                        "description": description,
+                        "status": "Approved",
+                    }
+                )
+                doc.insert(ignore_permissions=True)
+                doc.submit()
 
-            decrement_balance(priority_rows, selected)
+                decrement_balance(priority_rows, selected)
 
-            created += 1
-            created_leave_types.append(selected)
+                created += 1
+                created_leave_types.append(selected)
 
-            frappe.logger().info(
-                f"{employee}: created {selected} leave on {candidate} for {leave_reason} "
-                f"(trigger_date={trigger_date})"
-            )
+                frappe.logger().info(
+                    f"{employee}: created {selected} leave on {candidate} "
+                    f"for {leave_reason} (trigger={trigger_date})"
+                )
+            except Exception as e:
+                frappe.logger().error(f"{employee} leave create error: {e}")
 
-        result["leave_created"] = created > 0
-        result["created_count"] = created
+    # 4) Result
+    result["leave_created"] = created > 0
+    result["created_count"] = created
+    result["late_in_count"] = total_late
+    result["early_out_count"] = total_early
 
-        if created == 1:
-            result["leave_type"] = created_leave_types[0]
-        elif created > 1:
-            result["leave_type"] = ", ".join(created_leave_types)
-        else:
-            result["leave_type"] = ""
+    if created == 1:
+        result["leave_type"] = created_leave_types[0]
+    elif created > 1:
+        result["leave_type"] = ", ".join(created_leave_types)
+    else:
+        result["leave_type"] = ""
 
-        if created == 0:
-            result["skipped"] = True
-            result["reason"] = "No eligible leave dates found"
-
-    except Exception as e:
-        frappe.logger().error(f"{employee} error: {e}")
+    if created == 0:
         result["skipped"] = True
-        result["reason"] = f"Error: {e}"
-        result["leave_created"] = created > 0
-        result["created_count"] = created
-        result["leave_type"] = ", ".join(created_leave_types) if created_leave_types else ""
+        result["reason"] = (
+            "No eligible leave dates found"
+            if not all_skipped
+            else "Less than 3 late IN and less than 3 early OUT in all months"
+        )
 
     return result if return_result else None
+# def process_employee_leave(employee, context_label, return_result=False):
+#     result = {
+#         "leave_created": False,
+#         "skipped": False,
+#         "reason": "",
+#         "late_in_count": 0,
+#         "early_out_count": 0,
+#         "leave_type": "",
+#         "created_count": 0,
+#     }
+
+#     late_in_dates, early_out_dates = get_employee_late_checkins_with_dates(employee)
+#     result["late_in_count"] = len(late_in_dates)
+#     result["early_out_count"] = len(early_out_dates)
+
+#     frappe.logger().info(
+#         f"[{context_label}] {employee}: "
+#         f"{len(late_in_dates)} late IN: {late_in_dates} | "
+#         f"{len(early_out_dates)} early OUT: {early_out_dates}"
+#     )
+
+#     if len(late_in_dates) < 3 and len(early_out_dates) < 3:
+#         result["skipped"] = True
+#         result["reason"] = "Less than 3 late IN and less than 3 early OUT events"
+#         return result if return_result else None
+
+#     today_dt = getdate()
+#     first_day = get_first_day_from_shift(employee)
+
+#     existing_auto = frappe.db.get_all(
+#         "Leave Application",
+#         filters={
+#             "employee": employee,
+#             "from_date": [">=", first_day],
+#             "description": ["like", "Auto Leave Deducted%"],
+#             "docstatus": 1,
+#         },
+#         fields=["from_date", "description"],
+#     )
+#     used_dates = {d.from_date for d in existing_auto}
+
+#     target_dates = []
+
+#     # --- Late IN ---
+#     existing_late_in = frappe.db.count(
+#         "Leave Application",
+#         filters={
+#             "employee": employee,
+#             "from_date": [">=", first_day],
+#             "description": ["like", "%Basis: Late IN%"],
+#             "docstatus": 1,
+#         },
+#     )
+#     already_processed_in = existing_late_in * 3
+#     late_in_remaining = late_in_dates[already_processed_in:]
+
+#     for i in range(2, len(late_in_remaining), 3):
+#         original_date = late_in_remaining[i]
+#         candidate = get_next_valid_leave_date(employee, original_date)
+
+#         if candidate is None:
+#             frappe.logger().warning(
+#                 f"{employee}: LATE IN leave skip - no valid date in same month for {original_date}"
+#             )
+#             continue
+
+#         attempts = 0
+#         while candidate in used_dates and attempts < 60:
+#             candidate = get_next_valid_leave_date(employee, add_days(candidate, 1))
+#             if candidate is None:
+#                 break
+#             attempts += 1
+
+#         if candidate is None or attempts >= 60:
+#             frappe.logger().error(
+#                 f"{employee}: LATE IN could not find unique date from {original_date}"
+#             )
+#             continue
+
+#         target_dates.append((candidate, "Late IN", original_date))
+#         used_dates.add(candidate)
+
+#     # --- Early OUT ---
+#     existing_early_out = frappe.db.count(
+#         "Leave Application",
+#         filters={
+#             "employee": employee,
+#             "from_date": [">=", first_day],
+#             "description": ["like", "%Basis: Early OUT%"],
+#             "docstatus": 1,
+#         },
+#     )
+#     already_processed_out = existing_early_out * 3
+#     early_out_remaining = early_out_dates[already_processed_out:]
+
+#     for i in range(2, len(early_out_remaining), 3):
+#         original_date = early_out_remaining[i]
+#         candidate = get_next_valid_leave_date(employee, original_date)
+
+#         if candidate is None:
+#             frappe.logger().warning(
+#                 f"{employee}: EARLY OUT leave skip - no valid date in same month for {original_date}"
+#             )
+#             continue
+
+#         attempts = 0
+#         while candidate in used_dates and attempts < 60:
+#             candidate = get_next_valid_leave_date(employee, add_days(candidate, 1))
+#             if candidate is None:
+#                 break
+#             attempts += 1
+
+#         if candidate is None or attempts >= 60:
+#             frappe.logger().error(
+#                 f"{employee}: EARLY OUT could not find unique date from {original_date}"
+#             )
+#             continue
+
+#         target_dates.append((candidate, "Early OUT", original_date))
+#         used_dates.add(candidate)
+
+#     if not target_dates:
+#         result["skipped"] = True
+#         result["reason"] = "No new leave required"
+#         return result if return_result else None
+
+#     frappe.logger().info(f"{employee}: target leave dates: {target_dates}")
+
+#     priority_rows = get_leave_priority_and_balances(employee)
+
+#     created = 0
+#     created_leave_types = []
+
+#     try:
+#         for leave_date, leave_reason, trigger_date in target_dates:
+#             selected = pick_leave_type(priority_rows)
+
+#             candidate = leave_date
+#             tries = 0
+#             while tries < 60 and not is_leave_date_eligible(employee, selected, candidate):
+#                 candidate = get_next_valid_leave_date(employee, add_days(candidate, 1))
+#                 if candidate is None:
+#                     break
+#                 tries += 1
+
+#             if candidate is None or tries >= 60:
+#                 frappe.logger().error(
+#                     f"{employee}: No eligible date found for {selected} from {leave_date} ({leave_reason})"
+#                 )
+#                 continue
+
+#             description = (
+#                 f"Auto Leave Deducted | "
+#                 f"Basis: {leave_reason} | "
+#                 f"Trigger Date: {_fmt_date(trigger_date)} | "
+#                 f"Leave Date: {_fmt_date(candidate)} | "
+#                 f"Context: {context_label}"
+#             )
+
+#             doc = frappe.get_doc(
+#                 {
+#                     "doctype": "Leave Application",
+#                     "employee": employee,
+#                     "leave_type": selected,
+#                     "from_date": candidate,
+#                     "to_date": candidate,
+#                     "posting_date": today_dt,
+#                     "description": description,
+#                     "status": "Approved",
+#                 }
+#             )
+#             doc.insert(ignore_permissions=True)
+#             doc.submit()
+
+#             decrement_balance(priority_rows, selected)
+
+#             created += 1
+#             created_leave_types.append(selected)
+
+#             frappe.logger().info(
+#                 f"{employee}: created {selected} leave on {candidate} for {leave_reason} "
+#                 f"(trigger_date={trigger_date})"
+#             )
+
+#         result["leave_created"] = created > 0
+#         result["created_count"] = created
+
+#         if created == 1:
+#             result["leave_type"] = created_leave_types[0]
+#         elif created > 1:
+#             result["leave_type"] = ", ".join(created_leave_types)
+#         else:
+#             result["leave_type"] = ""
+
+#         if created == 0:
+#             result["skipped"] = True
+#             result["reason"] = "No eligible leave dates found"
+
+#     except Exception as e:
+#         frappe.logger().error(f"{employee} error: {e}")
+#         result["skipped"] = True
+#         result["reason"] = f"Error: {e}"
+#         result["leave_created"] = created > 0
+#         result["created_count"] = created
+#         result["leave_type"] = ", ".join(created_leave_types) if created_leave_types else ""
+
+#     return result if return_result else None
 
 
 # ---------- SCHEDULERS ----------
@@ -665,3 +1013,22 @@ def test_employee(employee):
 
 
 
+def get_shift_date_range(shift_name):
+    """Return (start_date, end_date) from Shift Type fields."""
+    shift_doc = frappe.get_cached_doc("Shift Type", shift_name)
+    
+    start = getdate(shift_doc.process_attendance_after) if shift_doc.process_attendance_after else getdate().replace(day=1)
+    end = getdate(shift_doc.last_sync_of_checkin) if shift_doc.last_sync_of_checkin else getdate()
+    
+    return start, end
+
+
+def get_first_day_from_shift(employee):
+    """Return process_attendance_after from employee's current shift."""
+    today = getdate()
+    shift_name = get_shift_for_date(employee, today)
+    if shift_name:
+        shift_doc = frappe.get_cached_doc("Shift Type", shift_name)
+        if shift_doc.process_attendance_after:
+            return getdate(shift_doc.process_attendance_after)
+    return today.replace(day=1)

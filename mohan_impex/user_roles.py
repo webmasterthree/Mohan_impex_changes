@@ -72,3 +72,19 @@ def is_created(transport=None, user_email=None):
 	return bool(frappe.db.exists("RFQ Quotation", filters))
 
 
+
+import frappe
+
+@frappe.whitelist()
+def employee_name(user_email=None):
+    user_email = user_email or frappe.session.user
+    
+    employee = frappe.db.get_all(
+        "Employee",
+        fields=["employee"],
+        filters={
+            "user_id": user_email
+        }
+    )
+    
+    return employee
