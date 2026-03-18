@@ -1109,5 +1109,16 @@
   "name": "Last Batch",
   "script": "frappe.ui.form.on('Work Order', {\n    refresh: function(frm) {\n        frm.add_custom_button(__('Get Latest Batch'), function() {\n            var production_item = frm.doc.production_item;\n            \n            if (!production_item) {\n                frappe.msgprint(__('Please select a production item.'));\n                return;\n            }\n\n            frappe.call({\n                method: 'mohan_impex.Bom.last_created_batch',\n                args: {\n                    item: production_item\n                },\n                callback: function(response) {\n                    if (response.message && response.message.length > 0) {\n                        var batch = response.message[0];\n                        frm.set_value('batch_id', batch.name);\n                        frappe.msgprint(__('Latest Batch for this BOM: ') + batch.name);\n                    } else {\n                        frappe.msgprint(__('No batch found for this production item.'));\n                    }\n                }\n            });\n        });\n    }\n});",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Purchase Order",
+  "enabled": 1,
+  "modified": "2026-03-17 17:12:59.587735",
+  "module": "Mohan Impex",
+  "name": "Required Date",
+  "script": "frappe.ui.form.on(\"Purchase Order\", {\n\n    schedule_date(frm) {\n        if (!frm.doc.schedule_date) return;\n\n        (frm.doc.items || []).forEach(row => {\n            frappe.model.set_value(\n                row.doctype,\n                row.name,\n                \"schedule_date\",\n                frm.doc.schedule_date\n            );\n        });\n    },\n\n    items_add(frm, cdt, cdn) {\n        let row = locals[cdt][cdn];\n\n        if (frm.doc.schedule_date) {\n            frappe.model.set_value(\n                cdt,\n                cdn,\n                \"schedule_date\",\n                frm.doc.schedule_date\n            );\n        }\n    }\n});\n\nfrappe.ui.form.on(\"Purchase Order Item\", {\n\n    schedule_date(frm, cdt, cdn) {\n        return;\n    }\n\n});",
+  "view": "Form"
  }
 ]

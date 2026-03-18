@@ -21,3 +21,12 @@ class State(Document):
 
 def make_slug(text):
 	return re.sub(r'[^A-Z0-9]+', '', text.upper())
+
+
+
+
+# from frappe.model.document import Document
+
+
+# class State(Document):
+# 	pass

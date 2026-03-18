@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "autoname": "naming_series:naming_series",
  "creation": "2025-01-03 17:11:38.487912",
  "doctype": "DocType",
@@ -452,7 +453,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2026-02-24 11:01:10.659943",
+ "modified": "2026-03-17 16:48:13.536456",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",
