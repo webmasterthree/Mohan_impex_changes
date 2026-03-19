@@ -71,44 +71,7 @@ def before_submit(doc, method):
 def validate(doc, method):
     ot_calculate(doc)
     calculate_working_holiday(doc)
-    calculate_bonus_values(doc)
     # create_fiscal_year(doc)
-
-
-
-def calculate_bonus_values(doc):
-    
-    earning_components = [
-        "Basic Pay",
-        "House Rent Allowance",
-        "Conveyance Allowance",
-        "Telephone Allowance",
-        "Special Allowance"
-    ]
-    
-    deduction_components = [
-        "PF Employee Contribution",
-        "ESI Employee Contribution",
-        "P Tax"
-    ]
-    
-    total_earnings = 0
-    total_deductions = 0
-
-    # Earnings total
-    for row in doc.earnings:
-        if row.salary_component in earning_components:
-            total_earnings += row.amount or 0
-
-    # Deductions total
-    for row in doc.deductions:
-        if row.salary_component in deduction_components:
-            total_deductions += row.amount or 0
-
-    # Set values separately
-    doc.custom_bonus_earnings = total_earnings
-    doc.custom_bonus_deduction = total_deductions
-
 
 
 # def create_fiscal_year(doc):

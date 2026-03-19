@@ -52,6 +52,7 @@ doctype_js ={
     "Salary Structure": "public/js/salary_structure.js",
     "Full and Final Statement": "public/js/full_and_final_statement.js",
     "Batch": "public/js/batch.js",
+    "Salary Slip": "public/js/salary_slip.js",
     "Leave Encashment": "public/js/leave_encashment.js",
 }
 
