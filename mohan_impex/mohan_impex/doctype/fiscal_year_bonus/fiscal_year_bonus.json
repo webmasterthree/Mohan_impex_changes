@@ -6,27 +6,16 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "fiscal_year",
   "from_date",
-  "column_break_hqts",
+  "column_break_rvvg",
+  "bonus_date",
   "to_date",
   "section_break_uvkt",
-  "employee_bonus_table"
+  "employee_bonus_table",
+  "amended_from"
  ],
  "fields": [
-  {
-   "fieldname": "from_date",
-   "fieldtype": "Date",
-   "label": "From Date"
-  },
-  {
-   "fieldname": "to_date",
-   "fieldtype": "Date",
-   "label": "To Date"
-  },
-  {
-   "fieldname": "column_break_hqts",
-   "fieldtype": "Column Break"
-  },
   {
    "fieldname": "section_break_uvkt",
    "fieldtype": "Section Break"
@@ -36,12 +25,52 @@
    "fieldtype": "Table",
    "label": "Employee Bonus Table",
    "options": "Employee Bonus Table"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Fiscal Year Bonus",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "fiscal_year",
+   "fieldtype": "Link",
+   "label": "Fiscal Year",
+   "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "bonus_date",
+   "fieldtype": "Date",
+   "label": "Bonus Date"
+  },
+  {
+   "fetch_from": "fiscal_year.year_start_date",
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "From Date"
+  },
+  {
+   "fieldname": "column_break_rvvg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "fiscal_year.year_end_date",
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "To Date"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2026-03-17 13:13:52.019596",
+ "modified": "2026-03-19 12:49:39.358217",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Fiscal Year Bonus",
