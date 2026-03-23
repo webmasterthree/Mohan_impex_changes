@@ -779,3 +779,17 @@ def is_os_created(customer_visit):
 
     return 1 if exists else 0
 
+
+@frappe.whitelist()
+def get_payment_terms(customer):
+    try:
+        payment_terms = frappe.db.get_value("Customer", customer, "payment_terms") or ""
+
+        frappe.local.response['status'] = True
+        frappe.local.response['message'] = "Payment terms fetched"
+        frappe.local.response['data'] = {
+            "payment_terms": payment_terms
+        }
+
+    except Exception as err:
+        get_exception(err)
