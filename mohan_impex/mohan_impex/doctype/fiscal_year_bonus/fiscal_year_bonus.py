@@ -103,7 +103,11 @@ def process_bonus_slip(docname):
 			crt_bonus.amount = bonus_amount
 			crt_bonus.insert()
 			crt_bonus.submit()
+			# frappe.db.commit()
 
 			row.employee_bonus_slip = crt_bonus.name
+			row.amount = crt_bonus.amount
 
 	doc.save()
+
+
