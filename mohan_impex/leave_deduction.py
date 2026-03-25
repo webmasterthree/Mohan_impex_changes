@@ -125,6 +125,7 @@ def get_employee_late_checkins_with_dates(employee):
         if not start_time or not end_time:
             continue
 
+        # 🔹 Handle night shift
         if end_time <= start_time:
             if checkin_time.time() < end_time:
                 shift_start = datetime.combine(checkin_date - timedelta(days=1), start_time)
@@ -136,23 +137,44 @@ def get_employee_late_checkins_with_dates(employee):
             shift_start = datetime.combine(checkin_date, start_time)
             shift_end = datetime.combine(checkin_date, end_time)
 
+        # ============================
+        # LATE IN
+        # ============================
         if chk["log_type"] == "IN":
-            if checkin_time > shift_start + timedelta(minutes=16):
+
+            if shift_doc.enable_late_entry_marking:
+                grace_minutes = shift_doc.late_entry_grace_period or 0
+            else:
+                grace_minutes = 0  # 🔥 strict
+
+            grace = timedelta(minutes=grace_minutes)
+
+            if checkin_time > shift_start + grace:
                 if checkin_date not in month_data[month_key]["late_in"]:
                     month_data[month_key]["late_in"].append(checkin_date)
 
+        # ============================
+        # EARLY OUT
+        # ============================
         elif chk["log_type"] == "OUT":
-            if checkin_time < shift_end - timedelta(minutes=16):
+
+            if shift_doc.enable_early_exit_marking:
+                grace_minutes = shift_doc.early_exit_grace_period or 0
+            else:
+                grace_minutes = 0  # 🔥 strict
+
+            grace = timedelta(minutes=grace_minutes)
+
+            if checkin_time < shift_end - grace:
                 if checkin_date not in month_data[month_key]["early_out"]:
                     month_data[month_key]["early_out"].append(checkin_date)
 
+    # 🔹 Sort results
     for month in month_data:
         month_data[month]["late_in"].sort()
         month_data[month]["early_out"].sort()
 
     return month_data
-
-
 # ============================================================
 # Leave Date Selection
 # ============================================================

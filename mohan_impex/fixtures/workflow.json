@@ -3221,8 +3221,8 @@
   "docstatus": 0,
   "doctype": "Workflow",
   "document_type": "Customer",
-  "is_active": 0,
-  "modified": "2026-03-11 16:33:38.634633",
+  "is_active": 1,
+  "modified": "2026-03-25 12:58:39.026883",
   "name": "Customer KYC",
   "override_status": 0,
   "send_email_alert": 0,
@@ -3244,7 +3244,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "ASM",
+    "allow_edit": "Management",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -4111,7 +4111,7 @@
   "doctype": "Workflow",
   "document_type": "Supplier",
   "is_active": 1,
-  "modified": "2026-02-20 19:03:51.276362",
+  "modified": "2026-03-25 13:00:35.994445",
   "name": "Supplier",
   "override_status": 0,
   "send_email_alert": 0,
@@ -4133,7 +4133,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "Accounting Master",
+    "allow_edit": "Management",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -4173,7 +4173,7 @@
   "doctype": "Workflow",
   "document_type": "Item",
   "is_active": 1,
-  "modified": "2026-02-27 18:02:12.317598",
+  "modified": "2026-03-25 12:55:22.434260",
   "name": "Item",
   "override_status": 0,
   "send_email_alert": 0,
@@ -4211,7 +4211,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "All",
+    "allow_edit": "Management",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,

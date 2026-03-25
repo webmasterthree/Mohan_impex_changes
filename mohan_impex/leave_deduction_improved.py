@@ -29,13 +29,16 @@ def _fmt_date(val):
 # Prevent reuse of same violation set
 # ============================================================
 
-def is_trigger_already_used(employee, trigger_date):
+def is_trigger_already_used(employee, trigger_date, reason):
 
     return frappe.db.exists(
         "Leave Application",
         {
             "employee": employee,
-            "description": ["like", f"%Trigger Date: {_fmt_date(trigger_date)}%"],
+            "description": [
+                "like",
+                f"%Trigger Date: {_fmt_date(trigger_date)}%| Basis: {reason}%"
+            ],
             "docstatus": 1,
         },
     )
@@ -164,12 +167,15 @@ def get_next_valid_leave_date(employee, start_date):
 
         if shift_name:
             shift_doc = frappe.get_cached_doc("Shift Type", shift_name)
+
+            # ❌ Skip holiday
             if shift_doc.holiday_list and frappe.db.exists(
                 "Holiday",
                 {"parent": shift_doc.holiday_list, "holiday_date": check_date},
             ):
                 continue
 
+        # ❌ Skip existing leave
         if frappe.db.exists(
             "Leave Application",
             {
@@ -181,10 +187,20 @@ def get_next_valid_leave_date(employee, start_date):
         ):
             continue
 
+        # 🔥 NEW FIX: Skip if attendance exists
+        if frappe.db.exists(
+            "Attendance",
+            {
+                "employee": employee,
+                "attendance_date": check_date,
+                "docstatus": 1,
+            },
+        ):
+            continue
+
         return check_date
 
     return None
-
 
 # ============================================================
 # Leave Priority
@@ -236,7 +252,6 @@ def decrement_balance(priority_rows, leave_type):
 # ============================================================
 # Core Leave Logic
 # ============================================================
-
 def process_employee_leave(employee, context_label, return_result=False):
 
     result = {
@@ -259,33 +274,35 @@ def process_employee_leave(employee, context_label, return_result=False):
         late_in = data["late_in"]
         early_out = data["early_out"]
 
-        target_dates = []
+        used_leave_dates = set()
+        trigger_map = {}  # 🔥 (reason, trigger) → leave_date
 
+        # ============================
+        # Late IN
+        # ============================
         for i in range(2, len(late_in), 3):
+
             trigger = late_in[i]
             violations = late_in[i - 2:i + 1]
-            candidate = get_next_valid_leave_date(employee, trigger)
-            if candidate:
-                target_dates.append((candidate, "Late IN", trigger, violations))
 
-        for i in range(2, len(early_out), 3):
-            trigger = early_out[i]
-            violations = early_out[i - 2:i + 1]
-            candidate = get_next_valid_leave_date(employee, trigger)
-            if candidate:
-                target_dates.append((candidate, "Early OUT", trigger, violations))
-
-        for leave_date, reason, trigger_date, violations in target_dates:
-
-            if is_trigger_already_used(employee, trigger_date):
+            if ("Late IN", trigger) in trigger_map:
                 continue
 
-            if frappe.db.exists("Leave Application", {
-                "employee": employee,
-                "from_date": leave_date,
-                "to_date": leave_date,
-                "docstatus": ["!=", 2],
-            }):
+            leave_date = get_next_valid_leave_date(employee, trigger)
+
+            if not leave_date:
+                continue
+
+            # prevent collision
+            while leave_date in used_leave_dates:
+                leave_date = get_next_valid_leave_date(employee, add_days(leave_date, 1))
+                if not leave_date:
+                    break
+
+            if not leave_date:
+                continue
+
+            if is_trigger_already_used(employee, trigger, "Late IN"):
                 continue
 
             leave_type = pick_leave_type(priority_rows)
@@ -293,41 +310,104 @@ def process_employee_leave(employee, context_label, return_result=False):
             violation_str = ", ".join(_fmt_date(d) for d in violations)
 
             description = (
-                f"Auto Leave Deducted | Basis: {reason} | "
-                f"{reason} Dates: {violation_str} | "
-                f"Trigger Date: {_fmt_date(trigger_date)} | "
+                f"Auto Leave Deducted | Basis: Late IN | "
+                f"Late IN Dates: {violation_str} | "
+                f"Trigger Date: {_fmt_date(trigger)} | "
                 f"Leave Date: {_fmt_date(leave_date)} | "
                 f"Context: {context_label}"
             )
 
-            try:
-                doc = frappe.get_doc({
-                    "doctype": "Leave Application",
-                    "employee": employee,
-                    "leave_type": leave_type,
-                    "from_date": leave_date,
-                    "to_date": leave_date,
-                    "posting_date": today,
-                    "description": description,
-                    "status": "Approved",
-                })
+            doc = frappe.get_doc({
+                "doctype": "Leave Application",
+                "employee": employee,
+                "leave_type": leave_type,
+                "from_date": leave_date,
+                "to_date": leave_date,
+                "posting_date": today,
+                "description": description,
+                "status": "Approved",
+            })
 
-                doc.insert(ignore_permissions=True)
-                if doc.docstatus == 0:
-                    doc.submit()
+            doc.insert(ignore_permissions=True)
+            if doc.docstatus == 0:
+                doc.submit()
 
-                decrement_balance(priority_rows, leave_type)
-                created += 1
+            decrement_balance(priority_rows, leave_type)
 
-            except Exception:
-                frappe.log_error(frappe.get_traceback(), "Leave Creation Failed")
+            created += 1
+            used_leave_dates.add(leave_date)
+            trigger_map[("Late IN", trigger)] = leave_date
+
+        # ============================
+        # Early OUT
+        # ============================
+        for i in range(2, len(early_out), 3):
+
+            trigger = early_out[i]
+            violations = early_out[i - 2:i + 1]
+
+            if ("Early OUT", trigger) in trigger_map:
+                continue
+
+            # 🔥 check if Late IN exists for same trigger
+            if ("Late IN", trigger) in trigger_map:
+                base_date = trigger_map[("Late IN", trigger)]
+                leave_date = get_next_valid_leave_date(employee, add_days(base_date, 1))
+            else:
+                leave_date = get_next_valid_leave_date(employee, trigger)
+
+            if not leave_date:
+                continue
+
+            # prevent collision
+            while leave_date in used_leave_dates:
+                leave_date = get_next_valid_leave_date(employee, add_days(leave_date, 1))
+                if not leave_date:
+                    break
+
+            if not leave_date:
+                continue
+
+            if is_trigger_already_used(employee, trigger, "Early OUT"):
+                continue
+
+            leave_type = pick_leave_type(priority_rows)
+
+            violation_str = ", ".join(_fmt_date(d) for d in violations)
+
+            description = (
+                f"Auto Leave Deducted | Basis: Early OUT | "
+                f"Early OUT Dates: {violation_str} | "
+                f"Trigger Date: {_fmt_date(trigger)} | "
+                f"Leave Date: {_fmt_date(leave_date)} | "
+                f"Context: {context_label}"
+            )
+
+            doc = frappe.get_doc({
+                "doctype": "Leave Application",
+                "employee": employee,
+                "leave_type": leave_type,
+                "from_date": leave_date,
+                "to_date": leave_date,
+                "posting_date": today,
+                "description": description,
+                "status": "Approved",
+            })
+
+            doc.insert(ignore_permissions=True)
+            if doc.docstatus == 0:
+                doc.submit()
+
+            decrement_balance(priority_rows, leave_type)
+
+            created += 1
+            used_leave_dates.add(leave_date)
+            trigger_map[("Early OUT", trigger)] = leave_date
 
     result["leave_created"] = created > 0
     result["created_count"] = created
 
     return result if return_result else None
-
-
 # ============================================================
 # Shift Type Detection
 # ============================================================
