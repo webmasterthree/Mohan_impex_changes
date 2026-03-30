@@ -45,7 +45,7 @@ doctype_js ={
     "Delivery Note": "public/js/delivery_note.js",
     "Purchase Order": "public/js/ASN.js",
     "Shift Type": "public/js/shift_type.js",
-    "Serial and Batch Bundle": "public/js/shelf_life.js",
+    # "Serial and Batch Bundle": "public/js/shelf_life.js",
     "Transport RFQ":"public/js/trans_rfq.js",
     # "Delivery Note":"public/js/dn.js",
     "Gratuity": "public/js/gratuity.js",

@@ -155,7 +155,7 @@
    "fieldname": "shop_name",
    "fieldtype": "Data",
    "hidden": 1,
-   "label": "Shop Name"
+   "label": "Bakery Name"
   },
   {
    "fieldname": "map_location",
@@ -328,7 +328,7 @@
   {
    "fieldname": "shop",
    "fieldtype": "Link",
-   "label": "Shop",
+   "label": "Bakery",
    "options": "Shop",
    "reqd": 1
   },
@@ -453,7 +453,7 @@
    "link_fieldname": "cvm"
   }
  ],
- "modified": "2026-03-17 16:48:13.536456",
+ "modified": "2026-03-27 16:35:26.469203",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Customer Visit Management",

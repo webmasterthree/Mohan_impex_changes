@@ -793,3 +793,4 @@ def get_payment_terms(customer):
 
     except Exception as err:
         get_exception(err)
+        

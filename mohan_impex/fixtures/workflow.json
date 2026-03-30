@@ -969,7 +969,7 @@
   "doctype": "Workflow",
   "document_type": "Pick List",
   "is_active": 1,
-  "modified": "2026-01-12 13:06:33.538794",
+  "modified": "2026-03-27 10:27:42.433788",
   "name": "Pick List",
   "override_status": 0,
   "send_email_alert": 0,

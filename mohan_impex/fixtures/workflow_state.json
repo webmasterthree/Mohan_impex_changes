@@ -30,15 +30,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-06-19 17:47:10.471572",
-  "name": "Logistics Team Approved",
-  "style": "Success",
-  "workflow_state_name": "Logistics Team Approved"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-06-20 11:05:08.260430",
   "name": "Closed – Rejected by Logistics",
   "style": "Danger",
@@ -317,15 +308,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "remove",
-  "modified": "2024-12-25 19:18:52.879665",
-  "name": "Rejected",
-  "style": "Danger",
-  "workflow_state_name": "Rejected"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "",
   "modified": "2025-07-09 12:08:14.261643",
   "name": "ASM Approved",
@@ -425,15 +407,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "question-sign",
-  "modified": "2025-04-04 11:54:25.253979",
-  "name": "Pending",
-  "style": "Warning",
-  "workflow_state_name": "Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "",
   "modified": "2025-08-19 11:35:13.759771",
   "name": "ASN Fully Processed",
@@ -462,19 +435,46 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2026-02-24 15:38:36.123373",
-  "name": "Pending from Accounts",
+  "modified": "2025-07-09 13:21:18.395065",
+  "name": "ASM KYC Completed",
+  "style": "",
+  "workflow_state_name": "ASM KYC Completed"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "remove",
+  "modified": "2024-12-25 19:18:52.879665",
+  "name": "Rejected",
   "style": "Danger",
-  "workflow_state_name": "Pending from Accounts"
+  "workflow_state_name": "Rejected"
  },
  {
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-07-09 13:21:18.395065",
-  "name": "ASM KYC Completed",
-  "style": "",
-  "workflow_state_name": "ASM KYC Completed"
+  "modified": "2025-06-19 17:47:10.471572",
+  "name": "Logistics Team Approved",
+  "style": "Success",
+  "workflow_state_name": "Logistics Team Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "question-sign",
+  "modified": "2025-04-04 11:54:25.253979",
+  "name": "Pending",
+  "style": "Warning",
+  "workflow_state_name": "Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-24 15:38:36.123373",
+  "name": "Pending from Accounts",
+  "style": "Danger",
+  "workflow_state_name": "Pending from Accounts"
  },
  {
   "docstatus": 0,
