@@ -6,22 +6,26 @@ app_email = "arunlrajamanickam@gmail.com"
 app_license = "mit"
 
 
-role_list = ("SE", "ASM", "TSM", "NSM", "ZSM", "RSM", "CP")
+role_list = ("SE", "ASM", "TSM", "NSM", "ZSM", "RSM", "CP",
+             "Sr. Warehouse Executive-Sales","Warehouse Executive-Ld/Unld","Warehouse Executive-Sales",
+             "MIS Logistics Executive","Sr. Logistics Executive","BILLING EXECUTIVE","Logistics Executive","Supplier","Purchase Executive","Quality Control","General Ledger Accountant")
 
 fixtures = [
-    "Client Script",
+    {"dt": "Client Script", "filters": [["module", "=", "Mohan Impex"]]},
     {"dt": "Custom DocPerm", "filters": [["role", "in", role_list]]},
     {"dt": "Property Setter", "filters": [["doc_type", "in", ("Customer", "Notification Log")], ["property", "in", "options"]]},
     {"dt": "Role", "filters": [["name", "in", role_list]]},
     {"dt": "Role Profile", "filters": [["name", "in", role_list]]},
     {"dt": "Designation", "filters": [["name", "in", role_list]]},
     {"dt": "Module Profile", "filters": [["name", "in", ("Mohan Impex")]]},
-    {"dt": "Workspace", "filters": [["name", "in", ("Mohan Impex")]]},
+    {"dt": "Workspace", "filters": [["name", "in", ("Mohan Impex","Quality Control")]]},
     "Workflow",
     "Workflow State",
     "Workflow Action Master",
     "Print Format",
-    "Server Script"
+    "Server Script",
+    "Mode of Travel",
+    "Role Item",
 ]
 
 doctype_js ={
@@ -31,13 +35,18 @@ doctype_js ={
     "Request for Quotation": "public/js/request_for_quotation.js",
     "Additional Salary": "public/js/additional_salary.js",
     "Request for Quotation" : "public/js/rfq.js",
-    # "Pre-Unloading Check": "public/js/pre_unloading_check.js",
     "Increment Letter":"public/js/increment_letter.js",
     "Sales Order": "public/js/floating_notifications.js",
     "Purchase Receipt": "public/js/GRN1.js",
+    "Delivery Note": "public/js/delivery_note.js",
     "Purchase Order": "public/js/ASN.js",
+    "Shift Type": "public/js/shift_type.js",
+    "Serial and Batch Bundle": "public/js/shelf_life.js",
+    "Transport RFQ":"public/js/trans_rfq.js",
+    "Delivery Note":"public/js/dn.js",
+    "Gratuity": "public/js/gratuity.js",
+    "Full and Final Statement": "public/js/full_and_final_statement.js",
 }
-
 
 doc_events = {
     "Sales Order": {
@@ -58,14 +67,26 @@ doc_events = {
     "Request for Quotation": {
         "on_submit": "mohan_impex.rfq.send_rfq_email"
     },
-    "Employee Checkin": {
-        "before_save": "mohan_impex.leave_deduction.before_save_employee_checkin",
-        "before_save": "mohan_impex.leave_deduction_out.before_save_employee_checkin"
+    # "Employee Checkin": {
+    #     "validate": "mohan_impex.leave_deduction_out.after_insert"
+    #     # "before_save": "mohan_impex.leave_deduction.before_save_employee_checkin",
+    #     # "before_save": "mohan_impex.leave_deduction_out.before_save_employee_checkin"
 
+    # },
+    "RFQ Quotation": {
+        "on_submit": [
+            "mohan_impex.linked_pick.update_transport_rfq_title_on_submit",
+            "mohan_impex.linked_pick.reject_other_quotations_on_submit",
+        ]
     },
-    "Transport RFQ": {
-        "on_submit": "mohan_impex.Sales.Assign_Transporter.on_submit"
-    },
+    # "Employee Checkin": {
+    #     "before_save": [
+    #         "mohan_impex.leave_deduction.before_save_employee_checkin",
+    #         "mohan_impex.leave_deduction_out.before_save_employee_checkin"
+    #     ]
+    # },
+    
+    
     "Leave Application": {
         "validate": "mohan_impex.leave_test.validate_leave_application",
         "before_save": "mohan_impex.leave_test.on_leave_application_before_save"
@@ -88,6 +109,14 @@ doc_events = {
     },
     "Stock Entry": {
         "before_submit": "mohan_impex.mohan_impex.stock_entry.inspection_validation"
+    },
+    # "Salary Slip": {
+    #     "before_submit": "mohan_impex.salary_slip.before_submit",
+    #     "validate": "mohan_impex.salary_slip.validate",
+    #     "on_trash": "mohan_impex.salary_slip.on_trash"
+    # },
+    "Secondary Sales Order": {
+        "validate": "mohan_impex.item_tax_template.validate"
     }
 }
 
@@ -97,8 +126,8 @@ api_methods = [
 ]
 
 override_doctype_class = {
-    "Transport RFQ": "mohan_impex.Sales.transport_rfq.TransportRFQ",
-    "Quality Inspection": "mohan_impex.override.quality_inspection.QualityInspection"
+    "Quality Inspection": "mohan_impex.override.quality_inspection.QualityInspection",
+    "Item Price": "mohan_impex.override.item_price.CustomItemPrice"
 }
  
 # Apps
@@ -241,22 +270,7 @@ override_doctype_class = {
 # 	}
 # }
 
-scheduler_events = {
-    "cron": {
-        "15 12 * * *": [
-            "mohan_impex.auto_close_rfq.close_expired_rfqs"
-        ],
-        "0 20 * * *": [  # 8:00 PM every day
-            "mohan_impex.missed_checkout.get_today_missed_checkout_statuss"
-        ],
-        "0 10 25 * *":[
-            "mohan_impex.birthday_leave.send_birthday_notification"
-        ],
-    },
-    "hourly_long":[
-        "mohan_impex.auto_attendance.process_auto_attendance_for_all_shifts"
-    ]
-}
+
 
 
 
