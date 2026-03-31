@@ -2,6 +2,17 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Employee",
+  "enabled": 1,
+  "modified": "2025-11-25 12:27:55.406332",
+  "module": "Mohan Impex",
+  "name": "Update Total Number in MI",
+  "script": "frappe.listview_settings['Employee'] = {\n    refresh: function(listview) {\n        listview.page.add_menu_item(__('Update Years of Service'), function() {\n            frappe.call({\n                method: \"mohan_impex.total_number_of_year_in_mi.update_employee_tenure\",\n                args: {},\n                callback: function(r) {\n                    frappe.msgprint(\"Employee Years of Service updated.\");\n                }\n            });\n        });\n    }\n};\n",
+  "view": "List"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Transport RFQ",
   "enabled": 1,
   "modified": "2026-01-23 15:24:18.611723",
