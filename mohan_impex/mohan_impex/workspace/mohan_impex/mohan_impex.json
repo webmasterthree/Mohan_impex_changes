@@ -1,7 +1,7 @@
 {
  "charts": [],
- "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}},{\"id\":\"TZLLsfGe6c\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Contact Number\",\"col\":3}}]",
- "creation": "2026-02-18 11:40:28.531911",
+ "content": "[{\"id\":\"oNPXmrRloz\",\"type\":\"card\",\"data\":{\"card_name\":\"Ground Team\",\"col\":4}},{\"id\":\"tq4tcFnU59\",\"type\":\"card\",\"data\":{\"card_name\":\"Account Executive - Banking\",\"col\":4}}]",
+ "creation": "2025-06-22 11:02:37.212236",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -75,18 +75,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Bank Transaction",
-   "link_count": 0,
-   "link_to": "Bank Transaction",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Account Executive - Banking",
-   "link_count": 8,
+   "link_count": 5,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -150,29 +140,9 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Customer Visit Management",
-   "link_count": 0,
-   "link_to": "Customer Visit Management",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Customer",
-   "link_count": 0,
-   "link_to": "Customer",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
   }
  ],
- "modified": "2026-02-18 12:35:35.455679",
+ "modified": "2025-06-27 08:07:20.492089",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Mohan Impex",
@@ -181,25 +151,8 @@
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
- "roles": [
-  {
-   "role": "Administrator"
-  },
-  {
-   "role": "System Manager"
-  }
- ],
+ "roles": [],
  "sequence_id": 1.0,
- "shortcuts": [
-  {
-   "color": "Green",
-   "doc_view": "List",
-   "format": "{}",
-   "label": "Contact Number",
-   "link_to": "Contact Number",
-   "stats_filter": "[]",
-   "type": "DocType"
-  }
- ],
+ "shortcuts": [],
  "title": "Mohan Impex"
 }

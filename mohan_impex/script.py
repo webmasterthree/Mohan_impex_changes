@@ -2,7 +2,7 @@ import frappe
 import pprint
 
 def find():
-    doctype = "Transport RFQ"
+    doctype = "Item"
     query = f"""
         SELECT 
             df.parent AS doctype,
@@ -67,5 +67,8 @@ def find():
 
     """
     result = frappe.db.sql(query, as_dict=1)
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(result)
+    for f in result:
+        if f["options"] == "Item":
+            print(f"Doctype: {f['doctype']}, Fieldname: {f['fieldname']}, Type: {f['fieldtype']}, Label: {f['label']}, Options: {f['options']}")
+    # pp = pprint.PrettyPrinter(indent=4)
+    # pp.pprint(result)

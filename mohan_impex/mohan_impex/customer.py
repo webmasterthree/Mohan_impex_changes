@@ -1,6 +1,5 @@
 import frappe
 from frappe.model.workflow import apply_workflow
-from mohan_impex.api.auth import has_cp
 
 @frappe.whitelist()
 def update_kyc_status(customer, unv_customer=None):
@@ -18,7 +17,7 @@ def update_kyc_status(customer, unv_customer=None):
         frappe.db.set_value("Customer Visit Management", cvm, "kyc_status", "Completed")
 
 def updated_workflow_state(self, status):
-    if has_cp() or self.get("customer_level") == "Primary":
+    if self.customer_level == "Primary":
         comment_doc = frappe.get_doc({
             "doctype": "Comment",
             "reference_doctype": "Customer",
@@ -27,7 +26,7 @@ def updated_workflow_state(self, status):
             "content": self.workflow_state
         })
         comment_doc.insert(ignore_permissions=True)
-    if self.get("customer_level") == "Secondary" and self.workflow_state == "KYC Pending":
+    if self.customer_level == "Secondary" and self.workflow_state == "KYC Pending":
         apply_workflow(self, "Complete KYC")
 
 def validate_dup_unv_id(self, status):

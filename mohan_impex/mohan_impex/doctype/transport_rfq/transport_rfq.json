@@ -1,27 +1,23 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "naming_series:",
  "creation": "2025-03-25 16:47:30.995137",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "naming_series",
-  "rfq_type",
+  "pick_list",
   "transport_date",
   "from_location",
   "column_break_zhmj",
   "to_location",
   "vehicle_type",
-  "title",
-  "section_break_gemh",
-  "transporters",
   "section_break_titp",
   "locations",
   "total_weightin_kg",
+  "add_transporter_details_section",
+  "transporter_details",
   "section_break_eabp",
-  "pick_list",
-  "purchase_order",
+  "status",
   "amended_from"
  ],
  "fields": [
@@ -52,8 +48,7 @@
    "fieldname": "vehicle_type",
    "fieldtype": "Select",
    "label": "Vehicle Type",
-   "options": "\nTruck\nTrailer\nContainer",
-   "reqd": 1
+   "options": "Truck\nTrailer\nContainer"
   },
   {
    "fieldname": "column_break_zhmj",
@@ -62,6 +57,13 @@
   {
    "fieldname": "section_break_eabp",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Open\nQuotation Received\nClosed",
+   "permlevel": 2
   },
   {
    "fieldname": "section_break_titp",
@@ -77,9 +79,10 @@
    "fieldname": "pick_list",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Pick List",
    "options": "Pick List",
-   "read_only": 1
+   "permlevel": 2
   },
   {
    "fieldname": "amended_from",
@@ -93,69 +96,32 @@
    "search_index": 1
   },
   {
+   "fieldname": "add_transporter_details_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "transporter_details",
+   "fieldtype": "Table",
+   "label": "Transporter Details",
+   "options": "Transporter Details"
+  },
+  {
    "bold": 1,
    "fieldname": "total_weightin_kg",
    "fieldtype": "Float",
    "label": "Total Weight(In KG)",
-   "read_only": 1
-  },
-  {
-   "fieldname": "section_break_gemh",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "transporters",
-   "fieldtype": "Table",
-   "label": "Transporters",
-   "options": "Transporters"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "title",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "RFQ Status",
-   "options": "Open\nPartially Received\nFully Received\nCompleted",
-   "read_only": 1
-  },
-  {
-   "fieldname": "naming_series",
-   "fieldtype": "Select",
-   "label": "Series",
-   "options": "RFQ-DNK-.####.-.FY\nRFQ-KPS-.####.-.FY\nRFQ-BB-.####.-.FY\nRFQ-GWH-.####.-.FY\nRFQ-PAT-.####.-.FY\nRFQ-HYD-.####.-.FY\nRFQ-CHN-.####.-.FY\nRFQ-DEL-.####.-.FY\nRFQ-MUM-.####.-.FY\nRFQ-MFG-.####.-.FY\nRFQ-EXP-.####.-.FY\nRFQ-RET-.####.-.FY\nRFQ-BT-DNK-.####.-.FY\nRFQ-BT-KPS-.####.-.FY\nRFQ-BT-BB-.####.-.FY\nRFQ-BT-GWH-.####.-.FY\nRFQ-BT-PAT-.####.-.FY\nRFQ-BT-HYD-.####.-.FY\nRFQ-BT-CHN-.####.-.FY\nRFQ-BT-DEL-.####.-.FY\nRFQ-BT-MUM-.####.-.FY\nRFQ-BT-MFG-.####.-.FY",
-   "reqd": 1
-  },
-  {
-   "fieldname": "rfq_type",
-   "fieldtype": "Select",
-   "label": "RFQ Type",
-   "options": "\nSales\nPurchase",
-   "read_only": 1
-  },
-  {
-   "fieldname": "purchase_order",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Purchase Order",
-   "options": "Purchase Order",
    "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [
-  {
-   "link_doctype": "RFQ Quotation",
-   "link_fieldname": "transport"
-  }
- ],
- "modified": "2026-02-26 16:40:47.206147",
+ "links": [],
+ "modified": "2025-09-20 11:14:11.619077",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transport RFQ",
- "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -174,22 +140,5 @@
  "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [
-  {
-   "color": "Orange",
-   "title": "Open"
-  },
-  {
-   "color": "Yellow",
-   "title": "Partially Received"
-  },
-  {
-   "color": "Blue",
-   "title": "Fully Received"
-  },
-  {
-   "color": "Green",
-   "title": "Completed"
-  }
- ]
+ "states": []
 }

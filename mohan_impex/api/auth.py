@@ -57,8 +57,7 @@ def login(email_id, password, device_token=None):
         "employee_id": emp.name,
         "expires_in": expires_in,
         "role": emp.role_profile,
-        "area": emp.area,
-        "has_cp": has_cp()
+        "area": emp.area
     }]
     frappe.local.response['status'] = True
     frappe.local.response['message'] = "Successfully Logged In"
@@ -191,10 +190,3 @@ def download_zip(files, output_filename):
 	frappe.local.response.filecontent = zip_stream.getvalue()
 	frappe.local.response.type = "download"
 	zip_stream.close()
-
-@frappe.whitelist()
-def has_cp():
-    """Check if fmcg_cp app is installed"""
-    installed_apps = frappe.get_installed_apps()
-    return "fmcg_cp" in installed_apps
-    return False

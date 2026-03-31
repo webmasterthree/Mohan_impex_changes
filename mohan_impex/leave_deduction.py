@@ -1,554 +1,290 @@
 import frappe
-from frappe.utils import now, getdate, add_days, get_datetime, now_datetime
-from datetime import datetime, timedelta
-
-from mohan_impex.leave_balance import leave_balance as leave_balance_api
-
-
-# ============================================================
-# Helpers
-# ============================================================
-
-def _to_time(val):
-    if isinstance(val, timedelta):
-        total_seconds = int(val.total_seconds())
-        hours = total_seconds // 3600
-        minutes = (total_seconds % 3600) // 60
-        seconds = total_seconds % 60
-        return datetime.strptime(
-            f"{hours:02}:{minutes:02}:{seconds:02}", "%H:%M:%S"
-        ).time()
-    return val
+from frappe.utils import nowdate, get_datetime, today
+from frappe import _
+from datetime import timedelta
 
 
-def _fmt_date(val):
-    return getdate(val).strftime("%d-%m-%Y") if val else ""
+def before_save_employee_checkin(doc, method):
+    """Before saving Employee Checkin, check monthly late count and create Leave Application if necessary."""
+    if doc.log_type == "IN":
+        # Get current month's late check-in count
+        late_checkins = get_employee_late_checkins(doc.employee)
+
+        frappe.logger().info(f"[Monthly] Employee {doc.employee} has {late_checkins} late check-ins in current month.")
+
+        # Proceed if late check-ins hit a multiple of 3
+        if late_checkins % 3 == 0 and late_checkins > 0:
+            frappe.msgprint(_("Late check-ins reached a multiple of 3 this month. Checking leave availability..."))
+
+            # Leave types in order of deduction
+            leave_priority = ["Casual Leave", "Sick Leave", "Earned Leave", "Leave Without Pay"]
+
+            for leave_type in leave_priority:
+                response = create_leave_application(doc.employee, leave_type)
+                if "Created" in response:
+                    frappe.msgprint(response)
+                    frappe.logger().info(response)
+                    break
+                elif "already exists" in response:
+                    frappe.msgprint(response)
+                    break
+            else:
+                frappe.msgprint(_("No available leave types. Check-in allowed without leave deduction."))
 
 
-# ============================================================
-# Prevent reuse of same violation set
-# ============================================================
-
-def is_trigger_already_used(employee, trigger_date, reason):
-
-    return frappe.db.exists(
-        "Leave Application",
-        {
-            "employee": employee,
-            "description": [
-                "like",
-                f"%Trigger Date: {_fmt_date(trigger_date)}%| Basis: {reason}%"
-            ],
-            "docstatus": 1,
-        },
-    )
-
-
-# ============================================================
-# Shift Utilities
-# ============================================================
-
-def get_shift_for_date(employee, date):
-
-    shift = frappe.db.sql(
-        """
-        SELECT shift_type
-        FROM `tabShift Assignment`
-        WHERE employee=%s
-        AND status='Active'
-        AND start_date<=%s
-        AND (end_date IS NULL OR end_date >= %s)
-        ORDER BY start_date DESC
-        LIMIT 1
-        """,
-        (employee, date, date),
-        as_dict=True,
-    )
-
-    return shift[0].shift_type if shift else None
-
-
-def get_shift_date_range(shift_name):
-
-    shift_doc = frappe.get_cached_doc("Shift Type", shift_name)
-
-    start = getdate(shift_doc.process_attendance_after) if shift_doc.process_attendance_after else getdate().replace(day=1)
-    end = get_datetime(shift_doc.last_sync_of_checkin).date() if shift_doc.last_sync_of_checkin else getdate()
-
-    return start, end
-
-
-# ============================================================
-# Attendance Analysis
-# ============================================================
-
-def get_employee_late_checkins_with_dates(employee):
-
-    today = getdate()
-    shift_name = get_shift_for_date(employee, today)
-
-    if not shift_name:
-        return {}
-
-    start_date, end_date = get_shift_date_range(shift_name)
+def get_employee_late_checkins(employee):
+    """Fetch late check-in count for a specific employee in the current month."""
+    today_date = get_datetime().date()
+    first_day_of_month = today_date.replace(day=1)
 
     checkins = frappe.db.get_all(
         "Employee Checkin",
         filters={
+            "log_type": "IN",
             "employee": employee,
-            "time": ["between", [start_date, end_date]],
+            "time": ["between", [first_day_of_month, today_date]]
         },
-        fields=["log_type", "time"],
-        order_by="time asc",
+        fields=["shift_start", "time"]
     )
 
-    month_data = {}
+    late_count = 0
+    for checkin in checkins:
+        if not checkin.get("shift_start") or not checkin.get("time"):
+            continue  # Skip incomplete records
 
-    for chk in checkins:
+        shift_start = get_datetime(checkin["shift_start"])
+        checkin_time = get_datetime(checkin["time"])
 
-        checkin_time = get_datetime(chk["time"])
-        checkin_date = checkin_time.date()
-        month_key = checkin_date.strftime("%Y-%m")
+        # Consider late if beyond 16 minutes from shift start
+        if checkin_time > (shift_start + timedelta(minutes=16)):
+            late_count += 1
 
-        if month_key not in month_data:
-            month_data[month_key] = {"late_in": [], "early_out": []}
+    return late_count
 
-        shift_name_day = get_shift_for_date(employee, checkin_date)
-        if not shift_name_day:
-            continue
 
-        shift_doc = frappe.get_cached_doc("Shift Type", shift_name_day)
-
-        start_time = _to_time(shift_doc.start_time)
-        end_time = _to_time(shift_doc.end_time)
-
-        if not start_time or not end_time:
-            continue
-
-        # 🔹 Handle night shift
-        if end_time <= start_time:
-            if checkin_time.time() < end_time:
-                shift_start = datetime.combine(checkin_date - timedelta(days=1), start_time)
-                shift_end = datetime.combine(checkin_date, end_time)
-            else:
-                shift_start = datetime.combine(checkin_date, start_time)
-                shift_end = datetime.combine(checkin_date + timedelta(days=1), end_time)
-        else:
-            shift_start = datetime.combine(checkin_date, start_time)
-            shift_end = datetime.combine(checkin_date, end_time)
-
-        # ============================
-        # LATE IN
-        # ============================
-        if chk["log_type"] == "IN":
-
-            if shift_doc.enable_late_entry_marking:
-                grace_minutes = shift_doc.late_entry_grace_period or 0
-            else:
-                grace_minutes = 0  # 🔥 strict
-
-            grace = timedelta(minutes=grace_minutes)
-
-            if checkin_time > shift_start + grace:
-                if checkin_date not in month_data[month_key]["late_in"]:
-                    month_data[month_key]["late_in"].append(checkin_date)
-
-        # ============================
-        # EARLY OUT
-        # ============================
-        elif chk["log_type"] == "OUT":
-
-            if shift_doc.enable_early_exit_marking:
-                grace_minutes = shift_doc.early_exit_grace_period or 0
-            else:
-                grace_minutes = 0  # 🔥 strict
-
-            grace = timedelta(minutes=grace_minutes)
-
-            if checkin_time < shift_end - grace:
-                if checkin_date not in month_data[month_key]["early_out"]:
-                    month_data[month_key]["early_out"].append(checkin_date)
-
-    # 🔹 Sort results
-    for month in month_data:
-        month_data[month]["late_in"].sort()
-        month_data[month]["early_out"].sort()
-
-    return month_data
-# ============================================================
-# Leave Date Selection
-# ============================================================
-
-def get_next_valid_leave_date(employee, start_date):
-
-    for i in range(15):
-
-        check_date = add_days(getdate(start_date), i)
-
-        shift_name = get_shift_for_date(employee, check_date)
-
-        if shift_name:
-            shift_doc = frappe.get_cached_doc("Shift Type", shift_name)
-
-            # ❌ Skip holiday
-            if shift_doc.holiday_list and frappe.db.exists(
-                "Holiday",
-                {"parent": shift_doc.holiday_list, "holiday_date": check_date},
-            ):
-                continue
-
-        # ❌ Skip existing leave
-        if frappe.db.exists(
-            "Leave Application",
-            {
-                "employee": employee,
-                "from_date": ["<=", check_date],
-                "to_date": [">=", check_date],
-                "docstatus": 1,
-            },
-        ):
-            continue
-
-        # 🔥 NEW FIX: Skip if attendance exists
-        if frappe.db.exists(
-            "Attendance",
-            {
-                "employee": employee,
-                "attendance_date": check_date,
-                "docstatus": 1,
-            },
-        ):
-            continue
-
-        return check_date
-
-    return None
-
-# ============================================================
-# Leave Priority
-# ============================================================
-
-def get_leave_priority_and_balances(employee):
-
-    res = leave_balance_api(employee) or {}
-    rows = res.get("message") or []
-
-    out = []
-
-    for r in rows:
-        balance = r.get("Balance")
-        unlimited = isinstance(balance, str) and balance.lower() == "unlimited"
-
-        balance_num = None if unlimited else float(balance or 0)
-
-        out.append({
-            "leave_type": r.get("Leave Type"),
-            "priority": int(r.get("Priority") or 999),
-            "balance": balance_num,
-            "unlimited": unlimited,
-        })
-
-    return sorted(out, key=lambda x: (x["priority"], x["leave_type"]))
-
-
-def pick_leave_type(priority_rows):
-
-    for r in priority_rows:
-        if not r["unlimited"] and (r["balance"] or 0) >= 1:
-            return r["leave_type"]
-
-    for r in priority_rows:
-        if r["unlimited"]:
-            return r["leave_type"]
-
-    return "Leave Without Pay"
-
-
-def decrement_balance(priority_rows, leave_type):
-
-    for r in priority_rows:
-        if r["leave_type"] == leave_type and not r["unlimited"]:
-            r["balance"] = max(0, (r["balance"] or 0) - 1)
-
-
-# ============================================================
-# Core Leave Logic
-# ============================================================
-def process_employee_leave(employee, context_label, return_result=False):
-
-    result = {
-        "leave_created": False,
-        "created_count": 0,
-    }
-
-    month_data = get_employee_late_checkins_with_dates(employee)
-
-    if not month_data:
-        return result if return_result else None
-
-    today = getdate()
-    priority_rows = get_leave_priority_and_balances(employee)
-
-    created = 0
-
-    for month_key, data in sorted(month_data.items()):
-
-        late_in = data["late_in"]
-        early_out = data["early_out"]
-
-        used_leave_dates = set()
-        trigger_map = {}  # 🔥 (reason, trigger) → leave_date
-
-        # ============================
-        # Late IN
-        # ============================
-        for i in range(2, len(late_in), 3):
-
-            trigger = late_in[i]
-            violations = late_in[i - 2:i + 1]
-
-            if ("Late IN", trigger) in trigger_map:
-                continue
-
-            leave_date = get_next_valid_leave_date(employee, trigger)
-
-            if not leave_date:
-                continue
-
-            # prevent collision
-            while leave_date in used_leave_dates:
-                leave_date = get_next_valid_leave_date(employee, add_days(leave_date, 1))
-                if not leave_date:
-                    break
-
-            if not leave_date:
-                continue
-
-            if is_trigger_already_used(employee, trigger, "Late IN"):
-                continue
-
-            leave_type = pick_leave_type(priority_rows)
-
-            violation_str = ", ".join(_fmt_date(d) for d in violations)
-
-            description = (
-                f"Auto Leave Deducted | Basis: Late IN | "
-                f"Late IN Dates: {violation_str} | "
-                f"Trigger Date: {_fmt_date(trigger)} | "
-                f"Leave Date: {_fmt_date(leave_date)} | "
-                f"Context: {context_label}"
-            )
-
-            doc = frappe.get_doc({
-                "doctype": "Leave Application",
-                "employee": employee,
-                "leave_type": leave_type,
-                "from_date": leave_date,
-                "to_date": leave_date,
-                "posting_date": today,
-                "description": description,
-                "status": "Approved",
-            })
-
-            doc.insert(ignore_permissions=True)
-            if doc.docstatus == 0:
-                doc.submit()
-
-            decrement_balance(priority_rows, leave_type)
-
-            created += 1
-            used_leave_dates.add(leave_date)
-            trigger_map[("Late IN", trigger)] = leave_date
-
-        # ============================
-        # Early OUT
-        # ============================
-        for i in range(2, len(early_out), 3):
-
-            trigger = early_out[i]
-            violations = early_out[i - 2:i + 1]
-
-            if ("Early OUT", trigger) in trigger_map:
-                continue
-
-            # 🔥 check if Late IN exists for same trigger
-            if ("Late IN", trigger) in trigger_map:
-                base_date = trigger_map[("Late IN", trigger)]
-                leave_date = get_next_valid_leave_date(employee, add_days(base_date, 1))
-            else:
-                leave_date = get_next_valid_leave_date(employee, trigger)
-
-            if not leave_date:
-                continue
-
-            # prevent collision
-            while leave_date in used_leave_dates:
-                leave_date = get_next_valid_leave_date(employee, add_days(leave_date, 1))
-                if not leave_date:
-                    break
-
-            if not leave_date:
-                continue
-
-            if is_trigger_already_used(employee, trigger, "Early OUT"):
-                continue
-
-            leave_type = pick_leave_type(priority_rows)
-
-            violation_str = ", ".join(_fmt_date(d) for d in violations)
-
-            description = (
-                f"Auto Leave Deducted | Basis: Early OUT | "
-                f"Early OUT Dates: {violation_str} | "
-                f"Trigger Date: {_fmt_date(trigger)} | "
-                f"Leave Date: {_fmt_date(leave_date)} | "
-                f"Context: {context_label}"
-            )
-
-            doc = frappe.get_doc({
-                "doctype": "Leave Application",
-                "employee": employee,
-                "leave_type": leave_type,
-                "from_date": leave_date,
-                "to_date": leave_date,
-                "posting_date": today,
-                "description": description,
-                "status": "Approved",
-            })
-
-            doc.insert(ignore_permissions=True)
-            if doc.docstatus == 0:
-                doc.submit()
-
-            decrement_balance(priority_rows, leave_type)
-
-            created += 1
-            used_leave_dates.add(leave_date)
-            trigger_map[("Early OUT", trigger)] = leave_date
-
-    result["leave_created"] = created > 0
-    result["created_count"] = created
-
-    return result if return_result else None
-# ============================================================
-# Shift Type Detection
-# ============================================================
-
-def get_employee_shift_type(employee):
-
-    shift_assignment = frappe.db.sql(
+def get_leave_balances(employee):
+    """Fetch leave balances for a specific employee."""
+    leave_balances = frappe.db.sql(
         """
-        SELECT shift_type
-        FROM `tabShift Assignment`
-        WHERE employee=%s
-        AND status='Active'
-        AND start_date <= CURDATE()
-        AND (end_date IS NULL OR end_date >= CURDATE())
-        ORDER BY start_date DESC
-        LIMIT 1
+        SELECT leave_type,
+        SUM(CASE WHEN transaction_type = 'Leave Allocation' THEN leaves ELSE 0 END) -
+        SUM(CASE WHEN transaction_type = 'Leave Application' THEN leaves ELSE 0 END) AS leave_balance
+        FROM `tabLeave Ledger Entry`
+        WHERE docstatus = 1 AND employee = %s
+        GROUP BY leave_type
         """,
         (employee,),
-        as_dict=True,
+        as_dict=True
     )
 
-    if shift_assignment:
-        shift_doc = frappe.get_cached_doc("Shift Type", shift_assignment[0].shift_type)
-
-        if shift_doc.start_time:
-            start_time = _to_time(shift_doc.start_time)
-            return "Day" if 6 <= start_time.hour < 18 else "Night"
-
-    return "Day"
-
-
-def get_employees_by_shift_type(shift_type):
-
-    employees = []
-    all_emps = frappe.get_all("Employee", filters={"status": "Active"}, pluck="name")
-
-    for emp in all_emps:
-        if get_employee_shift_type(emp) == shift_type:
-            employees.append(emp)
-
-    return employees
-
-
-# ============================================================
-# Scheduler
-# ============================================================
-
-@frappe.whitelist()
-def auto_employee_checkin_day_shift():
-    for emp in get_employees_by_shift_type("Day"):
-        process_employee_leave(emp, "Scheduler-Day")
-
-    update_last_sync_attendance()
-    pending_attendance_status()
+    return {record["leave_type"]: record["leave_balance"] for record in leave_balances}
 
 
 @frappe.whitelist()
-def auto_employee_checkin_night_shift():
-    for emp in get_employees_by_shift_type("Night"):
-        process_employee_leave(emp, "Scheduler-Night")
+def create_leave_application(employee, leave_type):
+    """Creates a Leave Application for the given leave type if available."""
+    leave_balance = get_leave_balances(employee).get(leave_type, 0)
 
-    update_last_sync_attendance()
-    pending_attendance_status()
+    if leave_balance <= 0:
+        return f"{leave_type} is not available for Employee {employee}."
 
+    # Prevent duplicate leave application for today
+    existing_leave = frappe.db.exists("Leave Application", {
+        "employee": employee,
+        "leave_type": leave_type,
+        "from_date": nowdate(),
+        "to_date": nowdate(),
+        "status": ["!=", "Rejected"]
+    })
 
-@frappe.whitelist()
-def auto_employee_checkin():
+    if existing_leave:
+        return f"Leave Application already exists for Employee {employee} today."
 
-    hour = now_datetime().hour
+    try:
+        leave_doc = frappe.get_doc({
+            "doctype": "Leave Application",
+            "employee": employee,
+            "leave_type": leave_type,
+            "from_date": nowdate(),
+            "to_date": nowdate(),
+            "posting_date": nowdate(),
+            "description": "Auto Leave Deducted due to Monthly 3x Late Check-Ins",
+            "status": "Open"
+        })
+        leave_doc.insert(ignore_permissions=True)
+        leave_doc.submit()
 
-    if hour == 1:
-        auto_employee_checkin_day_shift()
-    elif hour == 13:
-        auto_employee_checkin_night_shift()
-
-
-# ============================================================
-# Attendance Sync
-# ============================================================
-
-def update_last_sync_attendance():
-
-    shift_list = frappe.get_all(
-        "Shift Type",
-        filters={"enable_auto_attendance": 1},
-        pluck="name",
-    )
-
-    for shift in shift_list:
-        doc = frappe.get_cached_doc("Shift Type", shift)
-        doc.last_sync_of_checkin = now()
-        doc.save()
-        doc.process_auto_attendance()
-
-
-def pending_attendance_status():
-
-    data = frappe.db.sql(
-        """
-        SELECT name,in_time,out_time,status
-        FROM `tabAttendance`
-        WHERE docstatus=1
-        """,
-        as_dict=True,
-    )
-
-    for i in data:
-        if i["in_time"] and i["out_time"] is None and i["status"] == "Half Day":
-            frappe.db.set_value("Attendance", i["name"], "status", "Absent")
+        return f"{leave_type} Leave Application Created for Employee: {employee}."
+    except Exception as e:
+        frappe.logger().error(f"Error creating leave application for {employee}: {str(e)}")
+        return "Failed to create Leave Application. Please check logs."
 
 
-# ============================================================
-# Manual Testing
-# ============================================================
+#===========#
 
-@frappe.whitelist()
-def test_employee(employee):
+# import frappe
+# from frappe.utils import nowdate, get_datetime, today
+# from frappe import _
+# from datetime import timedelta
 
-    result = process_employee_leave(employee, "Manual Test", True)
-    frappe.logger().info(f"Test result {employee}: {result}")
 
-    return result
+# def before_save_employee_checkin(doc, method):
+#     """Before saving Employee Checkin, check monthly late count and create Leave Application if necessary."""
+#     if getattr(doc, "log_type", None) != "IN":
+#         return
+
+#     # Determine if THIS check-in is late (16-min grace)
+#     is_current_late = False
+#     try:
+#         if getattr(doc, "shift_start", None) and getattr(doc, "time", None):
+#             shift_start_dt = get_datetime(doc.shift_start)
+#             time_dt = get_datetime(doc.time)
+#             is_current_late = time_dt > (shift_start_dt + timedelta(minutes=16))
+#     except Exception:
+#         is_current_late = False
+
+#     # Count late check-ins for the month from saved rows
+#     previous_late = get_employee_late_checkins(doc.employee)
+
+#     # Only proceed if THIS check-in is actually late
+#     if not is_current_late:
+#         return
+
+#     # Include current late in the tally
+#     late_checkins = previous_late + 1
+
+#     frappe.logger().info(f"[Monthly] Employee {doc.employee} has {late_checkins} late check-ins in current month (including current).")
+
+#     # Trigger only when the new tally hits a multiple of 3
+#     if late_checkins % 3 == 0:
+#         frappe.msgprint(_("Late check-ins reached a multiple of 3 this month. Checking leave availability..."))
+
+#         # Guardrail: if any leave (of any type) already exists for today, skip
+#         if frappe.db.exists(
+#             "Leave Application",
+#             {
+#                 "employee": doc.employee,
+#                 "from_date": nowdate(),
+#                 "to_date": nowdate(),
+#                 "status": ["!=", "Rejected"],
+#             },
+#         ):
+#             frappe.msgprint(_("A Leave Application already exists for today. No further deduction."))
+#             frappe.logger().info(f"[AutoLeave] Leave already exists today for {doc.employee}; skipping.")
+#             return
+
+#         # Figure out which time (1st, 2nd, 3rd...) this is
+#         deduction_number = late_checkins // 3
+#         ordinal_map = {1: "1st", 2: "2nd", 3: "3rd"}
+#         ordinal_suffix = ordinal_map.get(deduction_number, f"{deduction_number}th")
+
+#         # Late milestone: 3, 6, 9, 12, ...
+#         late_milestone = deduction_number * 3
+
+#         # Leave types in order of deduction
+#         leave_priority = ["Casual Leave", "Sick Leave", "Earned Leave", "Leave Without Pay"]
+
+#         for leave_type in leave_priority:
+#             response = create_leave_application(doc.employee, leave_type, ordinal_suffix, late_milestone)
+#             frappe.msgprint(response)
+#             frappe.logger().info(response)
+
+#             # Stop after the first success OR if one already exists (safety)
+#             if "Created" in response or "already exists" in response:
+#                 break
+
+
+# def get_employee_late_checkins(employee):
+#     """Fetch late check-in count for a specific employee in the current month."""
+#     today_date = get_datetime().date()
+#     first_day_of_month = today_date.replace(day=1)
+
+#     checkins = frappe.db.get_all(
+#         "Employee Checkin",
+#         filters={
+#             "log_type": "IN",
+#             "employee": employee,
+#             "time": ["between", [first_day_of_month, today_date]]
+#         },
+#         fields=["shift_start", "time"]
+#     )
+
+#     late_count = 0
+#     for checkin in checkins:
+#         if not checkin.get("shift_start") or not checkin.get("time"):
+#             continue  # Skip incomplete records
+
+#         shift_start = get_datetime(checkin["shift_start"])
+#         checkin_time = get_datetime(checkin["time"])
+
+#         # Consider late if beyond 16 minutes from shift start
+#         if checkin_time > (shift_start + timedelta(minutes=16)):
+#             late_count += 1
+
+#     return late_count
+
+
+# def get_leave_balances(employee):
+#     """Fetch leave balances for a specific employee (net of ledger entries)."""
+#     leave_balances = frappe.db.sql(
+#         """
+#         SELECT leave_type,
+#                COALESCE(SUM(leaves), 0) AS leave_balance
+#         FROM `tabLeave Ledger Entry`
+#         WHERE docstatus = 1
+#           AND employee = %s
+#         GROUP BY leave_type
+#         """,
+#         (employee,),
+#         as_dict=True
+#     )
+
+#     return {record["leave_type"]: float(record["leave_balance"]) for record in leave_balances}
+
+
+# @frappe.whitelist()
+# def create_leave_application(employee, leave_type, ordinal_suffix=None, late_milestone=None):
+#     """Creates a Leave Application for the given leave type if available."""
+#     # Block any duplicate leave for today regardless of type
+#     existing_any_leave = frappe.db.exists(
+#         "Leave Application",
+#         {
+#             "employee": employee,
+#             "from_date": nowdate(),
+#             "to_date": nowdate(),
+#             "status": ["!=", "Rejected"]
+#         }
+#     )
+#     if existing_any_leave:
+#         return f"Leave Application already exists for Employee {employee} today."
+
+#     leave_balance = get_leave_balances(employee).get(leave_type, 0)
+
+#     # For paid leaves, ensure positive balance; allow LWP regardless of balance
+#     if leave_type != "Leave Without Pay" and leave_balance <= 0:
+#         return f"{leave_type} is not available for Employee {employee}."
+
+#     # Prepare description with ordinal + milestone (e.g. 1st -> 3rd, 2nd -> 6th)
+#     if ordinal_suffix and late_milestone:
+#         description = f"{ordinal_suffix} Auto Leave Deducted due to Monthly {late_milestone}th Late Check-Ins"
+#     else:
+#         description = "Auto Leave Deducted due to Monthly 3x Late Check-Ins"
+
+#     try:
+#         leave_doc = frappe.get_doc({
+#             "doctype": "Leave Application",
+#             "employee": employee,
+#             "leave_type": leave_type,
+#             "from_date": nowdate(),
+#             "to_date": nowdate(),
+#             "posting_date": nowdate(),
+#             "description": description,
+#             "status": "Open"
+#         })
+#         leave_doc.insert(ignore_permissions=True)
+#         leave_doc.submit()
+
+#         return f"{leave_type} Leave Application Created for Employee: {employee}."
+#     except Exception as e:
+#         frappe.logger().error(f"Error creating leave application for {employee}: {str(e)}")
+#         return "Failed to create Leave Application. Please check logs."

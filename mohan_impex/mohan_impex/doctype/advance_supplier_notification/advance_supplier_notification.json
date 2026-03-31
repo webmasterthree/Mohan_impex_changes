@@ -1,14 +1,10 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "naming_series:",
  "creation": "2025-03-08 16:19:43.459531",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_break_auqb",
-  "naming_series",
-  "section_break_ysiq",
   "purchase_order",
   "column_break_jpto",
   "supplier",
@@ -20,10 +16,7 @@
   "transportation_details_column",
   "transporter_name",
   "vehiclecontainer_number",
-  "lr_no",
   "expected_arrival_date",
-  "forwarding_type",
-  "vehicle_type",
   "column_break_pfvt",
   "invoice_copy",
   "e_way_bill",
@@ -39,6 +32,7 @@
   "column_break_tojm",
   "total_qty",
   "section_break_ntcc",
+  "asn_status",
   "purchase_receipt",
   "amended_from"
  ],
@@ -47,8 +41,7 @@
    "fetch_from": "purchase_order.supplier",
    "fieldname": "supplier",
    "fieldtype": "Data",
-   "label": "Supplier",
-   "read_only": 1
+   "label": "Supplier"
   },
   {
    "fieldname": "column_break_jpto",
@@ -59,8 +52,7 @@
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Purchase Order",
-   "options": "Purchase Order",
-   "read_only": 1
+   "options": "Purchase Order"
   },
   {
    "fieldname": "section_break_pbix",
@@ -124,13 +116,18 @@
   },
   {
    "fieldname": "other_supporting_documents",
-   "fieldtype": "Table",
-   "label": "Other Supporting Documents",
-   "options": "Doc Item"
+   "fieldtype": "Attach",
+   "label": "Other Supporting Documents"
   },
   {
    "fieldname": "section_break_ntcc",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "asn_status",
+   "fieldtype": "Select",
+   "label": "ASN Status",
+   "options": "Pending\nIn Transit\nReceived"
   },
   {
    "fieldname": "section_break_jqaj",
@@ -200,44 +197,6 @@
   {
    "fieldname": "column_break_tojm",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "lr_no",
-   "fieldtype": "Data",
-   "label": "LR No."
-  },
-  {
-   "fieldname": "section_break_auqb",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "naming_series",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Series",
-   "no_copy": 1,
-   "options": "ASN-.####.-.FY",
-   "print_hide": 1,
-   "reqd": 1,
-   "set_only_once": 1
-  },
-  {
-   "fieldname": "section_break_ysiq",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "forwarding_type",
-   "fieldtype": "Select",
-   "label": "Forwarding Type",
-   "options": "\nFTL\nPTL"
-  },
-  {
-   "depends_on": "eval:doc.forwarding_type",
-   "fieldname": "vehicle_type",
-   "fieldtype": "Select",
-   "label": "Vehicle Type ",
-   "mandatory_depends_on": "eval:doc.forwarding_type",
-   "options": "\nCash Vehicle\nOwn Vehicle\nHired Vehicle"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -252,11 +211,10 @@
    "link_fieldname": "custom_asn_no"
   }
  ],
- "modified": "2026-02-25 15:36:09.503622",
+ "modified": "2025-08-18 14:12:06.718183",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Advance Supplier Notification",
- "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -272,7 +230,6 @@
    "write": 1
   }
  ],
- "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
