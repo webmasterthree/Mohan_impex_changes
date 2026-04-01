@@ -788,7 +788,7 @@ def get_payment_terms(customer):
         frappe.local.response['status'] = True
         frappe.local.response['message'] = "Payment terms fetched"
         frappe.local.response['data'] = {
-            "payment_terms": payment_terms
+            "payment_term_name": payment_terms
         }
 
     except Exception as err:
