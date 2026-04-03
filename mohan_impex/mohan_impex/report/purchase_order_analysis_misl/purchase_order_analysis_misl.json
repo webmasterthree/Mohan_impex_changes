@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letterhead": null,
- "modified": "2026-02-23 18:01:47.183475",
+ "modified": "2026-04-02 23:56:13.280638",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Purchase Order Analysis-MISL",
@@ -20,9 +20,6 @@
  "report_name": "Purchase Order Analysis-MISL",
  "report_type": "Script Report",
  "roles": [
-  {
-   "role": "Purchase User"
-  },
   {
    "role": "Stock User"
   },

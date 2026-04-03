@@ -331,7 +331,7 @@
    {
     "action": "Submit",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Pending",
     "parent": "Secondary Sales Order",
@@ -344,7 +344,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "Secondary Sales Order",
@@ -357,7 +357,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "Secondary Sales Order",
@@ -774,7 +774,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "NSM",
+    "allow_edit": "Sales Head",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -790,7 +790,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "NSM",
+    "allow_edit": "Sales Head",
     "avoid_status_override": 0,
     "doc_status": "1",
     "is_optional_state": 0,
@@ -806,7 +806,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "NSM",
+    "allow_edit": "Sales Head",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -910,7 +910,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": "doc.trial_type != \"TSM Required\"",
     "next_state": "Approved",
     "parent": "Product Trial",
@@ -923,7 +923,7 @@
    {
     "action": "Reject",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": "doc.trial_type != \"TSM Required\"",
     "next_state": "Rejected",
     "parent": "Product Trial",
@@ -1189,7 +1189,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "NSM",
+    "allow_edit": "Sales Head",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -1237,7 +1237,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "NSM",
+    "allow_edit": "Sales Head",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -1283,7 +1283,7 @@
    {
     "action": "Publish",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Published",
     "parent": "Digital Marketing Collateral",
@@ -1322,7 +1322,7 @@
    {
     "action": "Draft",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Draft",
     "parent": "Digital Marketing Collateral",
@@ -1474,7 +1474,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": "doc.conduct_by != \"TSM Required\" or (doc.conduct_by == \"TSM Required\" and doc.assigned_to != \"\")",
     "next_state": "Approved",
     "parent": "Trial plan",
@@ -1500,7 +1500,7 @@
    {
     "action": "Reject",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": "",
     "next_state": "Rejected",
     "parent": "Trial plan",
@@ -1526,7 +1526,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "Trial plan",
@@ -1597,7 +1597,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "NSM",
+    "allow_edit": "Sales Head",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -1645,7 +1645,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "NSM",
+    "allow_edit": "Sales Head",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -1691,7 +1691,7 @@
    {
     "action": "Publish",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Published",
     "parent": "Frequently Asked Questions",
@@ -1730,7 +1730,7 @@
    {
     "action": "Draft",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Draft",
     "parent": "Frequently Asked Questions",
@@ -1788,7 +1788,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "NSM",
+    "allow_edit": "Sales Head",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -1836,7 +1836,7 @@
     "workflow_builder_id": null
    },
    {
-    "allow_edit": "NSM",
+    "allow_edit": "Sales Head",
     "avoid_status_override": 0,
     "doc_status": "0",
     "is_optional_state": 0,
@@ -1882,7 +1882,7 @@
    {
     "action": "Publish",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Published",
     "parent": "Legal Information",
@@ -1921,7 +1921,7 @@
    {
     "action": "Draft",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Draft",
     "parent": "Legal Information",
@@ -2041,7 +2041,7 @@
    {
     "action": "Complete",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": "",
     "next_state": "Completed",
     "parent": "Trial Target",
@@ -2489,7 +2489,7 @@
    {
     "action": "Submit",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Pending",
     "parent": "CVM",
@@ -2515,7 +2515,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "CVM",
@@ -2528,7 +2528,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "CVM",
@@ -2680,7 +2680,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "Sample Requisition",
@@ -2693,7 +2693,7 @@
    {
     "action": "Reject",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Rejected",
     "parent": "Sample Requisition",
@@ -2732,7 +2732,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "Sample Requisition",
@@ -2868,7 +2868,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "Journey Plan",
@@ -2881,7 +2881,7 @@
    {
     "action": "Reject",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Rejected",
     "parent": "Journey Plan",
@@ -2894,7 +2894,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "Journey Plan",
@@ -3056,7 +3056,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "Marketing Collateral Request",
@@ -3069,7 +3069,7 @@
    {
     "action": "Reject",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Rejected",
     "parent": "Marketing Collateral Request",
@@ -3082,7 +3082,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "Marketing Collateral Request",
@@ -3189,7 +3189,7 @@
    {
     "action": "Resolve",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Resolved",
     "parent": "Complaints & Claims",
@@ -3202,7 +3202,7 @@
    {
     "action": "Resolve",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Resolved",
     "parent": "Complaints & Claims",
@@ -3293,7 +3293,7 @@
    {
     "action": "Complete KYC",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": "",
     "next_state": "KYC Completed",
     "parent": "Customer KYC",
@@ -3306,7 +3306,7 @@
    {
     "action": "Complete KYC",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "KYC Completed",
     "parent": "Customer KYC",
@@ -3471,7 +3471,7 @@
    {
     "action": "Submit",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Pending",
     "parent": "Sales Order",
@@ -3484,7 +3484,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 0,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "Sales Order",
@@ -3497,7 +3497,7 @@
    {
     "action": "Approve",
     "allow_self_approval": 1,
-    "allowed": "NSM",
+    "allowed": "Sales Head",
     "condition": null,
     "next_state": "Approved",
     "parent": "Sales Order",

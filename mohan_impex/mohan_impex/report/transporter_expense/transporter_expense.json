@@ -11,7 +11,7 @@
  "is_standard": "Yes",
  "json": "{}",
  "letterhead": null,
- "modified": "2026-03-24 13:07:55.331432",
+ "modified": "2026-04-03 00:04:26.271312",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Transporter Expense",
@@ -22,9 +22,6 @@
  "report_type": "Script Report",
  "roles": [
   {
-   "role": "Purchase User"
-  },
-  {
    "role": "Stock Manager"
   },
   {
@@ -34,7 +31,7 @@
    "role": "Accounts User"
   },
   {
-   "role": "Purchase Manager"
+   "role": "Purchase Master Manager"
   },
   {
    "role": "System Manager"
@@ -46,7 +43,7 @@
    "role": "Inventory Team"
   },
   {
-   "role": "Purchase Executive"
+   "role": "Purchase Team"
   },
   {
    "role": "Factory Operation"

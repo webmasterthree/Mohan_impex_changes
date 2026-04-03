@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letterhead": null,
- "modified": "2025-12-06 11:41:08.378468",
+ "modified": "2026-04-03 00:00:18.368638",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "MISL-Supplier Quotation Comparison",
@@ -24,15 +24,6 @@
    "role": "Stock User"
   },
   {
-   "role": "Purchase User"
-  },
-  {
-   "role": "Manufacturing Manager"
-  },
-  {
-   "role": "Purchase Manager"
-  },
-  {
    "role": "SCM Manager"
   },
   {
@@ -42,7 +33,7 @@
    "role": "Supplier"
   },
   {
-   "role": "Purchase Executive"
+   "role": "Purchase Team"
   }
  ],
  "timeout": 0

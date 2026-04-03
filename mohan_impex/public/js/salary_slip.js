@@ -4,6 +4,9 @@ frappe.ui.form.on("Salary Slip", {
     },
     on_submit: function(frm){
         calculate_bonus_values(frm);
+    },
+    after_save: function(frm){
+        calculate_bonus_values(frm);
     }
 });
 
@@ -18,9 +21,9 @@ function calculate_bonus_values(frm) {
     ];
 
     let deduction_components = [
-        "Professional Tax",
-        "Provident Fund",
-        "Employees State Insurance Corporation"
+        "Employees State Insurance Corporation For Bonus",
+        "Professional Tax For Bonus",
+        "Provident Fund For Bonus"
     ];
 
     let total_earnings = 0;
