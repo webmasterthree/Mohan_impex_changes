@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "creation": "2025-11-01 17:11:27.771639",
  "doctype": "DocType",
@@ -28,7 +29,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-01-22 10:53:33.827766",
+ "modified": "2026-04-01 17:34:42.252762",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "City",

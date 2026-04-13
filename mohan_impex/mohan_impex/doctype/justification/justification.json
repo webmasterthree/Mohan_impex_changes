@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:reason",
  "creation": "2025-12-31 15:18:47.079776",
@@ -106,8 +107,8 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-02-09 18:46:45.850919",
- "modified_by": "revasiya.h786@gmail.com",
+ "modified": "2026-04-03 18:05:07.551364",
+ "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Justification",
  "naming_rule": "By fieldname",

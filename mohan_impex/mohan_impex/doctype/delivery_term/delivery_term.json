@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:delivery_term",
  "creation": "2025-02-10 14:49:45.437958",
@@ -18,9 +19,10 @@
    "unique": 1
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-10 14:50:30.154899",
+ "modified": "2026-04-03 15:40:47.452828",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Delivery Term",
@@ -40,6 +42,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:reason",
  "creation": "2025-11-01 11:22:36.146938",
@@ -57,7 +58,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-04 11:10:00.848450",
+ "modified": "2026-04-03 15:45:50.833031",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Reason",

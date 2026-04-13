@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letterhead": null,
- "modified": "2026-04-02 23:58:02.993879",
+ "modified": "2026-04-11 13:18:39.279800",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Requested Items to Order and Receive-MISL",
@@ -24,13 +24,16 @@
    "role": "Stock Manager"
   },
   {
+   "role": "Purchase User"
+  },
+  {
+   "role": "Purchase Manager"
+  },
+  {
    "role": "Stock User"
   },
   {
-   "role": "SCM Manager"
-  },
-  {
-   "role": "Purchase Team"
+   "role": "Inventory Manager"
   }
  ],
  "timeout": 0

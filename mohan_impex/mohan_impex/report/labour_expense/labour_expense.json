@@ -11,7 +11,7 @@
  "is_standard": "Yes",
  "json": "{}",
  "letterhead": null,
- "modified": "2026-04-03 00:04:44.028241",
+ "modified": "2026-04-11 13:15:02.206856",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Labour Expense",
@@ -22,6 +22,9 @@
  "report_type": "Script Report",
  "roles": [
   {
+   "role": "Purchase User"
+  },
+  {
    "role": "Stock Manager"
   },
   {
@@ -31,7 +34,7 @@
    "role": "Accounts User"
   },
   {
-   "role": "Purchase Master Manager"
+   "role": "Purchase Manager"
   },
   {
    "role": "System Manager"
@@ -41,9 +44,6 @@
   },
   {
    "role": "Inventory Team"
-  },
-  {
-   "role": "Purchase Team"
   },
   {
    "role": "Factory Operation"

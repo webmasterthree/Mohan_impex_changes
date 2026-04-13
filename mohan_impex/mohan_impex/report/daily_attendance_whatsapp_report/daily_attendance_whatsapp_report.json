@@ -1,5 +1,6 @@
 {
  "add_total_row": 0,
+ "add_translate_data": 0,
  "columns": [],
  "creation": "2025-02-26 17:03:44.074143",
  "disabled": 0,
@@ -9,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letterhead": null,
- "modified": "2025-02-26 17:03:44.074143",
+ "modified": "2026-04-11 13:19:42.037213",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Daily Attendance WhatsApp Report",
@@ -33,9 +34,6 @@
   },
   {
    "role": "HR Executive"
-  },
-  {
-   "role": "SCM Manager"
   }
  ],
  "timeout": 0

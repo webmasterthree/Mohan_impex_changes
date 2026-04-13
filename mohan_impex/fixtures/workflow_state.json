@@ -111,24 +111,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2025-04-04 11:38:04.282959",
-  "name": "Transport Quotation Pending",
-  "style": "Danger",
-  "workflow_state_name": "Transport Quotation Pending"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2025-04-04 11:54:05.112683",
-  "name": "Quotation Received from Transporter",
-  "style": "Info",
-  "workflow_state_name": "Quotation Received from Transporter"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2025-04-04 11:50:41.073881",
   "name": "Awaiting Final Assignment",
   "style": "Success",
@@ -479,20 +461,38 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "",
-  "modified": "2026-02-24 15:45:44.211389",
-  "name": "Pending from Admin",
-  "style": "Warning",
-  "workflow_state_name": "Pending from Admin"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "ok-sign",
   "modified": "2024-12-25 19:18:52.878440",
   "name": "Approved",
   "style": "Success",
   "workflow_state_name": "Approved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-04 11:38:04.282959",
+  "name": "Transport Quotation Pending",
+  "style": "Danger",
+  "workflow_state_name": "Transport Quotation Pending"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-04-04 11:54:05.112683",
+  "name": "Quotation Received from Transporter",
+  "style": "Info",
+  "workflow_state_name": "Quotation Received from Transporter"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2026-02-24 15:45:44.211389",
+  "name": "Pending from Admin",
+  "style": "Warning",
+  "workflow_state_name": "Pending from Admin"
  },
  {
   "docstatus": 0,
