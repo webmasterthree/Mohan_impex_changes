@@ -17,7 +17,8 @@ function calculate_bonus_values(frm) {
         "House Rent Allowance",
         "Conveyance Allowance",
         "Telephone Allowance",
-        "Special Allowance"
+        "Special Allowance",
+        "Working Holiday"
     ];
 
     let deduction_components = [
