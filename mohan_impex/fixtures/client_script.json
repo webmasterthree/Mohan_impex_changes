@@ -1142,5 +1142,16 @@
   "name": "Stock Reconciliation",
   "script": "frappe.ui.form.on('Stock Reconciliation', {\n\trefresh(frm) {\n\t\t// Hide a field\n\t\tfrm.set_df_property('expense_account', 'hidden', 0);\n\t\tfrm.set_df_property('cost_center', 'hidden', 0);\n\t}\n});",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Full and Final Statement",
+  "enabled": 1,
+  "modified": "2026-04-15 15:31:42.814648",
+  "module": "Mohan Impex",
+  "name": "FNF-Deduction",
+  "script": "frappe.ui.form.on(\"Full and Final Statement\", {\n    refresh(frm) {\n        if (!frm.is_new()) {\n            frm.add_custom_button(\"Fetch Deductions (from Salary Slips)\", () => {\n                fetch_fnf_deductions(frm);\n            });\n        }\n    },\n});\n\nasync function fetch_fnf_deductions(frm) {\n    if (!frm.doc.name) return;\n\n    frm.disable_save();\n\n    try {\n        const r = await frappe.call({\n            method: \"mohan_impex.fnf.deduction\",\n            args: { name: frm.doc.name },\n        });\n\n        const data = r?.message || [];\n\n        // 🔹 Clear table\n        frm.clear_table(\"fnf_deductions\");\n\n        let total_deduction = 0;\n\n        for (const slip of data) {\n\n            for (const d of (slip.deductions || [])) {\n\n                const row = frm.add_child(\"fnf_deductions\");\n\n                row.salary_slip = slip.salary_slip;   // ✅ NEW (important)\n                row.salary_component = d.salary_component;\n                row.amount = d.amount;\n                row.days = d.days;\n                row.rate = d.rate;\n\n                total_deduction += d.amount;\n            }\n        }\n\n        // 🔹 Set total (if field exists in parent doctype)\n        if (frm.fields_dict.total_deduction) {\n            frm.set_value(\"total_deduction\", total_deduction);\n        }\n\n        frm.refresh_field(\"fnf_deductions\");\n\n        frappe.show_alert({\n            message: __(\"Deductions updated successfully\"),\n            indicator: \"green\"\n        });\n\n    } catch (e) {\n        console.error(e);\n        frappe.msgprint({\n            title: __(\"Error\"),\n            message: __(\"Unable to fetch deductions. Please check server logs.\"),\n            indicator: \"red\",\n        });\n    } finally {\n        frm.enable_save();\n    }\n}",
+  "view": "Form"
  }
 ]

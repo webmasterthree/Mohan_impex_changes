@@ -65,40 +65,60 @@ from frappe.utils import flt
 
 @frappe.whitelist()
 def deduction(name):
-	if not name:
-		return []
+    if not name:
+        return []
 
-	fnf = frappe.get_doc("Full and Final Statement", name)
+    fnf = frappe.get_doc("Full and Final Statement", name)
 
-	out = []
-	for p in (fnf.payables or []):
-		if p.reference_document_type != "Salary Slip" or not p.reference_document:
-			continue
+    out = []
+    for p in (fnf.payables or []):
+        if p.reference_document_type != "Salary Slip" or not p.reference_document:
+            continue
 
-		slip_name = p.reference_document
+        slip_name = p.reference_document
 
-		deduction_rows = frappe.db.get_all(
-			"Salary Detail",
-			filters={
-				"parent": slip_name,
-				"parenttype": "Salary Slip",
-				"parentfield": "deductions",
-			},
-			fields=["salary_component", "amount"],
-			order_by="idx asc",
-		)
+        # 🔹 Fetch Salary Slip (better than db.get_value if you extend later)
+        slip_doc = frappe.get_doc("Salary Slip", slip_name)
 
-		out.append({
-			"fnf": name,
-			"salary_slip": slip_name,
-			"fnf_payable_amount": flt(p.amount),
-			"deductions": [
-				{
-					"salary_component": d.get("salary_component"),
-					"amount": flt(d.get("amount")),
-				}
-				for d in deduction_rows
-			],
-		})
+        payment_days = flt(slip_doc.payment_days)
 
-	return out
+        deduction_rows = frappe.db.get_all(
+            "Salary Detail",
+            filters={
+                "parent": slip_name,
+                "parenttype": "Salary Slip",
+                "parentfield": "deductions",
+            },
+            fields=["salary_component", "amount"],
+            order_by="idx asc",
+        )
+
+        deductions = []
+        for d in deduction_rows:
+            amount = flt(d.get("amount"))
+
+            # Optional: skip zero rows
+            if amount == 0:
+                continue
+
+            deductions.append({
+                "salary_component": d.get("salary_component"),
+                "amount": amount,
+                "days": payment_days,
+                "rate": round((amount / payment_days), 2) if payment_days else 0
+            })
+
+        # 🔹 Total Deduction
+        total_deduction = sum(d["amount"] for d in deductions)
+
+        out.append({
+            "fnf": name,
+            "salary_slip": slip_name,
+            "payment_days": payment_days,
+            "fnf_payable_amount": flt(p.amount),
+            "total_deduction": total_deduction,
+            "net_amount": flt(p.amount) - total_deduction,
+            "deductions": deductions
+        })
+
+    return out

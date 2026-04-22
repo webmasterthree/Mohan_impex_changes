@@ -1375,87 +1375,60 @@ def get_item_tax_and_gst_rate(item_code):
 
 
 
-# @frappe.whitelist()
-# def item_price(item_code=None, uom=None, customer=None, warehouse=None):
 
-#     # 🔹 Get customer_type
-#     customer_type = "DP"
-#     if customer:
-#         is_dl = frappe.db.get_value("Customer", customer, "is_dl")
-#         if is_dl:
-#             customer_type = "DL"
 
-#     base_filters = {
-#         "item_code": item_code,
-#         "customer_type": customer_type
-#     }
 
-#     # 🔹 Priority 1: full match
-#     filters = base_filters.copy()
+import frappe
+import json
+from erpnext.stock.get_item_details import get_item_details as erp_get_item_details
 
-#     if uom:
-#         filters["uom"] = uom
 
-#     if warehouse:
-#         filters["warehouse"] = warehouse
+@frappe.whitelist()
+def item_price(item_code=None, uom=None, customer=None, warehouse=None):
 
-#     res = frappe.db.get_all(
-#         "Item Price",
-#         filters=filters,
-#         fields=["price_list_rate"],
-#         order_by="modified desc",
-#         limit=1
-#     )
+    if not warehouse:
+        frappe.throw("Warehouse is mandatory")
 
-#     if res:
-#         return res[0]["price_list_rate"]
+    # 🔹 customer_type
+    customer_type = "DP"
+    if customer:
+        is_dl = frappe.db.get_value("Customer", customer, "is_dl")
+        if is_dl:
+            customer_type = "DL"
 
-#     # 🔹 Priority 2: remove warehouse
-#     filters.pop("warehouse", None)
+    filters = {
+        "item_code": item_code,
+        "customer_type": customer_type,
+        "warehouse": warehouse  # ✅ EXACT MATCH (Link field)
+    }
 
-#     res = frappe.db.get_all(
-#         "Item Price",
-#         filters=filters,
-#         fields=["price_list_rate"],
-#         order_by="modified desc",
-#         limit=1
-#     )
+    if uom:
+        filters["uom"] = uom
 
-#     if res:
-#         return res[0]["price_list_rate"]
+    price = frappe.db.get_value(
+        "Item Price",
+        filters,
+        "price_list_rate",
+        order_by="modified desc"
+    )
 
-#     # 🔹 Priority 3: remove uom
-#     filters.pop("uom", None)
-
-#     res = frappe.db.get_all(
-#         "Item Price",
-#         filters=filters,
-#         fields=["price_list_rate"],
-#         order_by="modified desc",
-#         limit=1
-#     )
-
-#     if res:
-#         return res[0]["price_list_rate"]
-
-#     return None
+    return price
 
 
 # @frappe.whitelist()
 # def get_item_details(item_code, uom, customer, warehouse="", delivery_term=""):
 
+#     if not warehouse:
+#         frappe.throw("Warehouse is required")
+
 #     company = frappe.db.get_single_value("Global Defaults", "default_company")
-#     qty = float(1)
+#     qty = 1
 
-#     frappe.set_user("Administrator")
+#     frappe.flags.ignore_permissions = True
 
-#     # 🔹 get customer_type
+#     # 🔹 price list
 #     is_dl = frappe.db.get_value("Customer", customer, "is_dl")
-
-#     if is_dl:
-#         price_list = "Standard Selling DL"
-#     else:
-#         price_list = "Standard Selling DP"
+#     price_list = "Standard Selling DL" if is_dl else "Standard Selling DP"
 
 #     args = frappe._dict({
 #         "item_code": item_code,
@@ -1463,24 +1436,36 @@ def get_item_tax_and_gst_rate(item_code):
 #         "uom": uom,
 #         "warehouse": warehouse,
 #         "company": company,
-#         "price_list": price_list,   # ✅ MUST HAVE
+#         "price_list": price_list,
 #         "currency": "INR",
 #         "transaction_type": "selling",
 #         "doctype": "Sales Order",
-#         "items": [{"item_code": item_code, "qty": qty, "uom": uom}],
+#         "items": [{
+#             "item_code": item_code,
+#             "qty": qty,
+#             "uom": uom,
+#             "warehouse": warehouse
+#         }],
 #         "qty": qty
 #     })
 
 #     doc = frappe.new_doc("Sales Order")
 #     doc.custom_delivery_term = delivery_term
 
-#     # 🔹 get custom price
 #     rate = item_price(item_code, uom, customer, warehouse)
 
-#     if rate is not None:
-#         args["price_list_rate"] = rate
+#     if rate is None:
+#         frappe.throw(
+#             f"No price found for Item: {item_code}, Warehouse: {warehouse}, Customer: {customer}"
+#         )
+
+#     args["price_list_rate"] = rate
 
 #     item_details = erp_get_item_details(args, doc=doc, for_validate=True)
+
+#     # 🔹 force override
+#     item_details["price_list_rate"] = rate
+#     item_details["rate"] = rate
 
 #     pricing_rules_applied = json.loads(item_details.get("pricing_rules") or "[]")
 
@@ -1492,3 +1477,218 @@ def get_item_tax_and_gst_rate(item_code):
 #         "pricing_rules_applied": pricing_rules_applied,
 #         "free_items": item_details.get("free_item_data") or []
 #     }
+
+# import frappe
+# import json
+# from erpnext.stock.get_item_details import get_item_details as erp_get_item_details
+
+
+# @frappe.whitelist()
+# def get_item_details(item_code, uom, customer, warehouse="", delivery_term=""):
+
+#     company = frappe.db.get_single_value("Global Defaults", "default_company")
+#     qty = float(1)
+#     price_list = frappe.db.get_single_value("Selling Settings", "selling_price_list")
+
+#     # 🔹 safer than set_user
+#     # frappe.flags.ignore_permissions = True
+# frappe.set_user("Administrator")
+#     args = frappe._dict({
+#         "item_code": item_code,
+#         "customer": customer,
+#         "uom": uom,
+#         "warehouse": warehouse,
+#         "company": company,
+#         "price_list": price_list,
+#         "currency": "INR",
+#         "transaction_type": "selling",
+#         "doctype": "Sales Order",
+#         "items": [{
+#             "item_code": item_code,
+#             "qty": qty,
+#             "uom": uom,
+#             "warehouse": warehouse   # 🔥 IMPORTANT
+#         }],
+#         "qty": qty
+#     })
+
+#     frappe.errprint(args)
+
+#     doc = frappe.new_doc("Sales Order")
+#     doc.custom_delivery_term = delivery_term
+
+#     # =====================================================
+#     # 🔥 STRICT WAREHOUSE PRICE LOGIC (ONLY CHANGE ADDED)
+#     # =====================================================
+
+#     # 🔹 customer_type
+#     customer_type = "DP"
+#     if customer:
+#         is_dl = frappe.db.get_value("Customer", customer, "is_dl")
+#         if is_dl:
+#             customer_type = "DL"
+
+#     filters = {
+#         "item_code": item_code,
+#         "customer_type": customer_type,
+#         "warehouse": warehouse
+#     }
+
+#     if uom:
+#         filters["uom"] = uom
+
+#     rate = frappe.db.get_value(
+#         "Item Price",
+#         filters,
+#         "price_list_rate",
+#         order_by="modified desc"
+#     )
+
+#     # 🔴 STRICT: no fallback
+#     if rate is None:
+#         frappe.throw(
+#             f"No price found for Item: {item_code}, Warehouse: {warehouse}, Customer: {customer}"
+#         )
+
+#     # 🔹 inject price into ERP
+#     args["price_list_rate"] = rate
+
+#     # =====================================================
+
+#     item_details = erp_get_item_details(args, doc=doc, for_validate=True)
+
+#     frappe.errprint(item_details)
+
+#     # 🔹 force override (avoid ERP fallback)
+#     item_details["price_list_rate"] = rate
+#     item_details["rate"] = rate
+
+#     pricing_rules_applied = json.loads(item_details.get("pricing_rules") or "[]")
+
+#     # 🔹 KEEP YOUR SAME RESPONSE FORMAT
+#     item_details = {
+#         "rate": item_details.get("price_list_rate"),
+#         "discount_percentage": item_details.get("discount_percentage"),
+#         "discount_amount": item_details.get("discount_amount"),
+#         "net_rate": item_details.get("net_rate"),
+#         "pricing_rules_applied": pricing_rules_applied,
+#         "free_items": item_details.get("free_item_data") or []
+#     }
+
+#     return item_details
+
+
+import frappe
+import json
+from erpnext.stock.get_item_details import get_item_details as erp_get_item_details
+
+
+@frappe.whitelist()
+def get_item_details(item_code, uom, customer, warehouse="", delivery_term=""):
+
+    try:
+        if not warehouse:
+            return default_response()
+
+        company = frappe.db.get_single_value("Global Defaults", "default_company")
+        qty = float(1)
+        price_list = frappe.db.get_single_value("Selling Settings", "selling_price_list")
+
+        frappe.flags.ignore_permissions = True
+
+        # =====================================================
+        # 🔥 STEP 1: GET WAREHOUSE PRICE (SOURCE OF TRUTH)
+        # =====================================================
+        customer_type = "DP"
+        if customer:
+            is_dl = frappe.db.get_value("Customer", customer, "is_dl")
+            if is_dl:
+                customer_type = "DL"
+
+        filters = {
+            "item_code": item_code,
+            "customer_type": customer_type,
+            "warehouse": warehouse
+        }
+
+        if uom:
+            filters["uom"] = uom
+
+        rate = frappe.db.get_value(
+            "Item Price",
+            filters,
+            "price_list_rate",
+            order_by="modified desc"
+        )
+
+        if rate is None:
+            return default_response()
+
+        # =====================================================
+        # 🔥 STEP 2: CALL ERP (WITHOUT BREAKING IT)
+        # =====================================================
+        args = frappe._dict({
+            "item_code": item_code,
+            "customer": customer,
+            "uom": uom,
+            "warehouse": warehouse,   # OK here
+            "company": company,
+            "price_list": price_list,
+            "currency": "INR",
+            "transaction_type": "selling",
+            "doctype": "Sales Order",
+            "items": [{
+                "item_code": item_code,
+                "qty": qty,
+                "uom": uom
+                # ❌ NO warehouse here
+            }],
+            "qty": qty,
+            "ignore_pricing_rule": 1
+        })
+
+        doc = frappe.new_doc("Sales Order")
+        doc.custom_delivery_term = delivery_term
+
+        item_details = erp_get_item_details(args, doc=doc, for_validate=True)
+
+        # =====================================================
+        # 🔥 STEP 3: APPLY DISCOUNT (IF ANY)
+        # =====================================================
+        discount_percentage = item_details.get("discount_percentage") or 0
+        discount_amount = item_details.get("discount_amount") or 0
+
+        # calculate final net rate safely
+        if discount_percentage:
+            net_rate = rate - (rate * discount_percentage / 100)
+        else:
+            net_rate = rate - discount_amount
+
+        pricing_rules_applied = json.loads(item_details.get("pricing_rules") or "[]")
+
+        # =====================================================
+        # 🔥 FINAL RESPONSE
+        # =====================================================
+        return {
+            "rate": rate,
+            "discount_percentage": discount_percentage,
+            "discount_amount": discount_amount,
+            "net_rate": net_rate,
+            "pricing_rules_applied": pricing_rules_applied,
+            "free_items": item_details.get("free_item_data") or []
+        }
+
+    except Exception as e:
+        frappe.log_error(frappe.get_traceback(), "GET ITEM DETAILS ERROR")
+        return default_response()
+
+
+def default_response():
+    return {
+        "rate": 0,
+        "discount_percentage": 0,
+        "discount_amount": 0,
+        "net_rate": 0,
+        "pricing_rules_applied": [],
+        "free_items": []
+    }
