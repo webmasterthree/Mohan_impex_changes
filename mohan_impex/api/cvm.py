@@ -585,43 +585,150 @@ def convert_to_order(cvm_id):
     except Exception as err:
         get_exception(err)
 
+# @frappe.whitelist()
+# def get_customer_address():
+#     try:
+#         if not frappe.form_dict.get("customer"):
+#             frappe.local.response['http_status_code'] = 404
+#             frappe.local.response['status'] = False
+#             frappe.local.response['message'] = f"Give customer value for filter"
+#             return
+#         if not frappe.form_dict.get("verific_type"):
+#             frappe.local.response['http_status_code'] = 404
+#             frappe.local.response['status'] = False
+#             frappe.local.response['message'] = f"Give verification type for filter"
+#             return
+#         customer = frappe.form_dict.get("customer")
+#         if frappe.form_dict.get("verific_type") == "Verified":
+#             address_name = frappe.get_value("Customer", {"name": customer}, "customer_primary_address")
+#         else:
+#             address_name = frappe.get_value("Unverified Customer", {"name": customer}, "address")
+#         address_dict = {}
+#         if address_name:
+#             address_doc = frappe.get_doc("Address", address_name)
+#             city_name = None
+#             if address_doc.city:
+#                 city_name = frappe.db.get_value("City",address_doc.city,"city")
+#             address_dict = {
+#                 "name": address_doc.name,
+#                 "address_title": address_doc.address_title,
+#                 "address_line1": address_doc.address_line1,
+#                 "address_line2": address_doc.address_line2,
+#                 "district": address_doc.district,
+#                 "state": address_doc.state,
+#                 "pincode": address_doc.pincode,
+#                 "city":address_doc.city,
+#                 "city_name":city_name
+#             }
+#         frappe.local.response['status'] = True
+#         frappe.local.response['message'] = f"Address has been fetched"
+#         frappe.local.response['data'] = address_dict
+#     except Exception as err:
+#         get_exception(err)
+        
+        
+
+import frappe
+
+
 @frappe.whitelist()
 def get_customer_address():
     try:
-        if not frappe.form_dict.get("customer"):
-            frappe.local.response['http_status_code'] = 404
-            frappe.local.response['status'] = False
-            frappe.local.response['message'] = f"Give customer value for filter"
-            return
-        if not frappe.form_dict.get("verific_type"):
-            frappe.local.response['http_status_code'] = 404
-            frappe.local.response['status'] = False
-            frappe.local.response['message'] = f"Give verification type for filter"
-            return
         customer = frappe.form_dict.get("customer")
-        if frappe.form_dict.get("verific_type") == "Verified":
-            address_name = frappe.get_value("Customer", {"name": customer}, "customer_primary_address")
+        verification_type = (
+            frappe.form_dict.get("verification_type")
+            or frappe.form_dict.get("verific_type")
+        )
+
+        if not customer:
+            frappe.local.response["http_status_code"] = 400
+            frappe.local.response["status"] = False
+            frappe.local.response["message"] = "Give customer value for filter"
+            frappe.local.response["data"] = {}
+            return
+
+        if not verification_type:
+            frappe.local.response["http_status_code"] = 400
+            frappe.local.response["status"] = False
+            frappe.local.response["message"] = "Give verification type for filter"
+            frappe.local.response["data"] = {}
+            return
+
+        if verification_type == "Verified":
+            address_name = frappe.db.get_value(
+                "Customer",
+                customer,
+                "customer_primary_address"
+            )
         else:
-            address_name = frappe.get_value("Unverified Customer", {"name": customer}, "address")
+            address_name = frappe.db.get_value(
+                "Unverified Customer",
+                customer,
+                "address"
+            )
+
         address_dict = {}
-        if address_name:
+
+        if address_name and frappe.db.exists("Address", address_name):
             address_doc = frappe.get_doc("Address", address_name)
-            city_name = None
+
+            # Required output:
+            # city_name = code/id stored in Address
+            # city = readable city from City doctype
+            city_name = address_doc.city
+            city = None
+
             if address_doc.city:
-                city_name = frappe.db.get_value("City",address_doc.city,"city")
+                city = frappe.db.get_value(
+                    "City",
+                    address_doc.city,
+                    "city"
+                )
+
+            # Required output:
+            # district_name = code/id stored in Address
+            # district = readable district from District doctype
+            district_name = address_doc.district
+            district = None
+
+            if address_doc.district:
+                district = frappe.db.get_value(
+                    "District",
+                    address_doc.district,
+                    "district"
+                )
+
             address_dict = {
                 "name": address_doc.name,
                 "address_title": address_doc.address_title,
                 "address_line1": address_doc.address_line1,
                 "address_line2": address_doc.address_line2,
-                "district": address_doc.district,
+
+                # swapped for existing app compatibility
+                "district_name": district_name,
+                "district": district,
+
+                # swapped for existing app compatibility
+                "city_name": city_name,
+                "city": city,
+
                 "state": address_doc.state,
-                "pincode": address_doc.pincode,
-                "city":address_doc.city,
-                "city_name":city_name
+                "pincode": address_doc.pincode
             }
-        frappe.local.response['status'] = True
-        frappe.local.response['message'] = f"Address has been fetched"
-        frappe.local.response['data'] = address_dict
+
+        frappe.local.response["status"] = True
+        frappe.local.response["message"] = "Address has been fetched"
+        frappe.local.response["data"] = address_dict
+
     except Exception as err:
-        get_exception(err)
+        frappe.log_error(
+            title="get_customer_address API Error",
+            message=frappe.get_traceback()
+        )
+
+        frappe.local.response["http_status_code"] = 500
+        frappe.local.response["status"] = False
+        frappe.local.response["message"] = str(err)
+        frappe.local.response["data"] = {}
+        
+        

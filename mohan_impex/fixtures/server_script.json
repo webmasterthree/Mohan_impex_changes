@@ -226,5 +226,24 @@
   "reference_doctype": "Customer",
   "script": "# Server Script Example\nexisting_customer = frappe.db.exists(\"Customer\", {\"customer_name\": doc.customer_name})\nif existing_customer:\n    frappe.throw(f\"Customer already exists: {existing_customer}\")\n\n\n\n",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Submit",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2026-04-28 12:04:15.382994",
+  "module": "Mohan Impex",
+  "name": "Operating Cost",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Stock Entry",
+  "script": "if doc.purpose == \"Manufacture\":\n\n    if not doc.work_order:\n        frappe.throw(\"Please select Work Order first.\")\n\n    total_operating_cost = frappe.db.get_value(\n        \"Work Order\",\n        doc.work_order,\n        \"total_operating_cost\"\n    ) or 0\n\n    total_operating_cost = float(total_operating_cost)\n\n    # ✅ Validation only\n    if total_operating_cost > 0:\n\n        has_cost = any(\n            (row.amount or row.base_amount or 0) > 0\n            for row in doc.additional_costs or []\n        )\n\n        if not has_cost:\n            frappe.throw(\n                \"Kindly update the operating cost.\"\n            )",
+  "script_type": "DocType Event"
  }
 ]

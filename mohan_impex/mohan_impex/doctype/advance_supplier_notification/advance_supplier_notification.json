@@ -73,7 +73,6 @@
    "options": "Purchase Invoice"
   },
   {
-   "fetch_from": "purchase_invoice.due_date",
    "fieldname": "invoice_date",
    "fieldtype": "Date",
    "label": "Invoice Date"
@@ -252,7 +251,7 @@
    "link_fieldname": "custom_asn_no"
   }
  ],
- "modified": "2026-02-25 15:36:09.503622",
+ "modified": "2026-05-08 15:32:32.161000",
  "modified_by": "Administrator",
  "module": "Mohan Impex",
  "name": "Advance Supplier Notification",

@@ -245,6 +245,7 @@ def get_item_templates():
         from `tabItem`
         where has_variants = 1
         AND is_sales_item = 1
+        AND IFNULL(item_category, '') IN ('MP', 'BP', 'TP', 'FP')
     """
     if frappe.form_dict.get("search_text"):
         query += """ AND (item_name LIKE "%{search_text}%") """.format(search_text=frappe.form_dict.get("search_text"))
@@ -264,6 +265,7 @@ def get_item_variants(limit:int=20, customer="", warehouse="", delivery_term="")
         from `tabItem` as i
         left join `tabCompetitor Detail` as cd on cd.parent = i.name
         where has_variants = 0
+        AND IFNULL(item_category, '') IN ('MP', 'BP', 'TP', 'FP')
     """
 
     if frappe.form_dict.get("item_template"):

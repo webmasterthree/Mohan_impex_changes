@@ -33,15 +33,13 @@ fixtures = [
 
 doctype_js ={
     "Sales Order": "public/js/sales_order.js",
-    "Purchase Order" : "public/js/purchase_order.js",
     "Employee":"public/js/employee.js",
     "Request for Quotation": "public/js/request_for_quotation.js",
     "Additional Salary": "public/js/additional_salary.js",
     "Request for Quotation" : "public/js/rfq.js",
     # "Blanket Order" : "public/js/blanket_order.js",
     "Increment Letter":"public/js/increment_letter.js",
-    "Sales Order": "public/js/floating_notifications.js",
-    "Purchase Receipt": "public/js/GRN1.js",
+    "Purchase Receipt": "public/js/GRN.js",
     "Delivery Note": "public/js/delivery_note.js",
     "Purchase Order": "public/js/ASN.js",
     "Shift Type": "public/js/shift_type.js",
@@ -147,7 +145,11 @@ api_methods = [
 override_doctype_class = {
     "Quality Inspection": "mohan_impex.override.quality_inspection.QualityInspection",
     "Item Price": "mohan_impex.override.item_price.CustomItemPrice",
-    "Work Order": "mohan_impex.override.work_order.CustomWorkOrder"
+    "Work Order": "mohan_impex.override.work_order.CustomWorkOrder",
+    "Delivery Note": "mohan_impex.override.delivery_note.CustomDeliveryNote",
+    "Purchase Receipt": "mohan_impex.override.purchase_receipt.CustomPurchaseReceipt",
+    "Job Card": "mohan_impex.override.job_card.CustomJobCard"
+
 }
  
 # Apps
